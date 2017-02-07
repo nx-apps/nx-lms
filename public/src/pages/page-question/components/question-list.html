@@ -25,7 +25,7 @@
                         <tbody>
                             <template is="dom-repeat" items="[[dataList]]">
                                 
-                                <tr on-tap="selectList" question-id="[[item.id]]">
+                                <tr on-tap="selectList" item="[[item]]" question-id="[[item.id]]">
                                     <td>
                                         <div>[[toIndex(index)]]</div>
                                     </td>
@@ -82,11 +82,12 @@
             selectList:function(e){
                 this.QUESTION_SELECT(e.currentTarget.questionId)
                 .then((response)=>{
-                    console.log(response.data);
+                      this.fire('select-data',response.data);
                  })
                 .catch((error)=>{
                     console.log(error);
                 });
+               
             },
             toIndex:function(index){
                 return ++index;

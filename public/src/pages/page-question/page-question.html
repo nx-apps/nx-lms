@@ -12,15 +12,30 @@
             <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
         </div>
         <panel-right title="{{titleRight}}">
-            <question-manage></question-manage>
+            <question-manage data="{{data}}" status="[[status]]"></question-manage>
         </panel-right>
     </template>
     <script>
         Polymer({
             is: 'page-question',
-            openPanelRight:function(){
-                this.titleRight = 'เพิ่มคำถาม'
+            listeners:{
+                'close':'closePanelRight',
+                'select-data':'selectList'
+            },
+            selectList:function(e){
+                this.titleRight = 'แก้ไขคำถาม';
+                this.status = 'update';
+                console.log(e.detail);
+                this.data = e.detail;
                 this.$$('panel-right').open();
+            },
+            openPanelRight:function(){
+                this.titleRight = 'เพิ่มคำถาม';
+                this.status = 'add'
+                this.$$('panel-right').open();
+            },
+            closePanelRight:function(){
+                this.$$('panel-right').close();
             }
         });
     </script>

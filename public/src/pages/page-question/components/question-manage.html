@@ -86,11 +86,13 @@
     <script>
         Polymer({
             is: 'question-manage',
+            behaviors:[questionAction],
             properties:{
                 data:{
                     type:Object,
                     value: {
-                        question:'',
+                        user_id:'admin',
+                        topic:'',
                         choice:[],
                         tag:[]
                     }
@@ -106,18 +108,28 @@
                 this.splice('data.choice',e.target.index,1);
             },
             getForm:function(){
-                Polymer.dom(this.root).querySelectorAll('paper-radio-button').map((item)=>{
-                    if(item.checked == true){
-                        this.data.select = item.index;
-                        console.log(item.index); 
-                    };
-                })
-                // this.data.choice = this.data.choice.map((item)=>{
-                //     var {choice} = item;
-                //     var newitem = {choice};
-                //     return newitem;
-                // })
-                console.log(this.data);
+                var data = JSON.parse(JSON.stringify(this.data));
+                var answer;
+                var choice = this.data.choice.map((row,i)=>{
+                    if(row.checked) 
+                    answer = i;
+                    return row.choice;
+                });
+                
+                data.choice = choice;
+                data.answer = answer;
+                // console.log(data);
+                this.fire('toast',{status:'load'});
+                this.QUESTION_INSERT(data)
+                .then(()=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                        callback:()=>{
+                             this.fire('close');
+                        }
+                    });
+                   
+                });;
+                //this.fire('save-data',data);
             },
             selectRadio:function(e){
                 
