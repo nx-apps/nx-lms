@@ -1,16 +1,16 @@
 {
-  "name": "NYLON",
+  "name": "LMS BETAGRO",
   "short_name": "NL",
   "icons": [{
-      "src": "images/icon/default/app-icon-128.png",
+      "src": "images/icon/green/app-icon-128.png",
       "sizes": "128x128",
       "type": "image/png"
     }, {
-      "src": "images/icon/default/app-icon-192.png",
+      "src": "images/icon/green/app-icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },{
-      "src": "images/icon/default/app-icon-384.png",
+      "src": "images/icon/green/app-icon-384.png",
       "sizes": "384x384",
       "type": "image/png"
     }],
