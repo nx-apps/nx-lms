@@ -25,11 +25,17 @@
                 border:1px solid #ddd;
                 color:#555;
             }
-            td,th{
+            th{
                 background-color: white !important;
-                /*text-align: center !important;    */
             }
-            tr:hover{
+            thead>tr{
+                border-bottom: 2px solid #555 
+            }
+            tbody>tr>td{
+                cursor: pointer;
+                background-color: #fff;
+            }
+            tbody>tr:hover{
                 font-weight: bold;
                 background-color: #ddd !important;  
                 border-bottom: 2px solid dodgerblue;
