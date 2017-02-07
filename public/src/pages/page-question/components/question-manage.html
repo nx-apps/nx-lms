@@ -28,15 +28,15 @@
                     <thead>
                         <tr>
                             <th style="width:10%;text-align: right; font-size: 18px;">คำถาม</th>
-                            <th><gl-form-input placeholder="" no-label-float value=""></gl-form-input></th>
+                            <th><gl-form-input placeholder="" no-label-float value="{{data.topic}}"></gl-form-input></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <template is="dom-repeat" items="{{listChoice}}">
+                        <template is="dom-repeat" items="{{data.choice}}">
                             <tr>
                                 <td style="text-align: right;">
-                                    <paper-radio-button></paper-radio-button>
+                                    <paper-radio-button checked="{{item.checked}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
                                 </td>
                                 <td>
                                     <gl-form-input placeholder="ตัวเลือกที่ [[cont(index)]]" no-label-float value="{{item.choice}}"></gl-form-input>
@@ -69,7 +69,7 @@
                     <gl-grid-row width="{{getWidth}}">
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,10]]">
-                            <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter"></paper-tags-input>
+                            <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{data.tag}}"></paper-tags-input>
                             </gl-grid-col>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
                     </gl-grid-row>
@@ -78,7 +78,7 @@
             </div>
             <div class="flex-end-justified" style="margin-top: 10px;">
                 <paper-button class="gl-btn-danger" raised>ยกเลิก</paper-button>
-                <paper-button class="gl-btn-success" raised>บันทึก</paper-button>
+                <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
             </div>
         </div>
         
@@ -87,22 +87,51 @@
         Polymer({
             is: 'question-manage',
             properties:{
-                listChoice:{
-                    type: Array,
-                    value: []
+                data:{
+                    type:Object,
+                    value: {
+                        question:'',
+                        choice:[],
+                        tag:[]
+                    }
                 }
             },
             cont:function(index){
                 return index+1;
             },
             addChoice:function(){
-                this.push('listChoice',{choice:''})
-                console.log(this.listChoice);
+                this.push('data.choice',{checked:false})
             },
             delChoice:function(e){
-                // console.log(resalut,detail.data);
-                this.splice('listChoice',e.target.index,1);
-                // this.splice()
+                this.splice('data.choice',e.target.index,1);
+            },
+            getForm:function(){
+                Polymer.dom(this.root).querySelectorAll('paper-radio-button').map((item)=>{
+                    if(item.checked == true){
+                        this.data.select = item.index;
+                        console.log(item.index); 
+                    };
+                })
+                // this.data.choice = this.data.choice.map((item)=>{
+                //     var {choice} = item;
+                //     var newitem = {choice};
+                //     return newitem;
+                // })
+                console.log(this.data);
+            },
+            selectRadio:function(e){
+                
+                if(typeof this.data.choice!=="undefined"){
+                    this.data.choice.map((row,i)=>{
+                        if(i===e.currentTarget.index){
+                            this.set('data.choice.'+i+'.checked',true)
+                        }else{
+                            this.set('data.choice.'+i+'.checked',false)
+                        }
+                    })
+                }
+                
+                //console.log(e.currentTarget.checked)
             }
         });
     </script>
