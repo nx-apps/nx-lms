@@ -27,7 +27,15 @@ export function questionAction(store){
             });
         },
         QUESTION_INSERT:function(data){
-            return new Promise(function(resolve,reject){
+            return new Promise((resolve,reject)=>{
+                // data = {
+                //     answer:1,
+                //     choice:["A" ,"B"],
+                //     tag:["ac"],
+                //     topic:'What is your name ?',
+                //     user_id:'888'
+                // };
+
                 axios.post('./question/question',data)
                 .then((response)=>{
                     this.QUESTION_GET_LIST();
@@ -36,6 +44,7 @@ export function questionAction(store){
                 .catch((error)=>{
                     reject(error);
                 });
+
             })
             
         },
