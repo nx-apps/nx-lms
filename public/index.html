@@ -10,18 +10,20 @@
   <link rel="shortcut icon" sizes="32x32" href="/images/icon/default/app-icon-32.png">
   <link rel="manifest" href="/manifest.json">
 
-<link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/main.css">
 
-  <script>window._start_page='quota';</script>
+  <script>window._start_page='question';</script>
 
-  <!--<script src="/bower_components/axios/dist/axios.min.js"></script>
-  <script>
-    axios.defaults.baseURL = `http://${window.location.hostname}:3000/api`
-  </script>-->
 
   <link rel="import" href="/src/nylon-app.html" async>
   
   <style>
+
+    @font-face {
+        font-family: 'CSChatThaiUI';
+        src: url('/bower_components/gl-font/fonts/csChatThai/CSChatThaiUI.ttf');
+    }
+
     body {
       margin: 0;
       background: #efefef;
@@ -76,13 +78,43 @@
       display: -webkit-flex;
       display: flex;
     }
+
+    *{
+      font-family: 'CSChatThaiUI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #toolbar > .icon{
+      margin-left:76px;
+      padding-top:18px;
+      float: left;
+    }
+
+    #toolbar > .title{
+      line-height: 62px;
+      margin-left: 20px;
+      
+      font-size: 16px;
+      font-weight:690;
+      float: left;
+      
+    }
+
+    
   </style>
 
 </head>
 
 <body>
   <nylon-app unresolved>
-    <div id="toolbar"></div>
+    <div id="toolbar">
+      <div class="icon">
+        <img src="/images/icon/white/app-icon-32.png" alt="">
+      </div>
+      <div class="title">
+        LMS : BETAGRO
+      </div>
+    </div>
     <div class="middle">
       <div class="loader"></div>
     </div>
