@@ -5,6 +5,10 @@
              tbody>tr>td{
                  cursor: pointer;
              }
+            tbody>tr:hover{
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
         </style>
         <div class="container">
             
@@ -20,6 +24,7 @@
                         </thead>
                         <tbody>
                             <template is="dom-repeat" items="[[dataList]]">
+                                
                                 <tr on-tap="selectList" question-id="[[item.id]]">
                                     <td>
                                         <div>[[toIndex(index)]]</div>
