@@ -16,17 +16,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <div>1</div>
-                                </td>
-                                <td>
-                                    toppic
-                                </td>
-                                <td style="text-align: right;">
-                                    <iron-icon icon="create"></iron-icon>
-                                </td>
-                            </tr>
+                            <template is="dom-repeat" items="[[dataList]]">
+                                <tr>
+                                    <td>
+                                        <div>[[toIndex(index)]]</div>
+                                    </td>
+                                    <td>
+                                        [[item.topic]]
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <iron-icon icon="create"></iron-icon>
+                                    </td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                      <!--<paper-icon-button icon="alarm-on" title="wake up" class="giant"></paper-icon-button>
@@ -37,7 +39,19 @@
     </template>
     <script>
         Polymer({
-            is: 'question-list'
+            is: 'question-list',
+            behaviors:[ReduxBehavior,questionAction],
+            properties:{
+                dataList:{
+                    statePath:'question.dataList'
+                }
+            },
+            ready:function(){
+                this.QUESTION_GET_LIST();
+            },
+            toIndex:function(index){
+                return ++index;
+            }
         });
     </script>
 </dom-module>
