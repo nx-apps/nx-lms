@@ -10,7 +10,7 @@ var config = {
       servers: [
         {host: 'rdb.codeunbug.com', port: 28015}
       ],
-      db:'oauth'
+      db:'lms'
     },
     oauth:{
        local:{
