@@ -28,14 +28,6 @@ export function questionAction(store){
         },
         QUESTION_INSERT:function(data){
             return new Promise((resolve,reject)=>{
-                // data = {
-                //     answer:1,
-                //     choice:["A" ,"B"],
-                //     tag:["ac"],
-                //     topic:'What is your name ?',
-                //     user_id:'888'
-                // };
-
                 axios.post('./question/question',data)
                 .then((response)=>{
                     this.QUESTION_GET_LIST();
@@ -50,14 +42,6 @@ export function questionAction(store){
         },
         QUESTION_UPDATE:function(data){
             return new Promise((resolve,reject)=>{
-                // data = {
-                //     answer:1,
-                //     choice:["A" ,"B"],
-                //     tag:["ac"],
-                //     topic:'What is your name ?',
-                //     user_id:'888'
-                // };
-
                 axios.put('./question/question',data)
                 .then((response)=>{
                     this.QUESTION_GET_LIST();
@@ -72,7 +56,7 @@ export function questionAction(store){
         },
         QUESTION_DELETE:function(questionId){
             return new Promise((resolve,reject)=>{
-                axios.delete('./question/question/'+questionId)
+                axios.delete('./question/question?id='+questionId)
                 .then((response)=>{
                     this.QUESTION_GET_LIST();
                     resolve(response);
