@@ -48,6 +48,42 @@ export function questionAction(store){
             })
             
         },
+        QUESTION_UPDATE:function(data){
+            return new Promise((resolve,reject)=>{
+                // data = {
+                //     answer:1,
+                //     choice:["A" ,"B"],
+                //     tag:["ac"],
+                //     topic:'What is your name ?',
+                //     user_id:'888'
+                // };
+
+                axios.put('./question/question',data)
+                .then((response)=>{
+                    this.QUESTION_GET_LIST();
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                });
+
+            })
+            
+        },
+        QUESTION_DELETE:function(questionId){
+            return new Promise((resolve,reject)=>{
+                axios.delete('./question/question/'+questionId)
+                .then((response)=>{
+                    this.QUESTION_GET_LIST();
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                });
+
+            })
+            
+        },
         QUESTION_SELECT:function(questionId){
             return axios.get('./question/question_only?id='+questionId)
         }
