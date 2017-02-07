@@ -51,7 +51,28 @@
             },
             ready:function(){
                 this.QUESTION_GET_LIST();
-                //this.QUESTION_INSERT();
+
+                // this.QUESTION_INSERT(
+                //     {
+                //         answer:1,
+                //         choice:["A" ,"B"],
+                //         tag:["ac"],
+                //         topic:'ssssssssssss',
+                //         user_id:'888'
+                //     }
+
+                // );
+                // this.QUESTION_UPDATE(
+                //     {
+                //         id:'9b83e058-c8dd-4d15-8679-bfce8f762ad7',
+                //         answer:1,
+                //         choice:["A" ,"B"],
+                //         tag:["ac"],
+                //         topic:'ssssssssssss',
+                //         user_id:'888'
+                //     }
+                // );
+                //this.QUESTION_DELETE('9b83e058-c8dd-4d15-8679-bfce8f762ad7');
             },
             selectList:function(e){
                 this.QUESTION_SELECT(e.currentTarget.questionId)
