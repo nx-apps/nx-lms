@@ -58,20 +58,9 @@
 
             <div style="margin: 15px 0px 15px 0px;">
                 <paper-material elevation="1">
-                    <div style="padding: 10px; background-color: white;">
-                     <gl-grid-row width="{{getWidth}}">
-                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
-                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,10]]">
-                                <div class="headPanel gl-default">Tag</div>
-                            </gl-grid-col>
-                     </gl-grid-row>
-                    <gl-grid-row width="{{getWidth}}">
-                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
-                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,10]]">
-                            <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{data.tag}}"></paper-tags-input>
-                            </gl-grid-col>
-                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
-                    </gl-grid-row>
+                    <div style="padding: 30px; background-color: white;">
+                        <div class="headPanel gl-default">Tag</div>
+                        <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{data.tag}}"></paper-tags-input>
                     </div>
                 </paper-material>
             </div>
