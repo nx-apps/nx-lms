@@ -46,6 +46,7 @@
     "vaadin-upload": "^1.1.1",
     "nylon-upload": "^0.0.2",
     "redux": "https://cdnjs.cloudflare.com/ajax/libs/redux/3.6.0/redux.min.js",
-    "polymer-redux": "^0.3.0"
+    "polymer-redux": "^0.3.0",
+    "paper-tags-input": "^1.2.5"
   }
 }

@@ -1,11 +1,109 @@
 
 <dom-module id="question-manage">
     <template>
-        <style include="page-style"></style>
+        <style include="page-style">
+            .question{
+                margin-top: 8px;
+                text-align: right;
+                font-size: 20px;
+            }
+            paper-radio-button{
+                --paper-radio-button-size:22px;
+            }
+            gl-form-input{
+                --paper-input-container-label:{
+                    font-size: 12px;
+                    font-weight:normal;
+                }
+            }
+            .flex-end-justified {
+                @apply(--layout-horizontal);
+                @apply(--layout-end-justified);
+            }
+        </style>
+        <div class="container">
+            <paper-material elevation="1">
+                <table class="gl-table-default">
+                   
+                    <thead>
+                        <tr>
+                            <th style="width:10%;text-align: right; font-size: 18px;">คำถาม</th>
+                            <th><gl-form-input placeholder="" no-label-float value=""></gl-form-input></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template is="dom-repeat" items="{{listChoice}}">
+                            <tr>
+                                <td style="text-align: right;">
+                                    <paper-radio-button></paper-radio-button>
+                                </td>
+                                <td>
+                                    <gl-form-input placeholder="ตัวเลือกที่ [[cont(index)]]" no-label-float value="{{item.choice}}"></gl-form-input>
+                                </td>
+                                <td style="width:10%;text-align: center;">
+                                    <paper-icon-button on-tap="delChoice" index="[[index]]" icon="delete"></paper-icon-button>
+                                </td>
+                            </tr>
+                        </template>
+                        <tr on-tap="addChoice" style="cursor: pointer">
+                           <td></td>
+                           <td colspan="2" style="text-align: left;">
+                                <iron-icon icon="add"></iron-icon>
+                               เพิ่มตัวเลือก
+                           </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </paper-material>
+
+            <div style="margin: 15px 0px 15px 0px;">
+                <paper-material elevation="1">
+                    <div style="padding: 10px; background-color: white;">
+                     <gl-grid-row width="{{getWidth}}">
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,10]]">
+                                <div class="headPanel gl-default">Tag</div>
+                            </gl-grid-col>
+                     </gl-grid-row>
+                    <gl-grid-row width="{{getWidth}}">
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,10]]">
+                            <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter"></paper-tags-input>
+                            </gl-grid-col>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
+                    </gl-grid-row>
+                    </div>
+                </paper-material>
+            </div>
+            <div class="flex-end-justified" style="margin-top: 10px;">
+                <paper-button class="gl-btn-danger" raised>ยกเลิก</paper-button>
+                <paper-button class="gl-btn-success" raised>บันทึก</paper-button>
+            </div>
+        </div>
+        
     </template>
     <script>
         Polymer({
-            is: 'question-manage'
+            is: 'question-manage',
+            properties:{
+                listChoice:{
+                    type: Array,
+                    value: []
+                }
+            },
+            cont:function(index){
+                return index+1;
+            },
+            addChoice:function(){
+                this.push('listChoice',{choice:''})
+                console.log(this.listChoice);
+            },
+            delChoice:function(e){
+                // console.log(resalut,detail.data);
+                this.splice('listChoice',e.target.index,1);
+                // this.splice()
+            }
         });
     </script>
 </dom-module>

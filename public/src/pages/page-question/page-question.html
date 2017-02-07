@@ -9,12 +9,19 @@
             <question-list></question-list>
         </div>
         <div class="fixed">
-            <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="_toggleDrawer"></paper-fab>
+            <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
         </div>
+        <panel-right title="{{titleRight}}">
+            <question-manage></question-manage>
+        </panel-right>
     </template>
     <script>
         Polymer({
-            is: 'page-question'
+            is: 'page-question',
+            openPanelRight:function(){
+                this.titleRight = 'เพิ่มคำถาม'
+                this.$$('panel-right').open();
+            }
         });
     </script>
 </dom-module>
