@@ -26,16 +26,18 @@ export function questionAction(store){
                 console.log(error);
             });
         },
-        QUESTION_CREATE:function(){
-            axios.post('./question/question')
-            .then((response)=>{
-                console.log(response.data);
-                this.QUESTION_GET_LIST();
-                //store.dispatch({type:'QUESTION_GET_LIST',payload:response.data});
+        QUESTION_INSERT:function(data){
+            return new Promise(function(resolve,reject){
+                axios.post('./question/question',data)
+                .then((response)=>{
+                    this.QUESTION_GET_LIST();
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                });
             })
-            .catch((error)=>{
-                console.log(error);
-            });
+            
         },
         QUESTION_SELECT:function(questionId){
             return axios.get('./question/question_only?id='+questionId)
