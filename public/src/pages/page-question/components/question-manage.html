@@ -24,7 +24,6 @@
         <div class="container">
             <paper-material elevation="1">
                 <table class="gl-table-default">
-                   
                     <thead>
                         <tr>
                             <th style="width:10%;text-align: right; font-size: 18px;">คำถาม</th>
@@ -77,7 +76,7 @@
                 </paper-material>
             </div>
             <div class="flex-end-justified" style="margin-top: 10px;">
-                <paper-button class="gl-btn-danger" raised>ยกเลิก</paper-button>
+                <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
                 <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
             </div>
         </div>
@@ -87,17 +86,6 @@
         Polymer({
             is: 'question-manage',
             behaviors:[questionAction],
-            properties:{
-                data:{
-                    type:Object,
-                    value: {
-                        user_id:'admin',
-                        topic:'',
-                        choice:[],
-                        tag:[]
-                    }
-                }
-            },
             cont:function(index){
                 return index+1;
             },
@@ -119,17 +107,54 @@
                 data.choice = choice;
                 data.answer = answer;
                 // console.log(data);
-                this.fire('toast',{status:'load'});
-                this.QUESTION_INSERT(data)
-                .then(()=>{
-                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                        callback:()=>{
-                             this.fire('close');
-                        }
+                if(this.status == 'add') {
+                    this.fire('toast',{status:'load'});
+                    this.QUESTION_INSERT(data)
+                    .then(()=>{
+                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                            callback:()=>{
+                                this.fire('close');
+                            }
+                        });
+                    
                     });
-                   
-                });;
+                }
+                else if(this.status =='update'){
+                    data.id = this.data.id;
+                    this.fire('toast',{status:'load'});
+                    this.QUESTION_UPDATE(data)
+                    .then(()=>{
+                    this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
+                        callback:()=>{
+                            this.fire('close');
+                        }
+                        });
+                    });
+                    console.log(data)
+                }
+               
                 //this.fire('save-data',data);
+            },
+            confirmDel:function(){
+                console.log('1234');
+                this.fire('toast',{ 
+                    status:'openDialog',
+                    text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                    confirmed:this.delData.bind(this), 
+                 })
+            },
+            delData:function(result){
+                if(result == true){
+                    this.fire('toast',{status:'load'});
+                    this.QUESTION_DELETE(this.data.id)
+                    .then(()=>{
+                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                        callback:()=>{
+                            this.fire('close');
+                        }
+                        });
+                    });
+                }
             },
             selectRadio:function(e){
                 

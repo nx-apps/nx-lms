@@ -31,6 +31,12 @@
             },
             openPanelRight:function(){
                 this.titleRight = 'เพิ่มคำถาม';
+                this.data = {
+                    user_id:'admin',
+                    topic:'',
+                    choice:[],
+                    tag:[]
+                }
                 this.status = 'add'
                 this.$$('panel-right').open();
             },
