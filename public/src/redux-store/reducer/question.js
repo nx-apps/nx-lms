@@ -37,15 +37,8 @@ export function questionAction(store){
                 console.log(error);
             });
         },
-        QUESTION_SELECT:function(){
-            axios.get('./question/question/select')
-            .then((response)=>{
-                console.log(response.data);
-                //store.dispatch({type:'QUESTION_GET_LIST',payload:response.data});
-            })
-            .catch((error)=>{
-                console.log(error);
-            });
+        QUESTION_SELECT:function(questionId){
+            return axios.get('./question/question_only?id='+questionId)
         }
     }
 }
