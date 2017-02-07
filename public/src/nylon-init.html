@@ -33,13 +33,57 @@
 				--page-font-csc: 'CSChatThaiUI', sans-serif;
 				--page-font-rsu: 'rsuregular', sans-serif;
 			}
+
+			.loader {
+				border: 5px solid #f3f3f3;
+				border-radius: 50%;
+				border-top: 5px solid #3498db;
+				width: 30px;
+				height: 30px;
+				-webkit-animation: spin 0.5s linear infinite;
+				animation: spin 0.5s linear infinite;
+				margin: auto;
+			}
+				
+			@-webkit-keyframes spin {
+				0% {
+					-webkit-transform: rotate(0deg);
+				}
+				100% {
+					-webkit-transform: rotate(360deg);
+				}
+			}
+				
+			@keyframes spin {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+				
+			.middle {
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				z-index: 1;
+				display: -webkit-flex;
+				display: flex;
+			}
+			[hidden] {
+				display: none;
+			}
 		</style>
-
-    
+		
+		<div class="middle" hidden$="[[!loader]]">
+			<div class="loader"></div>
+		</div>
 		<layout-main path="[[selected]]">
-
 			<iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="visible" on-pull-year="onPullYear">
-			
+				
 				<page-quota path="quota" current-path="[[selected]]"></page-quota>
 				<page-question path="question" current-path="[[selected]]"></page-question>
 				<!--<page-import path="import" current-path="[[selected]]"></page-import>-->
@@ -61,10 +105,13 @@
         Polymer({
             is:'nylon-init',
 			ready:function(){
+				this.loader = true;
 				this.importHref(this.resolveUrl('/src/import.html'), (e)=>{
 					this.rendered = true;
+					this.loader = false;
 				}, (e)=> {
 					console.log('error')
+					this.loader = false;
 				});
 			}
         });
