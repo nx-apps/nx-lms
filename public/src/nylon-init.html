@@ -104,7 +104,10 @@
 	<script>
         Polymer({
             is:'nylon-init',
+			behaviors:[examinationAction],
 			ready:function(){
+				this.EXAMINATION_GET_LIST();
+				
 				this.loader = true;
 				this.importHref(this.resolveUrl('/src/import.html'), (e)=>{
 					this.rendered = true;
