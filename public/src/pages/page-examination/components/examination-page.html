@@ -1,0 +1,56 @@
+<link rel="import" href="./examination-list.html">
+<link rel="import" href="./examination-manage.html">
+
+
+<dom-module id="examination-page">
+    <template>   
+        <style>
+            paper-tabs{
+                --paper-tabs-selection-bar-color:#95bf31;
+                --paper-tabs-selection-bar:{
+                    border: 2px solid #95bf31;
+                }
+                --paper-tabs:{
+                    background-color: white;
+                }
+            }
+            paper-tab{
+                color:#95bf31;
+                font-family: 'CSChatThaiUI', sans-serif;
+                font-size: 18px;
+                --paper-tab-content-unselected:{
+                    color: black;
+                }
+            }
+        </style>
+        <paper-material elevation="1">
+            <paper-tabs selected="{{selected}}">
+                <paper-tab>กำหนดวัตถุประสงค์</paper-tab>
+                <paper-tab>จัดการคำถาม</paper-tab>
+            </paper-tabs>
+        </paper-material>
+        <iron-pages selected="{{selected}}">
+            <section>
+                <examination-manage data="[[data]]"></examination-manage>
+            </section>
+            <section>
+                <examination-list></examination-list>
+            </section>
+        </iron-pages>
+    </template>
+    <script>
+        Polymer({
+            is: 'examination-page',
+            listeners:{
+                'next-page':'nextPage',
+                'back-page':'backPage'
+            },
+            nextPage:function(){
+                this.$$('iron-pages').selectNext();
+            },
+            backPage:function(){
+                this.$$('iron-pages').selectPrevious();
+            }
+        });
+    </script>
+</dom-module>

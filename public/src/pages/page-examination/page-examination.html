@@ -1,11 +1,18 @@
 ้<link rel="import" href="./components/examination-list.html">
-<link rel="import" href="./components/examination-manage.html">
+<!--<link rel="import" href="./components/examination-manage.html">-->
+<link rel="import" href="./components/examination-page.html">
 
 <dom-module id="page-examination">
     <template>
         <style include="page-style">
             .page{
                 background-color: white;
+            }
+            .fabSave{
+                position: fixed;
+                bottom: 90px;
+                right: 20px;
+                --paper-fab-background: #337ab7;
             }
         </style>
         <div class="container">
@@ -14,22 +21,35 @@
             </div>
             <examination-list></examination-list>
             <panel-right title="{{titleRight}}">
-                <examination-manage data="[[data]]"></examination-manage>
+                <examination-page selected="0" data="[[data]]"></examination-page>
+                <!--<examination-manage data="[[data]]"></examination-manage>-->
             </panel-right>
         </div>
          <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
+         <paper-fab class="fabSave" icon="icons:save" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
     </template>
     <script>
         Polymer({
             is: 'page-examination',
+             listeners:{
+                'select-data':'selectData',
+                'back-page':'backPage'
+            },
             openPanelRight:function(){
                 this.titleRight = 'เพิ่มวัตถุประสงค์';
                 this.data = {
-                    user_id:'admin',
-                    topic:'',
-                    choice:[],
-                    tag:[]
+                    ex_name:'',
+                    description:'',
+                    obj:[],
+                    qty:'',
+                    time:'',
+                    question:[]
                 }
+                this.$$('panel-right').open();
+            },
+            selectData:function(e){
+                console.log(e.detail);
+                this.data = e.detail;
                 this.$$('panel-right').open();
             }
         });
