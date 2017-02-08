@@ -44,6 +44,7 @@
                 'select-data':'selectData',
                 'insert-data':'insertData',
                 'random-data':'randomData',
+                'update-data':'updateData',
                 'delete-data':'delData'
             },
             openPanelRight:function(){
@@ -80,17 +81,6 @@
                     
                     });
           
-                //     data.id = this.data.id;
-                //     this.fire('toast',{status:'load'});
-                //     this.QUESTION_UPDATE(data)
-                //     .then(()=>{
-                //     this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
-                //         callback:()=>{
-                //             this.fire('close');
-                //         }
-                //         });
-                //     });
-                //     console.log(data)
             },
             selectData:function(e){
 
@@ -118,18 +108,38 @@
                     console.log(err);
                 })
             },
+            updateData:function(e){
 
-            delData:function(e){
-                
-                    this.fire('toast',{status:'load'});
-                    this.EXAMINATION_DELETE(e.detail)
-                    .then(()=>{
-                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
-                        callback:()=>{
-                            this.fire('close');
-                        }
-                        });
+                var data = JSON.parse(JSON.stringify(e.detail));
+                var question = data.question.map(function(row){
+                    return { obj_index:row.obj_index,question_id:row.id }
+                })
+                data.question = question;
+                data.time = parseInt(data.time);
+
+                this.fire('toast',{status:'load'});
+                this.EXAMINATION_UPDATE(data)
+                .then(()=>{
+                this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
+                    callback:()=>{
+                        this.fire('close');
+                    }
                     });
+                });
+                
+            },
+            delData:function(e){
+                this.fire('toast',{status:'load'});
+                this.EXAMINATION_DELETE(e.detail)
+                .then(()=>{
+                this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                    callback:()=>{
+                        this.fire('close');
+                    }
+                    });
+                });
+
+                
             }
         });
     </script>
