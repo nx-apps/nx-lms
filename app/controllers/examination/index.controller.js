@@ -31,10 +31,12 @@ class index{
     random_examination(req,res){
         var r = req._r;
         var params = req.body;
-
-        // //r.db('lms').table('question').getAll(r.args(tags), {index: "tag"}).sample(2)
-        params.concatMap(function (row)  {
-            return r.db('lms').table('question').getAll(r.args(row('tag')), {index: "tag"}).sample(row('topic')).coerceTo('array')
+        //r.db('lms').table('question').getAll(r.args(tags), {index: "tag"}).sample(2)
+        r.expr(params).concatMap(function (row)  {
+            return r.db('lms').table('question').getAll(r.args(row('tag')), {index: "tag"}).sample(row('qty')).coerceTo('array')
+            .merge(function(id){
+                return row.pluck('obj_index')
+            })
         })
         .run()
         .then(function(result){
