@@ -1,0 +1,62 @@
+
+<dom-module id="form-time">
+    <template>
+        <style include="page-style"></style>
+        <div class="container">
+            <paper-material elevation="1">
+                <table class="gl-table-default">
+                    <thead>
+                        <tr class="hideBorder">
+                            <th style="width: 12%;text-align: center;">
+                                จำนวนผู้เรียน
+                            </th>
+                            <th>
+                                <gl-form-input no-label-float value=""></gl-form-input>
+                            </th>
+                             <th style="width: 12%;text-align: center;">
+                                ระยะเวลา
+                            </th>
+                            <th>
+                                <gl-form-input type="number" no-label-float value="">
+                                    <div suffix>ชั่วโมง</div>
+                                </gl-form-input>
+                            </th>
+                        </tr>
+                        <tr class="hideBorder">
+                            <th style="width: 12%;text-align: center;">
+                                วันที่เริ่มต้น
+                            </th>
+                            <th style="padding-bottom:40px">
+                                <vaadin-date-picker></vaadin-date-picker>
+                            </th>
+                             <th style="width: 12%;text-align: center;">
+                                วันที่สิ้นสุด
+                            </th>
+                            <th style="padding-bottom:40px">
+                                <vaadin-date-picker></vaadin-date-picker>
+                            </th>
+                        </tr>
+                        <tr class="hideBorder">
+                            <th style="width: 12%;text-align: center;">
+                                tag
+                            </th>
+                            <th colspan="3" style="text-align: left;">
+                                
+                            </th>
+                        </tr>
+                        <tr class="hideBorder">
+                            <th colspan="4">
+                                 <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter"></paper-tags-input>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </paper-material>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'form-time'
+        });
+    </script>
+</dom-module>

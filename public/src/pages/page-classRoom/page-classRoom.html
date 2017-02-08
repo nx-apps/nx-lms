@@ -1,0 +1,53 @@
+<link rel="import" href="./components/classRoom-card.html">
+<link rel="import" href="./components/classRoom-list.html">
+<link rel="import" href="./components/classRoom-page.html">
+
+<link rel="import" href="./../components/panel-right/panel-right.html">
+
+
+<dom-module id="page-classRoom">
+    <template>
+        <style include="page-style">
+            .flex-horizontal {
+                @apply(--layout-horizontal);
+            }
+            .flexchild {
+                @apply(--layout-flex);
+            }
+        </style>
+       
+        <div class="container">
+             <div class="header gl-large">จัดการห้องเรียน</div>
+            <div class="container flex-horizontal">
+                <div></div>
+                <div class="flexchild">
+                    <classRoom-list></classRoom-list>
+                </div>
+                <div></div>
+            </div>
+        </div>
+        <panel-right title="[[title]]">
+            <classRoom-page data="[[data]]" status="[[status]]" selected="0"></classRoom-page>
+        </panel-right>
+        <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-classRoom',
+            listeners:{
+                'select-data':'selectData'
+            },
+            selectData:function(e){
+                this.title = 'แก้ไข';
+                this.status = 'add';
+                this.$$('panel-right').open();
+                console.log(e.detail);
+            },
+            openPanelRight:function(){
+                this.title = 'เพิ่ม';
+                this.status = 'update';
+                this.$$('panel-right').open();
+            }
+        });
+    </script>
+</dom-module>

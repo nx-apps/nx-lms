@@ -1,0 +1,53 @@
+
+<link rel="import" href="./form-subject.html">
+<link rel="import" href="./form-time.html">
+
+
+<dom-module id="classRoom-page">
+    <template>
+        <style include="tabs-style">
+            paper-card.rate { @apply(--layout-horizontal); }
+            .rate-image {
+                width: 100px;
+                height: 170px;
+                background: url('./donuts.png');
+                background-size: cover;
+            }
+            .rate-content {
+                @apply(--layout-flex);
+                float: left;
+            }
+            .rate-header { @apply(--paper-font-headline); }
+            .rate-name { color: var(--paper-grey-600); margin: 10px 0; }
+            paper-icon-button.rate-icon {
+                --iron-icon-fill-color: white;
+                --iron-icon-stroke-color: var(--paper-grey-600);
+            }
+        </style>  
+        <paper-material elevation="1">
+            <paper-tabs selected="{{selected}}">
+                <paper-tab>สร้างห้องเรียน/เพิ่มผู้เรียน</paper-tab>
+                <paper-tab>กำหนดเวลา</paper-tab>
+                <paper-tab>ตารางเรียน</paper-tab>
+            </paper-tabs>
+        </paper-material>
+        
+        <iron-pages selected="{{selected}}">
+            <section>
+                <form-subject></form-subject>
+            </section>
+            <section>
+                <form-time></form-time>
+            </section>
+            <section>
+
+            </section>
+        </iron-pages>
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'classRoom-page'
+        });
+    </script>
+</dom-module>
