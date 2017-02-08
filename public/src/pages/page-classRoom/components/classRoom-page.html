@@ -5,7 +5,7 @@
 
 <dom-module id="classRoom-page">
     <template>
-        <style include="tabs-style">
+        <style include="tabs-style page-style">
             paper-card.rate { @apply(--layout-horizontal); }
             .rate-image {
                 width: 100px;
@@ -23,12 +23,16 @@
                 --iron-icon-fill-color: white;
                 --iron-icon-stroke-color: var(--paper-grey-600);
             }
+            .flex-end-justified {
+                @apply(--layout-horizontal);
+                @apply(--layout-end-justified);
+            }
         </style>  
         <paper-material elevation="1">
             <paper-tabs selected="{{selected}}">
                 <paper-tab>สร้างห้องเรียน/เพิ่มผู้เรียน</paper-tab>
                 <paper-tab>กำหนดเวลา</paper-tab>
-                <paper-tab>ตารางเรียน</paper-tab>
+                <paper-tab disabled>ตารางเรียน</paper-tab>
             </paper-tabs>
         </paper-material>
         
@@ -43,7 +47,10 @@
 
             </section>
         </iron-pages>
-        
+        <div class="flex-end-justified">
+            <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
+            <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
+        </div>
     </template>
     <script>
         Polymer({
