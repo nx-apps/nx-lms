@@ -30,15 +30,6 @@ export function examinationAction(store){
             return new Promise((resolve,reject)=>{
                 axios.get('./examination/examination_only?id='+id)
                 .then((response)=>{
-                    console.log(response);
-                    // var choice = response.data.choice.map((row,i)=>{
-                    //     if(i===response.data.answer){
-                    //         return {checked:true,choice:row};
-                    //     }else{
-                    //         return {checked:false,choice:row};
-                    //     }
-                    // });
-                    // response.data.choice = choice;
                     resolve(response);
                 })
                 .catch((error)=>{

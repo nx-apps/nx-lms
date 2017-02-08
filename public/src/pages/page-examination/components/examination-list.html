@@ -32,7 +32,7 @@
                         <tbody>
                             <template is="dom-repeat" items="[[dataList]]">
                                 <template is="dom-if" if="[[checkTypeList(typeList,'examination')]]">
-                                    <tr on-tap="selectList" item="[[item]]" question-id="[[item.id]]">
+                                    <tr on-tap="selectList" item="[[item]]" examination-id="[[item.id]]">
                                         <td>
                                             <div>[[toIndex(index)]]</div>
                                         </td>
@@ -73,15 +73,7 @@
                 return typeList==typeSelect
             },
             selectList:function(e){
-
-                // this.QUESTION_SELECT(e.currentTarget.questionId)
-                // .then((response)=>{
-                //       this.fire('select-data',response.data);
-                //  })
-                // .catch((error)=>{
-                //     console.log(error);
-                // });
-               
+                this.fire('select-data',e.currentTarget.examinationId);
             },
             random:function(){
                 this.fire('random-data',this.obj);

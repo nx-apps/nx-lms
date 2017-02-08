@@ -171,42 +171,10 @@
                 this.set('data.qty',count);
             },
             getForm:function(){
-                var data = JSON.parse(JSON.stringify(this.data));
-                var question = data.question.map(function(row){
-                    return { obj_index:row.obj_index,question_id:row.id }
-                })
-                data.question = question;
-                data.time = parseInt(data.time);
+                
+                this.fire('insert-data',this.data);
 
-                //console.log(data);
-        
-                //if(this.status == 'add') {
-                    this.fire('toast',{status:'load'});
-                    this.EXAMINATION_INSERT(data)
-                    .then(()=>{
-                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                            callback:()=>{
-                                this.fire('close');
-                            }
-                        });
-                    
-                    });
-                //}
-                // else if(this.status =='update'){
-                //     data.id = this.data.id;
-                //     this.fire('toast',{status:'load'});
-                //     this.QUESTION_UPDATE(data)
-                //     .then(()=>{
-                //     this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
-                //         callback:()=>{
-                //             this.fire('close');
-                //         }
-                //         });
-                //     });
-                //     console.log(data)
-                // }
-               
-                //this.fire('save-data',data);
+                
             },
             confirmDel:function(){
                 console.log('1234');
@@ -228,20 +196,6 @@
                         });
                     });
                 }
-            },
-            selectRadio:function(e){
-                
-                if(typeof this.data.obj!=="undefined"){
-                    this.data.obj.map((row,i)=>{
-                        if(i===e.currentTarget.index){
-                            this.set('data.obj.'+i+'.checked',true)
-                        }else{
-                            this.set('data.obj.'+i+'.checked',false)
-                        }
-                    })
-                }
-                
-                //console.log(e.currentTarget.checked)
             }
         });
     </script>
