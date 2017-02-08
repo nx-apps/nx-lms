@@ -84,8 +84,9 @@
 		<layout-main path="[[selected]]">
 			<iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="visible" on-pull-year="onPullYear">
 				
-				<page-quota path="quota" current-path="[[selected]]"></page-quota>
+				<!--<page-quota path="quota" current-path="[[selected]]"></page-quota>-->
 				<page-question path="question" current-path="[[selected]]"></page-question>
+				<page-examination path="examination" current-path="[[selected]]"></page-examination>
 				<!--<page-import path="import" current-path="[[selected]]"></page-import>-->
 				<!-- // -->
 				
@@ -104,7 +105,10 @@
 	<script>
         Polymer({
             is:'nylon-init',
+			behaviors:[examinationAction],
 			ready:function(){
+				this.EXAMINATION_GET_LIST();
+				
 				this.loader = true;
 				this.importHref(this.resolveUrl('/src/import.html'), (e)=>{
 					this.rendered = true;
