@@ -34,22 +34,40 @@
                 <examination-manage data="{{data}}"></examination-manage>
             </section>
             <section>
-                <examination-list data="[[data]]"></examination-list>
+                <examination-list type-list="question" data-list="[[dataRandom]]" obj="[[data.obj]]"></examination-list>
             </section>
         </iron-pages>
     </template>
     <script>
         Polymer({
             is: 'examination-page',
+            behaviors:[examinationAction],
             listeners:{
                 'next-page':'nextPage',
-                'back-page':'backPage'
+                'back-page':'backPage',
+                'random-data':'randomData'
             },
             nextPage:function(){
                 this.$$('iron-pages').selectNext();
             },
             backPage:function(){
                 this.$$('iron-pages').selectPrevious();
+            },
+            randomData:function(e){
+                
+                var obj = e.detail.map(function(row,i){
+                    row.obj_index = i;
+                    row.obj_qty = parseInt(row.obj_qty);
+                    return row;
+                })
+                this.EXAMINATION_RANDOM(obj)
+                .then((res)=>{
+                    this.dataRandom = res.data;
+                    this.data.question = res.data;
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
             }
         });
     </script>

@@ -47,7 +47,7 @@
                     <thead>
                         <tr class="hideBorder">
                             <th style="width:10%;text-align: right; font-size: 18px;">ชื่อข้อสอบ</th>
-                            <th><gl-form-input placeholder="" no-label-float value="{{data.exname}}"></gl-form-input></th>
+                            <th><gl-form-input placeholder="" no-label-float value="{{data.ex_name}}"></gl-form-input></th>
                             <th></th>
                         </tr>
                         <tr>
@@ -66,10 +66,10 @@
                                 <td>
                                     <div class="flex-horizontal-with-ratios">
                                         <div class="flex4child">
-                                            <gl-form-input style="width: 90%;" placeholder="วัตถุประสงค์ที่ [[cont(index)]]" no-label-float value="{{item.name}}"></gl-form-input>
+                                            <gl-form-input style="width: 90%;" placeholder="วัตถุประสงค์ที่ [[cont(index)]]" no-label-float value="{{item.obj_name}}"></gl-form-input>
                                         </div>
                                         <div class="flex2child">
-                                            <gl-form-input placeholder="จำนวนข้อ" no-label-float value="{{item.qty}}"></gl-form-input>
+                                            <gl-form-input placeholder="จำนวนข้อ" no-label-float value="{{item.obj_qty}}"></gl-form-input>
                                         </div>
                                     </div>
                                     
@@ -81,7 +81,7 @@
                                 <td style="text-align: right;">
                                 </td>
                                 <td>
-                                    <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{item.tag}}"></paper-tags-input>
+                                    <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{item.obj_tag}}"></paper-tags-input>
                                 </td>
                                 <td style="width:10%;text-align: center;">
                                     <paper-icon-button on-tap="delChoice" index="[[index]]" icon="delete"></paper-icon-button>
@@ -103,7 +103,7 @@
                         <div class="fontCSC right" style="margin: 10px; font-size:18px;">กำหนดเวลา </div>
                     </div>
                     <div class="flex2child">
-                        <gl-form-input class="right" type="number" placeholder="จำนวนข้อทั้งหมด" no-label-float value="{{data.time}}">
+                        <gl-form-input class="right" type="number" placeholder="" no-label-float value="{{data.time}}">
                              <div suffix>นาที</div>
                         </gl-form-input>
                     </div>
@@ -115,7 +115,8 @@
                         
                     </div>
                     <div class="flex2child">
-                        <gl-form-input class="right" no-label-float value="{{data.qty}}" readonly></gl-form-input>
+                        [[countQty(data.obj.*)]]
+                        <gl-form-input class="right" no-label-float value="[[data.qty]]" readonly></gl-form-input>
                     </div>
                      <div class="flex2child"></div>
                  </div>
@@ -142,40 +143,55 @@
     <script>
         Polymer({
             is: 'examination-manage',
-            behaviors:[questionAction],
+            behaviors:[examinationAction],
             cont:function(index){
                 return index+1;
             },
             addChoice:function(){
-                this.push('data.obj',{checked:false})
+                this.push('data.obj',{
+                    obj_name:"",
+                    obj_qty:0,
+                    obj_tag:[]
+                })
             },
             delChoice:function(e){
                 this.splice('data.obj',e.target.index,1);
             },
+            countQty:function(obj){
+                var count = 0;
+                if(obj.base.length!=0){
+                    obj.base.map((row)=>{
+                        if(typeof row.obj_qty == "string"){
+                           count += (row.obj_qty=="")?0:parseInt(row.obj_qty);
+                        }else{
+                            count += row.obj_qty;
+                        }
+                    })
+                }
+                this.set('data.qty',count);
+            },
             getForm:function(){
-                // var data = JSON.parse(JSON.stringify(this.data));
-                // var answer;
-                // var choice = this.data.obj.map((row,i)=>{
-                //     if(row.checked) 
-                //     answer = i;
-                //     return row.choice;
-                // });
-                
-                // data.obj = choice;
-                // data.answer = answer;
-                console.log(this.data);
-                // if(this.status == 'add') {
-                //     this.fire('toast',{status:'load'});
-                //     this.QUESTION_INSERT(data)
-                //     .then(()=>{
-                //         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                //             callback:()=>{
-                //                 this.fire('close');
-                //             }
-                //         });
+                var data = JSON.parse(JSON.stringify(this.data));
+                var question = data.question.map(function(row){
+                    return { obj_index:row.obj_index,question_id:row.id }
+                })
+                data.question = question;
+                data.time = parseInt(data.time);
+
+                //console.log(data);
+        
+                //if(this.status == 'add') {
+                    this.fire('toast',{status:'load'});
+                    this.EXAMINATION_INSERT(data)
+                    .then(()=>{
+                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                            callback:()=>{
+                                this.fire('close');
+                            }
+                        });
                     
-                //     });
-                // }
+                    });
+                //}
                 // else if(this.status =='update'){
                 //     data.id = this.data.id;
                 //     this.fire('toast',{status:'load'});
