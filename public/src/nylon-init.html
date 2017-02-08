@@ -107,7 +107,23 @@
             is:'nylon-init',
 			//behaviors:[examinationAction],
 			ready:function(){
-				//this.EXAMINATION_GET_LIST();
+
+				// this.EXAMINATION_RANDOM([
+				// 		{
+				// 			"obj_index":0,
+				// 			"qty":1,
+				// 			"tag":["ac","ok"]
+				// 		},
+				// 		{
+				// 			"obj_index":1,
+				// 			"qty":1,
+				// 			"tag":["ac"]
+				// 		}
+				// ]).then((res)=>{
+				// 	console.log(res.data)
+				// }).catch((err)=>{
+				// 	console.log(err.response.data)
+				// });
 				
 				this.loader = true;
 				this.importHref(this.resolveUrl('/src/import.html'), (e)=>{

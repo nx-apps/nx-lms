@@ -46,6 +46,9 @@ export function examinationAction(store){
                 });
             });
         },
+        EXAMINATION_RANDOM:function(data){
+            return axios.post('./examination/examination_random',data)
+        },
         EXAMINATION_INSERT:function(data){
             // return new Promise((resolve,reject)=>{
             //     axios.post('./question/question',data)
