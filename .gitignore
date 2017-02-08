@@ -7,4 +7,5 @@
 /loggers/*
 !/loggers/file.log
 npm-debug*
+.DS_Store
 
