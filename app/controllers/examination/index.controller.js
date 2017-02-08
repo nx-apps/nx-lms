@@ -28,6 +28,48 @@ class index{
         })
     }
 
+    insert_examination(req,res){
+        var r = req._r;
+        var params = req.body;
+
+        r.db('lms').table('examination').insert(params)
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
+    update_examination(req,res){
+        var r = req._r;
+        var params = req.body;
+
+        r.db('lms').table('examination').get(params.id).update(params)
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
+    delete_examination(req,res){
+        var r = req._r;
+        var params = req.query;
+
+        r.db('lms').table('examination').get(params.id).delete()
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
     random_examination(req,res){
         var r = req._r;
         var params = req.body;
