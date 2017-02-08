@@ -1,5 +1,5 @@
 
-<dom-module id="question-list">
+<dom-module id="examination-list">
     <template>
         <style include="page-style">
              tbody>tr>td{
@@ -24,7 +24,6 @@
                         </thead>
                         <tbody>
                             <template is="dom-repeat" items="[[dataList]]">
-                                
                                 <tr on-tap="selectList" item="[[item]]" question-id="[[item.id]]">
                                     <td>
                                         <div>[[toIndex(index)]]</div>
@@ -39,15 +38,13 @@
                             </template>
                         </tbody>
                     </table>
-                     <!--<paper-icon-button icon="alarm-on" title="wake up" class="giant"></paper-icon-button>
-                     <span>toppic</span>-->
                 </div>
             </paper-material>
         </div>
     </template>
     <script>
         Polymer({
-            is: 'question-list',
+            is: 'examination-list',
             behaviors:[ReduxBehavior,questionAction],
             properties:{
                 dataList:{
