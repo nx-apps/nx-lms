@@ -37,7 +37,7 @@
             </template>
             
         </div>
-         <paper-fab icon="icons:send" title="ส่งข้อสอบ" on-tap="openToast"></paper-fab>
+         <paper-fab icon="icons:send" title="ส่งข้อสอบ" on-tap="confirmToast"></paper-fab>
     </template>
     <script>
         Polymer({
@@ -266,15 +266,24 @@
             cont:function(index){
                 return index+1;
             },
-            openToast:function(){
-                this.fire('toast',{status:'load'});
-                this.async(function(){
-                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                      callback:function(){
-                      }
-                    });
-                    this.stat = false;
-                }.bind(this),500);
+            confirmToast:function(){
+                this.fire('toast',{ 
+                 status:'openDialog',
+                 text:'ต้องการส่งแบบทดสอบใช่หรือไม่ ?',
+                 confirmed:this.openToast.bind(this), 
+                 })
+            },
+            openToast:function(check){
+                if(check==true){
+                    this.fire('toast',{status:'load'});
+                    this.async(function(){
+                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                        callback:function(){
+                        }
+                        });
+                        this.stat = false;
+                    }.bind(this),500);
+                }
             }
 
         });

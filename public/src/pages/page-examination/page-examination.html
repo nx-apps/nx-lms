@@ -14,6 +14,10 @@
                 right: 20px;
                 --paper-fab-background: #337ab7;
             }
+            paper-dialog{
+                width: 50%;
+                height: auto;
+            }
         </style>
         
         <div class="container">
@@ -28,11 +32,15 @@
         </div>
          <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
         <paper-dialog id="modal" modal>
-            <h2>เข้าสู่ระบบ</h2>
-            <gl-form-input label="Username" value=""></gl-form-input>
-            <gl-form-input label="Password" type="password" value=""></gl-form-input>
+            <div class="container">
+                <div class="gl-default fontCSC">เข้าสู่ระบบ</div>
+                <gl-form-input label="Username" value=""></gl-form-input>
+                <gl-form-input label="Password" type="password" value=""></gl-form-input>
+                
+            </div>
             <div class="buttons">
-                <paper-button on-tap="openNewPage" dialog-confirm autofocus>เข้าสู่ระบบ</paper-button>
+                <paper-button class="gl-btn-success" on-tap="openNewPage" dialog-confirm autofocus>login</paper-button>
+                <paper-button class="gl-btn-danger" dialog-confirm autofocus>close</paper-button>
             </div>
         </paper-dialog>
          <!--<paper-fab class="fabSave" icon="icons:save" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>-->
