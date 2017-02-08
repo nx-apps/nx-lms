@@ -1,0 +1,102 @@
+
+<dom-module id="form-subject">
+    <template>
+        <style include="page-style">
+        
+            .flex-horizontal-with-ratios {
+                @apply(--layout-horizontal);
+            }
+            .flexchild {
+                @apply(--layout-flex);
+            }
+            .flex2child {
+                @apply(--layout-flex-2);
+            }
+            .flex3child {
+                @apply(--layout-flex-3);
+            }
+            .flex-equal-around-justified {
+                @apply(--layout-horizontal);
+                @apply(--layout-around-justified);
+            }
+            .flex-equal-around-justified>div{
+                margin:0px 5px 0px 5px;
+            }
+        </style>
+        <div class="container">
+             <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead>
+                                <tr class="hideBorder">
+                                    <th style="width: 10%;text-align: center;">
+                                        ชื่อชั้นเรียน
+                                    </th>
+                                    <th>
+                                        <gl-form-input no-label-float value=""></gl-form-input>
+                                    </th>
+                                </tr>
+                                <tr class="hideBorder">
+                                    <th style="width: 10%;text-align: center;">
+                                        คำอธิบาย
+                                    </th>
+                                    <th>
+                                        <gl-form-textarea no-label-float value=""></gl-form-textarea>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </paper-material>
+            <div class="container flex-equal-around-justified">
+                <div>
+                     <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;text-align: center;">#</th>
+                                    <th>ชื่อ-นามสกุล</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 10%;text-align: center;">
+                                        <paper-icon-button icon="remove"></paper-icon-button> 
+                                    </td>
+                                    <td>
+                                        name
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </paper-material>
+                </div>
+                <div>
+                    <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;text-align: center;">#</th>
+                                    <th>ชื่อ-นามสกุล</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 10%;text-align: center;">
+                                        <paper-icon-button icon="add"></paper-icon-button> 
+                                    </td>
+                                    <td>
+                                        name
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </paper-material>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'form-subject'
+        });
+    </script>
+</dom-module>

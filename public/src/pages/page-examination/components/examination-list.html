@@ -11,32 +11,49 @@
             }
         </style>
         <div class="container">
-            
             <paper-material elevation="1">
                 <div class="content">
                     <table class="gl-table-default">
                         <thead>
                             <tr>
-                                <th style="width:10%">ข้อที่</th>
-                                <th>คำถาม</th>
-                                <th style="text-align: right">
-                                    <paper-button on-tap="random" raised>สุ่มข้อสอบ</paper-button>
-                                </th>
+                                <template is="dom-if" if="[[checkTypeList(typeList,'examination')]]">
+                                    <th style="width:10%">ลำดับ</th>
+                                    <th colspan="2">ชุดข้อสอบ</th>
+                                </template>
+                                <template is="dom-if" if="[[checkTypeList(typeList,'question')]]">
+                                    <th style="width:10%">ข้อที่</th>
+                                    <th>คำถาม</th>
+                                    <th style="text-align: right">
+                                        <paper-button on-tap="random" raised>สุ่มข้อสอบ</paper-button>
+                                    </th>
+                                </template>
                             </tr>
                         </thead>
                         <tbody>
                             <template is="dom-repeat" items="[[dataList]]">
-                                <tr on-tap="selectList" item="[[item]]" question-id="[[item.id]]">
-                                    <td>
-                                        <div>[[toIndex(index)]]</div>
-                                    </td>
-                                    <td>
-                                        [[item.topic]]
-                                    </td>
-                                    <td style="text-align: right;">
-                                        <iron-icon icon="create"></iron-icon>
-                                    </td>
-                                </tr>
+                                <template is="dom-if" if="[[checkTypeList(typeList,'examination')]]">
+                                    <tr on-tap="selectList" item="[[item]]" question-id="[[item.id]]">
+                                        <td>
+                                            <div>[[toIndex(index)]]</div>
+                                        </td>
+                                        <td>
+                                            [[item.ex_name]]
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <iron-icon icon="create"></iron-icon>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <template is="dom-if" if="[[checkTypeList(typeList,'question')]]">
+                                    <tr item="[[item]]" question-id="[[item.id]]">
+                                        <td>
+                                            <div>[[toIndex(index)]]</div>
+                                        </td>
+                                        <td colspan="3">
+                                            [[item.topic]]
+                                        </td>
+                                    </tr>
+                                </template>
                             </template>
                         </tbody>
                     </table>
@@ -47,29 +64,27 @@
     <script>
         Polymer({
             is: 'examination-list',
-            behaviors:[ReduxBehavior],
             properties:{
-                dataList:{
-                    statePath:'examination.dataList'
+                typeList:{
+                    type:String
                 }
             },
-            ready:function(){
-                
-                console.log('ss');
+            checkTypeList:function(typeList,typeSelect){
+                return typeList==typeSelect
             },
             selectList:function(e){
-                this.QUESTION_SELECT(e.currentTarget.questionId)
-                .then((response)=>{
-                      this.fire('select-data',response.data);
-                 })
-                .catch((error)=>{
-                    console.log(error);
-                });
+
+                // this.QUESTION_SELECT(e.currentTarget.questionId)
+                // .then((response)=>{
+                //       this.fire('select-data',response.data);
+                //  })
+                // .catch((error)=>{
+                //     console.log(error);
+                // });
                
             },
             random:function(){
-                console.log(this.data);
-                //this.fire('random-data');
+                this.fire('random-data',this.obj);
             },
             toIndex:function(index){
                 return ++index;

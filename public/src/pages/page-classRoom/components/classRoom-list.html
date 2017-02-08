@@ -1,0 +1,44 @@
+
+<dom-module id="classRoom-list">
+    <template>
+        <style include="page-style">
+            tbody>tr>td{
+                 cursor: pointer;
+            }
+            tbody>tr:hover{
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+        </style>
+        <paper-material elevation="1">
+            <table class="gl-table-default">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">#</th>
+                        <th>ชื่อห้องเรียน</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="[[data]]">
+                        <tr on-tap="selectList" data="[[data]]">
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right">
+                                <iron-icon icon="create"></iron-icon>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </paper-material>
+    </template>
+    <script>
+        Polymer({
+            is: 'classRoom-list',
+            selectList:function(e){
+                this.fire('data-select',e.currentTarget.data);
+            }
+        });
+    </script>
+</dom-module>

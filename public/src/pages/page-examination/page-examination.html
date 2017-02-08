@@ -17,9 +17,9 @@
         </style>
         <div class="container">
             <div class="header gl-large">
-                ระบบจัดการข้อสอบ
+                จัดการชุดข้อสอบ
             </div>
-            <examination-list></examination-list>
+            <examination-list data-list="[[dataList]]" type-list="examination"></examination-list>
             <panel-right title="{{titleRight}}">
                 <examination-page selected="0" data="[[data]]"></examination-page>
                 <!--<examination-manage data="[[data]]"></examination-manage>-->
@@ -31,7 +31,12 @@
     <script>
         Polymer({
             is: 'page-examination',
-            behaviors:[examinationAction],
+            behaviors:[ReduxBehavior,examinationAction],
+            properties:{
+                dataList:{
+                    statePath:'examination.dataList'
+                }
+            },
             ready:function(){
                 this.EXAMINATION_GET_LIST();
             },
@@ -40,6 +45,7 @@
                 'back-page':'backPage'
             },
             openPanelRight:function(){
+                
                 this.titleRight = 'เพิ่มวัตถุประสงค์';
                 this.data = {
                     ex_name:'',

@@ -20,7 +20,6 @@ export function examinationAction(store){
         EXAMINATION_GET_LIST:function(){
             axios.get('./examination/examination')
             .then((response)=>{
-                console.log(response);
                 store.dispatch({type:'EXAMINATION_GET_LIST',payload:response.data});
             })
             .catch((error)=>{
@@ -54,7 +53,7 @@ export function examinationAction(store){
             return new Promise((resolve,reject)=>{
                 axios.post('./examination/examination',data)
                 .then((response)=>{
-                    this.QUESTION_GET_LIST();
+                    this.EXAMINATION_GET_LIST();
                     resolve(response);
                 })
                 .catch((error)=>{
