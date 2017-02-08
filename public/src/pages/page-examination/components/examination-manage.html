@@ -53,7 +53,7 @@
                         <tr>
                             <th style="width:10%;text-align: right; font-size: 18px;">คำอธิบาย</th>
                             <th><gl-form-textarea placeholder="" no-label-float value="{{data.description}}"></gl-form-textarea></th>
-                            <th></th>
+                             <th style="width:20%;"><paper-button on-tap="startQuize" raised>เริ่มทำข้อสอบ</paper-button></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,7 +81,8 @@
                                 <td style="text-align: right;">
                                 </td>
                                 <td>
-                                    <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{item.obj_tag}}"></paper-tags-input>
+                                    <gl-combo-box label="เลือก tag" always-float-label items="" item-label-path="name" item-value-path="id" value="[[selectTag]]"></gl-combo-box>
+                                    <!--<paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{item.obj_tag}}"></paper-tags-input>-->
                                 </td>
                                 <td style="width:10%;text-align: center;">
                                     <paper-icon-button on-tap="delChoice" index="[[index]]" icon="delete"></paper-icon-button>
@@ -123,14 +124,15 @@
                 </div>
             </paper-material>
 
-            <div style="margin: 15px 0px 15px 0px;">
+        
+            <!--<div style="margin: 15px 0px 15px 0px;">
                 <paper-material elevation="1">
                     <div style="padding: 30px; background-color: white;">
                         <div class="headPanel gl-default">Tag</div>
                         <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{data.tag}}"></paper-tags-input>
                     </div>
                 </paper-material>
-            </div>
+            </div>-->
             <!--<div class="flex-end-justified" style="margin-top: 10px;">
                 <template is="dom-if" if="[[data.id]]">
                     <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
@@ -155,6 +157,10 @@
             },
             delChoice:function(e){
                 this.splice('data.obj',e.target.index,1);
+            },
+            startQuize:function(){
+                this.fire('close');
+                this.$$('paper-dialog').open();
             },
             countQty:function(obj){
                 var count = 0;
