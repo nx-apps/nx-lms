@@ -4,7 +4,7 @@
 
 <dom-module id="examination-page">
     <template>   
-        <style>
+        <style include="page-style">
             paper-tabs{
                 --paper-tabs-selection-bar-color:#95bf31;
                 --paper-tabs-selection-bar:{
@@ -22,10 +22,14 @@
                     color: black;
                 }
             }
+            .flex-end-justified {
+                @apply(--layout-horizontal);
+                @apply(--layout-end-justified);
+            }
         </style>
         <paper-material elevation="1">
             <paper-tabs selected="{{selected}}">
-                <paper-tab>กำหนดวัตถุประสงค์</paper-tab>
+                <paper-tab>กำหนดชุดข้อสอบ</paper-tab>
                 <paper-tab>จัดการคำถาม</paper-tab>
             </paper-tabs>
         </paper-material>
@@ -37,6 +41,12 @@
                 <examination-list type-list="question" data-list="[[data.question]]" obj="[[data.obj]]"></examination-list>
             </section>
         </iron-pages>
+        <div class="flex-end-justified">
+            <template is="dom-if" if="[[data.id]]">
+                <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
+            </template>
+            <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
+        </div>
     </template>
     <script>
         Polymer({
@@ -52,6 +62,26 @@
             },
             backPage:function(){
                 this.$$('iron-pages').selectPrevious();
+            },
+             getForm:function(){
+                if(typeof this.data.id == "undefined" || this.data.id==""){
+                    this.fire('insert-data',this.data);
+                }else{
+                    this.fire('update-data',this.data);
+                }
+                
+            },
+            confirmDel:function(e){
+                this.fire('toast',{ 
+                    status:'openDialog',
+                    text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                    confirmed:this.delData.bind(this), 
+                 })
+            },
+            delData:function(result){   
+                if(result == true){
+                    this.fire('delete-data',this.data.id);
+                }
             }
         });
     </script>

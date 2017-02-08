@@ -131,19 +131,18 @@
                     </div>
                 </paper-material>
             </div>
-            <div class="flex-end-justified" style="margin-top: 10px;">
+            <!--<div class="flex-end-justified" style="margin-top: 10px;">
                 <template is="dom-if" if="[[data.id]]">
                     <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
                 </template>
                 <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
-            </div>
+            </div>-->
         </div>
         
     </template>
     <script>
         Polymer({
             is: 'examination-manage',
-            behaviors:[examinationAction],
             cont:function(index){
                 return index+1;
             },
@@ -170,26 +169,7 @@
                 }
                 this.set('data.qty',count);
             },
-            getForm:function(){
-                if(typeof this.data.id == "undefined" || this.data.id==""){
-                    this.fire('insert-data',this.data);
-                }else{
-                    this.fire('update-data',this.data);
-                }
-                
-            },
-            confirmDel:function(e){
-                this.fire('toast',{ 
-                    status:'openDialog',
-                    text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
-                    confirmed:this.delData.bind(this), 
-                 })
-            },
-            delData:function(result){   
-                if(result == true){
-                    this.fire('delete-data',this.data.id);
-                }
-            }
+           
         });
     </script>
 </dom-module>

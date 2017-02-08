@@ -20,13 +20,13 @@
                 จัดการชุดข้อสอบ
             </div>
             <examination-list data-list="[[dataList]]" type-list="examination"></examination-list>
-            <panel-right title="{{titleRight}}">
+            <panel-right title="จัดการชุดข้อสอบ">
                 <examination-page selected="0" data="[[data]]"></examination-page>
                 <!--<examination-manage data="[[data]]"></examination-manage>-->
             </panel-right>
         </div>
          <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
-         <paper-fab class="fabSave" icon="icons:save" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
+         <!--<paper-fab class="fabSave" icon="icons:save" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>-->
     </template>
     <script>
         Polymer({
@@ -76,6 +76,7 @@
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                             callback:()=>{
                                 this.fire('close');
+                                 this.$$('panel-right').close();
                             }
                         });
                     
@@ -123,6 +124,7 @@
                 this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
                     callback:()=>{
                         this.fire('close');
+                         this.$$('panel-right').close();
                     }
                     });
                 });
@@ -135,6 +137,7 @@
                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
                     callback:()=>{
                         this.fire('close');
+                         this.$$('panel-right').close();
                     }
                     });
                 });
