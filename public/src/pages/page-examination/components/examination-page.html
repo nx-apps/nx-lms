@@ -31,10 +31,10 @@
         </paper-material>
         <iron-pages selected="{{selected}}">
             <section>
-                <examination-manage data="[[data]]"></examination-manage>
+                <examination-manage data="{{data}}"></examination-manage>
             </section>
             <section>
-                <examination-list></examination-list>
+                <examination-list data="[[data]]"></examination-list>
             </section>
         </iron-pages>
     </template>

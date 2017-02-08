@@ -31,7 +31,11 @@
     <script>
         Polymer({
             is: 'page-examination',
-             listeners:{
+            behaviors:[examinationAction],
+            ready:function(){
+                this.EXAMINATION_GET_LIST();
+            },
+            listeners:{
                 'select-data':'selectData',
                 'back-page':'backPage'
             },
