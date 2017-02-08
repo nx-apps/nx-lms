@@ -58,7 +58,7 @@ export function examinationAction(store){
             return new Promise((resolve,reject)=>{
                 axios.put('./examination/examination',data)
                 .then((response)=>{
-                    this.QUESTION_GET_LIST();
+                    this.EXAMINATION_GET_LIST();
                     resolve(response);
                 })
                 .catch((error)=>{
@@ -70,9 +70,9 @@ export function examinationAction(store){
         },
         EXAMINATION_DELETE:function(id){
             return new Promise((resolve,reject)=>{
-                axios.delete('./delete/delete?id='+id)
+                axios.delete('./examination/examination?id='+id)
                 .then((response)=>{
-                    this.QUESTION_GET_LIST();
+                    this.EXAMINATION_GET_LIST();
                     resolve(response);
                 })
                 .catch((error)=>{

@@ -176,8 +176,7 @@
 
                 
             },
-            confirmDel:function(){
-                console.log('1234');
+            confirmDel:function(e){
                 this.fire('toast',{ 
                     status:'openDialog',
                     text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
@@ -186,15 +185,7 @@
             },
             delData:function(result){
                 if(result == true){
-                    this.fire('toast',{status:'load'});
-                    this.QUESTION_DELETE(this.data.id)
-                    .then(()=>{
-                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
-                        callback:()=>{
-                            this.fire('close');
-                        }
-                        });
-                    });
+                    this.fire('delete-data',this.data.id);
                 }
             }
         });

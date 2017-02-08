@@ -43,7 +43,8 @@
             listeners:{
                 'select-data':'selectData',
                 'insert-data':'insertData',
-                'back-page':'backPage'
+                'random-data':'randomData',
+                'delete-data':'delData'
             },
             openPanelRight:function(){
                 
@@ -59,17 +60,15 @@
                 this.$$('panel-right').open();
             },
             insertData:function(e){
+
                 var data = JSON.parse(JSON.stringify(e.detail));
-                
+
                 var question = data.question.map(function(row){
                     return { obj_index:row.obj_index,question_id:row.id }
                 })
                 data.question = question;
                 data.time = parseInt(data.time);
 
-                //console.log(data);
-        
-                //if(this.status == 'add') {
                     this.fire('toast',{status:'load'});
                     this.EXAMINATION_INSERT(data)
                     .then(()=>{
@@ -80,8 +79,7 @@
                         });
                     
                     });
-                //}
-                // else if(this.status =='update'){
+          
                 //     data.id = this.data.id;
                 //     this.fire('toast',{status:'load'});
                 //     this.QUESTION_UPDATE(data)
@@ -93,21 +91,45 @@
                 //         });
                 //     });
                 //     console.log(data)
-                // }
-               
-                //this.fire('save-data',data);
             },
             selectData:function(e){
 
                 this.EXAMINATION_SELECT(e.detail)
                 .then((response)=>{
+                    this.data = response.data;
                     console.log(response.data);
+                    this.$$('panel-right').open();
                  })
                 .catch((error)=>{
                     console.log(error);
                 });
-                //this.data = e.detail;
-                //this.$$('panel-right').open();
+            },
+            randomData:function(e){
+                var obj = e.detail.map(function(row,i){
+                    row.obj_index = i;
+                    row.obj_qty = parseInt(row.obj_qty);
+                    return row;
+                })
+                this.EXAMINATION_RANDOM(obj)
+                .then((res)=>{
+                    this.set('data.question',res.data);
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
+            },
+
+            delData:function(e){
+                
+                    this.fire('toast',{status:'load'});
+                    this.EXAMINATION_DELETE(e.detail)
+                    .then(()=>{
+                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                        callback:()=>{
+                            this.fire('close');
+                        }
+                        });
+                    });
             }
         });
     </script>
