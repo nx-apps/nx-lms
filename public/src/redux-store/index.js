@@ -3,10 +3,12 @@ import PolymerRedux from 'polymer-redux'
 
 import {questionReducer,questionAction} from './reducer/question'
 import {examinationReducer,examinationAction} from './reducer/examination'
+import {classRoomReducer,classRoomAction} from './reducer/classRoom'
 
 const rootReducer = combineReducers({
     question:questionReducer,
-    examination:examinationReducer
+    examination:examinationReducer,
+    classRoom:classRoomReducer
 });
 
 const storeApp = createStore(
@@ -18,3 +20,4 @@ window.ReduxBehavior = PolymerRedux(storeApp);
 
 window.questionAction = questionAction(storeApp);
 window.examinationAction = examinationAction(storeApp);
+window.classRoomAction = classRoomAction(storeApp);

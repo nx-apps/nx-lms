@@ -19,7 +19,9 @@
                             <tr>
                                 <th style="width:10%">ข้อที่</th>
                                 <th>คำถาม</th>
-                                <th></th>
+                                <th style="text-align: right">
+                                    <paper-button on-tap="random" raised>สุ่มข้อสอบ</paper-button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,14 +47,15 @@
     <script>
         Polymer({
             is: 'examination-list',
-            behaviors:[ReduxBehavior,questionAction],
+            behaviors:[ReduxBehavior],
             properties:{
                 dataList:{
-                    statePath:'question.dataList'
+                    statePath:'examination.dataList'
                 }
             },
             ready:function(){
-                this.QUESTION_GET_LIST();
+                
+                console.log('ss');
             },
             selectList:function(e){
                 this.QUESTION_SELECT(e.currentTarget.questionId)
@@ -63,6 +66,10 @@
                     console.log(error);
                 });
                
+            },
+            random:function(){
+                console.log(this.data);
+                //this.fire('random-data');
             },
             toIndex:function(index){
                 return ++index;

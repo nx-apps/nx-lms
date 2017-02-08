@@ -75,7 +75,7 @@ class index{
         var params = req.body;
         //r.db('lms').table('question').getAll(r.args(tags), {index: "tag"}).sample(2)
         r.expr(params).concatMap(function (row)  {
-            return r.db('lms').table('question').getAll(r.args(row('tag')), {index: "tag"}).sample(row('qty')).coerceTo('array')
+            return r.db('lms').table('question').getAll(r.args(row('obj_tag')), {index: "tag"}).sample(row('obj_qty')).coerceTo('array')
             .merge(function(id){
                 return row.pluck('obj_index')
             })
