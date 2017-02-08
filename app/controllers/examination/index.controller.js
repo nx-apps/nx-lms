@@ -21,8 +21,8 @@ class index{
         r.db('lms').table('examination').get(params.id)
         .merge(function(x){
             return {
-                question:x('question')('question_id').map(function(q){
-                    return r.db('lms').table('question').get(q)
+                question:x('question').merge(function(q){
+                    return r.db('lms').table('question').get(q('question_id'))
                 })
             }
         })
