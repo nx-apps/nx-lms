@@ -72,20 +72,25 @@ export function questionAction(store){
             return new Promise((resolve,reject)=>{
                 axios.get('./question/question_only?id='+questionId)
                 .then((response)=>{
-                    var choice = response.data.choice.map((row,i)=>{
-                        if(i===response.data.answer){
-                            return {checked:true,choice:row};
-                        }else{
-                            return {checked:false,choice:row};
-                        }
-                    });
-                    response.data.choice = choice;
+                    // var choice = response.data.choice.map((row,i)=>{
+                    //     if(i===response.data.answer){
+                    //         return {checked:true,choice:row};
+                    //     }else{
+                    //         return {checked:false,choice:row};
+                    //     }
+                    // });
+                    // response.data.choice = choice;
                     resolve(response);
                 })
                 .catch((error)=>{
                     reject(error);
                 });
             });
+        },
+        QUESTION_IMAGE:function(files){
+            var data = new FormData();
+            data.append('file',files[0]);
+            return axios.post('./image/image', data);
         }
     }
 }
