@@ -5,13 +5,6 @@ class index{
         var params = req.params;
 
         r.db('lms').table('examination')
-        .merge(function(x){
-            return {
-                question:x('question')('question_id').map(function(q){
-                    return r.db('lms').table('question').get(q)
-                })
-            }
-        })
         .run()
         .then(function(result){
             res.json(result);
@@ -26,6 +19,13 @@ class index{
         var params = req.query;
 
         r.db('lms').table('examination').get(params.id)
+        .merge(function(x){
+            return {
+                question:x('question')('question_id').map(function(q){
+                    return r.db('lms').table('question').get(q)
+                })
+            }
+        })
         .run()
         .then(function(result){
             res.json(result);
