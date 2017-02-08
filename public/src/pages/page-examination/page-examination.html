@@ -1,3 +1,5 @@
+้<link rel="import" href="./components/examination-list.html">
+<link rel="import" href="./components/examination-manage.html">
 
 <dom-module id="page-examination">
     <template>
@@ -10,21 +12,26 @@
             <div class="header gl-large">
                 ระบบจัดการข้อสอบ
             </div>
-
-            
-            <paper-material elevation="1">
-                <div class="page">
-                    <div class="container">
-                        
-                    </div>
-                </div>
-            </paper-material>
+            <examination-list></examination-list>
+            <panel-right title="{{titleRight}}">
+                <examination-manage data="[[data]]"></examination-manage>
+            </panel-right>
         </div>
-        
+         <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
     </template>
     <script>
         Polymer({
-            is: 'page-examination'
+            is: 'page-examination',
+            openPanelRight:function(){
+                this.titleRight = 'เพิ่มวัตถุประสงค์';
+                this.data = {
+                    user_id:'admin',
+                    topic:'',
+                    choice:[],
+                    tag:[]
+                }
+                this.$$('panel-right').open();
+            }
         });
     </script>
 </dom-module>

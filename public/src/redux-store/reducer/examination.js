@@ -26,6 +26,26 @@ export function examinationAction(store){
                 console.log(error);
             })
         },
+        EXAMINATION_SELECT:function(id){
+            return new Promise((resolve,reject)=>{
+                axios.get('./examination/examination_only?id='+id)
+                .then((response)=>{
+                    console.log(response);
+                    // var choice = response.data.choice.map((row,i)=>{
+                    //     if(i===response.data.answer){
+                    //         return {checked:true,choice:row};
+                    //     }else{
+                    //         return {checked:false,choice:row};
+                    //     }
+                    // });
+                    // response.data.choice = choice;
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                });
+            });
+        },
         EXAMINATION_INSERT:function(data){
             // return new Promise((resolve,reject)=>{
             //     axios.post('./question/question',data)
@@ -67,25 +87,7 @@ export function examinationAction(store){
 
             // })
             
-        },
-        EXAMINATION_SELECT:function(questionId){
-            // return new Promise((resolve,reject)=>{
-            //     axios.get('./question/question_only?id='+questionId)
-            //     .then((response)=>{
-            //         var choice = response.data.choice.map((row,i)=>{
-            //             if(i===response.data.answer){
-            //                 return {checked:true,choice:row};
-            //             }else{
-            //                 return {checked:false,choice:row};
-            //             }
-            //         });
-            //         response.data.choice = choice;
-            //         resolve(response);
-            //     })
-            //     .catch((error)=>{
-            //         reject(error);
-            //     });
-            // });
         }
+        
     }
 }
