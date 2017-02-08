@@ -1,0 +1,16 @@
+
+<dom-module id="show-image">
+    <template>
+        <template is="dom-if" if="[[imageId]]">
+            <img src="[[linkImage(imageId)]]" style="max-width: 300px" alt="">
+        </template>
+    </template>
+    <script>
+        Polymer({
+            is: 'show-image',
+            linkImage:function(id){
+                return '/api/image/image/'+id
+            }
+        });
+    </script>
+</dom-module>

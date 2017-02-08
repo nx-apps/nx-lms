@@ -1,3 +1,5 @@
+<link rel="import" href="upload-image.html">
+<link rel="import" href="show-image.html">
 
 <dom-module id="question-manage">
     <template>
@@ -39,8 +41,11 @@
                                 </td>
                                 <td>
                                     <gl-form-input placeholder="ตัวเลือกที่ [[cont(index)]]" no-label-float value="{{item.choice}}"></gl-form-input>
+                                    <show-image image-id="[[item.image_id]]"></show-image>
                                 </td>
-                                <td style="width:10%;text-align: center;">
+                                <td style="width:20%;text-align: center;">
+                                    <upload-image image-id="{{item.image_id}}"></upload-image>
+                                    <br>
                                     <paper-icon-button on-tap="delChoice" index="[[index]]" icon="delete"></paper-icon-button>
                                 </td>
                             </tr>
@@ -79,23 +84,27 @@
                 return index+1;
             },
             addChoice:function(){
-                this.push('data.choice',{checked:false})
+                this.push('data.choice',{
+                    checked:false,
+                    choice:'',
+                    image_id:''
+                })
             },
             delChoice:function(e){
                 this.splice('data.choice',e.target.index,1);
             },
             getForm:function(){
+
                 var data = JSON.parse(JSON.stringify(this.data));
                 var answer;
-                var choice = this.data.choice.map((row,i)=>{
+                
+                this.data.choice.map((row,i)=>{
                     if(row.checked) 
                     answer = i;
-                    return row.choice;
                 });
                 
-                data.choice = choice;
                 data.answer = answer;
-                // console.log(data);
+
                 if(this.status == 'add') {
                     this.fire('toast',{status:'load'});
                     this.QUESTION_INSERT(data)
@@ -122,7 +131,6 @@
                     console.log(data)
                 }
                
-                //this.fire('save-data',data);
             },
             confirmDel:function(){
                 console.log('1234');
