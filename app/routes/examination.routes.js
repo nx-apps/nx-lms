@@ -1,6 +1,6 @@
 module.exports = function(app){
     var index = require('../controllers/examination/index.controller');
-    app.post('/examination_random',index.random_question);
+    //app.post('/examination_random',index.random_question);
     app.get('/examination',index.select_examination);
     // app.get('/question_only',index.select_question_only);
     // app.post('/question',index.insert_question);
