@@ -50,45 +50,45 @@ export function examinationAction(store){
             return axios.post('./examination/examination_random',data)
         },
         EXAMINATION_INSERT:function(data){
-            // return new Promise((resolve,reject)=>{
-            //     axios.post('./question/question',data)
-            //     .then((response)=>{
-            //         this.QUESTION_GET_LIST();
-            //         resolve(response);
-            //     })
-            //     .catch((error)=>{
-            //         reject(error);
-            //     });
+            return new Promise((resolve,reject)=>{
+                axios.post('./examination/examination',data)
+                .then((response)=>{
+                    this.QUESTION_GET_LIST();
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                });
 
-            // })
+            })
             
         },
         EXAMINATION_UPDATE:function(data){
-            // return new Promise((resolve,reject)=>{
-            //     axios.put('./question/question',data)
-            //     .then((response)=>{
-            //         this.QUESTION_GET_LIST();
-            //         resolve(response);
-            //     })
-            //     .catch((error)=>{
-            //         reject(error);
-            //     });
+            return new Promise((resolve,reject)=>{
+                axios.put('./examination/examination',data)
+                .then((response)=>{
+                    this.QUESTION_GET_LIST();
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                });
 
-            // })
+            })
             
         },
-        EXAMINATION_DELETE:function(questionId){
-            // return new Promise((resolve,reject)=>{
-            //     axios.delete('./question/question?id='+questionId)
-            //     .then((response)=>{
-            //         this.QUESTION_GET_LIST();
-            //         resolve(response);
-            //     })
-            //     .catch((error)=>{
-            //         reject(error);
-            //     });
+        EXAMINATION_DELETE:function(id){
+            return new Promise((resolve,reject)=>{
+                axios.delete('./delete/delete?id='+id)
+                .then((response)=>{
+                    this.QUESTION_GET_LIST();
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                });
 
-            // })
+            })
             
         }
         
