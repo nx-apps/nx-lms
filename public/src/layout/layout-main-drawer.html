@@ -24,6 +24,9 @@
         iron-image,iron-icon{
             padding-right: 10px;
         }
+        paper-icon-item{
+            font-family: 'CSChatThaiUI', sans-serif;
+        }
         paper-icon-item:hover{
             background-color: #F1F1F1;
             cursor:pointer;
@@ -40,13 +43,16 @@
         }
     </style>
         <div class="menu">
-				<app-toolbar>
+                
+                <paper-material elevation="1">
+                    <app-toolbar>
 
-                     <iron-image src="/images/icon/white/app-icon-32.png">
-                     </iron-image>
-                     <!--<iron-icon icon="home" item-icon></iron-icon>-->
-                        Menu : LMS
-                     </app-toolbar>
+                        <iron-image src="/images/icon/white/app-icon-32.png">
+                        </iron-image>
+                        <!--<iron-icon icon="home" item-icon></iron-icon>-->
+                            Menu : LMS
+                    </app-toolbar>
+                </paper-material>
 				<div role="listbox">
                     
                     <template is="dom-repeat" items="{{listMenu}}">
@@ -74,8 +80,12 @@
                             path: '/quota'
                         },
                         {
-                            name: 'ระบบจัดการข้อสอบ',
+                            name: 'ระบบจัดการคำถาม',
                             path: '/question'
+                        },
+                        {
+                            name: 'examination',
+                            path: '/examination'
                         }
                     ]
                 },
