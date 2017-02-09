@@ -20,7 +20,7 @@ class index{
         var r = req._r;
         var params = req.params;
 
-        r.db('lms').table('examination')
+        r.db('lms').table('examination').orderBy('time_insert')
         .run()
         .then(function(result){
             res.json(result);
@@ -55,7 +55,17 @@ class index{
         var r = req._r;
         var params = req.body;
 
-        r.db('lms').table('examination').insert(params)
+        //r.db('lms').table('examination').insert(params)
+        r.db('lms').table('examination').insert({
+            description:          params.description,
+            ex_name:              params.ex_name,
+            obj:                  params.obj,
+            obj_tag:              params.obj_tag,
+            qty:                  params.qty,
+            question:             params.question,
+            time:                 params.time,
+            time_insert:          r.now()
+        })
         .run()
         .then(function(result){
             res.json(result);
