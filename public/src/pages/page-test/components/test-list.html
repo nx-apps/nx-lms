@@ -39,6 +39,11 @@
     <script>
         Polymer({
             is: 'test-list',
+            ready:function(){
+                // this.data.choice.map((item,i)=>{
+                //     this.set('data.choice.'+i+'.checked',false);
+                // }); 
+            },
             selectRadio:function(e){
                 if(typeof this.data.choice !=="undefined"){
                     this.data.choice.map((row,i)=>{
