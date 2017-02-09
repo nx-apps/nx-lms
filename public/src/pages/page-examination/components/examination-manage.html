@@ -168,8 +168,9 @@
                 this.splice('data.obj',e.target.index,1);
             },
             startQuize:function(){
-                this.fire('close');
-                this.$$('paper-dialog').open();
+                // console.log(this.data.id)
+                this.fire('close',this.data.id);
+                // this.$$('paper-dialog').open();
             },
             countQty:function(obj){
                 var count = 0;

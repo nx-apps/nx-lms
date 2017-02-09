@@ -107,6 +107,9 @@
 	<script>
         Polymer({
             is:'nylon-init',
+			listeners:{
+				'open-id':'openTest'
+			},
 			//behaviors:[examinationAction],
 			ready:function(){
 
@@ -135,6 +138,9 @@
 					console.log('error')
 					this.loader = false;
 				});
+			},
+			openTest:function(e){
+				console.log(e.detail)
 			}
         });
     </script>

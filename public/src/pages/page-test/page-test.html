@@ -42,226 +42,41 @@
     <script>
         Polymer({
             is: 'page-test',
+            behaviors:[ReduxBehavior,examinationAction],
             properties:{
-                dataList:{
-                    type:Array,
-                    value:[
-                        {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                        {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                         {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                        {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                        {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                        {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                        {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                        {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                        {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                        {
-                            topic:'1+1',
-                            choice:[
-                                {
-                                    choice: '1',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '2',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '3',
-                                    checked: false
-                                },
-                                 {
-                                    choice: '4',
-                                    checked: false
-                                },
-                            ]
-                        },
-                        
-                    ]
-                }
+                 dataList:{
+                    statePath:'examination.dataTest'
+                },
+                // dataList:{
+                //     type:Array,
+                //     value:[
+                //         {
+                //             topic:'1+1',
+                //             choice:[
+                //                 {
+                //                     choice: '1',
+                //                     checked: false
+                //                 },
+                //                  {
+                //                     choice: '2',
+                //                     checked: false
+                //                 },
+                //                  {
+                //                     choice: '3',
+                //                     checked: false
+                //                 },
+                //                  {
+                //                     choice: '4',
+                //                     checked: false
+                //                 },
+                //             ]
+                //         }
+                //     ]
+                // }
             },
             ready:function(){
                 this.stat = true;
+                this.EXAMINATION_GET_DATA_TEST()
             },
             cont:function(index){
                 return index+1;
