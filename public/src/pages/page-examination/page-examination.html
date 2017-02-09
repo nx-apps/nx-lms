@@ -80,12 +80,11 @@
             },
             openNewPage:function(){
                 console.log(this.testId);
-                this.fire('open-id',this.testId);
+                this.fire('send-test-id',this.testId);
                 //  window.open("http://localhost:3000/test");
             },           
             closePanelRight:function(e){
                 this.testId = e.detail;
-                // console.log(e.detail);
 
                 this.$$('panel-right').close();
                 this.$$('paper-dialog').open();
