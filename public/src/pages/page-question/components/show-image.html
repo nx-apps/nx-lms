@@ -1,8 +1,17 @@
 
 <dom-module id="show-image">
     <template>
+        <style>
+        img {
+            opacity:0;
+            -moz-transition: opacity 2s; /* Firefox 4 */
+            -webkit-transition: opacity 2s; /* Safari and Chrome */
+            -o-transition: opacity 2s;
+            transition: opacity 2s;
+        }​
+        </style>
         <template is="dom-if" if="[[imageId]]">
-            <img src="[[linkImage(imageId)]]" style="max-width: 300px" alt="">
+            <img onload="this.style.opacity='1';" src="[[linkImage(imageId)]]" style="max-width: 300px" alt="">
         </template>
     </template>
     <script>
