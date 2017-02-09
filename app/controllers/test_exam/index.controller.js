@@ -10,7 +10,7 @@ class index{
             return {
                 question:x('question').merge(function(q){
                     return r.db('lms').table('question').get(q('question_id'))
-                }).pluck('answer','choice','question_id','obj_index','topic')
+                }).pluck('answer','choice','question_id','obj_index','topic','image_id')
             .merge(function(a){
                 return {choice:a('choice').merge(function(cf){return {checked:false} })}
             })
