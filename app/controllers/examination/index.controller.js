@@ -1,5 +1,21 @@
 class index{
 
+    select_tagall(req,res){
+        var r = req._r;
+        var params = req.params;
+
+        r.db('lms').table('question').group('tag').ungroup().concatMap(function(x){
+            return x('group')
+        })
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
     select_examination(req,res){
         var r = req._r;
         var params = req.params;
@@ -95,7 +111,7 @@ class index{
             res.status(500).json(err);
         })
     }
-
+    
 }
 
 module.exports = new index();
