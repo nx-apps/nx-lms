@@ -94,26 +94,33 @@
                 })
                 data.question = question;
                 data.time = parseInt(data.time);
-
-                    this.fire('toast',{status:'load'});
+               
+                this.fire('toast',{status:'load'});
                     this.EXAMINATION_INSERT(data)
                     .then(()=>{
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                             callback:()=>{
-                                this.fire('close');
-                                 this.$$('panel-right').close();
+                                    this.$$('panel-right').close();
                             }
                         });
-                    
-                    });
+                });
           
             },
             selectData:function(e){
 
                 this.EXAMINATION_SELECT(e.detail)
                 .then((response)=>{
+                    var obj = [];
+                    response.data.obj.map(function(row){
+                        row.obj_tag = row.obj_tag[0]
+                        obj.push(row);
+                    })
+
+                    response.data.obj_tag = obj;
+
                     this.data = response.data;
                     console.log(response.data);
+                    
                     this.$$('panel-right').open();
                  })
                 .catch((error)=>{
@@ -121,11 +128,16 @@
                 });
             },
             randomData:function(e){
+                
                 var obj = e.detail.map(function(row,i){
                     row.obj_index = i;
                     row.obj_qty = parseInt(row.obj_qty);
+                    if(typeof row.obj_tag != "object"){
+                        row.obj_tag = [row.obj_tag]
+                    }
                     return row;
                 })
+
                 this.EXAMINATION_RANDOM(obj)
                 .then((res)=>{
                     this.set('data.question',res.data);
@@ -143,16 +155,28 @@
                 data.question = question;
                 data.time = parseInt(data.time);
 
-                this.fire('toast',{status:'load'});
-                this.EXAMINATION_UPDATE(data)
-                .then(()=>{
-                this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
-                    callback:()=>{
-                        this.fire('close');
-                         this.$$('panel-right').close();
-                    }
-                    });
-                });
+
+                // var obj = e.detail.map(function(row,i){
+                //     row.obj_index = i;
+                //     row.obj_qty = parseInt(row.obj_qty);
+                //     if(typeof row.obj_tag != "object"){
+                //         row.obj_tag = [row.obj_tag]
+                //     }
+                //     return row;
+                // })
+
+
+                console.log(data);
+
+                // this.fire('toast',{status:'load'});
+                // this.EXAMINATION_UPDATE(data)
+                // .then(()=>{
+                // this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
+                //     callback:()=>{
+                //          this.$$('panel-right').close();
+                //     }
+                //     });
+                // });
                 
             },
             delData:function(e){
@@ -161,7 +185,6 @@
                 .then(()=>{
                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
                     callback:()=>{
-                        this.fire('close');
                          this.$$('panel-right').close();
                     }
                     });
