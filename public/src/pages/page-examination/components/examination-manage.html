@@ -145,15 +145,19 @@
     <script>
         Polymer({
             is: 'examination-manage',
+            observers:['getTagList(data)'],
             behaviors:[ReduxBehavior,examinationAction],
             properties:{
                 listTag:{
                     statePath:'examination.listTag'
                 }
             },
-            ready:function(){
+            getTagList:function(data){
                 this.EXAMINATION_GET_TAG_LIST();
             },
+            // ready:function(){
+            //     this.EXAMINATION_GET_TAG_LIST();
+            // },
             cont:function(index){
                 return index+1;
             },
