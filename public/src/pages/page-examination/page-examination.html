@@ -99,6 +99,7 @@
                 })
                 data.question = question;
                 data.time = parseInt(data.time);
+
                
                 this.fire('toast',{status:'load'});
                     this.EXAMINATION_INSERT(data)
@@ -158,30 +159,33 @@
                     return { obj_index:row.obj_index,question_id:row.id }
                 })
                 data.question = question;
-                data.time = parseInt(data.time);
+
+                data.time = parseInt(e.detail.time);
 
 
-                // var obj = e.detail.map(function(row,i){
-                //     row.obj_index = i;
-                //     row.obj_qty = parseInt(row.obj_qty);
-                //     if(typeof row.obj_tag != "object"){
-                //         row.obj_tag = [row.obj_tag]
-                //     }
-                //     return row;
-                // })
+                var obj = e.detail.obj.map(function(row,i){
+                    row.obj_index = i;
+                    row.obj_qty = parseInt(row.obj_qty);
+                    if(typeof row.obj_tag != "object"){
+                        row.obj_tag = [row.obj_tag]
+                    }
+                    return row;
+                })
+
+                data.obj = obj;
 
 
-                console.log(data);
+                //console.log(data);
 
-                // this.fire('toast',{status:'load'});
-                // this.EXAMINATION_UPDATE(data)
-                // .then(()=>{
-                // this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
-                //     callback:()=>{
-                //          this.$$('panel-right').close();
-                //     }
-                //     });
-                // });
+                this.fire('toast',{status:'load'});
+                this.EXAMINATION_UPDATE(data)
+                .then(()=>{
+                this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
+                    callback:()=>{
+                         this.$$('panel-right').close();
+                    }
+                    });
+                });
                 
             },
             delData:function(e){
