@@ -41,6 +41,7 @@ class index{
             tag:params.tag,
             topic:params.topic,
             user_id:params.user_id,
+            image_id:params.image_id,
             time_insert:r.now()
         })
         .run()
