@@ -81,7 +81,7 @@
                                 <td style="text-align: right;">
                                 </td>
                                 <td>
-                                    <gl-combo-box label="เลือก tag" always-float-label items="" item-label-path="name" item-value-path="id" value="[[selectTag]]"></gl-combo-box>
+                                    <gl-combo-box label="เลือก tag" always-float-label items="{{listTag}}" value="{{item.obj_tag}}"></gl-combo-box>
                                     <!--<paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{item.obj_tag}}"></paper-tags-input>-->
                                 </td>
                                 <td style="width:10%;text-align: center;">
@@ -145,6 +145,15 @@
     <script>
         Polymer({
             is: 'examination-manage',
+            behaviors:[ReduxBehavior,examinationAction],
+            properties:{
+                listTag:{
+                    statePath:'examination.listTag'
+                }
+            },
+            ready:function(){
+                this.EXAMINATION_GET_TAG_LIST();
+            },
             cont:function(index){
                 return index+1;
             },

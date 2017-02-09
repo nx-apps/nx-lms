@@ -1,7 +1,8 @@
 import axios from '../axios'
 
 const initialState = {
-    dataList:[]
+    dataList:[],
+    listTag:[]
 }
 
 export function examinationReducer(state = initialState,action){
@@ -9,6 +10,8 @@ export function examinationReducer(state = initialState,action){
     switch (action.type) {
         case 'EXAMINATION_GET_LIST':
             return Object.assign({},state,{dataList:action.payload});
+        case 'EXAMINATION_GET_TAG_LIST':
+            return Object.assign({},state,{listTag:action.payload});
         default:
             return state
     }
@@ -17,6 +20,18 @@ export function examinationReducer(state = initialState,action){
 
 export function examinationAction(store){
     return {
+        EXAMINATION_GET_TAG_LIST:function(){
+            axios.get('./examination/examination_tagall')
+            .then((response)=>{
+                console.log('success!!');
+                store.dispatch({type:'EXAMINATION_GET_TAG_LIST',payload:response.data})
+                console.log(response.data);
+            })
+            .catch((error)=>{
+                console.log('error');
+                console.log(error);
+            });
+        },
         EXAMINATION_GET_LIST:function(){
             axios.get('./examination/examination')
             .then((response)=>{
