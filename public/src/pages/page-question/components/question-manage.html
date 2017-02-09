@@ -29,8 +29,13 @@
                     <thead>
                         <tr>
                             <th style="width:10%;text-align: right; font-size: 18px;">คำถาม</th>
-                            <th><gl-form-input placeholder="" no-label-float value="{{data.topic}}"></gl-form-input></th>
-                            <th></th>
+                            <th>
+                                <gl-form-input placeholder="" no-label-float value="{{data.topic}}"></gl-form-input>
+                                <show-image image-id="[[data.image_id]]"></show-image>
+                            </th>
+                            <th>
+                                <upload-image image-id="{{data.image_id}}"></upload-image>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,7 +107,7 @@
                     if(row.checked) 
                     answer = i;
                 });
-                
+                console.log(data);
                 data.answer = answer;
 
                 if(this.status == 'add') {
