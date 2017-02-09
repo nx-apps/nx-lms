@@ -24,10 +24,11 @@ export function examinationReducer(state = initialState,action){
 export function examinationAction(store){
     return {
         EXAMINATION_GET_DATA_TEST:function(id){
-            axios.get('./test_exam/test_exam?id=68696620-91d5-4ab3-b901-7f623d6e8463')
+            axios.get('./test_exam/test_exam?id='+id)
             .then((response)=>{
                 console.log('success!!');
-                console.log(response.data);
+                console.log(response.data)
+                store.dispatch({type:'EXAMINATION_GET_DATA_TEST',payload:response.data})
             })
             .catch((error)=>{
                 console.log('error');
