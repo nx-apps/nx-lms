@@ -26,7 +26,16 @@
                 this.titleRight = 'แก้ไขคำถาม';
                 this.status = 'update';
                 //console.log(e.detail);
-                this.data = e.detail;
+                this.data = {
+                    user_id:'admin',
+                    topic:'',
+                    choice:[],
+                    tag:[]
+                }
+                setTimeout(()=>{
+                    this.data = e.detail;
+                },'20')
+                
                 this.$$('panel-right').open();
             },
             openPanelRight:function(){
