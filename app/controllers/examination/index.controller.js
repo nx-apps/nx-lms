@@ -60,7 +60,7 @@ class index{
             description:          params.description,
             ex_name:              params.ex_name,
             obj:                  params.obj,
-            obj_tag:              params.obj_tag,
+            //obj_tag:              params.obj_tag,
             qty:                  params.qty,
             question:             params.question,
             time:                 params.time,
