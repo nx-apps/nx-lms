@@ -23,7 +23,11 @@
     <script>
         Polymer({
             is:'nylon-app',
+            behaviors:[ReduxBehavior],
             properties:{
+                user:{
+                    statePath:'auth.user'
+                },
                 page: {
                     type: String,
                     reflectToAttribute: true,
@@ -58,21 +62,63 @@
                 this.page = page || window._start_page ;
             },
             _pageChanged: function(page, oldPage) {
-                //console.log(page);
                 if (page != null) {
-                    this.importHref(
-                        this.resolveUrl('/src/pages/page-' + page + '/page-' + page + '.html'),
-                        ()=>{
-                            if(this.elementLayoutMainDrawer){
-                                this.elementLayoutMainDrawer._loaded();
+
+                    const loadPage = () => {
+                        this.importHref(
+                            this.resolveUrl('/src/pages/page-' + page + '/page-' + page + '.html'),
+                            ()=>{
+                                if(this.elementLayoutMainDrawer){
+                                    this.elementLayoutMainDrawer._loaded();
+                                }
+
+                                
+                            },
+                            ()=>{
+                                //console.log('ok');
+                                this._routePageChanged('404');
                             }
-                        },
-                        ()=>{
-                            //console.log('ok');
-                            this._routePageChanged('404');
+                            , true
+                        );
+
+                    }
+
+                    
+                    setTimeout(()=>{
+                        console.log(this.user);
+
+                        var pageRole = {
+                            question:['teacher'],
+                            examination:['teacher']
                         }
-                        , true
-                    );
+
+                        if(this.user){
+                            if(pageRole[page]){
+                                var pass = false;
+                                pageRole[page].map((row)=>{
+                                    if(row==this.user.role)
+                                    pass = true;
+                                })
+
+                                console.log('pass')
+                                if(pass){
+                                    loadPage();
+                                }else{
+                                    this._routePageChanged('403');
+                                }
+                            }else{
+                                loadPage();
+                            }
+                        }else{
+                            if(pageRole[page]){
+                                if(pageRole[page].length != 0)
+                                this._routePageChanged('401');
+                            }else{
+                                loadPage();
+                            }
+                        }
+
+                    },100)
                 }
             },
             _changePage:function(e){
