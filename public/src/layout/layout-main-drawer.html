@@ -112,6 +112,13 @@
                 }else{
                     this.fire('close-drawer');
                 }
+
+                this.async(
+                    ()=>{
+                        this.fire('close-drawer');
+                        this._loaded();
+                    }
+                ,'500')
                 
             },
             _loaded:function(){

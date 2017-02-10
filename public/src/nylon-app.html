@@ -63,7 +63,8 @@
             },
             _pageChanged: function(page, oldPage) {
                 if (page != null) {
-
+                    console.log(page, oldPage);
+                   
                     const loadPage = () => {
                         this.importHref(
                             this.resolveUrl('/src/pages/page-' + page + '/page-' + page + '.html'),
@@ -71,8 +72,6 @@
                                 if(this.elementLayoutMainDrawer){
                                     this.elementLayoutMainDrawer._loaded();
                                 }
-
-                                
                             },
                             ()=>{
                                 //console.log('ok');
@@ -85,8 +84,7 @@
 
                     
                     setTimeout(()=>{
-                        console.log(this.user);
-
+                        //console.log(this.user);
                         var pageRole = {
                             question:['teacher'],
                             examination:['teacher']
