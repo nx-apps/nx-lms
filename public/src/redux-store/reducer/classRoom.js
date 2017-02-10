@@ -17,6 +17,18 @@ export function classRoomReducer(state = initialState,action){
 
 export function classRoomAction(store){
     return {
+        listeners:{
+            'method':'handleCall'
+        },
+        handleCall:function(e){
+            var {method,payload,callback} = e.detail;
+            eval(`this.${method}(payload,callback)`)
+        },
+
+        testA:function(detail,callback){
+            console.log('xx');
+        },
+
         CLASSROOM_GET_LIST:function(){
             axios.get('./student/student')
             .then((response)=>{

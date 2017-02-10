@@ -34,9 +34,16 @@
     <script>
         Polymer({
             is: 'page-classRoom',
+            behaviors:[classRoomAction],
             listeners:{
                 'select-data':'selectData'
             },
+            ready:function(){
+                this.fire('method',{
+                    method:'testA',payload:'data',
+                    callback:()=>{}
+                });
+            }, 
             selectData:function(e){
                 this.title = 'แก้ไข';
                 this.status = 'add';
