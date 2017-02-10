@@ -4,6 +4,7 @@ import PolymerRedux from 'polymer-redux'
 import {questionReducer,questionAction} from './reducer/question'
 import {examinationReducer,examinationAction} from './reducer/examination'
 import {classRoomReducer,classRoomAction} from './reducer/classRoom'
+import {dispachActionBehavior} from './config'
 
 const rootReducer = combineReducers({
     question:questionReducer,
@@ -17,6 +18,7 @@ const storeApp = createStore(
 );
 
 window.ReduxBehavior = PolymerRedux(storeApp);
+window.dispachActionBehavior = dispachActionBehavior();
 
 window.questionAction = questionAction(storeApp);
 window.examinationAction = examinationAction(storeApp);

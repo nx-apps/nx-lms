@@ -1,8 +1,11 @@
 
 <link rel="import" href="./components/test-list.html">
+<link rel="import" href="/src/nylon-param.html">
 
 <dom-module id="page-test">
     <template>
+        <nylon-param params="{{getParam}}" pattern="exId"></nylon-param>
+        
         <style include="page-style"></style>
         <div class="container">
             <div class="header gl-large">แบบทดสอบ</div>
@@ -44,42 +47,15 @@
         Polymer({
             is: 'page-test',
             behaviors:[ReduxBehavior,examinationAction],
-            observers:['getTest(exId)'],
+            observers:['getTest(getParam.exId)'],
             properties:{
                  dataList:{
                     statePath:'examination.dataTest'
-                },
-                // dataList:{
-                //     type:Array,
-                //     value:[
-                //         {
-                //             topic:'1+1',
-                //             choice:[
-                //                 {
-                //                     choice: '1',
-                //                     checked: false
-                //                 },
-                //                  {
-                //                     choice: '2',
-                //                     checked: false
-                //                 },
-                //                  {
-                //                     choice: '3',
-                //                     checked: false
-                //                 },
-                //                  {
-                //                     choice: '4',
-                //                     checked: false
-                //                 },
-                //             ]
-                //         }
-                //     ]
-                // }
+                }
             },
             getTest:function(id){
                 this.stat = true;
                 this.EXAMINATION_GET_DATA_TEST(id);
-                // console.log(this.dataTest);
             },
             cont:function(index){
                 return index+1;
@@ -92,7 +68,6 @@
                  })
             },
             openToast:function(check){
-                // console.log(this.dataList.question);
                 var answer = this.dataList.question.map((item)=>{
                     return item.answer;
 
@@ -103,7 +78,6 @@
                 var ch = [];
                  for(var i = 0; i< this.dataList.question.length; i++){
                      for(var a = 0; a< this.dataList.question[i].choice.length; a++){
-                     //console.log(this.dataList.question[i].choice[a]);
                         if(this.dataList.question[i].choice[a].checked==true){
                             ch[i] = a;
                         }
@@ -117,22 +91,6 @@
                     console.log(answer[i],ch[i]);
                 }
                 console.log(sum);
-                // var userAnswer = this.dataList.question.map((item,i)=>{
-                //     if(item.choice[i].checked == true){
-                //         return item;
-                //     }
-                // })
-                
-                // if(check==true){
-                //     this.fire('toast',{status:'load'});
-                //     this.async(function(){
-                //         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                //         callback:function(){
-                //         }
-                //         });
-                //         this.stat = false;
-                //     }.bind(this),500);
-                // }
             }
 
         });

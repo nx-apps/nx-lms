@@ -88,7 +88,7 @@
 				<page-question path="question" current-path="[[selected]]"></page-question>
 				<page-examination path="examination" current-path="[[selected]]"></page-examination>
 				<page-classRoom path="classRoom" current-path="[[selected]]"></page-classRoom>
-				<page-test path="test" ex-id="[[idTest]]" current-path="[[selected]]"></page-test>
+				<page-test path="test" current-path="[[selected]]"></page-test>
 				<!--<page-import path="import" current-path="[[selected]]"></page-import>-->
 				<!-- // -->
 				
@@ -107,29 +107,7 @@
 	<script>
         Polymer({
             is:'nylon-init',
-			listeners:{
-				'send-test-id':'openTest'
-			},
-			//behaviors:[examinationAction],
 			ready:function(){
-
-				// this.EXAMINATION_RANDOM([
-				// 		{
-				// 			"obj_index":0,
-				// 			"qty":1,
-				// 			"tag":["ac","ok"]
-				// 		},
-				// 		{
-				// 			"obj_index":1,
-				// 			"qty":1,
-				// 			"tag":["ac"]
-				// 		}
-				// ]).then((res)=>{
-				// 	console.log(res.data)
-				// }).catch((err)=>{
-				// 	console.log(err.response.data)
-				// });
-				
 				this.loader = true;
 				this.importHref(this.resolveUrl('/src/import.html'), (e)=>{
 					this.rendered = true;
@@ -138,10 +116,6 @@
 					console.log('error')
 					this.loader = false;
 				});
-			},
-			openTest:function(e){
-				this.idTest = e.detail;
-				this.fire('nylon-change-page',{path:'/test'});
 			}
         });
     </script>

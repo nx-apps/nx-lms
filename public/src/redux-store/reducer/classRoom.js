@@ -1,4 +1,5 @@
 import axios from '../axios'
+import {commonAction} from '../config'
 
 const initialState = {
     dataList:[]
@@ -16,28 +17,31 @@ export function classRoomReducer(state = initialState,action){
 }
 
 export function classRoomAction(store){
-    return {
-        listeners:{
-            'method':'handleCall'
-        },
-        handleCall:function(e){
-            var {method,payload,callback} = e.detail;
-            eval(`this.${method}(payload,callback)`)
-        },
 
-        testA:function(detail,callback){
-            console.log('xx');
-        },
+    
+    return [commonAction(),
+        {
+            
+            TEST_A:function(a){
+                this.aaa = '1';
+                return new Promise((resolve,reject)=>{
+                    return resolve('ddddd');
+                })
+            },
 
-        CLASSROOM_GET_LIST:function(){
-            axios.get('./student/student')
-            .then((response)=>{
-                console.log(response.data);
-                store.dispatch({type:'CLASSROOM_GET_LIST',payload:response.data});
-            })
-            .catch((error)=>{
-                console.log(error);
-            })
-        },
-    }
+            CLASSROOM_GET_LIST:function(){
+                // axios.get('./student/student')
+                // .then((response)=>{
+                //     console.log(response.data);
+                //     store.dispatch({type:'CLASSROOM_GET_LIST',payload:response.data});
+                // })
+                // .catch((error)=>{
+                //     console.log(error);
+                // })
+            }
+
+        }
+    ]
+
+
 }
