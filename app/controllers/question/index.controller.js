@@ -1,7 +1,7 @@
 class index{
 
     select_question(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.params;
 
         //r.db('lms').table('question').orderBy(r.desc('time_insert'))
@@ -16,7 +16,7 @@ class index{
     }
 
     select_question_only(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.query;
 
         r.db('lms').table('question').get(params.id)
@@ -31,7 +31,7 @@ class index{
     }
 
     insert_question(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.body;
 
         //r.db('lms').table('question').insert(params)
@@ -54,7 +54,7 @@ class index{
     }
 
     update_question(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.body;
 
         r.db('lms').table('question').get(params.id).update(params)
@@ -68,7 +68,7 @@ class index{
     }
 
     delete_question(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.query;
 
         r.db('lms').table('question').get(params.id).delete()

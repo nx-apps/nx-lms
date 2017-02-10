@@ -7,7 +7,7 @@ class image {
 
     uploadImage(req, res) {
 
-        var r = req._r;
+        var r = req.r;
         var params = req.params;
 
         var form = new multiparty.Form();
@@ -38,7 +38,7 @@ class image {
     }
 
     downloadImage(req, res) {
-        var r = req._r;
+        var r = req.r;
         var params = req.params;
         // console.log(params)
 

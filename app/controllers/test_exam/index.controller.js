@@ -1,7 +1,7 @@
 class index{
 
     select_exam(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.query;
 
         r.db('lms').table('examination').get(params.id)

@@ -1,7 +1,7 @@
 class index{
 
     select_tagall(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.params;
 
         r.db('lms').table('question').group('tag').ungroup().concatMap(function(x){
@@ -17,7 +17,7 @@ class index{
     }
 
     select_examination(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.params;
 
         r.db('lms').table('examination')//.orderBy('time_insert')
@@ -31,7 +31,7 @@ class index{
     }
 
     select_examination_only(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.query;
 
         r.db('lms').table('examination').get(params.id)
@@ -52,7 +52,7 @@ class index{
     }
 
     insert_examination(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.body;
 
         r.db('lms').table('examination').insert(params)
@@ -75,7 +75,7 @@ class index{
     }
 
     update_examination(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.body;
 
         r.db('lms').table('examination').get(params.id).update(params)
@@ -89,7 +89,7 @@ class index{
     }
 
     delete_examination(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.query;
 
         r.db('lms').table('examination').get(params.id).delete()
@@ -103,7 +103,7 @@ class index{
     }
 
     random_examination(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.body;
         //r.db('lms').table('question').getAll(r.args(tags), {index: "tag"}).sample(2)
         r.expr(params).concatMap(function (row)  {

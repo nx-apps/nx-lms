@@ -1,7 +1,7 @@
 class index{
 
     select_student(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.params;
 
         r.db('lms').table('student')
@@ -15,7 +15,7 @@ class index{
     }
 
     insert_student(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.body;
 
         r.db('lms').table('student').insert(params)
@@ -29,7 +29,7 @@ class index{
     }
 
     update_student(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.body;
 
         r.db('lms').table('student').get(params.id).update(params)
@@ -43,7 +43,7 @@ class index{
     }
 
     delete_student(req,res){
-        var r = req._r;
+        var r = req.r;
         var params = req.query;
 
         r.db('lms').table('student').get(params.id).delete()

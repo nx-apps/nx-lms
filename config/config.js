@@ -10,8 +10,9 @@ var config = {
       servers: [
         {host: 'rdb.codeunbug.com', port: 28015}
       ],
-      db:'lms'
+      db:'oauth'
     },
+
     oauth:{
        local:{
          provider:'local'
@@ -29,7 +30,30 @@ var config = {
          callbackURL:'http://localhost:8080/oauth/google/callback'
        }
      },
-     java:true
+     java:true,
+     jdbc:[
+       {
+         name:"mysql",
+         driver:"com.mysql.jdbc.Driver",
+         url:"jdbc:mysql://db.codeunbug.com:3306/rmut_expert_db",
+         user:"test",
+         password:"If1C5B13eeNWvyCr"
+       },
+        {
+         name:"mssql",
+         driver:"com.microsoft.sqlserver.jdbc.SQLServerDriver",
+         url:"jdbc:sqlserver://202.44.34.86:1433;databaseName=RiceDB",
+         user:"riceuser",
+         password:"l2ice2015"
+       },
+        {
+         name:"oracle",
+         driver:"oracle.jdbc.OracleDriver",
+         url:"jdbc:oracle:thin:@25.32.200.27:1521:gl3d",
+         user:"wzeB505",
+         password:"acreporter"
+       }
+     ]
   },
 
   production: {
