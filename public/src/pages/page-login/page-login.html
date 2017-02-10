@@ -1,0 +1,29 @@
+
+<dom-module id="page-login">
+    <template>
+        <div style="padding:20px;">
+            <paper-input label="Username" value="{{formLogin.user}}"></paper-input>
+            <paper-input label="Password" value="{{formLogin.pass}}"></paper-input><br>
+            <paper-button class="gl-bg-success" on-tap="signin" raised>Signin</paper-button>
+        </div>
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'page-login',
+            behaviors: [ReduxBehavior,authAction],
+            properties:{
+                formLogin:{
+                    type:Object,
+                    value:{
+                        user:'test',
+                        pass:'1234'
+                    }
+                }
+            },
+            signin:function(){
+                this.AUTH_LOGIN(this.formLogin);
+            }
+        });
+    </script>
+</dom-module>

@@ -23,6 +23,7 @@
     "axios": "^0.15.3",
     "js-sha1": "^0.4.1",
     "jsonwebtoken": "^7.2.1",
+    "jwt-decode": "^2.1.0",
     "multiparty": "^4.1.2",
     "polymer-redux": "^0.3.0",
     "redux": "^3.6.0"

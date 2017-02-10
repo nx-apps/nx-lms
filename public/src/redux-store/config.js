@@ -51,3 +51,5 @@ export function dispachActionBehavior(){
         }
     }
 }
+
+export const baseURL = `https://${window.location.hostname}:${location.port}`;

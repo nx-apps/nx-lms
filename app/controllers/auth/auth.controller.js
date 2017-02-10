@@ -20,8 +20,22 @@ class auth{
         .catch((err)=>{
             res.status(500).json(err);
         })
-
     }
+    
+    checkToken(req,res){
+        if(req.body.token){
+            jwt.verify(req.body.token,SECRET_KEY,function(err,decode){
+                if(err){
+                    res.status(401).json(err);
+                }else{
+                    res.json(decode);
+                }
+            });
+        }else{
+            res.status(401).json({error:'Unauthorized'});
+        }
+    }
+    
 }
 
 module.exports = new auth();

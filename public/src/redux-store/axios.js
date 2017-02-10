@@ -1,5 +1,6 @@
 import {create} from 'axios'
+import {baseURL} from './config'
 
 export default create({
-    baseURL:`https://${window.location.hostname}:${location.port}/api`
+    baseURL:baseURL+'/api'
 });
