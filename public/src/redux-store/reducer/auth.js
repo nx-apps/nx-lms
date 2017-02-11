@@ -29,12 +29,29 @@ export function authAction(store){
             AUTH_LOGIN:function(formLogin){
                 axios.post('./auth/login',{username:formLogin.user,password:formLogin.pass})
                 .then((response)=>{
+
+
                     localStorage.setItem("token",response.data.token);
                     store.dispatch({type:'AUTH_SET_USER',payload:response.data})
+
+                    let userInfo;
+                    if(response.data.token){
+                        userInfo = jwtDecode(response.data.token)
+                    }else{
+                        userInfo = response.data;
+                    }
+
+                    if(userInfo.role=="teacher"){
+                        this.fire('nylon-change-page',{path:'/examRoom'})
+                    }else{
+                        this.fire('nylon-change-page',{path:'/examHistory'})
+                    }
+
                 })
                 .catch((error)=>{
-                    console.log('error');
+                    //console.log('error');
                     console.log(error);
+                    alert('error')
                 });
             }
         }
