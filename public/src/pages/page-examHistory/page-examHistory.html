@@ -1,0 +1,44 @@
+
+<link rel="import" href="./components/examHistory-list.html">
+<link rel="import" href="./components/examHistory-tabs.html">
+
+<dom-module id="page-examHistory">
+    <template>
+        <style include="page-style tabs-style">
+              paper-tabs{
+                --paper-tabs:{
+                    background-color:white;
+                    border-bottom:1px solid #ddd;
+                }
+            }
+        </style>
+        <div class="xcontainer">
+            <div class="header gl-large">รายการข้อสอบ</div>
+            <div class="container">
+            <paper-material elevation="1">
+                <paper-tabs selected="{{selected}}">
+                    <paper-tab>รายชื่อข้อสอบ (ยังไม่ได้ทำ)</paper-tab>
+                    <paper-tab>รายชื่อข้อสอบ (ทำเสร็จแล้ว)</paper-tab>
+                  
+                </paper-tabs>
+            <iron-pages selected="{{selected}}">
+                <section><examHistory-list></examHistory-list></section>
+                <section></section>
+            </iron-pages>
+            </paper-material>
+            </div>
+            
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-examHistory',
+            properties:{
+                selected:{
+                    type:String,
+                    value:'0'
+                }
+            }
+        });
+    </script>
+</dom-module>

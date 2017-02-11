@@ -1,5 +1,5 @@
 
-<dom-module id="examRoom-list"> 
+<dom-module id="examHistory-list">
     <template>
         <style include="page-style">
             tbody>tr>td{
@@ -10,8 +10,7 @@
                 border-bottom: 2px solid dodgerblue;
             }
         </style>
-            
-            <paper-material elevation="1">
+         <div class="container bgWhite">
             <table class="gl-table-default">
                 <thead>
                     <tr>
@@ -26,11 +25,11 @@
                     </tr>
                 </tbody>
             </table>
-              </paper-material>
+         </div>
     </template>
     <script>
         Polymer({
-            is: 'examRoom-list'
+            is: 'examHistory-list'
         });
     </script>
 </dom-module>
