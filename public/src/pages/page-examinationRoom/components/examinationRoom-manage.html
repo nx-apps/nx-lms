@@ -30,7 +30,7 @@
     <script>
         Polymer({
             is: 'examinationRoom-manage',
-            behaviors: [ReduxBehavior,dispachActionBehavior],
+            behaviors: [ReduxBehavior,dispatchActionBehavior],
             properties:{
                dataSelect:{
                     statePath:'examinationRoom.dataSelect'
@@ -45,10 +45,10 @@
                 }
             },
             saveData:function(){
-                this.dispachAction('EXAMINATION_ROOM_INSERT',this.dataSelect);
+                this.dispatchAction('EXAMINATION_ROOM_INSERT',this.dataSelect);
             },
             updateData:function(){
-                this.dispachAction('EXAMINATION_ROOM_UPDATE',this.dataSelect);
+                this.dispatchAction('EXAMINATION_ROOM_UPDATE',this.dataSelect);
             },
             confirmDelete:function(){
                 this.fire('toast',{ 
@@ -59,7 +59,7 @@
             },
             deleteData:function(check){
                 if(check == true){
-                     this.dispachAction('EXAMINATION_ROOM_DELETE',this.dataSelect.id);
+                     this.dispatchAction('EXAMINATION_ROOM_DELETE',this.dataSelect.id);
                 }
             }
   

@@ -28,9 +28,9 @@ export function commonAction(){
     }
 }
 
-export function dispachActionBehavior(){
+export function dispatchActionBehavior(){
     return {
-        dispachAction:function(){
+        dispatchAction:function(){
             return new Promise((reslove,reject)=>{
                 this.fire('method',{
                     args:arguments,

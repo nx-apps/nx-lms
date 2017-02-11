@@ -1,6 +1,6 @@
 import {createStore,combineReducers} from 'redux'
 import PolymerRedux from 'polymer-redux'
-import {dispachActionBehavior} from './config'
+import {dispatchActionBehavior} from './config'
 import {handleAuth} from './auth'
 
 import {authReducer,authAction} from './reducer/auth'
@@ -24,7 +24,7 @@ const storeApp = createStore(
 );
 
 window.ReduxBehavior = PolymerRedux(storeApp);
-window.dispachActionBehavior = dispachActionBehavior();
+window.dispatchActionBehavior = dispatchActionBehavior();
 
 handleAuth();
 
