@@ -5,7 +5,6 @@ class index{
         var params = req.query;
 
         r.db('lms').table('examination').get(params.id)
-        //r.db('lms').table('examination').get('68696620-91d5-4ab3-b901-7f623d6e8463')
         .merge(function(x){
             return {
                 question:x('question').merge(function(q){
