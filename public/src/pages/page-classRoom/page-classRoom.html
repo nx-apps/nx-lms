@@ -23,6 +23,7 @@
                 <div class="flexchild">
                     <classRoom-list></classRoom-list>
                 </div>
+                [[aaa]]
                 <div></div>
             </div>
         </div>
@@ -34,14 +35,23 @@
     <script>
         Polymer({
             is: 'page-classRoom',
+            behaviors:[classRoomAction,dispachActionBehavior],
             listeners:{
                 'select-data':'selectData'
             },
+            ready:function(){
+                this.dispachAction('TEST_A',['a','b'])
+                .then((res)=>{
+                    console.log(res);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+            }, 
             selectData:function(e){
                 this.title = 'แก้ไข';
                 this.status = 'add';
                 this.$$('panel-right').open();
-                console.log(e.detail);
             },
             openPanelRight:function(){
                 this.title = 'เพิ่ม';

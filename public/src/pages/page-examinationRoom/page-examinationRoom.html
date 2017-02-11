@@ -1,9 +1,9 @@
 <link rel="import" href="./../components/panel-right/panel-right.html">
-<link rel="import" href="./components/quota-list.html">
-<link rel="import" href="./components/data-manage.html">
+<link rel="import" href="./components/examinationRoom-list.html">
+<link rel="import" href="./components/examinationRoom-manage.html">
 
 
-<dom-module id="page-quota">
+<dom-module id="page-examinationRoom">
 	<template>
 		<style is="custom-style" include="gl-size gl-color gl-table">
 			* {
@@ -91,19 +91,18 @@
 			</div>
 
 			<div class="container">
-				<quota-list data="{{dataList}}" on-data-select="_onDataSelect"></quota-list>
+				<examinationRoom-list data="{{dataList}}" on-data-select="_onDataSelect"></examinationRoom-list>
 			</div>
 
 		</div>
-
 		<panel-right title="จัดการข้อมูล" set-width="70%">
-				<data-manage name="[[name]]" status="[[status]]"></data-manage>
+				<examinationRoom-manage name="[[name]]" status="[[status]]"></examinationRoom-manage>
 		</panel-right>
 	</template>
 	<script>
     Polymer({
-      is: 'page-quota',
-      behaviors: [nylonBehavior,ReduxBehavior],
+      is: 'page-examinationRoom',
+      behaviors: [nylonBehavior,examinationRoomAction],
 			listeners:{
 				'select-data' : '_selectData',
 				'close' : '_close'
@@ -114,11 +113,11 @@
 			},
 			_insertData:function(){
 				this.status = 'insert';
-				this.name = {};
+				this.EXAMINATION_ROOM_CLEAR_DATA_SELECT();
 				this.$$('panel-right').open();
 			},
 			_selectData:function(e){
-				console.log(e.detail);
+				// console.log(e.detail);
 				this.name = e.detail;
 				this.status = 'update'
 				this.$$('panel-right').open();
