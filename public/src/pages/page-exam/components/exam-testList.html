@@ -1,0 +1,62 @@
+
+<link rel="import" href="./../../page-question/components/show-image.html">
+
+<dom-module id="exam-testList">
+    <template>
+        <style include="page-style">
+            paper-radio-button{
+                --paper-radio-button-size:22px;
+            }
+        </style>  
+        <paper-material elevation="1">
+            <table class="gl-table-default">
+                
+                <thead>
+                    <tr>
+                        <th style="width: 10%">ข้อที่ [[index]]</th>
+                        <th>
+                            [[data.topic]]
+                            <br>
+                             <show-image image-id="[[data.image_id]]"></show-image>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>   
+                    <template is="dom-repeat" items="{{data.choice}}">
+                        <tr>
+                            <td>
+                                <paper-radio-button checked="{{item.checked}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
+                            </td>
+                            <td>
+                                [[item.choice]]
+                                <br> 
+                                <show-image image-id="[[item.image_id]]"></show-image>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </paper-material>
+    </template>
+    <script>
+        Polymer({
+            is: 'exam-testList',
+            ready:function(){
+                // this.data.choice.map((item,i)=>{
+                //     this.set('data.choice.'+i+'.checked',false);
+                // }); 
+            },
+            selectRadio:function(e){
+                if(typeof this.data.choice !=="undefined"){
+                    this.data.choice.map((row,i)=>{
+                        if(i===e.currentTarget.index){
+                            this.set('data.choice.'+i+'.checked',true)
+                        }else{
+                            this.set('data.choice.'+i+'.checked',false)
+                        }
+                    })
+                }
+            }
+        });
+    </script>
+</dom-module>
