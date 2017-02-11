@@ -1,0 +1,27 @@
+
+<link rel="import" href="./components/examRoom-tabs.html">
+<link rel="import" href="./components/examRoom-manage.html">
+
+<dom-module id="page-examRoom">
+    <template>
+        <style include="page-style"></style>
+        <div class="container">
+            <div class="header  gl-large">จัดการห้องสอบ</div>
+            <div class="container">
+                <examRoom-tabs></examRoom-tabs>
+            </div>
+        </div>
+        <panel-right title="สร้างห้องสอบ">
+            <examRoom-manage></examRoom-manage>
+        </panel-right>
+        <paper-fab icon="add" on-tap="openPanelRight"></paper-fab>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-examRoom',
+            openPanelRight:function(){
+                this.$$('panel-right').open();
+            }
+        });
+    </script>
+</dom-module>

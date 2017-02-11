@@ -1,0 +1,35 @@
+
+<dom-module id="examRoom-list"> 
+    <template>
+        <style include="page-style">
+            tbody>tr>td{
+                 cursor: pointer;
+            }
+            tbody>tr:hover{
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+        </style>
+        <div class="container bgWhite">
+            <table class="gl-table-default">
+                <thead>
+                    <tr>
+                        <th style="width:10%">#</th>
+                        <th>รายชื่อข้อสอบ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>test</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'examRoom-list'
+        });
+    </script>
+</dom-module>

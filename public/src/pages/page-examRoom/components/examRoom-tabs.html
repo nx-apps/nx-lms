@@ -1,0 +1,39 @@
+
+<link rel="import" href="./examRoom-list.html">
+
+<dom-module id="examRoom-tabs">
+    <template>
+        <style include="page-style tabs-style">
+            paper-tabs{
+                --paper-tabs:{
+                    background-color:white;
+                    border-bottom:1px solid #ddd;
+                }
+            }
+        </style>
+        <!--#95bf31;-->
+        <paper-material elevation="1">
+                <paper-tabs selected="{{selected}}" align-bottom>
+                    <paper-tab>TAB 1</paper-tab>
+                    <paper-tab>TAB 2</paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                </paper-tabs>
+            <iron-pages selected="{{selected}}">
+                <section><examRoom-list></examRoom-list></section>
+                <section></section>
+            </iron-pages>
+        </paper-material>
+    </template>
+    <script>
+        Polymer({
+            is: 'examRoom-tabs',
+            properties:{
+                selected:{
+                    type:String,
+                    value: '0'
+                }
+            }
+        });
+    </script>
+</dom-module>
