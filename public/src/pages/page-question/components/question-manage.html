@@ -1,5 +1,6 @@
 <link rel="import" href="upload-image.html">
 <link rel="import" href="show-image.html">
+<link rel="import" href="question-upload.html">
 
 <dom-module id="question-manage">
     <template>
@@ -24,7 +25,8 @@
             }
         </style>
         <div class="container">
-            <paper-button class="gl-btn-success" on-tap="uploadQuestion" raised>อัปโหลดคำถาม</paper-button>
+            
+            <question-upload></question-upload>
             <br /><br />
             <paper-material elevation="1">
                 <table class="gl-table-default">
@@ -109,7 +111,7 @@
                     if(row.checked) 
                     answer = i;
                 });
-                console.log(data);
+
                 data.answer = answer;
 
                 if(this.status == 'add') {
@@ -127,7 +129,7 @@
                 else if(this.status =='update'){
                     data.id = this.data.id;
                     this.fire('toast',{status:'load'});
-                    this.QUESTION_UPDATE(data)
+                    this.dispatchAction('QUESTION_UPDATE',data)
                     .then(()=>{
                     this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
                         callback:()=>{
@@ -150,7 +152,7 @@
             delData:function(result){
                 if(result == true){
                     this.fire('toast',{status:'load'});
-                    this.QUESTION_DELETE(this.data.id)
+                    this.dispatchAction('QUESTION_DELETE',this.data.id)
                     .then(()=>{
                     this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
                         callback:()=>{

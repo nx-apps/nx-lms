@@ -1,8 +1,8 @@
 
 <dom-module id="question-upload">
     <template>
-        <input id="image" type="file" on-change="imageChange" accept="image/*" hidden>
-        <paper-icon-button on-tap="selectImage" index="[[index]]" icon="perm-media"></paper-icon-button>
+        <paper-button class="gl-btn-success" on-tap="selectFile" raised>อัปโหลดคำถาม</paper-button>
+        <input id="file" type="file" on-change="fileChange" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/comma-separated-values, text/csv, application/csv" hidden>
     </template>
     <script>
         Polymer({
@@ -14,16 +14,16 @@
                     value:""
                 }
             },
-            behaviors:[questionAction],
-            selectImage:function(){
-                this.$.image.click();
+            behaviors:[dispatchActionBehavior],
+            selectFile:function(){
+                this.$.file.click();
             },
-            imageChange:function(e){
-                this.QUESTION_IMAGE(e.currentTarget.files)
+            fileChange:function(e){
+                this.dispatchAction('QUESTION_UPLOAD',e.currentTarget.files)
                 .then(res=>{
-                    this.imageId = res.data.generated_keys[0];
-                })
-                .catch(err=>{console.log(err)})
+                    console.log(res);
+                    alert('upload ok')
+                });
             }
         });
     </script>

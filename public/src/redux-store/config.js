@@ -4,7 +4,6 @@ export function commonAction(){
             'method':'handleCall'
         },
         handleCall:function(e){
-            
             var detail = e.detail;
             var args = detail.args;
             var callback = detail.callback;
