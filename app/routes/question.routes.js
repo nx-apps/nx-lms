@@ -6,4 +6,6 @@ module.exports = function(app){
     app.post('/question',index.insert_question);
     app.put('/question',index.update_question);
     app.delete('/question',index.delete_question);
+
+    app.post('/upload',index.uploadFile);
 }

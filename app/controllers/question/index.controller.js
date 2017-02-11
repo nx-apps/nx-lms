@@ -1,3 +1,9 @@
+var fs = require('fs');
+var path = require('path');
+var multiparty = require('multiparty');
+var stream = require('stream');
+
+
 class index{
 
     select_question(req,res){
@@ -79,6 +85,22 @@ class index{
         .catch(function(err){
             res.status(500).json(err);
         })
+    }
+
+    uploadFile(req,res){
+        var r = req.r;
+        var params = req.params;
+
+        var form = new multiparty.Form();
+        form.parse(req, function (err, fields, files) {
+
+            var prefile = files.file[0];
+
+            //Read file here.
+            console.log(prefile.path);
+            res.json({test:'okok'});
+
+        });
     }
 
 }
