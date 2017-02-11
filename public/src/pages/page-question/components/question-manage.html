@@ -4,7 +4,7 @@
 
 <dom-module id="question-manage">
     <template>
-        <style include="page-style">
+        <style include="page-style tabs-style">
             .question{
                 margin-top: 8px;
                 text-align: right;
@@ -24,71 +24,85 @@
                 @apply(--layout-end-justified);
             }
         </style>
-        <div class="container">
-            
-            <question-upload></question-upload>
-            <br /><br />
-            <paper-material elevation="1">
-                <table class="gl-table-default">
-                    <thead>
-                        <tr>
-                            <th style="width:10%;text-align: right; font-size: 18px;">คำถาม</th>
-                            <th>
-                                <gl-form-input placeholder="" no-label-float value="{{data.topic}}"></gl-form-input>
-                                <show-image image-id="[[data.image_id]]"></show-image>
-                            </th>
-                            <th>
-                                <upload-image image-id="{{data.image_id}}"></upload-image>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <template is="dom-repeat" items="{{data.choice}}">
-                            <tr>
-                                <td style="text-align: right;">
-                                    <paper-radio-button checked="{{item.checked}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
+        <paper-tabs selected="{{selected}}">
+            <paper-tab>เพิ่มคำถาม</paper-tab>
+            <paper-tab>อัพโหลดคำถาม</paper-tab>
+        </paper-tabs>
+        <iron-pages selected="{{selected}}">
+            <section>
+                <div class="container">
+                    <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%;text-align: right; font-size: 18px;">คำถาม</th>
+                                    <th>
+                                        <gl-form-input placeholder="" no-label-float value="{{data.topic}}"></gl-form-input>
+                                        <show-image image-id="[[data.image_id]]"></show-image>
+                                    </th>
+                                    <th>
+                                        <upload-image image-id="{{data.image_id}}"></upload-image>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template is="dom-repeat" items="{{data.choice}}">
+                                    <tr>
+                                        <td style="text-align: right;">
+                                            <paper-radio-button checked="{{item.checked}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
+                                        </td>
+                                        <td>
+                                            <gl-form-input placeholder="ตัวเลือกที่ [[cont(index)]]" no-label-float value="{{item.choice}}"></gl-form-input>
+                                            <show-image image-id="[[item.image_id]]"></show-image>
+                                        </td>
+                                        <td style="width:20%;text-align: center;">
+                                            <upload-image image-id="{{item.image_id}}"></upload-image>
+                                            <br>
+                                            <paper-icon-button on-tap="delChoice" index="[[index]]" icon="delete"></paper-icon-button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr on-tap="addChoice" style="cursor: pointer">
+                                <td></td>
+                                <td colspan="2" style="text-align: left;">
+                                        <iron-icon icon="add"></iron-icon>
+                                    เพิ่มตัวเลือก
                                 </td>
-                                <td>
-                                    <gl-form-input placeholder="ตัวเลือกที่ [[cont(index)]]" no-label-float value="{{item.choice}}"></gl-form-input>
-                                    <show-image image-id="[[item.image_id]]"></show-image>
-                                </td>
-                                <td style="width:20%;text-align: center;">
-                                    <upload-image image-id="{{item.image_id}}"></upload-image>
-                                    <br>
-                                    <paper-icon-button on-tap="delChoice" index="[[index]]" icon="delete"></paper-icon-button>
-                                </td>
-                            </tr>
-                        </template>
-                        <tr on-tap="addChoice" style="cursor: pointer">
-                           <td></td>
-                           <td colspan="2" style="text-align: left;">
-                                <iron-icon icon="add"></iron-icon>
-                               เพิ่มตัวเลือก
-                           </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </paper-material>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </paper-material>
 
-            <div style="margin: 15px 0px 15px 0px;">
-                <paper-material elevation="1">
-                    <div style="padding: 30px; background-color: white;">
-                        <div class="headPanel gl-default">Tag</div>
-                        <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{data.tag}}"></paper-tags-input>
+                    <div style="margin: 15px 0px 15px 0px;">
+                        <paper-material elevation="1">
+                            <div style="padding: 30px; background-color: white;">
+                                <div class="headPanel gl-default">Tag</div>
+                                <paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{data.tag}}"></paper-tags-input>
+                            </div>
+                        </paper-material>
                     </div>
-                </paper-material>
-            </div>
             <div class="flex-end-justified" style="margin-top: 10px;">
                 <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
                 <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
             </div>
-        </div>
+            </div>
+            </section>
+             <section>
+                    <question-upload></question-upload>
+            </section>
+        </iron-pages>
         
     </template>
     <script>
         Polymer({
             is: 'question-manage',
             behaviors:[dispatchActionBehavior],
+            properties:{
+                selected:{
+                    typeo: String,
+                    value: '0'
+                }
+            },
             cont:function(index){
                 return index+1;
             },
