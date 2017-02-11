@@ -1,12 +1,30 @@
 
 <dom-module id="page-login">
     <template>
-        <div style="padding:20px;">
-            <paper-input label="Username" value="{{formLogin.user}}"></paper-input>
-            <paper-input label="Password" value="{{formLogin.pass}}"></paper-input><br>
-            <paper-button class="gl-bg-success" on-tap="signin" raised>Signin</paper-button>
-        </div>
-        
+        <style include="page-style flex-style">
+            paper-material{
+                width: 50%;
+                height: auto;
+            }
+            paper-button{
+                width: 100%;
+            }
+        </style>
+            <div class="container flex-center-justified">
+                <paper-material elevation="1">   
+                <div class="container bgWhite">
+                    <div class="container flex-center-justified">
+                        <img src="./../../../images/icon/green/app-icon-128.png"></img>
+                    </div>
+                    <div class="header">PENGUIN</div>
+                    <gl-form-input label="Username" value="{{formLogin.user}}"></gl-form-input>
+                    <gl-form-input label="Password" type="Password" value="{{formLogin.pass}}"></gl-form-input>
+                    <div class="flex-end-justified" style="margin-top: 20px">
+                        <paper-button class="gl-bg-primary" on-tap="signin" raised>เข้าสู่ระบบ</paper-button>
+                    </div>
+                </div>
+                </paper-material>
+            </div>
     </template>
     <script>
         Polymer({

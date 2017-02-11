@@ -50,7 +50,7 @@ export function authAction(store){
                 })
                 .catch((error)=>{
                     //console.log('error');
-                    console.log(error);
+                    console.log({error});
                     alert('error')
                 });
             }
