@@ -24,6 +24,8 @@
             }
         </style>
         <div class="container">
+            <paper-button class="gl-btn-success" on-tap="uploadQuestion" raised>อัปโหลดคำถาม</paper-button>
+            <br /><br />
             <paper-material elevation="1">
                 <table class="gl-table-default">
                     <thead>
@@ -84,7 +86,7 @@
     <script>
         Polymer({
             is: 'question-manage',
-            behaviors:[questionAction],
+            behaviors:[dispatchActionBehavior],
             cont:function(index){
                 return index+1;
             },
@@ -112,7 +114,7 @@
 
                 if(this.status == 'add') {
                     this.fire('toast',{status:'load'});
-                    this.QUESTION_INSERT(data)
+                    this.dispatchAction('QUESTION_INSERT',data)
                     .then(()=>{
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                             callback:()=>{

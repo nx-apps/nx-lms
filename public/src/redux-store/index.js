@@ -1,6 +1,6 @@
 import {createStore,combineReducers} from 'redux'
 import PolymerRedux from 'polymer-redux'
-import {dispachActionBehavior} from './config'
+import {dispatchActionBehavior} from './config'
 import {handleAuth} from './auth'
 
 import {authReducer,authAction} from './reducer/auth'
@@ -17,14 +17,13 @@ const rootReducer = combineReducers({
     classRoom:classRoomReducer,
     examinationRoom:examinationRoomReducer
 });
-
 const storeApp = createStore(
     rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
 window.ReduxBehavior = PolymerRedux(storeApp);
-window.dispachActionBehavior = dispachActionBehavior();
+window.dispatchActionBehavior = dispatchActionBehavior();
 
 handleAuth();
 

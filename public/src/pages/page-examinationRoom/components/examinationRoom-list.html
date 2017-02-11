@@ -32,7 +32,7 @@
     <script>
         Polymer({
             is: 'examinationRoom-list',
-            behaviors: [ReduxBehavior,dispachActionBehavior],
+            behaviors: [ReduxBehavior,dispatchActionBehavior],
             properties:{
                 dataList:{
                     statePath:'examinationRoom.dataList'
@@ -40,10 +40,10 @@
             },
             ready:function(){
                  //this.EXAMINATION_ROOM_GET_LIST();
-                 this.dispachAction('EXAMINATION_ROOM_GET_LIST');
+                 this.dispatchAction('EXAMINATION_ROOM_GET_LIST');
             },
              _selectData:function(e){
-                this.dispachAction('EXAMINATION_ROOM_SELECT',e.currentTarget.data);
+                this.dispatchAction('EXAMINATION_ROOM_SELECT',e.currentTarget.data);
                 this.fire('select-data',e.currentTarget.data);
             },
             getList:function(item){

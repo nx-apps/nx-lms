@@ -35,12 +35,12 @@
     <script>
         Polymer({
             is: 'page-classRoom',
-            behaviors:[classRoomAction,dispachActionBehavior],
+            behaviors:[classRoomAction,dispatchActionBehavior],
             listeners:{
                 'select-data':'selectData'
             },
             ready:function(){
-                this.dispachAction('TEST_A',['a','b'])
+                this.dispatchAction('TEST_A',['a','b'])
                 .then((res)=>{
                     console.log(res);
                 })

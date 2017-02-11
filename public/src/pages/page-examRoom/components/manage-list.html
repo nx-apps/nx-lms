@@ -42,7 +42,7 @@
     <script>
         Polymer({
             is: 'manage-list',
-            behaviors:[ReduxBehavior,dispachActionBehavior],
+            behaviors:[ReduxBehavior,dispatchActionBehavior],
             // observers:['checkStatus(dataList.*)'],
             properties:{
                 dataList:{
@@ -51,7 +51,7 @@
                 }
             },
             ready:function(){
-                this.dispachAction('CLASSROOM_GET_LIST');
+                this.dispatchAction('CLASSROOM_GET_LIST');
             },
             setData:function(){
                 this.dataList.map((item,index)=>{
