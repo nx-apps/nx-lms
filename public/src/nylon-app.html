@@ -59,13 +59,12 @@
                 '_routePageChanged(routeData.page)'
             ],
             _routePageChanged: function(page) {
-                this.page = page || window._start_page ;
+                this.page = page;
             },
             _pageChanged: function(page, oldPage) {
                 if (page != null) {
-                    console.log(page, oldPage);
-                   
-                    const loadPage = () => {
+
+                    const loadPage = (page) => {
                         this.importHref(
                             this.resolveUrl('/src/pages/page-' + page + '/page-' + page + '.html'),
                             ()=>{
@@ -84,6 +83,18 @@
 
                     
                     setTimeout(()=>{
+
+                        if(this.page==""){
+                            
+                            if(this.user.role=="teacher"){
+                                this.page = 'examRoom';
+                            }else{
+                                this.page = 'examHistory';
+                            }
+                            
+                        }
+
+
                         //console.log(this.user);
                         var pageRole = {
                             question:['teacher'],
@@ -100,19 +111,19 @@
 
                                 console.log('pass')
                                 if(pass){
-                                    loadPage();
+                                    loadPage(this.page);
                                 }else{
                                     this._routePageChanged('403');
                                 }
                             }else{
-                                loadPage();
+                                loadPage(this.page);
                             }
                         }else{
                             if(pageRole[page]){
                                 if(pageRole[page].length != 0)
                                 this._routePageChanged('401');
                             }else{
-                                loadPage();
+                                loadPage(this.page);
                             }
                         }
 
