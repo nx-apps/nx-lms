@@ -9,6 +9,9 @@
             paper-button{
                 width: 100%;
             }
+            .title{
+                text-align: center;
+            }
         </style>
             <div class="xcontainer container flex-center-justified">
                 <paper-material elevation="1">   
@@ -16,7 +19,7 @@
                     <div class="container flex-center-justified">
                         <img src="./../../../images/icon/green/app-icon-128.png"></img>
                     </div>
-                    <div class="header">PENGUIN</div>
+                    <div class="title gl-default">PENGUIN</div>
                     <gl-form-input label="Username" value="{{formLogin.user}}"></gl-form-input>
                     <gl-form-input label="Password" type="Password" value="{{formLogin.pass}}"></gl-form-input>
                     <div class="flex-end-justified" style="margin-top: 20px">
