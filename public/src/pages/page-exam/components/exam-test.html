@@ -1,0 +1,97 @@
+<link rel="import" href="./exam-testList.html">
+<link rel="import" href="/src/nylon-param.html">
+
+<dom-module id="exam-test">
+    <template>
+        <nylon-param params="{{getParam}}" pattern="exId"></nylon-param>
+        
+        <style include="page-style"></style>
+        <div class="xcontainer">
+            <div class="header gl-large">แบบทดสอบ</div>
+            <paper-material elevation="1">
+                 <table class="gl-table-default">
+                    <thead>
+                        <tr class="hideBorder">
+                            <th style="width:20%;text-align: right; font-size: 18px;">ชื่อข้อสอบ</th>
+                            <th><gl-form-input placeholder="" no-label-float value="[[dataList.ex_name]]" disabled></gl-form-input></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th style="width:20%;text-align: right; font-size: 18px;">คำอธิบาย</th>
+                            <th><gl-form-textarea placeholder="" no-label-float value="[[dataList.description]]" disabled></gl-form-textarea></th>
+                             <th></th>
+                        </tr>
+                    </thead>
+                    <template is="dom-if" if={{!stat}}>
+                    <tbody>
+                        <tr>
+                            <td colspan="3">ไม่พบข้อมูล</td>
+                        </tr>
+                    </tbody>
+                     </template>
+                 </table>
+            </paper-material>
+            
+            <template is="dom-if" if="{{stat}}">
+                <template is="dom-repeat" items="[[dataList.question]]">
+                    <exam-testList data="[[item]]" index="[[cont(index)]]"></exam-testList>
+                   
+                </template>
+            </template>
+            
+        </div>
+         <paper-fab icon="icons:send" title="ส่งข้อสอบ" on-tap="confirmToast"></paper-fab>
+    </template>
+    <script>
+        Polymer({
+            is: 'exam-test',
+            behaviors:[ReduxBehavior,examinationAction],
+            observers:['getTest(getParam.exId)'],
+            properties:{
+                 dataList:{
+                    statePath:'examination.dataTest'
+                }
+            },
+            getTest:function(id){
+                this.stat = true;
+                this.EXAMINATION_GET_DATA_TEST(id);
+            },
+            cont:function(index){
+                return index+1;
+            },
+            confirmToast:function(){
+                this.fire('toast',{ 
+                 status:'openDialog',
+                 text:'ต้องการส่งแบบทดสอบใช่หรือไม่ ?',
+                 confirmed:this.openToast.bind(this), 
+                 })
+            },
+            openToast:function(check){
+                var answer = this.dataList.question.map((item)=>{
+                    return item.answer;
+
+                })
+                
+                var check;
+                var sum=0;
+                var ch = [];
+                 for(var i = 0; i< this.dataList.question.length; i++){
+                     for(var a = 0; a< this.dataList.question[i].choice.length; a++){
+                        if(this.dataList.question[i].choice[a].checked==true){
+                            ch[i] = a;
+                        }
+                     }
+                }
+                
+                for(var i=0;i < answer.length;i++){
+                    if(answer[i]==ch[i]) {
+                        sum = sum + 1; 
+                    }
+                    console.log(answer[i],ch[i]);
+                }
+                console.log(sum);
+            }
+
+        });
+    </script>
+</dom-module>

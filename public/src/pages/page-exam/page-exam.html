@@ -1,0 +1,54 @@
+
+<link rel="import" href="./components/exam-list.html">
+
+<dom-module id="page-exam">
+    <template>
+        <style include="page-style">
+            paper-tabs{
+                --paper-tabs-selection-bar-color:#95bf31;
+            }
+            paper-tab{
+                --paper-tab-content:{
+                    font-size: 16px;
+                    color:#95bf31;
+                    padding: 0px -20px 0px -20px;
+                    margin: 0px -20px 0px -20px;
+                }
+                --paper-tab-content-unselected:{
+                    color:#7B7D7D;
+                }
+            }
+        </style>
+        <div class="bgWhite">
+             <div class="xcontainer">
+            <div class="header gl-large">รายการข้อสอบ</div>
+                <paper-tabs selected="{{selected}}">
+                    <paper-tab class="fontCSC">รายชื่อข้อสอบ (ยังไม่ได้ทำ)</paper-tab>
+                    <paper-tab class="fontCSC">รายชื่อข้อสอบ (ทำเสร็จแล้ว)</paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                </paper-tabs>
+             </div>
+             </div>
+            </div>
+            <div class="xcontainer">
+                <iron-pages selected="{{selected}}">
+                    <section><exam-list></exam-list></section>
+                    <section></section>
+                </iron-pages> 
+            </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-exam',
+            properties:{
+                selected:{
+                    type:String,
+                    value:'0'
+                }
+            }
+        });
+    </script>
+</dom-module>
