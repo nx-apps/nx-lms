@@ -43,6 +43,10 @@
     <script>
         Polymer({
             is: 'page-examHistory',
+            behaviors:[examHistoryAction],
+            ready:function(){
+                this.EXAM_HISTORY_EXAM_LIST();
+            },
             properties:{
                 selected:{
                     type:String,
