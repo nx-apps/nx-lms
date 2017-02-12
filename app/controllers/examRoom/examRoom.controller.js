@@ -19,6 +19,24 @@ class examRoom {
     }
 
 
+    getLearnerList(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('user').filter({role:'learner'})
+        .pluck('id','name')
+        .coerceTo('array')
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+        
+    }
+
+
 
 }
 
