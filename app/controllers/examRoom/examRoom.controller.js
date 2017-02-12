@@ -51,6 +51,20 @@ class examRoom {
         })
     }
 
+    selectExamRoom(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_room').filter({id:params.id})
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
     insertExamRoom(req,res){
         var r = req.r;
         var params = req.body;
@@ -76,7 +90,7 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').get(params.exam_room_id).delete()
+        r.db('lms').table('exam_room').get(params.id).delete()
         .run()
         .then(function(result){
             res.json(result);
