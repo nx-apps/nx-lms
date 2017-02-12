@@ -20,13 +20,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <template is="dom-repeat" items="[[data]]">
+                        <template is="dom-repeat" items="{{data}}" filter="{{computeFilter(active)}}">
                             <tr>
                                 <td>
-                                    <iron-icon icon="[[icon]]" index="[[index]]" on-tap="controller"></iron-icon>
+                                    <iron-icon icon="[[icon]]" index="[[index]]" item="[[item]]" on-tap="controller"></iron-icon>
                                 </td>
                                 <td>
-                                    [[item.name]] [[item.check]]
+                                    [[item.name]]
                                 </td>
                             </tr>
                         </template>
@@ -38,39 +38,59 @@
     <script>
         Polymer({
             is: 'student-list',
-            observers: ['setData(data.*)'],
-            behaviors: [ReduxBehavior,dispatchActionBehavior],
             properties:{
                 active:{
-                    type:String,
+                    type:String
                 },
+                data:{
+                    type:Array,
+                    value:[],
+                    notify:true
+                }
+            },
+            computeFilter:function(string){
+                if (!string) {
+                    return null;
+                } else {
+                    return function(row) {
+                        if(string=="join"){
+                            console.log(row);
+                            return (row.check == false) || (typeof row.check == "undefined")
+                        }else{
+                            return (row.check == true)
+                        }
+                        
+                    };
+                }
             },
             controller:function(e){
                 switch (this.active) {
                     case 'join':
-                        this.fire('join-student',e.target.index)
+                        e.currentTarget.item.check = true;
+                        break;
                     case 'cancel':
-                         this.fire('cancel-student',e.target.index)
+                        e.currentTarget.item.check = false;
+                        break;
                     default:
                         break;
                 }
+                this.data = [].concat(this.data);
             },
-            setData:function(){
-                if(this.data.length != 0){
-                    if(this.active == 'join'){
-                       this.datalist = this.data.filter((item)=>{
-                            return item.check == true;
-                        })
-                        console.log(this.datalist)
-                        // this.datalist = this.data.filter(function(item){
-                        //     return item.check == true;
-                        // })
-                        console.log('1234');
-                        // console.log(this.dataList);
+            getValue:function(){
+                this.data.map((item)=>{
+                    if(typeof item.check == 'undefined'){
+                        item.check = false;
                     }
-                }
-               
-            }   
+                    return item.check 
+                })
+                var data = this.data.filter((item)=>{
+                    return item.check == true;
+                })
+                var newData = data.map((item)=>{
+                    return item.id;
+                })
+                return newData;
+            }
         });
     </script>
 </dom-module>

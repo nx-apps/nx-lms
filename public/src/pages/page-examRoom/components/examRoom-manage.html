@@ -1,6 +1,5 @@
 
 <link rel="import" href="./student-list.html">
-<link rel="import" href="./manage-list.html">
 
 <dom-module id="examRoom-manage">
     <template>
@@ -20,7 +19,7 @@
                             ชื่อห้องสอบ
                         </div>
                         <div class="flex3child" style="text-align: left">
-                            <gl-form-input class"width" no-label-float></gl-form-input>
+                            <gl-form-input class"width" value="{{data.name}}" no-label-float></gl-form-input>
                         </div>
                         <div class="flexchild"></div>
                     </div>
@@ -30,7 +29,7 @@
                             เลือกข้อสอบ
                         </div>
                         <div class="flex3child" style="text-align: left">
-                            <gl-combo-box class"width" no-label-float items="[[examList]]" item-label-path="ex_name" item-value-path="id" value=""></gl-combo-box>
+                            <gl-combo-box class"width" no-label-float items="[[examList]]" item-label-path="ex_name" item-value-path="id" value="{{data.examination_id}}"></gl-combo-box>
                         </div>
                         <div class="flexchild"></div>
                     </div>
@@ -40,21 +39,23 @@
                             กำหนดเวลา
                         </div>
                         <div class="flexchild" style="text-align: left">
-                            <gl-form-input class"width" type="number" no-label-float>
+                            <gl-form-input class"width" type="number" no-label-float value="{{data.time}}">
                                 <div suffix>นาที</div>
                             </gl-form-input>
                         </div>
-                        <div class="flex3child"></div>
+                        <div class="flex3child">
+                            <paper-button raised>switch</paper-button>
+                        </div>
                     </div>
                 </div>
             </paper-material>
             <div class="flex-equal-around-justified">
                 <div>
-                    <!--<student-list data="[[studentList]]" icon="clear" active="cancel"></student-list>-->
+                    <student-list id="cancel" data="{{studentList}}" icon="clear" active="cancel"></student-list>
                     <!--<manage-list></manage-list>-->
                 </div>
                 <div>
-                    <student-list data="[[studentList]]" icon="add" active="join"></student-list>
+                    <student-list id="join" data="{{studentList}}" icon="add" active="join"></student-list>
                     <!--<manage-list></manage-list>-->
                 </div>
             </div>
@@ -64,7 +65,7 @@
                 <paper-button class="gl-btn-danger" raised>ยกเลิก</paper-button>
             </div>
             <div>
-                <paper-button class="gl-btn-success" raised>บันทึก</paper-button>
+                <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
             </div>
         </div>
     </template>
@@ -85,9 +86,12 @@
                     statePath:'examRoom.examList'
                 },
                 studentList:{
-                    statePath:'examRoom.studentList',
-                    observer:'setStudentList'
+                    statePath:'examRoom.studentList'
                 },
+                data:{
+                    type:Object,
+                    value:{}
+                }
             },
             ready:function(){
                 this.dispatchAction('EXAMROOM_GET_STUDENT_LIST');
@@ -95,26 +99,10 @@
             getExamList:function(id){
                 this.dispatchAction('EXAMROOM_GET_EXAM_LIST',this.user.id);
             },
-            setStudentList:function(){
-                this.studentList.map((item)=>{
-                    return item.check = true;
-                })
-            },
-            // fillterStudent:function(){
-            //     this.joinStundent = this.studentList.filter((item)=>{
-            //         return item.check == true;
-            //     })
-            //     this.cancelStudnet = this.studentList.filter((item)=>{
-            //         return item.check == false;
-            //     })
-            // },
-            joinStudent:function(e){
-                this.set('studentList.'+e.detail+'.check',false);
-            },
-            cancelStudent:function(e){
-                this.set('studentList.'+e.detail+'.check',true);
-                // this.set('cancelStudnet.'+e.detail+'.check',true);
-                // this.fillterStudent();
+            getForm:function(){
+                this.data.time = parseInt(this.data.time);
+                this.data.learner = this.$$('#cancel').getValue();
+                console.log(this.data);
             }
         });
     </script>
