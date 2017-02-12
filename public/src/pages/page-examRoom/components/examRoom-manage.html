@@ -24,7 +24,7 @@
                     <div class="flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flexchild fontCSC margin">
-                            ชื่อห้องสอบ  [[data]]
+                            ชื่อห้องสอบ 
                         </div>
                         <div class="flex3child" style="text-align: left">
                             <gl-form-input class"width" value="{{data.name}}" no-label-float></gl-form-input>
@@ -52,7 +52,7 @@
                             </gl-form-input>
                         </div>
                         <div class="flex2child fontCSC margin">
-                           <paper-checkbox checked class="green">เปิดการใช้งาน</paper-checkbox>
+                           <paper-checkbox checked="[[data.enable]]" class="green">เปิดการใช้งาน</paper-checkbox>
                         </div>
                         <div class="flexchild"></div>
                     </div>
@@ -71,7 +71,7 @@
         </div>
         <div class="container flex-end-justified">
             <div>
-                <paper-button class="gl-btn-danger" raised>ยกเลิก</paper-button>
+                <paper-button class="gl-btn-danger" on-tap="confirmDelete" raised>ยกเลิก</paper-button>
             </div>
             <div>
                 <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
@@ -107,13 +107,34 @@
             getExamList:function(id){
                 this.dispatchAction('EXAMROOM_GET_EXAM_LIST',this.user.id);
             },
+            confirmDelete:function(){
+                this.fire('toast',{ 
+                 status:'openDialog',
+                 text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                 confirmed:this._deleteData.bind(this), 
+                 })
+            },
+            _deleteData:function(check){
+                if(check == true){
+                    this.dispatchAction('EXAMROOM_DELETE_DATA',this.data.id);
+                }
+            },
             getForm:function(){
                 this.data.user_id = this.user.id;
                 this.data.enable =  this.$$('paper-checkbox').checked;
                 this.data.time = parseInt(this.data.time);
                 this.data.learner = this.$$('#cancel').getValue();
-                console.log(this.data);
-                this.dispatchAction('EXAMROOM_INSERT_DATA',this.data);
+                if(!this.data.id){
+                     this.dispatchAction('EXAMROOM_INSERT_DATA',this.data);
+                }
+                else{
+                    var {name,examination_id,time,enable,learner,user_id,id} = this.data;
+                    var newData = {name,examination_id,time,enable,learner,user_id,id}
+                    console.log(newData)
+                    this.dispatchAction('EXAMROOM_UPDATE_DATA',newData);
+                    this.fire('close');
+                }
+               
             }
         });
     </script>

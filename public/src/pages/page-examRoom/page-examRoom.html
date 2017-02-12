@@ -25,6 +25,7 @@
             },
             behaviors: [ReduxBehavior,examRoomAction],
             openPanelRight:function(){
+                this.EXAMROOM_CLEAR_DATA();
                 this.$$('panel-right').open();
             },
             closePanelRight:function(){

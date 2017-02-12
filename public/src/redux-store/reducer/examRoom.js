@@ -5,7 +5,7 @@ const initialState = {
     examList:[],
     studentList:[],
     examRoomList:[],
-    selectexamRoom:[]
+    selectexamRoom:{}
 }
 
 export function examRoomReducer(state = initialState,action){
@@ -19,6 +19,8 @@ export function examRoomReducer(state = initialState,action){
             return Object.assign({},state,{examRoomList:action.payload});
         case 'EXAMROOM_SELECT_DATA':
             return Object.assign({},state,{selectexamRoom:action.payload});
+        case 'EXAMROOM_CLEAR_DATA':
+            return Object.assign({},state,{selectexamRoom:{}});
         default:
             return state
     }
@@ -98,17 +100,18 @@ export function examRoomAction(store){
                 })
                 .catch((error)=>{
                 console.log('error');
-                console.log(error);
+                console.log({error});
                 });
             },
             EXAMROOM_DELETE_DATA:function(id){
                 this.fire('toast',{status:'load'});
-                axios.delete('./examRoom/examRoom?exam_room_id?='+id)
+                axios.delete('./examRoom/examRoom?id='+id)
                 .then((response)=>{
                     this.EXAMROOM_GET_EXAMROOM();
                      this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
-                        callback:function(){
-                        }
+                        callback:()=>{
+                            this.fire('close');
+                        }   
                      });
                 })
                 .catch((error)=>{
@@ -118,6 +121,9 @@ export function examRoomAction(store){
             },
             EXAMROOM_GET_CONFIRM_STUDNET:function(){
                 this.EXAMROOM_GET_STUDENT_LIST();
+            },
+            EXAMROOM_CLEAR_DATA:function(){
+                store.dispatch({type:'EXAMROOM_CLEAR_DATA'});
             }
         }
     ]
