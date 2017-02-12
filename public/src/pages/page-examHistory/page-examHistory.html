@@ -1,76 +1,54 @@
 
+<link rel="import" href="./components/exam-list.html">
+
 <dom-module id="page-examHistory">
     <template>
-        <style include="page-style flex-style">
-            .contenHeader{
-                text-align: left;
-                font-weight: bold;
+        <style include="page-style">
+            paper-tabs{
+                --paper-tabs-selection-bar-color:#95bf31;
             }
-            .content{
-                font-size: 16px;
+            paper-tab{
+                --paper-tab-content:{
+                    font-size: 16px;
+                    color:#95bf31;
+                    padding: 0px -20px 0px -20px;
+                    margin: 0px -20px 0px -20px;
+                }
+                --paper-tab-content-unselected:{
+                    color:#7B7D7D;
+                }
             }
         </style>
-        <div class="xcontainer">
-             <!--<div class="header gl-large">
-                    ผลสอบ
-                </div>-->
-            <div class="flex-center-justified" style="padding: 20px;">
-               <paper-material elevation="1" style="width: 100%;">
-                    <div class="container bgWhite">
-                        <div class="contenHeader fontCSC gl-default">
-                           ผลทดการสอบ
-                        </div>
-                        <div class="content">
-                            <div class="container flex-horizontal-with-ratios">
-                                <div style="text-align: left;">ชื่อ-สกุล :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="" readonly></gl-form-input></div>
-                            </div>
-                            <div class="container flex-horizontal-with-ratios">
-                                <div style="text-align: left;">วิชา :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="" readonly></gl-form-input></div>
-                            </div>
-                            <div class="container flex-horizontal-with-ratios">
-                                <div style="text-align: left;">คะแนน :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input style="width: 90%" no-label-float value="" readonly></gl-form-input></div>
-                                <div style="text-align: left;">เวลา :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="" readonly></gl-form-input></div>
-                            </div>
-                        </div>
-                    </div>
-               </paper-material>
+        <div class="bgWhite">
+             <div class="xcontainer">
+            <div class="header gl-large">รายการข้อสอบ</div>
+                <paper-tabs selected="{{selected}}">
+                    <paper-tab class="fontCSC">รายชื่อข้อสอบ (ยังไม่ได้ทำ)</paper-tab>
+                    <paper-tab class="fontCSC">รายชื่อข้อสอบ (ทำเสร็จแล้ว)</paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                </paper-tabs>
+             </div>
+             </div>
             </div>
-            
-            <div class="container">
-                 <paper-material elevation="1">
-                 <table class="gl-table-default">
-                    <thead>
-                        <tr class="hideBorder">
-                            <th style="width:20%;text-align: right; font-size: 18px;">ชื่อข้อสอบ</th>
-                            <th><gl-form-input placeholder="" no-label-float value="[[dataList.ex_name]]" disabled></gl-form-input></th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <th style="width:20%;text-align: right; font-size: 18px;">คำอธิบาย</th>
-                            <th><gl-form-textarea placeholder="" no-label-float value="[[dataList.description]]" disabled></gl-form-textarea></th>
-                             <th></th>
-                        </tr>
-                    </thead>
-                    <template is="dom-if" if={{!stat}}>
-                    <tbody>
-                        <tr>
-                            <td colspan="3">ไม่พบข้อมูล</td>
-                        </tr>
-                    </tbody>
-                     </template>
-                 </table>
-            </paper-material>
+            <div class="xcontainer">
+                <iron-pages selected="{{selected}}">
+                    <section><exam-list></exam-list></section>
+                    <section></section>
+                </iron-pages> 
             </div>
-            
-        </div>
     </template>
     <script>
         Polymer({
-            is: 'page-examHistory'
+            is: 'page-examHistory',
+            properties:{
+                selected:{
+                    type:String,
+                    value:'0'
+                }
+            }
         });
     </script>
 </dom-module>
