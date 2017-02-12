@@ -55,7 +55,7 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').filter({id:params.id})
+        r.db('lms').table('exam_room').filter({id:params.id})(0)
         .run()
         .then(function(result){
             res.json(result);
