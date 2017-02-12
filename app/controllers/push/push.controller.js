@@ -13,21 +13,23 @@ var pusher = function (res, callback) {
                 case "js":
                     contentType = "application/javascript";
             }
+
+           
+
             fs.readFile('./public/' + push_file.path, function (err, content) {
                 res.push(push_file.path,
                     {
-                        status: 200,
-                        method: 'GET',
-                        request: {
-                            accept: '*/*'
-                        },
+                       status: 200,
+                       method: 'GET',
+                       request: {
+                        accept: '*/*'
+                       },
                         response: {
                             'content-type': contentType
-                        }
-                    }
-                    ,
+                      }
+                    },
                     function (err, stream) {
-                        if (err) next(err);
+                       if (err) next(err);
                         stream.end(content);
                         next();
                     }
@@ -42,6 +44,7 @@ var pusher = function (res, callback) {
 }
 
 class pusha {
+  //  res.pusher(xxxx)
     import(req, res) {
         pusher(res, function (err) {
             res.end("");
