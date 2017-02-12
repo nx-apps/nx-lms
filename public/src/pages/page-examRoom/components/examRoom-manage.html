@@ -8,6 +8,14 @@
                 margin-top: 16px;
                 text-align: center;
             }
+            paper-checkbox{
+                --paper-checkbox-checked-color: var(--paper-green-500);
+                --paper-checkbox-checked-ink-color: var(--paper-green-500);
+                --paper-checkbox-unchecked-color: var(--paper-red-900);
+                --paper-checkbox-unchecked-ink-color: var(--paper-red-900);
+                --paper-checkbox-label-color: var(--paper-red-500);
+                --paper-checkbox-label-checked-color: var(--paper-green-900);
+            }
         </style>
         <div class="container">
             
@@ -43,9 +51,10 @@
                                 <div suffix>นาที</div>
                             </gl-form-input>
                         </div>
-                        <div class="flex3child">
-                            <paper-button raised>switch</paper-button>
+                        <div class="flex2child fontCSC margin">
+                           <paper-checkbox checked class="green">เปิดการใช้งาน</paper-checkbox>
                         </div>
+                        <div class="flexchild"></div>
                     </div>
                 </div>
             </paper-material>
@@ -100,6 +109,8 @@
                 this.dispatchAction('EXAMROOM_GET_EXAM_LIST',this.user.id);
             },
             getForm:function(){
+                this.data.user_id = this.user.id;
+                this.data.enable =  this.$$('paper-checkbox').checked;
                 this.data.time = parseInt(this.data.time);
                 this.data.learner = this.$$('#cancel').getValue();
                 console.log(this.data);
