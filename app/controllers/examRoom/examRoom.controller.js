@@ -72,6 +72,22 @@ class examRoom {
     }
 
 
+    deleteExamRoom(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_room').get(params.exam_room_id).delete()
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+
+    }
+
+
 
 }
 
