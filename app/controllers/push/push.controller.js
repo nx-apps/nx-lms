@@ -30,6 +30,7 @@ const pushy = (req,res,list)=>{
             }
             ,
             function(err, stream){
+                console.log('*************************',err);
                 if (err) return;
                 stream.end(importFile);
             }

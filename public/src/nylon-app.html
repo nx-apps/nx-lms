@@ -85,11 +85,14 @@
                     setTimeout(()=>{
 
                         if(this.page==""){
-                            
-                            if(this.user.role=="teacher"){
-                                this.page = 'examRoom';
+                            if(typeof this.user !== "undefined"){
+                                if(this.user.role=="teacher"){
+                                    this.page = 'examRoom';
+                                }else{
+                                    this.page = 'examHistory';
+                                }
                             }else{
-                                this.page = 'examHistory';
+                                this._routePageChanged('login');
                             }
                             
                         }
