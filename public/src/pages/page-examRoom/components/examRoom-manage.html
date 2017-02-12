@@ -1,4 +1,5 @@
 
+<link rel="import" href="./student-list.html">
 <link rel="import" href="./manage-list.html">
 
 <dom-module id="examRoom-manage">
@@ -29,7 +30,7 @@
                             เลือกข้อสอบ
                         </div>
                         <div class="flex3child" style="text-align: left">
-                            <gl-combo-box class"width" no-label-float items="" item-label-path="" item-value-path="" value=""></gl-combo-box>
+                            <gl-combo-box class"width" no-label-float items="[[examList]]" item-label-path="ex_name" item-value-path="id" value=""></gl-combo-box>
                         </div>
                         <div class="flexchild"></div>
                     </div>
@@ -49,10 +50,12 @@
             </paper-material>
             <div class="flex-equal-around-justified">
                 <div>
-                    <manage-list></manage-list>
+                    <student-list data="[[studentList]]" icon="clear" active="cancel"></student-list>
+                    <!--<manage-list></manage-list>-->
                 </div>
                 <div>
-                    <manage-list></manage-list>
+                    <student-list data="[[studentList]]" icon="add" active="join"></student-list>
+                    <!--<manage-list></manage-list>-->
                 </div>
             </div>
         </div>
@@ -68,12 +71,52 @@
     <script>
         Polymer({
             is: 'examRoom-manage',
+            observers:['getExamList(user.id)'],
+            listeners:{
+                'join-student':'joinStudent',
+                'cancel-student':'cancelStudent'
+            },
             behaviors: [ReduxBehavior,dispatchActionBehavior],
             properties:{
-                dataSelect:{
-                        statePath:'examinationRoom.dataSelect'
-                    }
+                user:{
+                    statePath:'auth.user'
+                },
+                examList:{
+                    statePath:'examRoom.examList'
+                },
+                studentList:{
+                    statePath:'examRoom.studentList',
+                    observer:'setStudentList'
+                },
             },
+            ready:function(){
+                this.dispatchAction('EXAMROOM_GET_STUDENT_LIST');
+            },
+            getExamList:function(id){
+                this.dispatchAction('EXAMROOM_GET_EXAM_LIST',this.user.id);
+                console.log(this.examList);
+            },
+            setStudentList:function(){
+                this.studentList.map((item)=>{
+                    return item.check = true;
+                })
+            },
+            // fillterStudent:function(){
+            //     this.joinStundent = this.studentList.filter((item)=>{
+            //         return item.check == true;
+            //     })
+            //     this.cancelStudnet = this.studentList.filter((item)=>{
+            //         return item.check == false;
+            //     })
+            // },
+            joinStudent:function(e){
+                this.set('studentList.'+e.detail+'.check',false);
+            },
+            cancelStudent:function(e){
+                this.set('studentList.'+e.detail+'.check',true);
+                // this.set('cancelStudnet.'+e.detail+'.check',true);
+                // this.fillterStudent();
+            }
         });
     </script>
 </dom-module>

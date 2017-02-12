@@ -8,6 +8,7 @@ import {questionReducer,questionAction} from './reducer/question'
 import {examinationReducer,examinationAction} from './reducer/examination'
 import {classRoomReducer,classRoomAction} from './reducer/classRoom'
 import {examinationRoomReducer,examinationRoomAction} from './reducer/examinationRoom'
+import {examRoomReducer,examRoomAction} from './reducer/examRoom'
 
 
 const rootReducer = combineReducers({
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     question:questionReducer,
     examination:examinationReducer,
     classRoom:classRoomReducer,
-    examinationRoom:examinationRoomReducer
+    examinationRoom:examinationRoomReducer,
+    examRoom:examRoomReducer
 });
 const storeApp = createStore(
     rootReducer,
@@ -32,3 +34,4 @@ window.examinationAction = examinationAction(storeApp);
 window.classRoomAction = classRoomAction(storeApp);
 window.examinationRoomAction = examinationRoomAction(storeApp);
 window.authAction = authAction(storeApp)
+window.examRoomAction = examRoomAction(storeApp);
