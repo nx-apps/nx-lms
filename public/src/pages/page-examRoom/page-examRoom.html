@@ -19,6 +19,7 @@
     <script>
         Polymer({
             is: 'page-examRoom',
+            behaviors: [ReduxBehavior,examRoomAction],
             openPanelRight:function(){
                 this.$$('panel-right').open();
             }

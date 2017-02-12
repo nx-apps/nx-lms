@@ -1,0 +1,77 @@
+
+<dom-module id="student-list">
+    <template>
+        <style include="page-style">
+            tbody>tr>td{
+                 cursor: pointer;
+            }
+            tbody>tr:hover{
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+        </style>
+        <div class="container">
+            <paper-material elevation="1">
+                <table class="gl-table-default">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%">#</th>
+                            <th>ชื่อ-สกุล</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template is="dom-repeat" items="[[data]]">
+                            <tr>
+                                <td>
+                                    <iron-icon icon="[[icon]]" index="[[index]]" on-tap="controller"></iron-icon>
+                                </td>
+                                <td>
+                                    [[item.name]] [[item.check]]
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </paper-material>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'student-list',
+            observers: ['setData(data.*)'],
+            behaviors: [ReduxBehavior,dispatchActionBehavior],
+            properties:{
+                active:{
+                    type:String,
+                },
+            },
+            controller:function(e){
+                switch (this.active) {
+                    case 'join':
+                        this.fire('join-student',e.target.index)
+                    case 'cancel':
+                         this.fire('cancel-student',e.target.index)
+                    default:
+                        break;
+                }
+            },
+            setData:function(active){
+                console.log('1234');
+                // if(typeof this.data != 'undefined'){
+                //     if(active == 'join'){
+                //         this.datalist = this.data.filter((item)=>{
+                //             return item.check == true;
+                //         })
+                //         console.log(this.datalist);
+                //     }
+                //     else if(active == 'cancel'){
+                //          this.datalist = this.data.filter((item)=>{
+                //             return item.check == false;
+                //         })
+                //         console.log(this.datalist);
+                //     }
+                // }
+            }   
+        });
+    </script>
+</dom-module>
