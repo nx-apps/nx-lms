@@ -1,5 +1,5 @@
 module.exports=function(app){
-    var imageCtrl = require('../controllers/examRoom/examRoom.controller');
-    //app.get('/',imageCtrl.xx); 
+    var examRoom = require('../controllers/examRoom/examRoom.controller');
+    app.get('/examList/:user_id',examRoom.getExaminationList);
     
 } 
