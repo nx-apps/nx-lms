@@ -2,10 +2,25 @@
 <dom-module id="page-login">
     <template>
         <style include="page-style flex-style">
+
             paper-material{
                 width: 50%;
                 height: auto;
             }
+
+            @media screen and (max-width: 800px) {
+                paper-material{
+                    width: 60%;
+                }
+            }
+
+            @media screen and (max-width: 500px) {
+                paper-material{
+                    width: 100%;
+                }
+            }
+
+            
             paper-button{
                 width: 100%;
             }
