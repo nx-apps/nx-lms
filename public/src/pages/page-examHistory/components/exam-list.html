@@ -20,10 +20,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>test</td>
-                    </tr>
+                    <template is="dom-repeat" items="[[examList]]">
+                        <tr>
+                            <td>[[getIndex(index)]]</td>
+                            <td>[[item.name]]</td>
+                        </tr>
+                    </template>
                 </tbody>
             </table>
              </paper-material>
@@ -31,7 +33,16 @@
     </template>
     <script>
         Polymer({
-            is: 'exam-list'
+            is: 'exam-list',
+            behaviors:[ReduxBehavior],
+            getIndex:function(index){
+                return index+1;
+            },
+            properties:{
+                examList:{
+                    statePath:'examHistory.examList'
+                }
+            },
         });
     </script>
 </dom-module>
