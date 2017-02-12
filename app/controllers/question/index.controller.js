@@ -155,7 +155,7 @@ class index{
 
             //var id="admin";
             r.expr(all).merge(function(x){
-                return { time_insert:r.now(),user_id:user_id }
+                return { time_insert:r.now(),user_id:params.user_id }
             }).do(function(xx){
                 return r.db('lms').table('question').insert(xx)
             })
