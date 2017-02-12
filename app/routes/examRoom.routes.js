@@ -5,6 +5,7 @@ module.exports=function(app){
 
     app.get('/examRoomList',examRoom.getExamRoomList);
     app.get('/examRoom',examRoom.selectExamRoom);
+    app.put('/examRoom',examRoom.updateExamRoom);
     app.post('/examRoom',examRoom.insertExamRoom);
     app.delete('/examRoom',examRoom.deleteExamRoom);
     

@@ -85,6 +85,27 @@ class examRoom {
 
     }
 
+    updateExamRoom(req,res){
+        var r = req.r;
+        var params = req.body;
+        var time = new Date();
+
+        r.expr(params).merge(function(row){
+            return {time_update:time}
+        }).do(function(data){
+            return r.db('lms').table('exam_room').get(data('id'))
+            .update(data.without('id'))
+        })
+
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
 
     deleteExamRoom(req,res){
         var r = req.r;
