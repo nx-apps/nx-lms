@@ -19,9 +19,16 @@
     <script>
         Polymer({
             is: 'page-examRoom',
+            listeners:{
+                'open':'openPanelRight',
+                'close':'closePanelRight'
+            },
             behaviors: [ReduxBehavior,examRoomAction],
             openPanelRight:function(){
                 this.$$('panel-right').open();
+            },
+            closePanelRight:function(){
+                this.$$('panel-right').close();
             }
         });
     </script>

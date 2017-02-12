@@ -18,13 +18,13 @@
             }
         </style>
         <div class="container">
-            
+           
             <paper-material elevation="1">
                 <div class="container bgWhite">
                     <div class="flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flexchild fontCSC margin">
-                            ชื่อห้องสอบ
+                            ชื่อห้องสอบ  [[data]]
                         </div>
                         <div class="flex3child" style="text-align: left">
                             <gl-form-input class"width" value="{{data.name}}" no-label-float></gl-form-input>
@@ -98,8 +98,7 @@
                     statePath:'examRoom.studentList'
                 },
                 data:{
-                    type:Object,
-                    value:{}
+                    statePath:'examRoom.selectexamRoom'
                 }
             },
             ready:function(){
@@ -114,6 +113,7 @@
                 this.data.time = parseInt(this.data.time);
                 this.data.learner = this.$$('#cancel').getValue();
                 console.log(this.data);
+                this.dispatchAction('EXAMROOM_INSERT_DATA',this.data);
             }
         });
     </script>

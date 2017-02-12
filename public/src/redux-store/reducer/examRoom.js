@@ -3,7 +3,9 @@ import {commonAction} from '../config'
 
 const initialState = {
     examList:[],
-    studentList:[]
+    studentList:[],
+    examRoomList:[],
+    selectexamRoom:[]
 }
 
 export function examRoomReducer(state = initialState,action){
@@ -13,8 +15,10 @@ export function examRoomReducer(state = initialState,action){
             return Object.assign({},state,{examList:action.payload});
         case 'EXAMROOM_GET_STUDENT_LIST':
             return Object.assign({},state,{studentList:action.payload});
-        case 'EXAMROOM_GET_CONFIRM_STUDNET':
-            return Object.assign({},state,{confirmStudentList:action.payload});
+        case 'EXAMROOM_GET_EXAMROOM':
+            return Object.assign({},state,{examRoomList:action.payload});
+        case 'EXAMROOM_SELECT_DATA':
+            return Object.assign({},state,{selectexamRoom:action.payload});
         default:
             return state
     }
@@ -39,6 +43,73 @@ export function examRoomAction(store){
                 .then((response)=>{
                     store.dispatch({type:'EXAMROOM_GET_STUDENT_LIST',payload:response.data});
                     store.dispatch({type:'EXAMROOM_GET_CONFIRM_STUDNET',payload:response.data});
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            EXAMROOM_GET_EXAMROOM:function(){
+                var user_id = store.getState().auth.user.id;
+                axios.get('./examRoom/examRoomList?user_id='+user_id)
+                .then((response)=>{
+                    store.dispatch({type:'EXAMROOM_GET_EXAMROOM',payload:response.data});
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            EXAMROOM_SELECT_DATA:function(id){
+                axios.get('./examRoom/examRoom?id='+id)
+                .then((response)=>{
+                    console.log('success!!');
+                    store.dispatch({type:'EXAMROOM_SELECT_DATA',payload:response.data});
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            EXAMROOM_INSERT_DATA:function(data){
+                this.fire('toast',{status:'load'});
+                axios.post('./examRoom/examRoom',data)
+                .then((response)=>{
+                    this.EXAMROOM_GET_EXAMROOM();
+                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                        callback:function(){
+                        }
+                     });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            EXAMROOM_UPDATE_DATA:function(data){
+                this.fire('toast',{status:'load'});
+                axios.put('./examRoom/examRoom',data)
+                .then((response)=>{
+                    this.EXAMROOM_GET_EXAMROOM();
+                    this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
+                      callback:function(){
+                      }
+                    });
+                })
+                .catch((error)=>{
+                console.log('error');
+                console.log(error);
+                });
+            },
+            EXAMROOM_DELETE_DATA:function(id){
+                this.fire('toast',{status:'load'});
+                axios.delete('./examRoom/examRoom?exam_room_id?='+id)
+                .then((response)=>{
+                    this.EXAMROOM_GET_EXAMROOM();
+                     this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                        callback:function(){
+                        }
+                     });
                 })
                 .catch((error)=>{
                     console.log('error');

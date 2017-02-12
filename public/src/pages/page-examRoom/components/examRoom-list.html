@@ -20,17 +20,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>test</td>
-                    </tr>
+                    
+                    <template is="dom-repeat" items="[[examRoomList]]">
+                        <tr on-tap="selectedData" item="[[item.id]]">
+                            <td>[[count(index)]]</td>
+                            <td>[[item.name]]</td>
+                        </tr>
+                    </template>
                 </tbody>
             </table>
               </paper-material>
     </template>
     <script>
         Polymer({
-            is: 'examRoom-list'
+            is: 'examRoom-list',
+            behaviors: [ReduxBehavior,dispatchActionBehavior],
+            properties:{
+                examRoomList:{
+                    statePath:'examRoom.examRoomList'
+                }
+            },
+            ready:function(){
+                this.dispatchAction('EXAMROOM_GET_EXAMROOM');
+            },
+            count:function(index){
+                return index+1;
+            },
+            selectedData:function(e){
+                console.log(e.currentTarget.item);
+                this.dispatchAction('EXAMROOM_SELECT_DATA',e.currentTarget.item);
+                this.fire('open');
+                // this.dispatchAction('EXAMROOM_GET_EXAMROOM');
+            }
         });
     </script>
 </dom-module>
