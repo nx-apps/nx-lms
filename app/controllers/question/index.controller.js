@@ -96,10 +96,9 @@ class index{
 
             var prefile = files.file[0];
             var x = prefile.path;
-            //Read file here.
             var xx =  x.replace(/\\/g,"/");
-            console.log('5'+xx+'5');
-            
+
+            //Read file here.
             var  XLSX = require('xlsx');
             var workbook = XLSX.readFile(xx);
 
@@ -153,9 +152,8 @@ class index{
                 data = {topic:"",choice:[],answer:0,tag:[]};
             })
 
-            //var id="admin";
             r.expr(all).merge(function(x){
-                return { time_insert:r.now(),user_id:params.user_id }
+                return { time_insert:r.now(),user_id:fields.user_id[0] }
             }).do(function(xx){
                 return r.db('lms').table('question').insert(xx)
             })
@@ -167,7 +165,7 @@ class index{
             .catch(function(err){
                 res.status(500).json(err);
             })
-
+            
         });
         
     }
