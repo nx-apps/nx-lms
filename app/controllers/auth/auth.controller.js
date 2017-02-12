@@ -9,7 +9,7 @@ class auth{
         params.password = sha1(params.password);
 
         r.db('lms').table('user').filter({username:params.username,password:params.password})
-        .coerceTo('array')(0).pluck('username','role','name')
+        .coerceTo('array')(0).pluck('username','role','name','id')
         .run()
         .then((result)=>{
             var token = jwt.sign(result,SECRET_KEY,{
