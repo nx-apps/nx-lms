@@ -50,7 +50,7 @@
             </paper-material>
             <div class="flex-equal-around-justified">
                 <div>
-                    <student-list data="[[studentList]]" icon="clear" active="cancel"></student-list>
+                    <!--<student-list data="[[studentList]]" icon="clear" active="cancel"></student-list>-->
                     <!--<manage-list></manage-list>-->
                 </div>
                 <div>
@@ -94,7 +94,6 @@
             },
             getExamList:function(id){
                 this.dispatchAction('EXAMROOM_GET_EXAM_LIST',this.user.id);
-                console.log(this.examList);
             },
             setStudentList:function(){
                 this.studentList.map((item)=>{

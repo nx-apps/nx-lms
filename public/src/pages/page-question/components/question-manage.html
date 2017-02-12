@@ -101,7 +101,7 @@
                 selected:{
                     typeo: String,
                     value: '0'
-                }
+                },
             },
             cont:function(index){
                 return index+1;
@@ -127,7 +127,6 @@
                 });
 
                 data.answer = answer;
-
                 if(this.status == 'add') {
                     this.fire('toast',{status:'load'});
                     this.dispatchAction('QUESTION_INSERT',data)

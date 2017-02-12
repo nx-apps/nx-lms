@@ -29,7 +29,7 @@ export function questionAction(store){
                 });
             },
             QUESTION_INSERT:function(data){
-                
+                data.user_id = store.getState().auth.user.id;
                 return new Promise((resolve,reject)=>{
                     axios.post('./question/question',data)
                     .then((response)=>{
@@ -44,6 +44,7 @@ export function questionAction(store){
                 
             },
             QUESTION_UPDATE:function(data){
+                data.user_id = store.getState().auth.user.id;
                 return new Promise((resolve,reject)=>{
                     axios.put('./question/question',data)
                     .then((response)=>{
@@ -98,6 +99,7 @@ export function questionAction(store){
             QUESTION_UPLOAD:function(files){
                 var data = new FormData();
                 data.append('file',files[0]);
+                data.append('user_id',store.getState().auth.user.id);
                 return axios.post('./question/upload', data);
             }
         }

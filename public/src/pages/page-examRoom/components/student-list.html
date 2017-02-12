@@ -55,22 +55,21 @@
                         break;
                 }
             },
-            setData:function(active){
-                console.log('1234');
-                // if(typeof this.data != 'undefined'){
-                //     if(active == 'join'){
-                //         this.datalist = this.data.filter((item)=>{
-                //             return item.check == true;
-                //         })
-                //         console.log(this.datalist);
-                //     }
-                //     else if(active == 'cancel'){
-                //          this.datalist = this.data.filter((item)=>{
-                //             return item.check == false;
-                //         })
-                //         console.log(this.datalist);
-                //     }
-                // }
+            setData:function(){
+                if(this.data.length != 0){
+                    if(this.active == 'join'){
+                       this.datalist = this.data.filter((item)=>{
+                            return item.check == true;
+                        })
+                        console.log(this.datalist)
+                        // this.datalist = this.data.filter(function(item){
+                        //     return item.check == true;
+                        // })
+                        console.log('1234');
+                        // console.log(this.dataList);
+                    }
+                }
+               
             }   
         });
     </script>
