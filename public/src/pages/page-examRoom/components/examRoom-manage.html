@@ -67,7 +67,13 @@
     </template>
     <script>
         Polymer({
-            is: 'examRoom-manage'
+            is: 'examRoom-manage',
+            behaviors: [ReduxBehavior,dispatchActionBehavior],
+            properties:{
+                dataSelect:{
+                        statePath:'examinationRoom.dataSelect'
+                    }
+            },
         });
     </script>
 </dom-module>
