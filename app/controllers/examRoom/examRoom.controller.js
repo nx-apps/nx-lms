@@ -36,6 +36,41 @@ class examRoom {
         
     }
 
+    getExamRoomList(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_room').filter({user_id:params.user_id})
+        .pluck('name','id')
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
+    insertExamRoom(req,res){
+        var r = req.r;
+        var params = req.body;
+        var time = new Date();
+
+        r.expr(params).merge(function(row){
+            return {time_create:time,time_update:time}
+        }).do(function(data){
+            return r.db('lms').table('exam_room').insert(data)
+        })
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+
+    }
+
 
 
 }
