@@ -8,5 +8,7 @@ module.exports=function(app){
     app.put('/examRoom',examRoom.updateExamRoom);
     app.post('/examRoom',examRoom.insertExamRoom);
     app.delete('/examRoom',examRoom.deleteExamRoom);
+
+    app.get('/learnerTestList',examRoom.getLearnerTestList);
     
 } 

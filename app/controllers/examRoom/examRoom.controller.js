@@ -122,6 +122,29 @@ class examRoom {
 
     }
 
+    getLearnerTestList(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_answer').filter({exam_room_id:params.id})
+        .innerJoin(
+            r.db('lms').table('user').filter({role:'learner'}).pluck('name','id'),function(left,right){
+                return left('user_id').eq(right('id'))
+            }
+        ).map(function(row){
+            return row('right')
+        })
+        
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+
+    }
+
 
 
 }
