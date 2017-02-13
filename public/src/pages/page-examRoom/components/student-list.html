@@ -21,7 +21,7 @@
                     </thead>
                     <tbody>
                         <template is="dom-repeat" items="{{data}}" filter="{{computeFilter(active)}}">
-                            <tr>
+                            <tr on-tap="controller">
                                 
                                 <template is="dom-if" if="[[status]]">
                                     <td>
@@ -82,10 +82,16 @@
                     case 'cancel':
                         e.currentTarget.item.check = false;
                         break;
+                    case 'view': 
+                        this.chagePage();
+                        break;
                     default:
                         break;
                 }
                 this.data = [].concat(this.data);
+            },
+            chagePage:function(){
+                alert('chagePage');
             },
             getValue:function(){
                 this.data.map((item)=>{

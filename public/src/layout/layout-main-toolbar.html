@@ -37,12 +37,34 @@
 				<paper-icon-button icon="menu" on-tap="toggleDrawer"></paper-icon-button>
 				<iron-image src="/images/icon/white/app-icon-32.png"></iron-image>
 				<div main-title>PENGUIN</div>
+				<div style="cursor: pointer" on-tap="logout" hidden="{{hidden}}">
+					<paper-icon-button icon="exit-to-app"></paper-icon-button>Logout
+				</div>
+				<div style="cursor: pointer" on-tap="logout" hidden="{{!hidden}}">
+					<paper-icon-button icon="power-settings-new"></paper-icon-button>
+					Log-in
+				</div>
 		</app-toolbar>
 	</template>
 	<script>
         Polymer({
             is: 'layout-main-toolbar',
-			behaviors:[nylonLocalizeBehavior],
+			behaviors: [nylonLocalizeBehavior,ReduxBehavior,authAction],
+			properties:{
+				user:{
+					 statePath:'auth.user',
+					 observer:'check'
+				}
+			},
+			check:function(){
+				console.log(this.user);
+				if(this.user.id){
+					this.hidden = false;
+				}
+				else {
+					this.hidden = true;
+				}
+			},
 			attached:function(){
 				 this.nylonLocalizeImport('/i18n-page1.json');
 			},
@@ -56,6 +78,13 @@
                 this.nylonLocalizeChange('th');
               } 
             },
+			logout:function(){
+				this.hidden = true;
+				localStorage.removeItem('token');
+				window.location = "/login"
+				//this.fire('nylon-change-page',{path:'/login'})
+				//  this.AUTH_LOGOUT();
+			}
         });
     </script>
 </dom-module>
