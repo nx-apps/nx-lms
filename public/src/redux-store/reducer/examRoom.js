@@ -66,6 +66,7 @@ export function examRoomAction(store){
                 axios.get('./examRoom/examRoom?id='+id)
                 .then((response)=>{
                     console.log('success!!');
+                    console.log(response.data);
                     store.dispatch({type:'EXAMROOM_SELECT_DATA',payload:response.data});
                 })
                 .catch((error)=>{

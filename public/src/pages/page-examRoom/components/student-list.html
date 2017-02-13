@@ -22,9 +22,17 @@
                     <tbody>
                         <template is="dom-repeat" items="{{data}}" filter="{{computeFilter(active)}}">
                             <tr>
-                                <td>
-                                    <iron-icon icon="[[icon]]" index="[[index]]" item="[[item]]" on-tap="controller"></iron-icon>
-                                </td>
+                                
+                                <template is="dom-if" if="[[status]]">
+                                    <td>
+                                        <iron-icon icon="[[icon]]" index="[[index]]" item="[[item]]" on-tap="controller"></iron-icon>
+                                    </td>
+                                </template>
+                                <template is="dom-if" if="[[!status]]">
+                                    <td>
+                                       [[cont(index)]]
+                                    </td>
+                                </template>
                                 <td>
                                     [[item.name]]
                                 </td>
@@ -47,6 +55,9 @@
                     value:[],
                     notify:true
                 }
+            },
+            cont:function(index){
+                return index+1;
             },
             computeFilter:function(string){
                 if (!string) {
