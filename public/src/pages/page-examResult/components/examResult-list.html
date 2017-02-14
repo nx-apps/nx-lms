@@ -1,0 +1,45 @@
+
+<dom-module id="examResult-list">
+    <template>
+        <style include="page-style"></style>
+         <paper-material elevation="1">
+            <table class="gl-table-default">  
+                <thead>
+                    <tr>
+                        <th style="width: 10%">ข้อที่ [[index]]</th>
+                        <th>
+                            [[data.topic]]
+                            <br>
+                             <show-image image-id="[[data.image_id]]"></show-image>
+                        </th>
+                        <th style="width: 20%"></th>
+                    </tr>
+                </thead>
+                <tbody>   
+                    <template is="dom-repeat" items="{{data.choice}}">
+                        <tr>
+                            <td>
+                                <paper-radio-button disabled checked="{{item.answer}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
+                            </td>
+                            <td>
+                                [[item.choice]] 
+                                <br> 
+                                <show-image image-id="[[item.image_id]]"></show-image>
+                            </td>
+                            <td>
+                                <div hidden="[[!item.checked]]">
+                                    <iron-icon icon="done"></iron-icon>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </paper-material>
+    </template>
+    <script>
+        Polymer({
+            is: 'examResult-list'
+        });
+    </script>
+</dom-module>

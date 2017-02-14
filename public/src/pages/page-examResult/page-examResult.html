@@ -1,4 +1,6 @@
 <link rel="import" href="/src/nylon-param.html">
+<link rel="import" href="./components/examResult-list.html">
+
 <dom-module id="page-examResult">
     <template>
         <style include="page-style flex-style">
@@ -21,17 +23,17 @@
                         <div class="content">
                             <div class="container flex-horizontal-with-ratios">
                                 <div style="text-align: left;">ชื่อ-สกุล :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="" readonly></gl-form-input></div>
+                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="[[dataResult.std_name]]" readonly></gl-form-input></div>
                             </div>
-                            <div class="container flex-horizontal-with-ratios">
+                            <!--<div class="container flex-horizontal-with-ratios">
                                 <div style="text-align: left;">วิชา :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="" readonly></gl-form-input></div>
-                            </div>
+                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="[[dataResult.std_name]]" readonly></gl-form-input></div>
+                            </div>-->
                             <div class="container flex-horizontal-with-ratios">
                                 <div style="text-align: left;">คะแนน :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input style="width: 90%" no-label-float value="" readonly></gl-form-input></div>
+                                <div class="flex2child" style="margin-top: -10px"><gl-form-input style="width: 90%" no-label-float value="[[dataResult.score]]" readonly></gl-form-input></div>
                                 <div style="text-align: left;">เวลา :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="" readonly></gl-form-input></div>
+                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="[[dataResult.time]]" readonly></gl-form-input></div>
                             </div>
                         </div>
                     </div>
@@ -39,22 +41,26 @@
             </div>
             
             <div class="container">
-                 <paper-material elevation="1">
+            <paper-material elevation="1">
                  <table class="gl-table-default">
                     <thead>
                         <tr class="hideBorder">
                             <th style="width:20%;text-align: right; font-size: 18px;">ชื่อข้อสอบ</th>
-                            <th><gl-form-input placeholder="" no-label-float value="[[dataList.ex_name]]" disabled></gl-form-input></th>
+                            <th><gl-form-input placeholder="" no-label-float value="[[dataResult.name]]" disabled></gl-form-input></th>
                             <th></th>
                         </tr>
                         <tr>
                             <th style="width:20%;text-align: right; font-size: 18px;">คำอธิบาย</th>
-                            <th><gl-form-textarea placeholder="" no-label-float value="[[dataList.description]]" disabled></gl-form-textarea></th>
+                            <th><gl-form-textarea placeholder="" no-label-float value="[[dataResult.description]]" disabled></gl-form-textarea></th>
                              <th></th>
                         </tr>
                     </thead>
                  </table>
             </paper-material>
+            
+            <template is="dom-repeat" items="[[dataResult.question]]">
+                <examResult-list data="[[item]]"></examResult-list>
+            </template>
             </div>
             
         </div>
@@ -67,12 +73,15 @@
             observers:['_getResult(getParam.*)'],
             properties:{
                 dataResult:{
-                    statePath:'examResult.result'
+                    statePath:'examResult.result',
+                    observer:'getDataResult'
                 }
             },
             _getResult:function(ob){
                 console.log(ob);
                 this.EXAM_RESULT_GET_RESULT(ob.base.examRoomId,ob.base.userId)
+            },
+            getDataResult:function(){
                 console.log(this.dataResult);
             }
         });

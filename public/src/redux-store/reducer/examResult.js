@@ -26,22 +26,12 @@ export function examResultAction(store){
                 })
                 .then((response)=>{
                     console.log('success!!');
-                    console.log(response.data);
+                    store.dispatch({type:'EXAM_RESULT_GET_RESULT',payload:response.data})
                 })
                 .catch((error)=>{
                     console.log('error');
                     console.log(error);
                 });
-                // axios.get('./send_answer/show_answer',{
-                //     params:{
-                //         exam_room_id,
-                //         user_id
-                //     }
-                //     })
-                // .then(res=>{
-                //     console.log(res.data);
-                //     store.dispatch({type:'EXAM_RESULT_GET_RESULT',payload:res.data})
-                // })
             }
         }
     ]
