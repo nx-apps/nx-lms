@@ -4,6 +4,7 @@ import {commonAction} from '../config'
 const initialState = {
     examList:[],
     studentList:[],
+    studentListCompleteExam:[],
     examRoomList:[],
     selectexamRoom:{}
 }
@@ -15,6 +16,8 @@ export function examRoomReducer(state = initialState,action){
             return Object.assign({},state,{examList:action.payload});
         case 'EXAMROOM_GET_STUDENT_LIST':
             return Object.assign({},state,{studentList:action.payload});
+        case 'EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM':
+            return Object.assign({},state,{studentListCompleteExam:action.payload});
         case 'EXAMROOM_GET_EXAMROOM':
             return Object.assign({},state,{examRoomList:action.payload});
         case 'EXAMROOM_SELECT_DATA':
@@ -44,7 +47,17 @@ export function examRoomAction(store){
                 axios.get('./examRoom/learnerList')
                 .then((response)=>{
                     store.dispatch({type:'EXAMROOM_GET_STUDENT_LIST',payload:response.data});
-                    store.dispatch({type:'EXAMROOM_GET_CONFIRM_STUDNET',payload:response.data});
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM:function(id){
+                axios.get('./examRoom/learnerTestList?id='+id)
+                .then((response)=>{
+                    console.log(response.data);
+                    store.dispatch({type:'EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',payload:response.data});
                 })
                 .catch((error)=>{
                     console.log('error');
@@ -119,9 +132,6 @@ export function examRoomAction(store){
                     console.log('error');
                     console.log(error);
                 });
-            },
-            EXAMROOM_GET_CONFIRM_STUDNET:function(){
-                this.EXAMROOM_GET_STUDENT_LIST();
             },
             EXAMROOM_CLEAR_DATA:function(){
                 store.dispatch({type:'EXAMROOM_CLEAR_DATA'});
