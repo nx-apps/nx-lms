@@ -49,7 +49,7 @@
 	<script>
         Polymer({
             is: 'layout-main-toolbar',
-			behaviors: [nylonLocalizeBehavior,ReduxBehavior,authAction],
+			behaviors: [nylonLocalizeBehavior,ReduxBehavior],
 			properties:{
 				user:{
 					 statePath:'auth.user',
@@ -80,7 +80,11 @@
 			logout:function(){
 				this.hidden = true;
 				localStorage.removeItem('token');
-				window.location = "/login"
+				if(this.user.role=="none"){
+					this.fire('nylon-change-page',{path:'/login'})
+				}else{
+					window.location = "/login"
+				}
 				//this.fire('nylon-change-page',{path:'/login'})
 				//  this.AUTH_LOGOUT();
 			}

@@ -3,7 +3,7 @@ import {commonAction} from '../config'
 import jwtDecode from 'jwt-decode'
 
 const initialState = {
-    user:{}
+    user:{role:'none'}
 }
 
 export function authReducer(state = initialState,action){
