@@ -23,7 +23,7 @@
             <iron-pages selected="{{selected}}">
                 <section><examRoom-manage></examRoom-manage></section>
                 <section>
-                   <student-list data="{{data}}" active="view" status="[[status]]"></student-list>
+                   <student-list data="{{studenList}}" active="view" status="[[status]]"></student-list>
                 </section>
             </iron-pages>
     
@@ -31,21 +31,37 @@
     <script>
         Polymer({
             is: 'examRoom-tabs',
+            behaviors: [ReduxBehavior,dispatchActionBehavior],
             listeners:{
-                'data-value':'getData',
                 'status':'setStatus'
             },    
             properties:{
                 selected:{
                     type:String,
                     value: '0'
+                },
+                studenList:{
+                    statePath:'examRoom.studentListCompleteExam',
+                    observer:'getStudentList'
+                },
+                selectData:{
+                    statePath:'examRoom.selectexamRoom',
+                    observer:'selectList'
                 }
+            },
+            selectList:function(){
+                if(typeof this.selectData.id != 'undefined'){
+                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',this.selectData.id);
+                }
+            },
+            getStudentList:function(){
+                // console.log(this.studenList);
+                this.studenList.map((item)=>{
+                    item.check = true;
+                })
             },
             setStatus:function(e){
                 this.status = e.detail;
-            },
-            getData:function(e){
-                this.data = e.detail;
             }
         });
     </script>
