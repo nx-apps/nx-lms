@@ -76,10 +76,10 @@ export function examRoomAction(store){
                 });
             },
             EXAMROOM_SELECT_DATA:function(id){
-                axios.get('./examRoom/examRoom?id='+id)
+                axios.get('./test_exam/test_exam?id='+id)
                 .then((response)=>{
                     console.log('success!!');
-                    console.log(response.data);
+                    // console.log(response.data);
                     store.dispatch({type:'EXAMROOM_SELECT_DATA',payload:response.data});
                 })
                 .catch((error)=>{

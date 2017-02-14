@@ -16,10 +16,6 @@ class index{
         .do(function(result){
             return r.db('lms').table('exam_answer').insert(result)
         })
-        .do(function(result){
-            return r.db('lms').table('exam_anser').get(result('generated_keys')(0))
-        })
-
 
         .run()
         .then(function(result){
@@ -30,5 +26,23 @@ class index{
         })
         
     }
+
+    show_answer(req,res){
+        var r = req.r;
+        var params = req.body;
+
+        r.db('lms').table('exam_answer').filter({
+            user_id:params.userid,
+            exam_room_id:params.exam_room_id
+        })
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
 }
 module.exports = new index();

@@ -13,7 +13,7 @@ export function examHistoryReducer(state = initialState,action){
         case 'EXAM_HISTORY_EXAM_LIST':
             return Object.assign({},state,{examList:action.payload});
         case 'EXAM_HISTORY_EXAM_LIST_SELECT':
-            return Object.assign({},state,{examListComplete:action.payload});
+            return Object.assign({},state,{examSelect:action.payload});
         case 'EXAM_HISTORY_EXAM_LIST_COMPLETE':
             return Object.assign({},state,{examListComplete:action.payload});
       
@@ -38,11 +38,10 @@ export function examHistoryAction(store){
                     console.log(error);
                 });
             },
-            EXAM_HISTORY_EXAM_LIST_SELECT:function(){
-                axios.get('link')
+            EXAM_HISTORY_EXAM_LIST_SELECT:function(data){
+                axios.get('./test_exam/test_exam?id='+data.id)
                 .then((response)=>{
-                    console.log('success!!');
-                    console.log(response.data);
+                    store.dispatch({type:'EXAM_HISTORY_EXAM_LIST_SELECT',payload:response.data})
                 })
                 .catch((error)=>{
                     console.log('error');
