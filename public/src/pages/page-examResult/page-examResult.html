@@ -77,12 +77,14 @@
                     observer:'getDataResult'
                 }
             },
-            _getResult:function(ob){
-                console.log(ob);
-                this.EXAM_RESULT_GET_RESULT(ob.base.examRoomId,ob.base.userId)
-            },
             getDataResult:function(){
                 console.log(this.dataResult);
+            },
+            _getResult:function(ob){
+                if(ob.base.page=="examResult"){
+                    this.EXAM_RESULT_GET_RESULT(ob.base.examRoomId,ob.base.userId)
+                    console.log(this.dataResult);
+                }
             }
         });
     </script>
