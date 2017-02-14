@@ -3,7 +3,7 @@ class index{
     send_answer(req,res){
         var r = req.r;
         var params = req.body;
-        
+
         r.expr(params)
         .merge(function(x){
         return {
@@ -14,8 +14,12 @@ class index{
             }
         })
         .do(function(result){
-        return r.db('lms').table('exam_answer').insert(result)
+            return r.db('lms').table('exam_answer').insert(result)
         })
+        .do(function(result){
+            return r.db('lms').table('exam_anser').get(result('generated_keys')(0))
+        })
+
 
         .run()
         .then(function(result){
