@@ -5,21 +5,16 @@ class examHistory {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').getAll("d4c3bab5-acdf-4444-b2b7-d1d083700907", {index: "learner"})
-        // .innerJoin(r.db('lms').table('exam_answer').filter({learner_id:"d4c3bab5-acdf-4444-b2b7-d1d083700907"}),
-        //     function(left,right){
-        //         return left()
-        //     }
-        // )
-        // .filter(function(row){
-        //     return r.db('lms').table('answer')
-        //     .filter({examination_id:"0b842908-dd9a-4d36-9735-a09a6855889e",learner_id:"d4c3bab5-acdf-4444-b2b7-d1d083700907"})
-        //     .do(function(row2){
-        //         return row('enable').eq(true)
-        //     })
-        // })
-        // .pluck('id','ex_name')
-        // .coerceTo('array')
+        r.db('lms').table('exam_room').getAll(params.user_id,{index:'learner'})
+        .filter(function(row){
+            return r.branch(
+                r.db('lms').table('exam_answer').filter({exam_room_id:row('id')}).count().ne(0)
+                ,
+                false
+                ,
+                true
+            ).and(row('enable').eq(true))
+        })
         .run()
         .then(function(result){
             res.json(result);
