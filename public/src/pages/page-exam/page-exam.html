@@ -36,20 +36,21 @@
     <script>
         Polymer({
             is: 'page-exam',
-            behaviors:[ReduxBehavior,examHistoryAction,examAction,authAction],
+            behaviors:[ReduxBehavior,examHistoryAction,examAction],
             observers:['getTest(getParam.id)'],
             properties:{
                 dataList:{
                     statePath:'examHistory.examSelect',
                     observer:'getData'
-                },
-                user:{
-                    statePath:'auth.user'
                 }
+                // user:{
+                //     statePath:'auth.user'
+                // }
             },
             getTest:function(id){
                 this.stat = true;
                 console.log(id);
+                this.exam_room_id = id;
                 this.EXAM_HISTORY_EXAM_LIST_SELECT(id);
             },
             getData:function(data){
@@ -70,7 +71,8 @@
                 if(check == true){
                     var data = {
                         examination_id: this.dataList[0].id, 
-                        std_id: this.user.id,
+                        exam_room_id: this.exam_room_id,
+                        // std_id: this.user.id,
                     }
                     data.question = this.dataList[0].question.map((item)=>{
                         var {topic,question_id,choice} = item;
@@ -87,6 +89,7 @@
                         return newItem;
                     })
                     this.EXAM_INSERT_DATA(data);
+                    this.fire('nylon-change-page',{path:'/examResult/'+this.exam_room_id})
                 }
             }
 

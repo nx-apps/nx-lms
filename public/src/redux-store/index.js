@@ -11,6 +11,7 @@ import {examinationRoomReducer,examinationRoomAction} from './reducer/examinatio
 import {examRoomReducer,examRoomAction} from './reducer/examRoom'
 import {examHistoryReducer,examHistoryAction} from './reducer/examHistory'
 import {examReducer,examAction} from './reducer/exam'
+import {examResultReducer,examResultAction} from './reducer/examResult'
 
 const rootReducer = combineReducers({
     auth:authReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     examinationRoom:examinationRoomReducer,
     examRoom:examRoomReducer,
     examHistory:examHistoryReducer,
-    exam:examReducer
+    exam:examReducer,
+    examResult:examResultReducer
 });
 const storeApp = createStore(
     rootReducer,
@@ -36,7 +38,8 @@ window.questionAction = questionAction(storeApp);
 window.examinationAction = examinationAction(storeApp);
 window.classRoomAction = classRoomAction(storeApp);
 window.examinationRoomAction = examinationRoomAction(storeApp);
-window.authAction = authAction(storeApp)
+window.authAction = authAction(storeApp);
 window.examRoomAction = examRoomAction(storeApp);
 window.examHistoryAction = examHistoryAction(storeApp);
-window.examAction = examAction(storeApp)
+window.examAction = examAction(storeApp);
+window.examResultAction = examResultAction(storeApp);
