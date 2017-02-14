@@ -39,7 +39,6 @@
                     </div>
                </paper-material>
             </div>
-            
             <div class="container">
             <paper-material elevation="1">
                  <table class="gl-table-default">
@@ -58,8 +57,8 @@
                  </table>
             </paper-material>
             
-            <template is="dom-repeat" items="[[dataResult.question]]">
-                <examResult-list data="[[item]]"></examResult-list>
+            <template is="dom-repeat" items="[[dataResult.question]]" filter="[[filterResult(user.role)]]">
+                <examResult-list data="[[item]]" index="[[count(index)]]"></examResult-list>
             </template>
             </div>
             
@@ -69,13 +68,19 @@
         Polymer({
             is: 'page-examResult',
             properties:{},
-            behaviors: [ReduxBehavior,examResultAction,authAction],
+            behaviors: [ReduxBehavior,examResultAction],
             observers:['_getResult(getParam.*)'],
             properties:{
                 dataResult:{
                     statePath:'examResult.result',
                     observer:'getDataResult'
+                },
+                user:{
+                    statePath:'auth.user'
                 }
+            },
+            count:function(index){
+                return index+1;
             },
             getDataResult:function(){
                 console.log(this.dataResult);
@@ -85,6 +90,21 @@
                 if(ob.base.page=="examResult"){
                     this.EXAM_RESULT_GET_RESULT(ob.base.examRoomId,ob.base.userId)
                     console.log(this.dataResult);
+                }
+            },
+            filterResult:function(role){
+                return function(row){
+                    if(role=='teacher'){
+                        return true;
+                    }else if(role=='learner'){
+                        var result = false;
+                        row.choice.map(function(rowMap){
+                            if(rowMap.checked==true&&rowMap.answer==true){
+                                result = true
+                            }
+                        })
+                        return !result;
+                    }
                 }
             }
         });

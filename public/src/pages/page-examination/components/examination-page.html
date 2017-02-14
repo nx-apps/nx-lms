@@ -30,7 +30,7 @@
         <paper-material elevation="1">
             <paper-tabs selected="{{selected}}">
                 <paper-tab>กำหนดชุดข้อสอบ</paper-tab>
-                <paper-tab on-tap="click">คำถาม</paper-tab>
+                <paper-tab>คำถาม</paper-tab>
             </paper-tabs>
         </paper-material>
         <iron-pages selected="{{selected}}">
@@ -58,11 +58,11 @@
                 'click-tab':'click'
                 
             },
-            click:function(){
-               this.fire('random-data',this.data.obj);
-            },
             nextPage:function(){
                 this.$$('iron-pages').selectNext();
+            },
+            click:function(){
+               this.fire('random-data',this.data.obj);
             },
             backPage:function(){
                 this.$$('iron-pages').selectPrevious();
