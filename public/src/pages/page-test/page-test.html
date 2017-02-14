@@ -46,11 +46,14 @@
     <script>
         Polymer({
             is: 'page-test',
-            behaviors:[ReduxBehavior,examinationAction],
+            behaviors:[ReduxBehavior,examinationAction,authAction],
             observers:['getTest(getParam.exId)'],
             properties:{
                  dataList:{
                     statePath:'examination.dataTest'
+                },
+                user:{
+                    statePath:'auth.user'
                 }
             },
             getTest:function(id){
@@ -67,30 +70,47 @@
                  confirmed:this.openToast.bind(this), 
                  })
             },
-            openToast:function(check){
-                var answer = this.dataList.question.map((item)=>{
-                    return item.answer;
-
+            openToast:function(){
+                // console.log(this.dataList);
+                var data = {
+                    examination_id: this.dataList.id, 
+                    std_id: this.user.id,
+                }
+                data.question = this.dataList.question.map((item)=>{
+                    var {topic,question_id,choice} = item;
+                    var newItem = {topic,question_id,choice};
+                    newItem.choice = item.choice.map((item)=>{
+                        var {checked,answer,choice,image_id} = item;
+                        var newItem = {checked,answer,choice,image_id};
+                        newItem.answer = newItem.checked;
+                        return newItem;
+                    })
+                    return newItem;
                 })
+                console.log(data);
+                // var answer = this.dataList.question.map((item)=>{
+                //     return item.answer;
+
+                // })
                 
-                var check;
-                var sum=0;
-                var ch = [];
-                 for(var i = 0; i< this.dataList.question.length; i++){
-                     for(var a = 0; a< this.dataList.question[i].choice.length; a++){
-                        if(this.dataList.question[i].choice[a].checked==true){
-                            ch[i] = a;
-                        }
-                     }
-                }
+                // var check;
+                // var sum=0;
+                // var ch = [];
+                //  for(var i = 0; i< this.dataList.question.length; i++){
+                //      for(var a = 0; a< this.dataList.question[i].choice.length; a++){
+                //         if(this.dataList.question[i].choice[a].checked==true){
+                //             ch[i] = a;
+                //         }
+                //      }
+                // }
                 
-                for(var i=0;i < answer.length;i++){
-                    if(answer[i]==ch[i]) {
-                        sum = sum + 1; 
-                    }
-                    console.log(answer[i],ch[i]);
-                }
-                console.log(sum);
+                // for(var i=0;i < answer.length;i++){
+                //     if(answer[i]==ch[i]) {
+                //         sum = sum + 1; 
+                //     }
+                //     console.log(answer[i],ch[i]);
+                // }
+                // console.log(sum);
             }
 
         });
