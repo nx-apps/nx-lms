@@ -33,7 +33,7 @@ class index{
 
         r.db('lms').table('exam_answer').filter({
             user_id:params.user_id,
-            examination_id:params.examination_id
+            exam_room_id:params.exam_room_id
         }).innerJoin(r.db('lms').table('exam_room'),function(x,xx){
                 return x('exam_room_id').eq(xx('id'))
             }).map(function(n){
@@ -53,7 +53,17 @@ class index{
                 return n('left').merge(function(){
                 return {std_name:n('right')('name')}
             })
-        }).without('user_id','exam_room_id','id','examination_id')(0)
+        }).without('user_id','exam_room_id','id','examination_id')
+        .merge(function(q){
+            return {  question: q('question').map(function(x){
+            return {
+                question_id:x('question_id'),
+                topic:x('topic'),
+                correct:x('choice').filter({checked:true}),
+                answer:x('choice').filter({answer:true}),
+                }
+            })  }
+        })(0)
         .run()
         .then(function(result){
             res.json(result);
