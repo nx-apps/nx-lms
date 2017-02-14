@@ -36,10 +36,14 @@ class examHistory {
             return left('exam_room_id').eq(right('id'))
         })
         .map(function(row){
-            return {
-                exam_room_name:row('right')('name'),
-                exam_answer_id:row('left')('id')
-            }
+            return row('left').pluck('count_question','score')
+            .merge(function(row2){
+                return {
+                    exam_room_name:row('right')('name'),
+                    exam_answer_id:row('left')('id')
+                }
+            })
+            
         })
         
         .run()
