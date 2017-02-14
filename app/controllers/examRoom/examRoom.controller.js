@@ -135,7 +135,7 @@ class examRoom {
         .map(function(row){
             return row('right')
             .merge(function(row2){
-                return row('left').pluck('score')
+                return row('left').pluck('score','exam_room_id')
             })
         })
         

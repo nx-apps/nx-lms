@@ -50,7 +50,7 @@
             selectData:function(e){
                 console.log(this.examList);
                 console.log(e.currentTarget.item);
-                // this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.exam_answer_id})
+                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.exam_room_id})
             }
         });
     </script>
