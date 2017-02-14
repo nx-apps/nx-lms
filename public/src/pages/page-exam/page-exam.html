@@ -1,8 +1,8 @@
 
-<link rel="import" href="./components/test-list.html">
+<link rel="import" href="./components/exam-list.html">
 <link rel="import" href="/src/nylon-param.html">
 
-<dom-module id="page-test">
+<dom-module id="page-exam">
     <template>
         <nylon-param params="{{getParam}}" pattern="exId"></nylon-param>
         
@@ -45,7 +45,7 @@
     </template>
     <script>
         Polymer({
-            is: 'page-test',
+            is: 'page-exam',
             behaviors:[ReduxBehavior,examinationAction,authAction],
             observers:['getTest(getParam.exId)'],
             properties:{
@@ -57,6 +57,7 @@
                 }
             },
             getTest:function(id){
+                console.log(this.user)
                 this.stat = true;
                 this.EXAMINATION_GET_DATA_TEST(id);
             },

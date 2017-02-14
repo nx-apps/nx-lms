@@ -3,7 +3,8 @@ import {commonAction} from '../config'
 
 const initialState = {
     examList:[],
-    examListComplete:[]
+    examListComplete:[],
+    examSelect:{}
 }
 
 export function examHistoryReducer(state = initialState,action){
@@ -11,8 +12,11 @@ export function examHistoryReducer(state = initialState,action){
     switch (action.type) {
         case 'EXAM_HISTORY_EXAM_LIST':
             return Object.assign({},state,{examList:action.payload});
+        case 'EXAM_HISTORY_EXAM_LIST_SELECT':
+            return Object.assign({},state,{examListComplete:action.payload});
         case 'EXAM_HISTORY_EXAM_LIST_COMPLETE':
             return Object.assign({},state,{examListComplete:action.payload});
+      
         default:
             return state
     }
@@ -28,6 +32,17 @@ export function examHistoryAction(store){
                 axios.get('./examHistory/examList?user_id='+id)
                 .then((response)=>{
                     store.dispatch({type:'EXAM_HISTORY_EXAM_LIST',payload:response.data})
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            EXAM_HISTORY_EXAM_LIST_SELECT:function(){
+                axios.get('link')
+                .then((response)=>{
+                    console.log('success!!');
+                    console.log(response.data);
                 })
                 .catch((error)=>{
                     console.log('error');

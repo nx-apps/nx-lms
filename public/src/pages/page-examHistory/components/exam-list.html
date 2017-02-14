@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                     <template is="dom-repeat" items="[[examList]]">
-                        <tr>
+                        <tr on-tap="selectData">
                             <td>[[getIndex(index)]]</td>
                             <td>[[item.name]]</td>
                             <td>
@@ -39,7 +39,7 @@
     <script>
         Polymer({
             is: 'exam-list',
-            behaviors:[ReduxBehavior],
+            behaviors:[ReduxBehavior,dispatchActionBehavior],
             getIndex:function(index){
                 return index+1;
             },
@@ -47,6 +47,9 @@
                 examList:{
                     statePath:'examHistory.examList'
                 }
+            },
+            selectData:function(){
+
             }
         });
     </script>
