@@ -32,7 +32,7 @@ class index{
         var params = req.body;
 
         r.db('lms').table('exam_answer').filter({
-            user_id:params.userid,
+            user_id:params.user_id,
             exam_room_id:params.exam_room_id
         })
         .run()
