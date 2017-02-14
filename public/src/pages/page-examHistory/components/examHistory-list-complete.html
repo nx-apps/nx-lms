@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                     <template is="dom-repeat" items="[[examList]]">
-                        <tr>
+                        <tr on-tap="selectData" item="[[item]]">
                             <td>[[getIndex(index)]]</td>
                             <td>[[item.exam_room_name]]</td>
                         </tr>
@@ -42,6 +42,9 @@
                 examList:{
                     statePath:'examHistory.examListComplete'
                 }
+            },
+            selectData:function(e){
+                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.exam_answer_id})
             }
         });
     </script>
