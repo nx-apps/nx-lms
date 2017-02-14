@@ -48,7 +48,9 @@
                 }
             },
             selectData:function(e){
-                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.exam_answer_id})
+                console.log(this.examList);
+                console.log(e.currentTarget.item);
+                // this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.exam_answer_id})
             }
         });
     </script>

@@ -1,7 +1,9 @@
 import axios from '../axios'
 import {commonAction} from '../config'
 
-const initialState = {}
+const initialState = {
+    result:{}
+}
 
 export function examResultReducer(state = initialState,action){
 
@@ -16,11 +18,33 @@ export function examResultReducer(state = initialState,action){
 export function examResultAction(store){
     return [commonAction(),
         {
-            EXAM_RESULT_GET_RESULT:function(exam_room_id,user_id = store.getState().auth.user.id){
-                axios.get('/send_answer/show_answer',{params:{exam_room_id,user_id}})
-                .then(res=>{
-                    store.dispatch({type:'EXAM_RESULT_GET_RESULT',payload:res.data})
+            EXAM_RESULT_GET_RESULT:function(exam_room_id){
+                var user_id = store.getState().auth.user.id;
+                console.log(exam_room_id,'...',user_id);
+                axios.get('./send_answer/show_answer',{
+                params:{
+                    exam_room_id: exam_room_id,
+                    user_id:user_id
+                }
                 })
+                .then((response)=>{
+                    console.log('success!!');
+                    console.log(response.data);
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+                // axios.get('./send_answer/show_answer',{
+                //     params:{
+                //         exam_room_id,
+                //         user_id
+                //     }
+                //     })
+                // .then(res=>{
+                //     console.log(res.data);
+                //     store.dispatch({type:'EXAM_RESULT_GET_RESULT',payload:res.data})
+                // })
             }
         }
     ]

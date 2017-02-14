@@ -53,13 +53,6 @@
                              <th></th>
                         </tr>
                     </thead>
-                    <template is="dom-if" if={{!stat}}>
-                    <tbody>
-                        <tr>
-                            <td colspan="3">ไม่พบข้อมูล</td>
-                        </tr>
-                    </tbody>
-                     </template>
                  </table>
             </paper-material>
             </div>
@@ -70,10 +63,19 @@
         Polymer({
             is: 'page-examResult',
             properties:{},
-            behaviors: [ReduxBehavior,examResultAction],
+            behaviors: [ReduxBehavior,examResultAction,authAction],
             observers:['_getResult(getParam.examRoomId)'],
+            properties:{
+                dataResult:{
+                    statePath:'examResult.result'
+                }
+            },
+            getData:function(){
+                console.log(this.user);
+            },
             _getResult:function(id){
                 this.EXAM_RESULT_GET_RESULT(id)
+                console.log(this.dataResult);
             }
         });
     </script>

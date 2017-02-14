@@ -131,8 +131,12 @@ class examRoom {
             r.db('lms').table('user').filter({role:'learner'}).pluck('name','id'),function(left,right){
                 return left('user_id').eq(right('id'))
             }
-        ).map(function(row){
+        )
+        .map(function(row){
             return row('right')
+            .merge(function(row2){
+                return row('left').pluck('score')
+            })
         })
         
         .run()
