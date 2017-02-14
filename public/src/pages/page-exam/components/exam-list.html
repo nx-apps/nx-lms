@@ -25,7 +25,7 @@
                     <template is="dom-repeat" items="{{data.choice}}">
                         <tr>
                             <td>
-                                <paper-radio-button checked="{{item.checked}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
+                                <paper-radio-button checked="{{item.answer}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
                             </td>
                             <td>
                                 [[item.choice]]
@@ -50,9 +50,9 @@
                 if(typeof this.data.choice !=="undefined"){
                     this.data.choice.map((row,i)=>{
                         if(i===e.currentTarget.index){
-                            this.set('data.choice.'+i+'.checked',true)
+                            this.set('data.choice.'+i+'.answer',true)
                         }else{
-                            this.set('data.choice.'+i+'.checked',false)
+                            this.set('data.choice.'+i+'.answer',false)
                         }
                     })
                 }

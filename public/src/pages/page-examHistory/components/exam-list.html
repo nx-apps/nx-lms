@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                     <template is="dom-repeat" items="[[examList]]">
-                        <tr on-tap="selectData">
+                        <tr on-tap="selectData" item="[[item]]">
                             <td>[[getIndex(index)]]</td>
                             <td>[[item.name]]</td>
                             <td>
@@ -48,8 +48,10 @@
                     statePath:'examHistory.examList'
                 }
             },
-            selectData:function(){
-
+            selectData:function(e){
+                // console.log(e.currentTarget.item);
+                this.dispatchAction('EXAM_HISTORY_EXAM_LIST_SELECT',e.currentTarget.item);
+                this.fire('nylon-change-page',{path:'/exam/'+e.currentTarget.item.id})
             }
         });
     </script>

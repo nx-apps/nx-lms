@@ -4,7 +4,7 @@
 
 <dom-module id="page-exam">
     <template>
-        <nylon-param params="{{getParam}}" pattern="exId"></nylon-param>
+        <nylon-param params="{{getParam}}" pattern="id"></nylon-param>
         
         <style include="page-style"></style>
         <div class="xcontainer">
@@ -14,12 +14,12 @@
                     <thead>
                         <tr class="hideBorder">
                             <th style="width:20%;text-align: right; font-size: 18px;">ชื่อข้อสอบ</th>
-                            <th><gl-form-input placeholder="" no-label-float value="[[dataList.ex_name]]" disabled></gl-form-input></th>
+                            <th><gl-form-input placeholder="" no-label-float value="[[dataList.0.ex_name]]" disabled></gl-form-input></th>
                             <th></th>
                         </tr>
                         <tr>
                             <th style="width:20%;text-align: right; font-size: 18px;">คำอธิบาย</th>
-                            <th><gl-form-textarea placeholder="" no-label-float value="[[dataList.description]]" disabled></gl-form-textarea></th>
+                            <th><gl-form-textarea placeholder="" no-label-float value="[[dataList.0.description]]" disabled></gl-form-textarea></th>
                              <th></th>
                         </tr>
                     </thead>
@@ -34,8 +34,8 @@
             </paper-material>
             
             <template is="dom-if" if="{{stat}}">
-                <template is="dom-repeat" items="[[dataList.question]]">
-                    <test-list data="[[item]]" index="[[cont(index)]]"></test-list>
+                <template is="dom-repeat" items="[[dataList.0.question]]">
+                    <exam-list data="[[item]]" index="[[cont(index)]]"></exam-list>
                    
                 </template>
             </template>
@@ -46,20 +46,24 @@
     <script>
         Polymer({
             is: 'page-exam',
-            behaviors:[ReduxBehavior,examinationAction,authAction],
-            observers:['getTest(getParam.exId)'],
+            behaviors:[ReduxBehavior,examRoomAction,authAction],
+            observers:['getTest(getParam.id)'],
             properties:{
-                 dataList:{
-                    statePath:'examination.dataTest'
+                dataList:{
+                    statePath:'examRoom.selectexamRoom',
+                    observer:'getData'
                 },
                 user:{
                     statePath:'auth.user'
                 }
             },
             getTest:function(id){
-                console.log(this.user)
                 this.stat = true;
-                this.EXAMINATION_GET_DATA_TEST(id);
+                console.log(id);
+                this.EXAMROOM_SELECT_DATA(id);
+            },
+            getData:function(data){
+                console.log(this.dataList);
             },
             cont:function(index){
                 return index+1;
@@ -68,50 +72,32 @@
                 this.fire('toast',{ 
                  status:'openDialog',
                  text:'ต้องการส่งแบบทดสอบใช่หรือไม่ ?',
-                 confirmed:this.openToast.bind(this), 
+                 confirmed:this.sendAnswer.bind(this), 
                  })
             },
-            openToast:function(){
+            sendAnswer:function(check){
                 // console.log(this.dataList);
-                var data = {
-                    examination_id: this.dataList.id, 
-                    std_id: this.user.id,
-                }
-                data.question = this.dataList.question.map((item)=>{
-                    var {topic,question_id,choice} = item;
-                    var newItem = {topic,question_id,choice};
-                    newItem.choice = item.choice.map((item)=>{
-                        var {checked,answer,choice,image_id} = item;
-                        var newItem = {checked,answer,choice,image_id};
-                        newItem.answer = newItem.checked;
+                if(check == true){
+                    var data = {
+                        examination_id: this.dataList[0].id, 
+                        std_id: this.user.id,
+                    }
+                    data.question = this.dataList[0].question.map((item)=>{
+                        var {topic,question_id,choice} = item;
+                        var newItem = {topic,question_id,choice};
+                        newItem.choice = item.choice.map((item)=>{
+                            var {checked,answer,choice,image_id} = item;
+                            var newItem = {checked,answer,choice,image_id};
+                            if(typeof newItem.answer == 'undefined'){
+                                newItem.answer = false;
+                            }
+                            // newItem.answer = newItem.answer;
+                            return newItem;
+                        })
                         return newItem;
                     })
-                    return newItem;
-                })
-                console.log(data);
-                // var answer = this.dataList.question.map((item)=>{
-                //     return item.answer;
-
-                // })
-                
-                // var check;
-                // var sum=0;
-                // var ch = [];
-                //  for(var i = 0; i< this.dataList.question.length; i++){
-                //      for(var a = 0; a< this.dataList.question[i].choice.length; a++){
-                //         if(this.dataList.question[i].choice[a].checked==true){
-                //             ch[i] = a;
-                //         }
-                //      }
-                // }
-                
-                // for(var i=0;i < answer.length;i++){
-                //     if(answer[i]==ch[i]) {
-                //         sum = sum + 1; 
-                //     }
-                //     console.log(answer[i],ch[i]);
-                // }
-                // console.log(sum);
+                    console.log(data);
+                }
             }
 
         });
