@@ -16,11 +16,7 @@ class index{
         .do(function(result){
             return r.db('lms').table('exam_answer').insert(result)
         })
-        .do(function(result){
-            return r.db('lms').table('exam_anser').get(result('generated_keys')(0))
-        })
-
-
+        
         .run()
         .then(function(result){
             res.json(result);
