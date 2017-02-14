@@ -48,10 +48,12 @@
                 // }
             },
             getTest:function(id){
-                this.stat = true;
-                console.log(id);
-                this.exam_room_id = id;
-                this.EXAM_HISTORY_EXAM_LIST_SELECT(id);
+                if(this.getParam.page=="exam"){
+                    this.stat = true;
+                    console.log(id);
+                    this.exam_room_id = id;
+                    this.EXAM_HISTORY_EXAM_LIST_SELECT(id);
+                }
             },
             getData:function(data){
                 console.log(this.dataList);
