@@ -16,7 +16,9 @@
                 <thead>
                     <tr>
                         <th style="width:10%">#</th>
-                        <th>รายชื่อข้อสอบ</th>
+                        <th>รายการผลสอบ</th>
+                        <th>จำนวนข้อที่ถูก (ข้อ)</th>
+                        <th>จำนวนข้อทั้งหมด (ข้อ)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,6 +26,8 @@
                         <tr on-tap="selectData" item="[[item]]">
                             <td>[[getIndex(index)]]</td>
                             <td>[[item.exam_room_name]]</td>
+                            <td>[[item.score]]</td>
+                            <td>[[item.count_question]]</td>
                         </tr>
                     </template>
                 </tbody>
