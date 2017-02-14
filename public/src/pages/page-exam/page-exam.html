@@ -23,21 +23,11 @@
                              <th></th>
                         </tr>
                     </thead>
-                    <template is="dom-if" if={{!stat}}>
-                    <tbody>
-                        <tr>
-                            <td colspan="3">ไม่พบข้อมูล</td>
-                        </tr>
-                    </tbody>
-                     </template>
                  </table>
             </paper-material>
-            
-            <template is="dom-if" if="{{stat}}">
-                <template is="dom-repeat" items="[[dataList.0.question]]">
-                    <exam-list data="[[item]]" index="[[cont(index)]]"></exam-list>
-                   
-                </template>
+            <template is="dom-repeat" items="[[dataList.0.question]]">
+                <exam-list data="[[item]]" index="[[cont(index)]]"></exam-list>
+                
             </template>
             
         </div>
@@ -46,11 +36,11 @@
     <script>
         Polymer({
             is: 'page-exam',
-            behaviors:[ReduxBehavior,examRoomAction,examAction,authAction],
+            behaviors:[ReduxBehavior,examHistoryAction,examAction,authAction],
             observers:['getTest(getParam.id)'],
             properties:{
                 dataList:{
-                    statePath:'examRoom.selectexamRoom',
+                    statePath:'examHistory.examSelect',
                     observer:'getData'
                 },
                 user:{
@@ -60,7 +50,7 @@
             getTest:function(id){
                 this.stat = true;
                 console.log(id);
-                this.EXAMROOM_SELECT_DATA(id);
+                this.EXAM_HISTORY_EXAM_LIST_SELECT(id);
             },
             getData:function(data){
                 console.log(this.dataList);

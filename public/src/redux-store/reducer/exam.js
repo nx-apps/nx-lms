@@ -18,10 +18,9 @@ export function examAction(store){
     return [
         commonAction(),{
             EXAM_INSERT_DATA:function(data){
-                var newData = [data];
-                console.log(newData);
+               
                 this.fire('toast',{status:'load'});
-                axios.post('./send_answer/send_answer',newData)
+                axios.post('./send_answer/send_answer',data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                         callback:()=>{

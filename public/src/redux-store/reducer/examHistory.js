@@ -38,9 +38,11 @@ export function examHistoryAction(store){
                     console.log(error);
                 });
             },
-            EXAM_HISTORY_EXAM_LIST_SELECT:function(data){
-                axios.get('./test_exam/test_exam?id='+data.id)
+            EXAM_HISTORY_EXAM_LIST_SELECT:function(id){
+                console.log(id);
+                axios.get('./test_exam/test_exam?id='+id)
                 .then((response)=>{
+                    console.log(response.data);
                     store.dispatch({type:'EXAM_HISTORY_EXAM_LIST_SELECT',payload:response.data})
                 })
                 .catch((error)=>{
