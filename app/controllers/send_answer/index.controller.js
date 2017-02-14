@@ -53,8 +53,8 @@ class index{
                 return n('left').merge(function(){
                 return {std_name:n('right')('name')}
             })
-        }).without('user_id','exam_room_id','id','examination_id')
-        .merge(function(q){
+        }).without('user_id','exam_room_id','id','examination_id')(0)
+      /*  .merge(function(q){
             return {  question: q('question').map(function(x){
             return {
                 question_id:x('question_id'),
@@ -64,6 +64,7 @@ class index{
                 }
             })  }
         })(0)
+        */
         .run()
         .then(function(result){
             res.json(result);
