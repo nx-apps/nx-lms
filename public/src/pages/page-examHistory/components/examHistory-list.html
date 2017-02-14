@@ -17,6 +17,7 @@
                     <tr>
                         <th style="width:10%">#</th>
                         <th>รายการห้องสอบ</th>
+                        <th>จำนวนข้อ</th>
                         <th style="width:20%"></th>
                     </tr>
                 </thead>
@@ -25,6 +26,7 @@
                         <tr on-tap="selectData" item="[[item]]">
                             <td>[[getIndex(index)]]</td>
                             <td>[[item.name]]</td>
+                            <td>[[item.qty]]</td>
                             <td>
                                <iron-icon icon="create"></iron-icon>
                                เริ่มทำข้อสอบ
