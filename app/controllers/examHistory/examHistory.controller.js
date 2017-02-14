@@ -15,6 +15,13 @@ class examHistory {
                 true
             ).and(row('enable').eq(true))
         })
+        .innerJoin(r.db('lms').table('examination'),function(left,right){
+            return left('examination_id').eq(right('id'))
+        }).map(function(row){
+            return row('left').merge(function(row2){
+                return row('right').pluck('qty')
+            })
+        })
         .run()
         .then(function(result){
             res.json(result);
