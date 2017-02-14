@@ -91,7 +91,7 @@
             },
             chagePage:function(e){
                 console.log(e.currentTarget.item);
-                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.id+'/'+e.currentTarget.item.exam_room_id})
+                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.exam_room_id+'/'+e.currentTarget.item.id})
             },
             getValue:function(){
                 this.data.map((item)=>{
