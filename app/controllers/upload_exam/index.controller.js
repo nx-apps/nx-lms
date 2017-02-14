@@ -17,21 +17,20 @@ class index{
                 if(z[0] === '!') continue;
                 if((worksheet[z].v === 'q') || (worksheet[z].v === 'ch1') || (worksheet[z].v === 'ch2') || (worksheet[z].v === 'ch3')|| 
                 (worksheet[z].v === 'ch4') || (worksheet[z].v === 'ch5')) continue;
-
-                if(i <= 5){
+                if(i <= number.length){
                     ch[i] = worksheet[z].v; 
-                     if(i==5){
+                     if(i==number.length){
                          ch[i+1] = sheet_name_list[count_name];
                          allData[count_round] = ch;
                          ch=[]; i=-1; count_round++;
                      }
                      i++;
                 }
-
             }
             count_name++;
         });
-        //console.log(allData);
+        console.log(allData);
+        
         var getLength = allData[0].length-1; // check exam
         var all=[], data = {topic:"",choice:[],answer:0,tag:[]};
 
@@ -81,7 +80,6 @@ class index{
         .catch(function(err){
             res.status(500).json(err);
         })   
-    
     }
 }
 
