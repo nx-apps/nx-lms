@@ -89,6 +89,7 @@
                         return newItem;
                     })
                     this.EXAM_INSERT_DATA(data);
+                    this.fire('nylon-change-page',{path:'/examResult/'+this.exam_room_id})
                 }
             }
 

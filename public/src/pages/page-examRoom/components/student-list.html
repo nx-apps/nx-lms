@@ -21,7 +21,7 @@
                     </thead>
                     <tbody>
                         <template is="dom-repeat" items="{{data}}" filter="{{computeFilter(active)}}">
-                            <tr on-tap="controller">
+                            <tr on-tap="controller" item="[[item]]">
                                 
                                 <template is="dom-if" if="[[status]]">
                                     <td>
@@ -82,15 +82,16 @@
                         e.currentTarget.item.check = false;
                         break;
                     case 'view': 
-                        this.chagePage();
+                        this.chagePage(e);
                         break;
                     default:
                         break;
                 }
                 this.data = [].concat(this.data);
             },
-            chagePage:function(){
-                alert('chagePage');
+            chagePage:function(e){
+                console.log(e.currentTarget.item);
+                // this.fire('nylon-change-page',{path:'/examResult/'+this.exam_room_id})
             },
             getValue:function(){
                 this.data.map((item)=>{

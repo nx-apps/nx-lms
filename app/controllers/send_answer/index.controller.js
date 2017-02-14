@@ -34,7 +34,26 @@ class index{
         r.db('lms').table('exam_answer').filter({
             user_id:params.user_id,
             exam_room_id:params.exam_room_id
-        })
+        }).innerJoin(r.db('lms').table('exam_room'),function(x,xx){
+                return x('exam_room_id').eq(xx('id'))
+            }).map(function(n){
+                return n('left').merge(function(){
+                return {name:n('right')('name')}
+            })
+            }).innerJoin(r.db('lms').table('examination'),function(x,xx){
+                return x('examination_id').eq(xx('id'))
+            }).map(function(n){
+                return n('left').merge(function(){
+                return {ex_name:n('right')('ex_name')}
+            })
+            })
+            .innerJoin(r.db('lms').table('user'),function(x,xx){
+                return x('user_id').eq(xx('id'))
+            }).map(function(n){
+                return n('left').merge(function(){
+                return {std_name:n('right')('name')}
+            })
+        })(0)
         .run()
         .then(function(result){
             res.json(result);
