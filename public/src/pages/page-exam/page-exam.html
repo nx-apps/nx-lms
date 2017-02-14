@@ -46,7 +46,7 @@
     <script>
         Polymer({
             is: 'page-exam',
-            behaviors:[ReduxBehavior,examRoomAction,authAction],
+            behaviors:[ReduxBehavior,examRoomAction,examAction,authAction],
             observers:['getTest(getParam.id)'],
             properties:{
                 dataList:{
@@ -96,7 +96,7 @@
                         })
                         return newItem;
                     })
-                    console.log(data);
+                    this.EXAM_INSERT_DATA(data);
                 }
             }
 
