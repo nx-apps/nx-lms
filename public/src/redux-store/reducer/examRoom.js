@@ -76,7 +76,7 @@ export function examRoomAction(store){
                 });
             },
             EXAMROOM_SELECT_DATA:function(id){
-                axios.get('./test_exam/test_exam?id='+id)
+                axios.get('./examRoom/examRoom?id='+id)
                 .then((response)=>{
                     console.log('success!!');
                     // console.log(response.data);
