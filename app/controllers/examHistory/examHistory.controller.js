@@ -43,7 +43,7 @@ class examHistory {
             return left('exam_room_id').eq(right('id'))
         })
         .map(function(row){
-            return row('left').pluck('count_question','score')
+            return row('left').pluck('count_question','score','exam_room_id')
             .merge(function(row2){
                 return {
                     exam_room_name:row('right')('name'),
