@@ -55,14 +55,14 @@
                 </paper-material>
 				<div role="listbox">
                     
-                    <template is="dom-repeat" items="{{listMenu}}">
-                            <paper-icon-item on-tap="selectPage" path$="{{item.path}}" focused  index="{{index}}" selected$="{{_checkSelect(path,item.path)}}">
-                                <iron-icon icon="chevron-right" item-icon></iron-icon>
-                                {{item.name}}
-                                <div hidden$="{{!item.loading}}">
-                                    <paper-spinner active></paper-spinner>
-                                </div>
-                            </paper-icon-item>
+                    <template is="dom-repeat" items="{{listMenu}}" filter="{{menuFilter(user.role)}}">
+                        <paper-icon-item on-tap="selectPage" path$="{{item.path}}" focused  index="{{index}}" selected$="{{_checkSelect(path,item.path)}}">
+                            <iron-icon icon="chevron-right" item-icon></iron-icon>
+                            [[item.name]]
+                            <div hidden$="{{!item.loading}}">
+                                <paper-spinner active></paper-spinner>
+                            </div>
+                        </paper-icon-item>
                     </template>
                     
 				</div>
@@ -71,33 +71,38 @@
     <script>
         Polymer({
             is: 'layout-main-drawer',
+            behaviors:[ReduxBehavior],
             properties:{
+                user:{
+                    statePath:'auth.user'
+                },
                 listMenu:{
                     type:Array,
                     value:[
                         {
                             name: 'จัดการคำถาม',
-                            path: '/question'
+                            path: '/question',
+                            role: 'teacher'
                         },
                         {
                             name: 'จัดการข้อสอบ',
-                            path: '/examination'
-                        },
-                        {
-                            name: 'จัดการห้องเรียน',
-                            path: '/classRoom'
-                        },
-                        {
-                            name: 'ทดสอบ',
-                            path: '/examinationRoom'
+                            path: '/examination',
+                            role: 'teacher'
                         },
                         {
                             name: 'จัดการห้องสอบ',
-                            path: '/examRoom'
+                            path: '/examRoom',
+                            role: 'teacher'
                         },
                         {
+<<<<<<< HEAD
                             name: 'ผลสอบ',
                             path: '/examHistory'
+=======
+                            name: 'รายการสอบ',
+                            path: '/examHistory',
+                            role: 'learner'
+>>>>>>> 99bd03fb5213cc4c45ef5e34f9c4f56394848c86
                         }
                     ]
                 },
@@ -106,7 +111,15 @@
                     value: false
                 }
             },
-            
+            menuFilter:function(role){
+                if (!role) {
+                    return null;
+                }else{
+                    return function(listMenu) {
+                        return (listMenu.role==role) 
+                    };
+                }
+            },
             selectPage:function(e){
                 if((('/'+this.path) != e.currentTarget.getAttribute('path')) && (e.currentTarget.getAttribute('path')!='')){
                     this.set('listMenu.'+e.currentTarget.index+'.loading',true);
