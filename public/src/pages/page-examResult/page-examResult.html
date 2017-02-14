@@ -1,4 +1,4 @@
-
+<link rel="import" href="/src/nylon-param.html">
 <dom-module id="page-examResult">
     <template>
         <style include="page-style flex-style">
@@ -10,6 +10,7 @@
                 font-size: 16px;
             }
         </style>
+        <nylon-param params="{{getParam}}" pattern="examRoomId"></nylon-param>
         <div class="xcontainer">
              <div class="header gl-large">
                     ผลสอบ
@@ -67,7 +68,13 @@
     </template>
     <script>
         Polymer({
-            is: 'page-examResult'
+            is: 'page-examResult',
+            properties:{},
+            behaviors: [ReduxBehavior,examResultAction],
+            observers:['_getResult(getParam.examRoomId)'],
+            _getResult:function(id){
+                this.EXAM_RESULT_GET_RESULT(id)
+            }
         });
     </script>
 </dom-module>
