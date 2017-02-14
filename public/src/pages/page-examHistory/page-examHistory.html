@@ -1,5 +1,6 @@
 
 <link rel="import" href="./components/exam-list.html">
+<link rel="import" href="./components/exam-list-complete.html">
 
 <dom-module id="page-examHistory">
     <template>
@@ -36,7 +37,7 @@
             <div class="xcontainer">
                 <iron-pages selected="{{selected}}">
                     <section><exam-list></exam-list></section>
-                    <section></section>
+                    <section><exam-list-complete></exam-list-complete></section>
                 </iron-pages> 
             </div>
     </template>
@@ -46,6 +47,7 @@
             behaviors:[examHistoryAction],
             ready:function(){
                 this.EXAM_HISTORY_EXAM_LIST();
+                this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
             },
             properties:{
                 selected:{
