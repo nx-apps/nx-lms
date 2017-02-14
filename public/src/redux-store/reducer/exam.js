@@ -25,9 +25,10 @@ export function examAction(store){
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                         callback:()=>{
                             // this.stat = false;
+                            // console.log(response.data);
                         }
                      });
-                    console.log(response.data);
+                    
                 })
                 .catch((error)=>{
                     console.log('error');
