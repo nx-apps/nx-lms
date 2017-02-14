@@ -4,7 +4,7 @@ class index{
         var r = req.r;
         var params = req.params;
 
-        r.db('lms').table('student')
+        r.db('lms').table('user')
         .run()
         .then(function(result){
             res.json(result);
@@ -18,7 +18,7 @@ class index{
         var r = req.r;
         var params = req.body;
 
-        r.db('lms').table('student').insert(params)
+        r.db('lms').table('user').insert(params)
         .run()
         .then(function(result){
             res.json(result);
@@ -32,7 +32,7 @@ class index{
         var r = req.r;
         var params = req.body;
 
-        r.db('lms').table('student').get(params.id).update(params)
+        r.db('lms').table('user').get(params.id).update(params)
         .run()
         .then(function(result){
             res.json(result);
@@ -46,7 +46,7 @@ class index{
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('student').get(params.id).delete()
+        r.db('lms').table('user').get(params.id).delete()
         .run()
         .then(function(result){
             res.json(result);

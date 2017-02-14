@@ -53,7 +53,7 @@ class index{
                 return n('left').merge(function(){
                 return {std_name:n('right')('name')}
             })
-        })
+        })(0)
         .run()
         .then(function(result){
             res.json(result);
