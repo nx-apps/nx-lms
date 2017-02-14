@@ -29,10 +29,10 @@ class index{
 
     show_answer(req,res){
         var r = req.r;
-        var params = req.body;
+        var params = req.query;
 
         r.db('lms').table('exam_answer').filter({
-            user_id:params.userid,
+            user_id:params.user_id,
             exam_room_id:params.exam_room_id
         })
         .run()
