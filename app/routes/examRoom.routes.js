@@ -10,5 +10,6 @@ module.exports=function(app){
     app.delete('/examRoom',examRoom.deleteExamRoom);
 
     app.get('/userModuleList',examRoom.getUserModuleList);
+    app.get('/learnerTestList',examRoom.getLearnerTestList);
     
 } 
