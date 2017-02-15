@@ -40,6 +40,17 @@
                     <div class="flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flexchild fontCSC margin">
+                            module
+                        </div>
+                        <div class="flex3child" style="text-align: left">
+                            <gl-combo-box  no-label-float items="{{listTag}}" filter="{{fillterListTag(listTag)}}" value="{{item.obj_tag}}"></gl-combo-box>
+                        </div>
+                      
+                        <div class="flexchild"></div>
+                    </div>
+                    <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
                             กำหนดเวลา
                         </div>
                         <div class="flexchild" style="text-align: left">
@@ -52,6 +63,7 @@
                         </div>
                         <div class="flexchild"></div>
                     </div>
+                    
                 </div>
             </paper-material>
             <div class="flex-equal-around-justified">
@@ -95,10 +107,19 @@
                 },
                 data:{
                     statePath:'examRoom.selectexamRoom'
+                },
+                listTag:{
+                    statePath:'examination.listTag'
                 }
             },
             ready:function(){
                 this.dispatchAction('EXAMROOM_GET_STUDENT_LIST');
+            },
+            fillterListTag:function(listTag){
+                // console.log(listTag);
+                return this.listTag.filter((item)=>{
+                    return item[0] == '*'
+                })
             },
             check:function(id){
                 if(id){
