@@ -6,7 +6,7 @@ class index{
 
         r.db('lms').table('question').group('tag').ungroup().concatMap(function(x){
             return x('group')
-        })
+        }).distinct()
         .run()
         .then(function(result){
             res.json(result);
