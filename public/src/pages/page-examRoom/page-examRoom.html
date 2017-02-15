@@ -23,9 +23,10 @@
                 'open':'openPanelRight',
                 'close':'closePanelRight'
             },
-            behaviors: [ReduxBehavior,examRoomAction],
+            behaviors: [ReduxBehavior,examRoomAction,examinationAction],
             openPanelRight:function(){
                 this.EXAMROOM_CLEAR_DATA();
+                this.EXAMINATION_GET_TAG_LIST();
                 this.$$('panel-right').open();
             },
             closePanelRight:function(){
