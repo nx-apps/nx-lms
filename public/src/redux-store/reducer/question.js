@@ -20,9 +20,14 @@ export function questionAction(store){
     return [commonAction(),
         {
             QUESTION_GET_LIST:function(){
+                this.fire('toast',{status:'load'});
                 axios.get('./question/question')
                 .then((response)=>{
                     store.dispatch({type:'QUESTION_GET_LIST',payload:response.data});
+                    this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
+                      callback:function(){
+                      }
+                     });
                 })
                 .catch((error)=>{
                     console.log(error);

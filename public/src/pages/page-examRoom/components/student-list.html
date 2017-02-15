@@ -26,7 +26,7 @@
                     </thead>
                     <tbody>
                         <template is="dom-repeat" items="{{data}}" filter="{{computeFilter(active)}}">
-                            <tr item="[[item]]">
+                            <tr on-tap="controller" item="[[item]]">
                                 
                                 <template is="dom-if" if="[[status]]">
                                     <td>
@@ -83,10 +83,10 @@
             controller:function(e){
                 switch (this.active) {
                     case 'join':
-                        e.currentTarget.item.check = true;
+                        // e.currentTarget.item.check = true;
                         break;
                     case 'cancel':
-                        e.currentTarget.item.check = false;
+                        // e.currentTarget.item.check = false;
                         break;
                     case 'view': 
                         this.chagePage(e);

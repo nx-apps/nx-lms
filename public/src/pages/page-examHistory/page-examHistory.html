@@ -45,16 +45,16 @@
         Polymer({
             is: 'page-examHistory',
             behaviors:[nylonBehavior,examHistoryAction],
-            nylonPageActive:function(){
-                this.EXAM_HISTORY_EXAM_LIST();
-                this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
-            },
             properties:{
                 selected:{
                     type:String,
                     value:'0'
                 }
-            }
+            },
+            nylonPageActive:function(){
+                this.EXAM_HISTORY_EXAM_LIST();
+                this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
+            },
         });
     </script>
 </dom-module>

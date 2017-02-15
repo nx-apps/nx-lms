@@ -43,7 +43,7 @@
                             Module
                         </div>
                         <div class="flex3child" style="text-align: left">
-                            <gl-combo-box  no-label-float items="{{newTag}}" value="{{obj_tag}}"></gl-combo-box>
+                            <gl-combo-box  no-label-float items="{{newTag}}" value="{{data.tag}}"></gl-combo-box>
                         </div>
                       
                         <div class="flexchild"></div>
@@ -78,7 +78,7 @@
         </div>
         <div class="container flex-end-justified">
             <div>
-                <paper-button class="gl-btn-danger" on-tap="confirmDelete" raised>ยกเลิก</paper-button>
+                <paper-button class="gl-btn-danger" on-tap="confirmDelete" raised>ลบข้อมูล</paper-button>
             </div>
             <div>
                 <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
@@ -88,7 +88,7 @@
     <script>
         Polymer({
             is: 'examRoom-manage',
-            observers:['getExamList(user.id)','check(data.id)','getStudentList(obj_tag)'],
+            observers:['getExamList(user.id)','check(data.id)','getStudentList(data.tag)'],
             listeners:{
                 'join-student':'joinStudent',
                 'cancel-student':'cancelStudent'
@@ -118,10 +118,14 @@
                 })
             },
             getStudentList:function(tag){
-                if(tag != ''){
+                if(tag != '' && typeof tag != 'undefined'){
                     var newTag = tag.slice(1,tag.length);
                     // console.log(newTag);
                     this.dispatchAction('EXAMROOM_GET_STUDENT_LIST',newTag);
+                }
+                else{
+                    this.studentList = [];
+                    //  this.dispatchAction('EXAMROOM_GET_STUDENT_LIST',tag);
                 }       
             },
             check:function(id){
