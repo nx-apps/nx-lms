@@ -9,6 +9,6 @@ module.exports=function(app){
     app.post('/examRoom',examRoom.insertExamRoom);
     app.delete('/examRoom',examRoom.deleteExamRoom);
 
-    app.get('/learnerTestList',examRoom.getLearnerTestList);
+    app.get('/userModuleList',examRoom.getUserModuleList);
     
 } 
