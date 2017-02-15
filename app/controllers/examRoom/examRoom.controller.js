@@ -40,7 +40,8 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').filter({user_id:params.user_id})
+        r.db('lms').table('exam_room')
+        //.filter({user_id:params.user_id})
         .pluck('name','id')
         .run()
         .then(function(result){
