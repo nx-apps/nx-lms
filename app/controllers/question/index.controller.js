@@ -102,6 +102,16 @@ class index{
             var  XLSX = require('xlsx');
             var workbook = XLSX.readFile(xx);
 
+            const tagConvert = (sheet)=>{
+                var index = 0;
+                for(var i=0;i<sheet.length;i++){
+                    index = i;
+                    if(!isNaN(sheet[i])) break;
+                }
+
+                return ["*"+sheet.slice(0,index),sheet.slice(0,sheet.length)]
+            }
+
             var data = workbook.Sheets;
             let preData = [];
             let mainIndex = -1;
@@ -113,7 +123,7 @@ class index{
                             mainIndex++;
                             preData[mainIndex] = {
                                 topic:data[sheet][key].v,
-                                tag:[sheet],
+                                tag:tagConvert(sheet),
                                 answer:0,
                                 choice:[]
 
@@ -134,9 +144,14 @@ class index{
                 return (row.topic==='q')?false:true
             })
 
-            r.expr(preData).merge(function(x){
-                return { time_insert:r.now(),user_id:fields.user_id[0] }
-            }).do(function(result){
+            res.json(preData);
+
+            r.expr(preData).merge(function(row){
+                return { 
+                    time_insert:r.now(),user_id:fields.user_id[0]
+                }
+            })
+            .do(function(result){
                 return r.db('lms').table('question').insert(result)
             })
             .run()  
