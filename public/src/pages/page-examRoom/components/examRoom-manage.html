@@ -124,7 +124,8 @@
                     this.dispatchAction('EXAMROOM_GET_STUDENT_LIST',newTag);
                 }
                 else{
-                    this.studentList = [];
+                    this.dispatchAction('EXAMROOM_CLEAR_STUDENT_LIST');
+                    // this.studentList = [];
                     //  this.dispatchAction('EXAMROOM_GET_STUDENT_LIST',tag);
                 }       
             },
