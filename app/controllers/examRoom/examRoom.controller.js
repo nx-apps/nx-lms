@@ -5,7 +5,8 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('examination').filter({user_id:params.user_id})
+        r.db('lms').table('examination')
+        //.filter({user_id:params.user_id})
         .pluck('id','ex_name')
         .coerceTo('array')
         .run()
