@@ -9,10 +9,14 @@
                 font-weight: bold;
                 border-bottom: 2px solid dodgerblue;
             }
+            .responsive{
+                max-height: 300px;
+                overflow-y:auto; 
+            }
         </style>
         <div class="container">
             <paper-material elevation="1">
-                <div style="overflow-y:auto; max-height: 300px;">
+                <div class="responsive">
                 <table class="gl-table-default">
                     <thead>
                         <tr>
@@ -22,11 +26,12 @@
                     </thead>
                     <tbody>
                         <template is="dom-repeat" items="{{data}}" filter="{{computeFilter(active)}}">
-                            <tr on-tap="controller" item="[[item]]">
+                            <tr item="[[item]]">
                                 
                                 <template is="dom-if" if="[[status]]">
                                     <td>
-                                        <iron-icon icon="[[icon]]" index="[[index]]" item="[[item]]" on-tap="controller"></iron-icon>
+                                        [[cont(index)]]
+                                        <!--<iron-icon icon="[[icon]]" index="[[index]]" item="[[item]]" on-tap="controller"></iron-icon>-->
                                     </td>
                                 </template>
                                 <template is="dom-if" if="[[!status]]">

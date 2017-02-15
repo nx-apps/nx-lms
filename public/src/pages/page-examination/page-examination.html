@@ -48,13 +48,13 @@
     <script>
         Polymer({
             is: 'page-examination',
-            behaviors:[ReduxBehavior,examinationAction],
+            behaviors:[nylonBehavior,ReduxBehavior,examinationAction],
             properties:{
                 dataList:{
                     statePath:'examination.dataList'
                 }
             },
-            ready:function(){
+            nylonPageActive:function(){
                 this.EXAMINATION_GET_LIST();
             },
             listeners:{

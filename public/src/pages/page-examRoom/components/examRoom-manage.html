@@ -40,10 +40,10 @@
                     <div class="flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flexchild fontCSC margin">
-                            module
+                            Module
                         </div>
                         <div class="flex3child" style="text-align: left">
-                            <gl-combo-box  no-label-float items="{{listTag}}" filter="{{fillterListTag(listTag)}}" value="{{item.obj_tag}}"></gl-combo-box>
+                            <gl-combo-box  no-label-float items="{{newTag}}" value="{{obj_tag}}"></gl-combo-box>
                         </div>
                       
                         <div class="flexchild"></div>
@@ -67,10 +67,9 @@
                 </div>
             </paper-material>
             <div class="flex-equal-around-justified">
-                <div>
+                <!--<div>
                     <student-list id="cancel" data="{{studentList}}" icon="clear" active="cancel" status="false"></student-list>
-                    <!--<manage-list></manage-list>-->
-                </div>
+                </div>-->
                 <div>
                     <student-list id="join" data="{{studentList}}" icon="add" active="join" status="false"></student-list>
                     <!--<manage-list></manage-list>-->
@@ -89,7 +88,7 @@
     <script>
         Polymer({
             is: 'examRoom-manage',
-            observers:['getExamList(user.id)','check(data.id)'],
+            observers:['getExamList(user.id)','check(data.id)','getStudentList(obj_tag)'],
             listeners:{
                 'join-student':'joinStudent',
                 'cancel-student':'cancelStudent'
@@ -109,17 +108,21 @@
                     statePath:'examRoom.selectexamRoom'
                 },
                 listTag:{
-                    statePath:'examination.listTag'
+                    statePath:'examination.listTag',
+                    observer:'fillterListTag'
                 }
             },
-            ready:function(){
-                this.dispatchAction('EXAMROOM_GET_STUDENT_LIST');
-            },
             fillterListTag:function(listTag){
-                // console.log(listTag);
-                return this.listTag.filter((item)=>{
-                    return item[0] == '*'
+                this.newTag = this.listTag.filter((item)=>{
+                     return item[0] == '*'
                 })
+            },
+            getStudentList:function(tag){
+                if(tag != ''){
+                    var newTag = tag.slice(1,tag.length);
+                    // console.log(newTag);
+                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST',newTag);
+                }       
             },
             check:function(id){
                 if(id){
@@ -163,8 +166,11 @@
                 this.data.user_id = this.user.id;
                 this.data.enable =  this.$$('paper-checkbox').checked;
                 this.data.time = parseInt(this.data.time);
-                this.data.learner = this.$$('#cancel').getValue();
+                this.data.learner = this.studentList.map((item)=>{
+                    return item.id;
+                })
                 if(!this.data.id){
+                    // console.log(this.data);
                      this.dispatchAction('EXAMROOM_INSERT_DATA',this.data);
                 }
                 else{

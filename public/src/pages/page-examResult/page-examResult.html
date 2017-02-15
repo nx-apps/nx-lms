@@ -68,7 +68,7 @@
         Polymer({
             is: 'page-examResult',
             properties:{},
-            behaviors: [ReduxBehavior,examResultAction],
+            behaviors: [nylonBehavior,ReduxBehavior,examResultAction],
             observers:['_getResult(getParam.*)'],
             properties:{
                 dataResult:{

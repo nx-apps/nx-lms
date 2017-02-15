@@ -36,6 +36,7 @@ export function examRoomAction(store){
             EXAMROOM_GET_EXAM_LIST:function(id){
                 axios.get('./examRoom/examList?user_id='+id)
                 .then((response)=>{
+                    console.log('*',response.data);
                     store.dispatch({type:'EXAMROOM_GET_EXAM_LIST',payload:response.data});
                 })
                 .catch((error)=>{
@@ -43,9 +44,10 @@ export function examRoomAction(store){
                     console.log(error);
                 });
             },
-            EXAMROOM_GET_STUDENT_LIST:function(){
-                axios.get('./examRoom/learnerList')
+            EXAMROOM_GET_STUDENT_LIST:function(tag){
+                axios.get('./examRoom/userModuleList?module='+tag)
                 .then((response)=>{
+                    // console.log(response.data)
                     store.dispatch({type:'EXAMROOM_GET_STUDENT_LIST',payload:response.data});
                 })
                 .catch((error)=>{
@@ -56,7 +58,7 @@ export function examRoomAction(store){
             EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM:function(id){
                 axios.get('./examRoom/learnerTestList?id='+id)
                 .then((response)=>{
-                    console.log(response.data);
+                    // console.log(response.data);
                     store.dispatch({type:'EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',payload:response.data});
                 })
                 .catch((error)=>{

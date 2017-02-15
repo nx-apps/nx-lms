@@ -44,8 +44,8 @@
     <script>
         Polymer({
             is: 'page-examHistory',
-            behaviors:[examHistoryAction],
-            ready:function(){
+            behaviors:[nylonBehavior,examHistoryAction],
+            nylonPageActive:function(){
                 this.EXAM_HISTORY_EXAM_LIST();
                 this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
             },
