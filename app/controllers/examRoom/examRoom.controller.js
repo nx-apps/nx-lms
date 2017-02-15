@@ -149,6 +149,20 @@ class examRoom {
 
     }
 
+    getUserModuleList(req,res){
+        var r = req.r;
+        var params = req.query;
+        
+        r.db('lms').table('user').getAll(params.module,{index:'tags'})
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+        
+    }
 
 
 }
