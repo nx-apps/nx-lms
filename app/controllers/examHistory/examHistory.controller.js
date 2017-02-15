@@ -8,7 +8,10 @@ class examHistory {
         r.db('lms').table('exam_room').getAll(params.user_id,{index:'learner'})
         .filter(function(row){
             return r.branch(
-                r.db('lms').table('exam_answer').filter({exam_room_id:row('id')}).count().ne(0)
+                r.db('lms').table('exam_answer').filter({
+                    exam_room_id:row('id'),
+                    user_id:params.user_id
+                }).count().ne(0)
                 ,
                 false
                 ,
