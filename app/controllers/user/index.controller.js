@@ -2,9 +2,9 @@ class index{
 
     select_user(req,res){
         var r = req.r;
-        var params = req.params;
+        var params = req.query;
 
-        r.db('lms').table('user')
+        r.db('lms').table('user').getAll(params.tags, {index:'tags'})
         .run()
         .then(function(result){
             res.json(result);
