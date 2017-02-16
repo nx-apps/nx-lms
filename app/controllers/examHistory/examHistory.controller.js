@@ -40,6 +40,7 @@ class examHistory {
     getHistoryList(req,res){
         var r = req.r;
         var params = req.query;
+        params.module = params.module.toUpperCase();
 
         r.db('lms').table('exam_answer').filter({user_id:params.user_id})
         .innerJoin(r.db('lms').table('exam_room'),function(left,right){

@@ -9,6 +9,12 @@
                 font-weight: bold;
                 border-bottom: 2px solid dodgerblue;
             }
+            .tag{
+                padding: 2px 5px 2px 5px;
+                background-color: #F5B041;
+                color: white;
+                border-radius: 4px;
+            }
         </style>
         <div class="container">
             
@@ -30,7 +36,7 @@
                                         <div>[[toIndex(index)]]</div>
                                     </td>
                                     <td>
-                                        [[item.topic]]
+                                        [[item.topic]] <span class="tag">#tag</span>
                                     </td>
                                     <td style="text-align: right;">
                                         <iron-icon icon="create"></iron-icon>
@@ -55,7 +61,7 @@
                 }
             },
             ready:function(){
-                this.QUESTION_GET_LIST();
+                //this.QUESTION_GET_LIST();
             },
             selectList:function(e){
                 this.QUESTION_SELECT(e.currentTarget.questionId)

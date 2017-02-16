@@ -1,0 +1,30 @@
+
+<dom-module id="userManage-list">
+    <template>
+        <style include="page-style"></style>
+        
+        <paper-material elevation="1">
+            <table class="gl-table-default">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">#</th>
+                        <th>ชื่อ-สกุล</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="[[dataList]]">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </paper-material>
+    </template>
+    <script>
+        Polymer({
+            is: 'userManage-list'
+        });
+    </script>
+</dom-module>
