@@ -1,0 +1,23 @@
+
+<link rel="import" href="./components/userManage-list.html">
+
+<dom-module id="page-userManage">
+    <template>
+        <style include="page-style"></style>
+        <div class="xcontainer">
+            <div class="header gl-large">จัดการข้อมูลผู้ใช้งาน</div>
+            <div class="container">
+                <userManage-list></userManage-list>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-userManage',
+            behaviors:[nylonBehavior,userManageAction],
+            nylonPageActive:function(){
+                this.USER_MANAGE_GET_LIST();
+            }
+        });
+    </script>
+</dom-module>
