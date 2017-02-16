@@ -36,7 +36,11 @@
                                         <div>[[toIndex(index)]]</div>
                                     </td>
                                     <td>
-                                        [[item.topic]] <span class="tag">#tag</span>
+                                        [[item.topic]] 
+                                        <template is="dom-repeat" as="module" items="[[item.tag]]">
+                                            <span class="tag">[[module]]</span>
+                                        </template>
+                                        
                                     </td>
                                     <td style="text-align: right;">
                                         <iron-icon icon="create"></iron-icon>

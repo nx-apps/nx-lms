@@ -8,10 +8,13 @@ class index{
 
     select_question(req,res){
         var r = req.r;
-        var params = req.params;
-
-        //r.db('lms').table('question').orderBy(r.desc('time_insert'))
-        r.db('lms').table('question').orderBy('time_insert')
+        var params = req.query;
+        
+        r.db('lms').table('question')
+        .getAll('*'+params.module,{index:'tag'})
+        .filter({user_id:params.user_id})
+        .without('choice','answer','user_id')
+        .orderBy('time_insert')
         .run()
         .then(function(result){
             res.json(result);

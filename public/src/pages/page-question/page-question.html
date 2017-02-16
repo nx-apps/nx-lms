@@ -42,6 +42,7 @@
         Polymer({
             is: 'page-question',
             behaviors:[nylonBehavior,ReduxBehavior,questionAction,dispatchActionBehavior],
+            observers:['_obModuleSelect(moduleSelect)'],
             listeners:{
                 'close':'closePanelRight',
                 'select-data':'selectList'
@@ -51,8 +52,12 @@
                     statePath:'commonSystem.module'
                 }
             },
-            nylonPageActive(){
-                this.dispatchAction('COMMON_MODULE')
+            nylonPageActive:function(){
+                this.dispatchAction('COMMON_MODULE');
+            },
+            _obModuleSelect:function(ob){
+                if(!ob){return}
+                this.dispatchAction('QUESTION_GET_LIST',ob);
             },
             selectList:function(e){
                 this.titleRight = 'แก้ไขคำถาม';
