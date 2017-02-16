@@ -19,9 +19,10 @@ export function questionReducer(state = initialState,action){
 export function questionAction(store){
     return [commonAction(),
         {
-            QUESTION_GET_LIST:function(){
+            QUESTION_GET_LIST:function(module){
                 this.fire('toast',{status:'load'});
-                axios.get('./question/question')
+                var user_id = store.getState().auth.user.id;
+                axios.get('./question/question',{params:{user_id,module}})
                 .then((response)=>{
                     store.dispatch({type:'QUESTION_GET_LIST',payload:response.data});
                     this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
@@ -38,7 +39,7 @@ export function questionAction(store){
                 return new Promise((resolve,reject)=>{
                     axios.post('./question/question',data)
                     .then((response)=>{
-                        this.QUESTION_GET_LIST();
+                        this.QUESTION_GET_LIST(this.moduleSelect);
                         resolve(response);
                     })
                     .catch((error)=>{
@@ -53,7 +54,7 @@ export function questionAction(store){
                 return new Promise((resolve,reject)=>{
                     axios.put('./question/question',data)
                     .then((response)=>{
-                        this.QUESTION_GET_LIST();
+                        this.QUESTION_GET_LIST(this.moduleSelect);
                         resolve(response);
                     })
                     .catch((error)=>{
@@ -67,7 +68,7 @@ export function questionAction(store){
                 return new Promise((resolve,reject)=>{
                     axios.delete('./question/question?id='+questionId)
                     .then((response)=>{
-                        this.QUESTION_GET_LIST();
+                        this.QUESTION_GET_LIST(this.moduleSelect);
                         resolve(response);
                     })
                     .catch((error)=>{
