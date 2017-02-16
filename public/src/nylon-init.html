@@ -111,6 +111,7 @@
 	<script>
         Polymer({
             is:'nylon-init',
+			behaviors:[commonSystemAction],
 			ready:function(){
 				this.loader = true;
 				this.importHref(this.resolveUrl('/src/import.html'), (e)=>{

@@ -21,7 +21,10 @@ export function commonAction(){
                 argsText += `params[${i}]`
             });
         
-            callback(eval(`this.${methodName}(${argsText})`));
+            callback(eval(`
+                if(this.${methodName})
+                this.${methodName}(${argsText})
+            `));
 
         }
     }

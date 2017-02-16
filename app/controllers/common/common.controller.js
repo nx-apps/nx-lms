@@ -13,6 +13,9 @@ class common{
         .filter(function(row){
             return row.slice(0,1).eq('*')
         })
+        .map(function(row){
+            return row.slice(1,row.count())
+        })
         .run()
         .then(function(result){
             res.json(result);

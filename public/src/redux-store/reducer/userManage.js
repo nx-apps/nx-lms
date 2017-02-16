@@ -23,7 +23,7 @@ export function userManageAction(store){
                 this.fire('toast',{status:'load'});
                 axios.get('./user/user/')
                 .then((response)=>{
-                    console.log(response.data);
+                    // console.log(response.data);
                     this.fire('toast',{status:'success',
                       callback:function(){
                       }

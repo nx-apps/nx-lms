@@ -10,9 +10,8 @@
                 <div class="flex3child header gl-large">จัดการคำถาม</div>
                 <div class="flexchild"></div>
                 <div class="flex2child" style="padding: 0px 20px 0px 0px">
-                    <gl-combo-box no-lolabel-float placeholder="ค้นหา" items="" item-label-path="" item-value-path="" value="">
+                    <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" item-label-path="" item-value-path="" value="{{moduleSelect}}">
                         <paper-icon-button icon="remove-circle" class="clear-button"></paper-icon-button>
-                        <paper-icon-button icon="search" class="toggle-button"></paper-icon-button>
                     </gl-combo-box>
                 </div>
                     
@@ -42,13 +41,23 @@
     <script>
         Polymer({
             is: 'page-question',
-            behaviors:[nylonBehavior,questionAction],
+            behaviors:[nylonBehavior,ReduxBehavior,questionAction,dispatchActionBehavior],
+            observers:['_obModuleSelect(moduleSelect)'],
             listeners:{
                 'close':'closePanelRight',
                 'select-data':'selectList'
             },
-            nylonPageActive(){
-                console.log('dd');
+            properties:{
+                module:{
+                    statePath:'commonSystem.module'
+                }
+            },
+            nylonPageActive:function(){
+                this.dispatchAction('COMMON_MODULE');
+            },
+            _obModuleSelect:function(ob){
+                if(!ob){return}
+                this.dispatchAction('QUESTION_GET_LIST',ob);
             },
             selectList:function(e){
                 this.titleRight = 'แก้ไขคำถาม';

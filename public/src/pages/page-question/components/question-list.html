@@ -9,12 +9,7 @@
                 font-weight: bold;
                 border-bottom: 2px solid dodgerblue;
             }
-            .tag{
-                padding: 2px 5px 2px 5px;
-                background-color: #F5B041;
-                color: white;
-                border-radius: 4px;
-            }
+     
         </style>
         <div class="container">
             
@@ -36,7 +31,11 @@
                                         <div>[[toIndex(index)]]</div>
                                     </td>
                                     <td>
-                                        [[item.topic]] <span class="tag">#tag</span>
+                                        [[item.topic]] 
+                                        <template is="dom-repeat" as="module" items="[[item.tag]]">
+                                            <span class="tag">[[module]]</span>
+                                        </template>
+                                        
                                     </td>
                                     <td style="text-align: right;">
                                         <iron-icon icon="create"></iron-icon>

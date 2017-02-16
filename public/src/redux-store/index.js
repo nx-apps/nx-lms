@@ -3,6 +3,7 @@ import PolymerRedux from 'polymer-redux'
 import {dispatchActionBehavior} from './config'
 import {handleAuth} from './auth'
 
+import {commonSystemReducer,commonSystemAction} from './reducer/commonSystem'
 import {authReducer,authAction} from './reducer/auth'
 import {questionReducer,questionAction} from './reducer/question'
 import {examinationReducer,examinationAction} from './reducer/examination'
@@ -15,6 +16,7 @@ import {examResultReducer,examResultAction} from './reducer/examResult'
 import {userManageReducer,userManageAction} from './reducer/userManage'
 
 const rootReducer = combineReducers({
+    commonSystem:commonSystemReducer,
     auth:authReducer,
     question:questionReducer,
     examination:examinationReducer,
@@ -36,6 +38,7 @@ window.dispatchActionBehavior = dispatchActionBehavior();
 
 handleAuth();
 
+window.commonSystemAction = commonSystemAction(storeApp);
 window.questionAction = questionAction(storeApp);
 window.examinationAction = examinationAction(storeApp);
 window.classRoomAction = classRoomAction(storeApp);
