@@ -1,6 +1,6 @@
 class index{
 
-    select_student(req,res){
+    select_user(req,res){
         var r = req.r;
         var params = req.params;
 
@@ -14,7 +14,7 @@ class index{
         })
     }
 
-    insert_student(req,res){
+    insert_user(req,res){
         var r = req.r;
         var params = req.body;
 
@@ -28,7 +28,7 @@ class index{
         })
     }
 
-    update_student(req,res){
+    update_user(req,res){
         var r = req.r;
         var params = req.body;
 
@@ -42,7 +42,7 @@ class index{
         })
     }
 
-    delete_student(req,res){
+    delete_user(req,res){
         var r = req.r;
         var params = req.query;
 
