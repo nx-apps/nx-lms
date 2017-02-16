@@ -31,13 +31,20 @@
         <iron-pages selected="{{selected}}">
             <section>
                 <div class="container">
+                    <div style="margin: 15px 0px 15px 0px;">
+                        <paper-material elevation="1">
+                                <div class="container bgWhite">
+                                    <gl-combo-box label="Fillter" items="" item-label-path="" item-value-path="" value=""></gl-combo-box>
+                                </div>
+                        </paper-material>
+                    </div>
                     <paper-material elevation="1">
                         <table class="gl-table-default">
                             <thead>
                                 <tr>
                                     <th style="width:10%;text-align: right; font-size: 18px;">คำถาม</th>
                                     <th>
-                                        <gl-form-input placeholder="" no-label-float value="{{data.topic}}"></gl-form-input>
+                                        <gl-form-input style="margin-top: 22px" placeholder="" no-label-float value="{{data.topic}}"></gl-form-input>
                                         <show-image image-id="[[data.image_id]]"></show-image>
                                     </th>
                                     <th>
