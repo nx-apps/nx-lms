@@ -1,7 +1,7 @@
 
 <dom-module id="userManage-list">
     <template>
-        <style include="page-style">
+        <style include="page-style flex-style">
            .responTable{
                 max-height: 500px;
                 overflow-y:auto; 
@@ -15,6 +15,20 @@
             }
         </style>
         
+        <div class="container flex-horizontal-with-ratios">
+                <div class="flex3child"></div>
+                <div class="flexchild">
+                    <gl-combo-box no-label-float placeholder="ค้นหาจาก" 
+                     item-label-path="label" item-value-path="key"
+                     items="[[typeTable]]" value="{{selectType}}">
+                        <paper-icon-button icon="search" class="toggle-button"></paper-icon-button>
+                    </gl-combo-box>
+                </div>
+                <div class="flex2child">
+                   <gl-form-input no-label-float on-input="serchTable" value=""></gl-form-input>
+                </div>
+        </div>
+
         <paper-material elevation="1">
             <table class="gl-table-default">
                 <thead>
@@ -30,7 +44,7 @@
             <div class="responTable">
             <table class="gl-table-default">
                 <tbody>
-                    <template is="dom-repeat" items="[[dataList]]">
+                    <template is="dom-repeat" items="[[newDataList]]">
                         <tr>
                             <td>[[count(index)]]</td>
                             <td>[[item.name]]</td>
@@ -54,11 +68,76 @@
             behaviors:[ReduxBehavior],
             properties:{
                 dataList:{
-                    statePath: 'userManage.dataList'
+                    statePath: 'userManage.dataList',
+                    observer:'getData'
+                },
+                typeTable:{
+                    type:Array,
+                    value:[
+                        {
+                            label:'ชื่อ-สกุล',
+                            key:'name'
+                        },
+                        {
+                            label:'Module',
+                            key:'module'
+                        },
+                        {
+                            label:'E-mail',
+                            key:'email'
+                        }       
+                    ]
                 }
+            },
+            getData:function(){
+                this.newDataList = this.dataList;
             },
             count:function(index){
                 return index+1;
+            },
+            serchTable:function(e){
+                this.newDataList = [];
+                // console.log(e.target.value);
+                if(e.target.value != '' && (this.selectType != '' || typeof this.selectType == 'undefined')){
+                    for(var i = 0; i< this.dataList.length; i++){
+                            if(this.selectType == 'name'){
+                                if(this.dataList[i].name.search(e.target.value) > -1){
+                                    this.push('newDataList',this.dataList[i]); 
+                                }
+                            }
+                            else if(this.selectType == 'email'){
+                                if(this.dataList[i].email.search(e.target.value) > -1){
+                                    this.push('newDataList',this.dataList[i]); 
+                                }
+                            }
+                            else if(this.selectType == 'module'){
+                                for(var x = 0; x< this.dataList[i].tags.length; x++){
+                                    if(this.dataList[i].tags[x].search(e.target.value) > -1){
+                                        this.push('newDataList',this.dataList[i]); 
+                                    }
+                                }
+                              
+                            }
+                    }  
+                }
+                else {
+                    this.newDataList = this.dataList;
+                }
+                //             _searchInArray:function (searchInput) {
+                //       // console.log(searchInput == '');
+                //       if (searchInput != '') {
+                //         let arr=[];
+                //         this.data.map((el)=>{
+                //           if (String(el.fee_no).search(searchInput) > -1) {
+                //               //  console.log('search==> ',el);
+                //                 arr.push(el);
+                //           }
+                //         });
+                //         this.newData=arr;
+                //       }else{
+                //         this.initDataFee(this.data);
+                //       }
+                //   },
             }
         });
     </script>
