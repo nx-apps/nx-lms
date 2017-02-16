@@ -12,7 +12,7 @@ export function userManageReducer(state = initialState,action){
         case 'USER_MANAGE_CLEAR_LIST':
             return Object.assign({},state,{dataList:action.payload});
         default:
-            break;
+            return state;
     }
 }
 
