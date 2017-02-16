@@ -3,18 +3,27 @@
 
 <dom-module id="page-question">
     <template>
-        <style include="page-style"></style>
+        <style include="page-style flex-style"></style>
         <div class="xcontainer">
-            <div class="header gl-large">จัดการคำถาม</div>
-            <div class="container">
-                <paper-material elevation="1">
-                <div class="container bgWhite">
-                    <div class="head fontCSC gl-default">
-                        เลือกประเภท
-                    </div>
-                    <gl-combo-box no-lolabel-float items="" item-label-path="" item-value-path="" value=""></gl-combo-box>
+            <div class="flex-equal-justified">
+                <div class="header gl-large">จัดการคำถาม</div>
+                <div style="padding: 0px 20px 0px 0px">
+                    <gl-combo-box no-lolabel-float placeholder="ค้นหา" items="" item-label-path="" item-value-path="" value="">
+                        <paper-icon-button icon="remove-circle" class="clear-button"></paper-icon-button>
+                        <paper-icon-button icon="search" class="toggle-button"></paper-icon-button>
+                    </gl-combo-box>
                 </div>
-                </paper-material>
+            </div>
+        </div>
+        <div class="xcontainer">
+            <div class="flex-equal-justified">
+                <!--<div class="container">
+                    <paper-material elevation="1">
+                        <div class="bgWhite" style="padding: 10px">
+                    
+                        </div>
+                    </paper-material>
+                </div>-->
             </div>
             <question-list></question-list>
         </div>
