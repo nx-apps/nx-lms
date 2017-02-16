@@ -45,12 +45,11 @@
 				<paper-icon-button icon="menu" on-tap="toggleDrawer"></paper-icon-button>
 				<iron-image src="/images/icon/white/app-icon-32.png"></iron-image>
 				<div main-title>PENGUIN</div>
+				[[user.name]]
 				<div style="cursor: pointer" on-tap="logout" hidden="{{hidden}}">
-					[[user.name]]
 					<paper-icon-button icon="exit-to-app"></paper-icon-button>Logout
 				</div>
 				<div style="cursor: pointer" on-tap="logout" hidden="{{!hidden}}">
-					
 					<paper-icon-button icon="power-settings-new"></paper-icon-button>
 					Log-in
 				</div>
