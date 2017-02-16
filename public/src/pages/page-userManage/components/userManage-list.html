@@ -1,7 +1,19 @@
 
 <dom-module id="userManage-list">
     <template>
-        <style include="page-style"></style>
+        <style include="page-style">
+           .responTable{
+                max-height: 500px;
+                overflow-y:auto; 
+           }
+            tbody>tr>td{
+                 cursor: pointer;
+            }
+            tbody>tr:hover{
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+        </style>
         
         <paper-material elevation="1">
             <table class="gl-table-default">
@@ -9,22 +21,45 @@
                     <tr>
                         <th style="width: 10%">#</th>
                         <th>ชื่อ-สกุล</th>
+                        <th style="width: 30%">Module</th>
+                        <th>email</th>
+                        <!--<th style="margin-right: 10px"> username</th>-->
                     </tr>
                 </thead>
+            </table>
+            <div class="responTable">
+            <table class="gl-table-default">
                 <tbody>
                     <template is="dom-repeat" items="[[dataList]]">
                         <tr>
-                            <td></td>
-                            <td></td>
+                            <td>[[count(index)]]</td>
+                            <td>[[item.name]]</td>
+                            <td>
+                                <template is="dom-repeat" items="[[item.tags]]">
+                                    <span class="tag">[[item]]</span>
+                                </template>
+                            </td>
+                            <td>[[item.email]]</td>
+                            <!--<td>[[item.username]]</td>-->
                         </tr>
                     </template>
                 </tbody>
             </table>
+            </div>
         </paper-material>
     </template>
     <script>
         Polymer({
-            is: 'userManage-list'
+            is: 'userManage-list',
+            behaviors:[ReduxBehavior],
+            properties:{
+                dataList:{
+                    statePath: 'userManage.dataList'
+                }
+            },
+            count:function(index){
+                return index+1;
+            }
         });
     </script>
 </dom-module>
