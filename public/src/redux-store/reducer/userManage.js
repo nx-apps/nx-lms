@@ -19,9 +19,9 @@ export function userManageReducer(state = initialState,action){
 export function userManageAction(store){
     return [commonAction(),
         {
-            USER_MANAGE_GET_LIST:function(){
+            USER_MANAGE_GET_LIST:function(tag){
                 this.fire('toast',{status:'load'});
-                axios.get('./user/user/')
+                axios.get('./user/user?tags='+tag)
                 .then((response)=>{
                     // console.log(response.data);
                     this.fire('toast',{status:'success',

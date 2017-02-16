@@ -15,7 +15,7 @@
             }
         </style>
         
-        <div class="container flex-horizontal-with-ratios">
+        <!--<div class="container flex-horizontal-with-ratios">
                 <div class="flex3child"></div>
                 <div class="flexchild">
                     <gl-combo-box no-label-float placeholder="ค้นหาจาก" 
@@ -27,9 +27,10 @@
                 <div class="flex2child">
                    <gl-form-input no-label-float on-input="serchTable" value=""></gl-form-input>
                 </div>
-        </div>
+        </div>-->
 
         <paper-material elevation="1">
+            
             <table class="gl-table-default">
                 <thead>
                     <tr>
@@ -78,10 +79,10 @@
                             label:'ชื่อ-สกุล',
                             key:'name'
                         },
-                        {
-                            label:'Module',
-                            key:'module'
-                        },
+                        // {
+                        //     label:'Module',
+                        //     key:'module'
+                        // },
                         {
                             label:'E-mail',
                             key:'email'
@@ -110,14 +111,14 @@
                                     this.push('newDataList',this.dataList[i]); 
                                 }
                             }
-                            else if(this.selectType == 'module'){
-                                for(var x = 0; x< this.dataList[i].tags.length; x++){
-                                    if(this.dataList[i].tags[x].search(e.target.value) > -1){
-                                        this.push('newDataList',this.dataList[i]); 
-                                    }
-                                }
+                            // else if(this.selectType == 'module'){
+                            //     for(var x = 0; x< this.dataList[i].tags.length; x++){
+                            //         if(this.dataList[i].tags[x].search(e.target.value) > -1){
+                            //             this.push('newDataList',this.dataList[i]); 
+                            //         }
+                            //     }
                               
-                            }
+                            // }
                     }  
                 }
                 else {

@@ -3,9 +3,18 @@
 
 <dom-module id="page-userManage">
     <template>
-        <style include="page-style"></style>
+        <style include="page-style flex-style"></style>
         <div class="xcontainer">
-            <div class="header gl-large">จัดการข้อมูลผู้ใช้งาน</div>
+            <div class="container flex-equal-justified">
+                <div class="header gl-large">จัดการข้อมูลผู้ใช้งาน</div>
+                <div style="padding: 0px 20px 0px 0px">
+                    <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" value="{{moduleSelect}}">
+                    </gl-combo-box>
+                </div>
+            </div>
+        </div>
+        <div class="xcontainer">
+            
             <div class="container">
                 <userManage-list></userManage-list>
             </div>
@@ -14,9 +23,21 @@
     <script>
         Polymer({
             is: 'page-userManage',
-            behaviors:[nylonBehavior,userManageAction],
+            observers:['getStudentList(moduleSelect)'],
+            behaviors:[nylonBehavior,ReduxBehavior,userManageAction,dispatchActionBehavior],
+            properties:{
+                module:{
+                    statePath:'commonSystem.module'
+                }
+            },
             nylonPageActive:function(){
-               this.USER_MANAGE_GET_LIST();
+                this.dispatchAction('COMMON_MODULE');
+            },
+            getStudentList:function(tag){
+                if(tag != ''){
+                    this.USER_MANAGE_GET_LIST(tag);
+                }
+                 
             }
         });
     </script>
