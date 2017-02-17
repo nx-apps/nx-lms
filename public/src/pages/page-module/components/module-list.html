@@ -1,24 +1,56 @@
 
 <dom-module id="module-list">
     <template>
-        <style include="page-style"></style>
-        <table class="gl-table-default">
+        <style include="page-style">
+             tbody>tr>td{
+                 cursor: pointer;
+             }
+            tbody>tr:hover{
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+        </style>
+        <table class="gl-table-default" align="center" style="max-width:600px;">
             <thead>
                 <tr>
                     <th style="width: 10px">#</th>
                     <th>Module</th>
-                    <th style="width: 10px"></th>
+                    <th></th>
+                    <th style="width: 200px"></th>
                 </tr>
             </thead>
             <template is="dom-repeat" items="[[dataList]]">
                 <tbody>
-                    <tr>
-                        <td>[[count(index)]]</td>
-                        <td>[[item.id]]</td>
-                        <td>
-                            <iron-icon icon="created"></iron-icon>
-                        </td>
-                    </tr>
+                    
+                    <template is="dom-if" if="[[!item.edit]]">
+                        <tr on-tap="edit" item="[[item]]">
+                            <td>[[count(index)]]</td>
+                            <td><tag-module label="[[item.id]]" color="[[item.color]]"></tag-module></td>
+                            <td></td>
+                            <td style="text-align: right;">
+                                <iron-icon icon="create"></iron-icon>
+                            </td>
+                        </tr>
+                    </template>
+
+                    <template is="dom-if"  if="[[item.edit]]">
+                        <tr>
+                            <td>[[count(index)]]</td>
+                            <td>
+                                <gl-form-input class="mar-head" auto-validate error-message="กรุณาใส่จำนวน" no-label-float placeholder="Module name." value="[[item.id]]"></gl-form-input>
+                            </td>
+                            <td>
+                                <paper-swatch-picker color="[[item.color]]"></paper-swatch-picker>
+                            </td>
+                            <td style="text-align: right;">
+                                <div style="display: flex;">
+                                    <paper-button class="gl-btn-success" on-tap="resultToastDialog" confirm>บันทึก</paper-button>
+                                    <paper-button class="gl-btn-danger" item="[[item]]" on-tap="edit" confirm>ยกเลิก</paper-button>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                    
                 </tbody>
             </template>
         </table>
@@ -26,10 +58,27 @@
     <script>
         Polymer({
             is: 'module-list',
+            behaviors:[ReduxBehavior,dispatchActionBehavior],
             properties:{
                 dataList:{
                     statePath:'module.dataList'
                 }
+            },
+            count:function(index){
+                return index+1;
+            },
+            edit:function(e){
+                var item = e.currentTarget.item;
+                console.log(item.edit);
+                if(typeof item.edit == "undefined" || item.edit == false){
+                    item.edit = true;
+                }else{
+                    item.edit = false;
+                    this.dispatchAction('MODULE_REFRESH')
+                }
+                
+                var index = this.dataList.indexOf(item);         
+                this.notifyPath(`dataList.${index}.edit`,this.dataList[index].edit);
             }
         });
     </script>
