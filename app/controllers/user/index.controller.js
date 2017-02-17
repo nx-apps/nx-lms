@@ -5,8 +5,12 @@ class index{
     select_user(req,res){
         var r = req.r;
         var params = req.query;
-
-        r.db('lms').table('user').getAll(params.tags, {index:'tags'})
+        r.db('lms').table("user").getAll(params.tags,{index:'tags'}).merge(function(c){
+            return{ 
+                end_tags:c('end_tags').map(function(fc){ return r.db('lms').table('tag').get(fc)}),
+                key_tags:c('key_tags').map(function(fc){ return r.db('lms').table('tag').get(fc)}) 
+            }
+        })
         .run()
         .then(function(result){
             res.json(result);

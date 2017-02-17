@@ -1,6 +1,6 @@
 
 class common{
-
+/*
     getModule(req,res){
         var r = req.r;
         var params = req.query;
@@ -48,7 +48,20 @@ class common{
         })
         
     }
+*/
+    getModule(req,res){
+            var r = req.r;
+            var params = req.query;
 
+            r.db('lms').table('tag').pluck('id')
+            .run()
+            .then(function(result){
+                res.json(result);
+            })
+            .catch(function(err){
+                res.status(500).json(err);
+            })
+            
+        }
 }
-
 module.exports = new common();
