@@ -1,9 +1,10 @@
+sha1 = require('js-sha1');
+
 class index{
 
     select_tag(req,res){
         var r = req.r;
         var params = req.query;
-        
         r.db('lms').table('tag')
         .run()
         .then(function(result){
@@ -32,7 +33,11 @@ class index{
     insert_tag(req,res){
         var r = req.r;
         var params = req.body;
-        r.db('lms').table('tag').insert(params)
+        r.expr(params).merge(function(){
+            return {password:sha1(params.password)}
+        }).do(function(all){
+            return r.db('lms').table('tag').insert(all)
+        })
         .run()
         .then(function(result){
             res.json(result);
