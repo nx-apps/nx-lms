@@ -1,34 +1,47 @@
 <link rel="import" href="./components/module-list.html">
 
 <dom-module id="page-module">
+    
     <template>
+        <style>
+            .addPanal{
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width:'100%';
+                max-width: 600px;
+                float: right;
+                z-index: 1;
+            }
+        </style>
         <style include="page-style flex-style"></style>
         <div class="xcontainer">
             <div class="container header gl-large">จัดการ Module</div>
                 <div class="container">
                     <module-list></module-list>
                 </div>
-            
-                
-                <div class="container">
-                    <paper-material elevation="1">
-                        <div class="container bgWhite"> 
-                            <div class="head gl-default fontCSC">เพิ่ม Module</div>
-                            <div class="content">
-                                <gl-form-input label="Module" placeholder="กรอกชื่อ Module" value=""></gl-form-input>
-                                <paper-swatch-picker></paper-swatch-picker>
-                            </div>
-                             <div class="flex-end-justified">
-                                <div>
-                                    <paper-button class="gl-btn-success" raised>บันทึก</paper-button>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </paper-material>
-                </div>
-            <paper-fab icon="add" on-tap="addModule"></paper-fab>
         </div>
+
+
+        <div class="addPanal">
+            <paper-material elevation="1">
+                <div class="container bgWhite"> 
+                    <div class="head gl-default fontCSC">เพิ่ม Module</div>
+                    <div class="content">
+                        <gl-form-input label="Module" placeholder="กรอกชื่อ Module" value=""></gl-form-input>
+                        <paper-swatch-picker></paper-swatch-picker>
+                    </div>
+                        <div class="flex-end-justified">
+                        <div>
+                            <paper-button class="gl-btn-success" raised>บันทึก</paper-button>
+                        </div>
+                    </div>
+                </div>
+                
+            </paper-material>
+        </div>
+
+        <paper-fab icon="add" on-tap="addModule"></paper-fab>
     </template>
     <script>
         Polymer({
