@@ -1,0 +1,86 @@
+
+<dom-module id="userManage-manage">
+    <template>
+        <style include="page-style flex-style"></style>
+        <div class="container">
+            
+            <paper-material elevation="1">
+                <div class="container bgWhite">
+                 <div class="flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child">
+                        <gl-form-input label="Username" placeholder="กรอก username" value="{{data.username}}"></gl-form-input>
+                    </div>
+                    <div class="flexchild"></div>
+                </div>
+                <div class="bgWhite flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child">
+                        <gl-form-input label="ชื่อ-สกุล" placeholder="กรอกชื่อ-สกุล" value="{{data.name}}"></gl-form-input>
+                    </div>
+                    <div class="flexchild"></div>
+                </div>
+                <div class="bgWhite flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child">
+                        <gl-form-input label="E-mail" placeholder="กรอก Email" value="{{data.email}}"></gl-form-input>
+                    </div>
+                    <div class="flexchild"></div>
+                </div>
+                <div class="bgWhite flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child">
+                        <gl-combo-box label="ประเภท" placeholder="กรอก username" items="[[role]]" item-label-path="name" item-value-path="id" value="{{data.role}}"></gl-combo-box>
+                    </div>
+                    <div class="flexchild"></div>
+                </div>
+                </div>
+             </paper-material>
+
+              <div style="margin: 15px 0px 15px 0px;">
+                <paper-material elevation="1">
+                    <div style="padding: 30px; background-color: white;">
+                        <div class="headPanel gl-default">Module</div>
+                        <paper-tags-input label="" placeholder="ป้อน Module ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{data.tags}}"></paper-tags-input>
+                    </div>
+                </paper-material>
+            </div>
+
+            <div class="flex-end-justified" style="padding-top: 10px;">
+                <div>
+                    <paper-button class="gl-btn-success" raised>บันทึก</paper-button>
+                </div>
+            </div>
+            
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'userManage-manage',
+            behaviors:[ReduxBehavior,dispatchActionBehavior],
+            properties:{
+                data:{
+                    statePath: 'userManage.dataSelect',
+                },
+                role:{
+                    type:Array,
+                    value: [
+                        {
+                            id:'teacher',
+                            name:'key-user'
+                        },
+                        {
+                            id:'learner',
+                            name:'end-user'
+                        },
+                        {
+                            id:'admin',
+                            name:'admin'
+                        }
+                    ]
+                }
+            }
+            
+        });
+    </script>
+</dom-module>

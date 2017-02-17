@@ -1,0 +1,36 @@
+
+<dom-module id="module-list">
+    <template>
+        <style include="page-style"></style>
+        <table class="gl-table-default">
+            <thead>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Module</th>
+                    <th style="width: 10px"></th>
+                </tr>
+            </thead>
+            <template is="dom-repeat" items="[[dataList]]">
+                <tbody>
+                    <tr>
+                        <td>[[count(index)]]</td>
+                        <td>[[item.id]]</td>
+                        <td>
+                            <iron-icon icon="created"></iron-icon>
+                        </td>
+                    </tr>
+                </tbody>
+            </template>
+        </table>
+    </template>
+    <script>
+        Polymer({
+            is: 'module-list',
+            properties:{
+                dataList:{
+                    statePath:'module.dataList'
+                }
+            }
+        });
+    </script>
+</dom-module>

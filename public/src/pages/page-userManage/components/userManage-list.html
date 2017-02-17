@@ -30,9 +30,9 @@
         </div>-->
 
         <paper-material elevation="1">
-            
+            <div class="responTable">
             <table class="gl-table-default">
-                <thead>
+                 <thead>
                     <tr>
                         <th style="width: 10%">#</th>
                         <th>ชื่อ-สกุล</th>
@@ -41,12 +41,9 @@
                         <!--<th style="margin-right: 10px"> username</th>-->
                     </tr>
                 </thead>
-            </table>
-            <div class="responTable">
-            <table class="gl-table-default">
                 <tbody>
                     <template is="dom-repeat" items="[[newDataList]]">
-                        <tr>
+                        <tr on-tap="dataSelected" item="[[item.id]]">
                             <td>[[count(index)]]</td>
                             <td>[[item.name]]</td>
                             <td>
@@ -66,7 +63,7 @@
     <script>
         Polymer({
             is: 'userManage-list',
-            behaviors:[ReduxBehavior],
+            behaviors:[ReduxBehavior,dispatchActionBehavior],
             properties:{
                 dataList:{
                     statePath: 'userManage.dataList',
@@ -79,10 +76,6 @@
                             label:'ชื่อ-สกุล',
                             key:'name'
                         },
-                        // {
-                        //     label:'Module',
-                        //     key:'module'
-                        // },
                         {
                             label:'E-mail',
                             key:'email'
@@ -96,9 +89,13 @@
             count:function(index){
                 return index+1;
             },
+            dataSelected:function(e){
+                console.log(e.currentTarget.item);
+                this.dispatchAction('USER_MANAGE_SELECT_LIST',e.currentTarget.item);
+                this.fire('open');
+            },
             serchTable:function(e){
                 this.newDataList = [];
-                // console.log(e.target.value);
                 if(e.target.value != '' && (this.selectType != '' || typeof this.selectType == 'undefined')){
                     for(var i = 0; i< this.dataList.length; i++){
                             if(this.selectType == 'name'){
@@ -111,34 +108,11 @@
                                     this.push('newDataList',this.dataList[i]); 
                                 }
                             }
-                            // else if(this.selectType == 'module'){
-                            //     for(var x = 0; x< this.dataList[i].tags.length; x++){
-                            //         if(this.dataList[i].tags[x].search(e.target.value) > -1){
-                            //             this.push('newDataList',this.dataList[i]); 
-                            //         }
-                            //     }
-                              
-                            // }
                     }  
                 }
                 else {
                     this.newDataList = this.dataList;
                 }
-                //             _searchInArray:function (searchInput) {
-                //       // console.log(searchInput == '');
-                //       if (searchInput != '') {
-                //         let arr=[];
-                //         this.data.map((el)=>{
-                //           if (String(el.fee_no).search(searchInput) > -1) {
-                //               //  console.log('search==> ',el);
-                //                 arr.push(el);
-                //           }
-                //         });
-                //         this.newData=arr;
-                //       }else{
-                //         this.initDataFee(this.data);
-                //       }
-                //   },
             }
         });
     </script>

@@ -1,5 +1,7 @@
 
 <link rel="import" href="./components/userManage-list.html">
+<link rel="import" href="./components/userManage-manage.html">
+<link rel="import" href="./../components/panel-right/panel-right.html">
 
 <dom-module id="page-userManage">
     <template>
@@ -13,17 +15,23 @@
                 </div>
             </div>
         </div>
+        <paper-fab icon="add" on-tap="openPanelRight"></paper-fab>
         <div class="xcontainer">
-            
             <div class="container">
                 <userManage-list></userManage-list>
             </div>
         </div>
+        <panel-right set-width="70%">
+            <userManage-manage></userManage-manage>
+        </panel-right>
     </template>
     <script>
         Polymer({
             is: 'page-userManage',
             observers:['getStudentList(moduleSelect)'],
+            listeners:{
+                'open':'selectData'
+            },
             behaviors:[nylonBehavior,ReduxBehavior,userManageAction,dispatchActionBehavior],
             properties:{
                 module:{
@@ -36,8 +44,14 @@
             getStudentList:function(tag){
                 if(tag != ''){
                     this.USER_MANAGE_GET_LIST(tag);
-                }
-                 
+                } 
+            },
+            openPanelRight:function(){
+                this.USER_MANAGE_CLEAR_LIST();
+                this.$$('panel-right').open();
+            },
+            selectData:function(){
+                this.$$('panel-right').open();
             }
         });
     </script>
