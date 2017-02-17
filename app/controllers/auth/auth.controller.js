@@ -8,8 +8,8 @@ class auth{
         var params = req.body;
         params.password = sha1(params.password);
 
-        r.db('lms').table('user').filter({username:params.username,password:params.password})
-        .coerceTo('array')(0).pluck('username','role','name','id')
+        r.db('lms').table('user').filter({email:params.username,password:params.password})
+        .coerceTo('array')(0).pluck('username','name','id')
         .run()
         .then((result)=>{
             var token = jwt.sign(result,SECRET_KEY,{
