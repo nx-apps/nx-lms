@@ -1,5 +1,3 @@
-sha1 = require('js-sha1');
-
 class index{
 
     select_tag(req,res){

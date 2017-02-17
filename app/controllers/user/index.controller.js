@@ -1,3 +1,5 @@
+sha1 = require('js-sha1');
+
 class index{
 
     select_user(req,res){
@@ -32,7 +34,11 @@ class index{
         var r = req.r;
         var params = req.body;
 
-        r.db('lms').table('user').insert(params)
+        r.expr(params).merge(function(data){
+            return {password:sh1(data.password)}
+        }).do(function(all){
+            return r.db('lms').table('user').insert(all)
+        })
         .run()
         .then(function(result){
             res.json(result);
