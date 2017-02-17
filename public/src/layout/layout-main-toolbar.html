@@ -67,9 +67,10 @@
 			},
 			check:function(){
 				if(this.user.id){
-					this.hidden = false;
+					this.hidden = false;	
 				}
 				else {
+					this.fire('nylon-change-page',{path:'/login'})
 					this.hidden = true;
 				}
 			},
