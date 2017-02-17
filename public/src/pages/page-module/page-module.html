@@ -27,19 +27,16 @@
                        
                     </paper-material>
                 </div>
-            
             <paper-fab icon="add" on-tap="addModule"></paper-fab>
         </div>
     </template>
     <script>
         Polymer({
             is: 'page-module',
-            properties:{
-                dataList:{
-                    type:Array,
-                    value:[]
-                }
-            },
+            behaviors:[nylonBehavior,moduleAction],
+            nylonPageActive:function(){
+                this.MODULE_LIST();
+            }
 
         });
     </script>
