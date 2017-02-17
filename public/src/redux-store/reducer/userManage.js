@@ -23,14 +23,14 @@ export function userManageAction(store){
     return [commonAction(),
         {
             USER_MANAGE_GET_LIST:function(tag){
-                this.fire('toast',{status:'load'});
+                // this.fire('toast',{status:'load'});
                 axios.get('./user/user?tags='+tag)
                 .then((response)=>{
-                    // console.log(response.data);
-                    this.fire('toast',{status:'success',
-                      callback:function(){
-                      }
-                     });
+                    console.log(response.data);
+                    // this.fire('toast',{status:'success',
+                    //   callback:function(){
+                    //   }
+                    //  });
                     store.dispatch({type:'USER_MANAGE_GET_LIST',payload:response.data});
                 })
                 .catch((error)=>{
@@ -44,6 +44,53 @@ export function userManageAction(store){
                     this.USER_MANAGE_CLEAR_LIST();
                     console.log(response.data);
                     store.dispatch({type:'USER_MANAGE_SELECT_LIST',payload:response.data});
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            USER_MANAGE_INSERT:function(data){
+                this.fire('toast',{status:'load'});
+                axios.post('./user/user',data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                          console.log(response.data);
+                          this.USER_MANAGE_GET_LIST();
+                      }
+                     });
+                    
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            USER_MANAGE_UPDATE:function(data){
+                this.fire('toast',{status:'load'});
+                axios.put('./user/user',data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                           this.USER_MANAGE_GET_LIST();
+                      }
+                     });
+                })
+                .catch((error)=>{
+                console.log('error');
+                console.log(error);
+                });
+            },
+            USER_MANAGE_DELETE:function(id){
+                this.fire('toast',{status:'load'});
+                axios.delete('link',id)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                          this.USER_MANAGE_GET_LIST();
+                      }
+                     });
                 })
                 .catch((error)=>{
                     console.log('error');

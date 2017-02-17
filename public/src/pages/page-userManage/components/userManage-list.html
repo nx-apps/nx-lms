@@ -36,7 +36,8 @@
                     <tr>
                         <th style="width: 10%">#</th>
                         <th>ชื่อ-สกุล</th>
-                        <th style="width: 30%">Module</th>
+                        <th>END-USER</th>
+                        <th>KEY-USER</th>
                         <th>email</th>
                         <!--<th style="margin-right: 10px"> username</th>-->
                     </tr>
@@ -47,7 +48,12 @@
                             <td>[[count(index)]]</td>
                             <td>[[item.name]]</td>
                             <td>
-                                <template is="dom-repeat" items="[[item.tags]]">
+                                <template is="dom-repeat" items="[[item.end_tags]]">
+                                    <span class="tag">[[item]]</span>
+                                </template>
+                            </td>
+                             <td>
+                                <template is="dom-repeat" items="[[item.key_tags]]">
                                     <span class="tag">[[item]]</span>
                                 </template>
                             </td>
