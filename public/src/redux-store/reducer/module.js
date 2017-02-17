@@ -35,6 +35,7 @@ export function moduleAction(store){
                 })
             },
             MODULE_UPDATE:function(data){
+                delete data.edit;
                 axios.put('/tag/tag',data).then(res=>{
                     this.MODULE_LIST();
                 }).catch(err=>{
@@ -47,7 +48,7 @@ export function moduleAction(store){
                 }).catch(err=>{
                     cosole.log(err);
                 })
-            },
+            }
         }
     ]
 }
