@@ -53,7 +53,7 @@ class common{
             var r = req.r;
             var params = req.query;
 
-            r.db('lms').table('tag').pluck('id')
+            r.db('lms').table('tag').pluck('id')('id')
             .run()
             .then(function(result){
                 res.json(result);
