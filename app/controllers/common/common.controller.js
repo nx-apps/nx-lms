@@ -52,8 +52,9 @@ class common{
     getModule(req,res){
             var r = req.r;
             var params = req.query;
-
-            r.db('lms').table('tag').pluck('id')('id')
+            
+            r.db('lms').table('tag').orderBy('id').pluck('id')('id')
+            //r.db('lms').table('tag').pluck('id')('id').orderBy('id')
             .run()
             .then(function(result){
                 res.json(result);
