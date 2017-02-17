@@ -12,6 +12,10 @@
             .head{
                 font-size: 22px;
             }
+            .disabledBtn{
+                background-color: #ddd;
+                color: white;
+            }
         </style>
         <table class="gl-table-default" align="center" style="max-width:600px;">
             <thead>
@@ -71,11 +75,11 @@
                         <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
                     </div>
                 </div>
-                <gl-form-input id="moduleInput" label="Module" placeholder="กรอกชื่อ Module เพื่อยืนยันการลบ Module" value=""></gl-form-input>
+                <gl-form-input id="moduleInput" label="Module" placeholder="กรอกชื่อ Module เพื่อยืนยันการลบ Module" on-input="checkValue" value=""></gl-form-input>
                 </div>
             </div>
             <div class="buttons">
-                <paper-button class="gl-btn-danger" on-tap="delModule">ลบ Module</paper-button>
+                <paper-button class$="{{className}}" disabled="{{checkDisabled}}" on-tap="delModule">ลบ Module</paper-button>
             </div>
         </paper-dialog>
     </template>
@@ -102,8 +106,20 @@
                     this.dispatchAction('MODULE_LIST');
                 }
             },
+            checkValue:function(e){
+                if(e.target.value == this.module){
+                    this.checkDisabled = false;
+                    this.className = 'gl-btn-danger';
+                }
+                else{
+                    this.checkDisabled = true;
+                    this.className = 'disabledBtn';
+                }
+            },
             confirmDel:function(e){
                 this.$$('#moduleInput').value = "";
+                this.checkDisabled = true;
+                this.className = 'disabledBtn';
                 this.module = e.target.item.id;
                 this.color = e.target.item.color;
                 this.$$('paper-dialog').open();
