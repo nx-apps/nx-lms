@@ -15,6 +15,13 @@
                 </div>
             </div>
         </div>
+        <br><br>
+        <div style="width:200px;">
+            <tag-module-form items="[[test]]" value="{{selectTest}}"></tag-module-form>
+        </div>
+        <template is="dom-repeat" items="[[selectTest]]">[[item]]</template>
+        
+        <br><br>
         <paper-fab icon="add" on-tap="openPanelRight"></paper-fab>
         <div class="xcontainer">
             <div class="container">
@@ -37,6 +44,12 @@
             properties:{
                 module:{
                     statePath:'commonSystem.module'
+                },
+                test:{
+                    value:[
+                        {id:'PP',color:'#3399ff'},
+                        {id:'DD',color:'#3399ff'},
+                    ]
                 }
             },
             nylonPageActive:function(){
