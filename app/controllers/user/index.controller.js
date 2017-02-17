@@ -34,8 +34,8 @@ class index{
         var r = req.r;
         var params = req.body;
         console.log(params+"x1");
-        r.expr(params).merge(function(data){
-            return { password:sh1(data.password) }
+        r.expr(params).merge(function(){
+            return { password:sha1(params.password)}
         }).do(function(all){
             return r.db('lms').table('user').insert(all)
         })
