@@ -2,53 +2,86 @@
 <dom-module id="userManage-manage">
     <template>
         <style include="page-style flex-style"></style>
-        <div class="container">
-            
+        <div style="padding: 20px 20px 10px 20px">
             <paper-material elevation="1">
                 <div class="container bgWhite">
-                 <div class="flex-horizontal-with-ratios">
+                <div class="flex-horizontal-with-ratios">
                     <div class="flexchild"></div>
                     <div class="flex3child">
-                        <gl-form-input label="Username" placeholder="กรอก username" value="{{data.username}}"></gl-form-input>
+                        <gl-form-input label="Username" always-float-label value="{{data.email}}" disabled></gl-form-input>
                     </div>
                     <div class="flexchild"></div>
                 </div>
-                <div class="bgWhite flex-horizontal-with-ratios">
+                <div class="flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child">
+                        <gl-form-input label="Password" type="Password" placeholder="กรอก Password" value="{{password}}"></gl-form-input>
+                    </div>
+                    <div class="flexchild"></div>
+                </div>
+                <div class="flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child">
+                        <gl-form-input label="Confirm-Password" type="Password" placeholder="ยืนยัน Password" value="{{ConfirmPassword}}"></gl-form-input>
+                    </div>
+                    <div class="flexchild"></div>
+                </div>
+                </div>
+            </paper-material>
+        </div>
+        <div style="padding: 0px 20px 20px 20px">
+            <paper-material elevation="1">
+                <div class="container bgWhite">
+                
+                <div class="flex-horizontal-with-ratios">
                     <div class="flexchild"></div>
                     <div class="flex3child">
                         <gl-form-input label="ชื่อ-สกุล" placeholder="กรอกชื่อ-สกุล" value="{{data.name}}"></gl-form-input>
                     </div>
                     <div class="flexchild"></div>
                 </div>
-                <div class="bgWhite flex-horizontal-with-ratios">
+                <div class="flex-horizontal-with-ratios">
                     <div class="flexchild"></div>
                     <div class="flex3child">
                         <gl-form-input label="E-mail" placeholder="กรอก Email" value="{{data.email}}"></gl-form-input>
                     </div>
                     <div class="flexchild"></div>
                 </div>
-                <div class="bgWhite flex-horizontal-with-ratios">
+                <div class="flex-horizontal-with-ratios">
                     <div class="flexchild"></div>
                     <div class="flex3child">
-                        <gl-combo-box label="ประเภท" placeholder="กรอก username" items="[[role]]" item-label-path="name" item-value-path="id" value="{{data.role}}"></gl-combo-box>
+                        <!--<gl-combo-box label="ประเภท" placeholder="กรอก username" items="[[role]]" item-label-path="name" item-value-path="id" value="{{data.role}}"></gl-combo-box>-->
+                    </div>
+                    <div class="flexchild"></div>
+                </div>
+                <div class="flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child">
+                        <paper-tags-dropdown items='[[newModule]]' noink label="END-TAG"  value-array="{{data.end_tags}}"></paper-tags-dropdown>
+                    </div>
+                    <div class="flexchild"></div>
+                </div>
+                <div class="flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child">
+                        <paper-tags-dropdown items='[[newModule]]' noink label="KEY-TAG"  value-array="{{data.key_tags}}"></paper-tags-dropdown>
+                    </div>
+                    <div class="flexchild"></div>
+                </div>
+                <div class="flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child" style="padding-top: 10px">
+                        <paper-checkbox checked="{{data.admin}}">ADMIN</paper-checkbox>
                     </div>
                     <div class="flexchild"></div>
                 </div>
                 </div>
              </paper-material>
 
-              <div style="margin: 15px 0px 15px 0px;">
-                <paper-material elevation="1">
-                    <div style="padding: 30px; background-color: white;">
-                        <div class="headPanel gl-default">Module</div>
-                        <paper-tags-input label="" placeholder="ป้อน Module ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{data.tags}}"></paper-tags-input>
-                    </div>
-                </paper-material>
-            </div>
-
             <div class="flex-end-justified" style="padding-top: 10px;">
                 <div>
-                    <paper-button class="gl-btn-success" raised>บันทึก</paper-button>
+                    <paper-button class="gl-btn-danger" on-tap="delData" raised>ลบข้อมูล</paper-button>
+                    <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
                 </div>
             </div>
             
@@ -62,23 +95,36 @@
                 data:{
                     statePath: 'userManage.dataSelect',
                 },
-                role:{
-                    type:Array,
-                    value: [
-                        {
-                            id:'teacher',
-                            name:'key-user'
-                        },
-                        {
-                            id:'learner',
-                            name:'end-user'
-                        },
-                        {
-                            id:'admin',
-                            name:'admin'
-                        }
-                    ]
+                module:{
+                    statePath:'commonSystem.module',
+                    observer:'setModule'
                 }
+            },
+            setModule:function(){
+                if(this.module.length != 0){
+                    console.log(this.module);
+                    this.newModule = this.module.map((item,index)=>{
+                        return {
+                            id: item,
+                            label:item
+                        }
+                    })
+                }
+            },
+            delData:function(){
+                
+            },
+            getForm:function(){
+                this.data.password = this.password;
+                console.log(this.data.id);
+                if(typeof this.data.id != 'undefined'){
+                    this.dispatchAction('USER_MANAGE_UPDATE',this.data);
+                }
+                else{
+                    this.dispatchAction('USER_MANAGE_INSERT',this.data);
+                }
+               
+                // console.log(this.data);
             }
             
         });
