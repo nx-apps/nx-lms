@@ -28,8 +28,14 @@ export function moduleAction(store){
                 })
             },
             MODULE_INSERT:function(data){
+                this.fire('toast',{status:'load'});
                 axios.post('/tag/tag',data).then(res=>{
-                    this.MODULE_LIST();
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                            this.MODULE_LIST();
+                      }
+                     });
+                   
                 }).catch(err=>{
                     cosole.log(err);
                 })
@@ -43,8 +49,13 @@ export function moduleAction(store){
                 })
             },
             MODULE_DELETE:function(id){
+                this.fire('toast',{status:'load'});
                 axios.delete('/tag/tag',{params:{id}}).then(res=>{
-                    this.MODULE_LIST();
+                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                      callback:()=>{
+                          this.MODULE_LIST();
+                      }
+                     });
                 }).catch(err=>{
                     cosole.log(err);
                 })

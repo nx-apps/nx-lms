@@ -13,6 +13,9 @@
                 float: right;
                 z-index: 1;
             }
+            .head{
+                font-size: 22px;
+            }
         </style>
         <style include="page-style flex-style"></style>
         <div class="xcontainer">
@@ -22,26 +25,26 @@
                 </div>
         </div>
 
+        
+        <paper-fab icon="add" on-tap="openDailog"></paper-fab>
 
-        <div class="addPanal">
-            <paper-material elevation="1">
-                <div class="container bgWhite"> 
-                    <div class="head gl-default fontCSC">เพิ่ม Module</div>
-                    <div class="content">
-                        <gl-form-input label="Module" placeholder="กรอกชื่อ Module" value=""></gl-form-input>
-                        <paper-swatch-picker></paper-swatch-picker>
-                    </div>
-                        <div class="flex-end-justified">
-                        <div>
-                            <paper-button class="gl-btn-success" raised>บันทึก</paper-button>
-                        </div>
+       <paper-dialog id="modal" modal style="width: 40%;">
+            <div class="container bgWhite"> 
+                <div class="flex-equal-justified">
+                    <div class="fontCSC head">เพิ่ม Module</div>
+                    <div>
+                        <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
                     </div>
                 </div>
-                
-            </paper-material>
-        </div>
-
-        <paper-fab icon="add" on-tap="addModule"></paper-fab>
+                <gl-form-input label="Module" placeholder="กรอกชื่อ Module" value="{{module}}"></gl-form-input>
+                <tag-module label="{{module}}" color="{{selectedColor}}"></tag-module>
+                <paper-swatch-picker color="{{selectedColor}}"></paper-swatch-picker>
+                </div>
+            </div>
+            <div class="buttons">
+                <paper-button class="gl-btn-success" on-tap="saveModule">บันทึก</paper-button>
+            </div>
+        </paper-dialog>
     </template>
     <script>
         Polymer({
@@ -49,6 +52,19 @@
             behaviors:[nylonBehavior,moduleAction],
             nylonPageActive:function(){
                 this.MODULE_LIST();
+            },
+            openDailog:function(){
+                this.module = "";
+                this.selectedColor = '#ddd';
+                this.$$('paper-dialog').open();
+            },
+            saveModule:function(){
+                this.$$('paper-dialog').close();
+                var data = {
+                    id: this.module,
+                    color: this.selectedColor
+                }
+                this.MODULE_INSERT(data);
             }
 
         });
