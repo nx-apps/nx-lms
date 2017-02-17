@@ -30,7 +30,8 @@
             is: 'page-userManage',
             observers:['getStudentList(moduleSelect)'],
             listeners:{
-                'open':'selectData'
+                'open':'selectData',
+                'close':'closePanel'
             },
             behaviors:[nylonBehavior,ReduxBehavior,userManageAction,dispatchActionBehavior],
             properties:{
@@ -40,6 +41,9 @@
             },
             nylonPageActive:function(){
                 this.dispatchAction('COMMON_MODULE');
+            },
+            closePanel:function(){
+                this.$$('panel-right').close();
             },
             getStudentList:function(tag){
                 if(tag != ''){
