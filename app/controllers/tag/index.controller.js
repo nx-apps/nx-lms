@@ -33,11 +33,8 @@ class index{
     insert_tag(req,res){
         var r = req.r;
         var params = req.body;
-        r.expr(params).merge(function(){
-            return {password:sha1(params.password)}
-        }).do(function(all){
-            return r.db('lms').table('tag').insert(all)
-        })
+
+        r.db('lms').table('tag').insert(params)
         .run()
         .then(function(result){
             res.json(result);
