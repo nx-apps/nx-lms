@@ -10,7 +10,7 @@ class index{
                 end_tags:c('end_tags').map(function(fc){ return r.db('lms').table('tag').get(fc)}),
                 key_tags:c('key_tags').map(function(fc){ return r.db('lms').table('tag').get(fc)}) 
             }
-        })
+        }).distinct()
         .run()
         .then(function(result){
             res.json(result);
