@@ -23,14 +23,14 @@ export function userManageAction(store){
     return [commonAction(),
         {
             USER_MANAGE_GET_LIST:function(tag){
-                // this.fire('toast',{status:'load'});
+                this.fire('toast',{status:'load'});
                 axios.get('./user/user?tags='+tag)
                 .then((response)=>{
                     console.log(response.data);
-                    // this.fire('toast',{status:'success',
-                    //   callback:function(){
-                    //   }
-                    //  });
+                    this.fire('toast',{status:'success',
+                      callback:function(){
+                      }
+                     });
                     store.dispatch({type:'USER_MANAGE_GET_LIST',payload:response.data});
                 })
                 .catch((error)=>{
@@ -51,15 +51,16 @@ export function userManageAction(store){
                 });
             },
             USER_MANAGE_INSERT:function(data){
-                this.fire('toast',{status:'load'});
+                // this.fire('toast',{status:'load'});
                 axios.post('./user/user',data)
                 .then((response)=>{
-                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                      callback:()=>{
-                          console.log(response.data);
-                          this.USER_MANAGE_GET_LIST();
-                      }
-                     });
+                    // this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                    //   callback:()=>{
+                    //       console.log(response.data);
+                         
+                    //   }
+                    //  });
+                      this.USER_MANAGE_GET_LIST();
                     
                 })
                 .catch((error)=>{
@@ -68,14 +69,15 @@ export function userManageAction(store){
                 });
             },
             USER_MANAGE_UPDATE:function(data){
-                this.fire('toast',{status:'load'});
+                // this.fire('toast',{status:'load'});
                 axios.put('./user/user',data)
                 .then((response)=>{
-                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                      callback:()=>{
-                           this.USER_MANAGE_GET_LIST();
-                      }
-                     });
+                    // this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                    //   callback:()=>{
+                           
+                    //   }
+                    //  });
+                     this.USER_MANAGE_GET_LIST();
                 })
                 .catch((error)=>{
                 console.log('error');
@@ -83,14 +85,15 @@ export function userManageAction(store){
                 });
             },
             USER_MANAGE_DELETE:function(id){
-                this.fire('toast',{status:'load'});
-                axios.delete('link',id)
+                // this.fire('toast',{status:'load'});
+                axios.delete('./user/user?id='+id)
                 .then((response)=>{
-                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                      callback:()=>{
-                          this.USER_MANAGE_GET_LIST();
-                      }
-                     });
+                    // this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                    //   callback:()=>{
+                         
+                    //   }
+                    //  });
+                      this.USER_MANAGE_GET_LIST();
                 })
                 .catch((error)=>{
                     console.log('error');

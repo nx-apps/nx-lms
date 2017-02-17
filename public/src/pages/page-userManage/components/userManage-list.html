@@ -49,12 +49,16 @@
                             <td>[[item.name]]</td>
                             <td>
                                 <template is="dom-repeat" items="[[item.end_tags]]">
-                                    <span class="tag">[[item]]</span>
+                                    <span style="padding: 2px">
+                                        <tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module>
+                                    </span>
                                 </template>
                             </td>
                              <td>
                                 <template is="dom-repeat" items="[[item.key_tags]]">
-                                    <span class="tag">[[item]]</span>
+                                      <span style="padding: 2px">
+                                   <tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module>
+                                      </span>
                                 </template>
                             </td>
                             <td>[[item.email]]</td>

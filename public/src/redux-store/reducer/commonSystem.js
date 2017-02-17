@@ -18,8 +18,8 @@ export function commonSystemAction(store){
     return [
         commonAction(),{
             COMMON_MODULE:function(data){
-                var user = store.getState().auth.user;
-                axios.get('/common/module?user_id='+user.id)
+                // var user = store.getState().auth.user;
+                axios.get('/common/module/')
                 .then(res=>{
                     store.dispatch({type:'COMMON_MODULE',payload:res.data})
                 })

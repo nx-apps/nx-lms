@@ -80,7 +80,7 @@
 
             <div class="flex-end-justified" style="padding-top: 10px;">
                 <div>
-                    <paper-button class="gl-btn-danger" on-tap="delData" raised>ลบข้อมูล</paper-button>
+                    <paper-button class="gl-btn-danger" on-tap="confirmData" raised>ลบข้อมูล</paper-button>
                     <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
                 </div>
             </div>
@@ -111,8 +111,17 @@
                     })
                 }
             },
-            delData:function(){
-                
+            confirmData:function(){
+                this.fire('toast',{ 
+                 status:'openDialog',
+                 text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                 confirmed:this.delData.bind(this), 
+                 })
+            },
+            delData:function(check){
+                if(check == true){
+                    this.dispatchAction('USER_MANAGE_DELETE',this.data.id);
+                }
             },
             getForm:function(){
                 this.data.password = this.password;
