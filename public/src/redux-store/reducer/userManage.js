@@ -23,6 +23,7 @@ export function userManageAction(store){
     return [commonAction(),
         {
             USER_MANAGE_GET_LIST:function(tag){
+                this.newTag = tag;
                 this.fire('toast',{status:'load'});
                 axios.get('./user/user?tags='+tag)
                 .then((response)=>{
@@ -60,7 +61,7 @@ export function userManageAction(store){
                          
                     //   }
                     //  });
-                      this.USER_MANAGE_GET_LIST();
+                      this.USER_MANAGE_GET_LIST(this.newTag);
                     
                 })
                 .catch((error)=>{
@@ -77,7 +78,7 @@ export function userManageAction(store){
                            
                     //   }
                     //  });
-                     this.USER_MANAGE_GET_LIST();
+                     this.USER_MANAGE_GET_LIST(this.newTag);
                 })
                 .catch((error)=>{
                 console.log('error');
@@ -93,7 +94,7 @@ export function userManageAction(store){
                          
                     //   }
                     //  });
-                      this.USER_MANAGE_GET_LIST();
+                      this.USER_MANAGE_GET_LIST(this.newTag);
                 })
                 .catch((error)=>{
                     console.log('error');

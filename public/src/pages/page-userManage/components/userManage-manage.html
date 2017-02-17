@@ -121,6 +121,7 @@
             delData:function(check){
                 if(check == true){
                     this.dispatchAction('USER_MANAGE_DELETE',this.data.id);
+                    this.fire('close');
                 }
             },
             getForm:function(){
@@ -132,6 +133,7 @@
                 else{
                     this.dispatchAction('USER_MANAGE_INSERT',this.data);
                 }
+                this.fire('close');
                
                 // console.log(this.data);
             }
