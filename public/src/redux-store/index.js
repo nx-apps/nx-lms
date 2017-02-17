@@ -5,6 +5,7 @@ import {handleAuth} from './auth'
 
 import {commonSystemReducer,commonSystemAction} from './reducer/commonSystem'
 import {authReducer,authAction} from './reducer/auth'
+import {moduleReducer,moduleAction} from './reducer/module'
 import {questionReducer,questionAction} from './reducer/question'
 import {examinationReducer,examinationAction} from './reducer/examination'
 import {classRoomReducer,classRoomAction} from './reducer/classRoom'
@@ -18,6 +19,7 @@ import {userManageReducer,userManageAction} from './reducer/userManage'
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
     auth:authReducer,
+    module:moduleReducer,
     question:questionReducer,
     examination:examinationReducer,
     classRoom:classRoomReducer,
@@ -40,6 +42,7 @@ handleAuth();
 
 window.commonSystemAction = commonSystemAction(storeApp);
 window.questionAction = questionAction(storeApp);
+window.moduleAction = moduleAction(storeApp);
 window.examinationAction = examinationAction(storeApp);
 window.classRoomAction = classRoomAction(storeApp);
 window.examinationRoomAction = examinationRoomAction(storeApp);
