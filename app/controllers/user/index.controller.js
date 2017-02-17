@@ -33,7 +33,7 @@ class index{
     insert_user(req,res){
         var r = req.r;
         var params = req.body;
-
+        console.log(params+"x1");
         r.expr(params).merge(function(data){
             return {password:sh1(data.password)}
         }).do(function(all){
