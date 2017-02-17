@@ -1,10 +1,10 @@
 class index{
 
-    select_user(req,res){
+    select_tag(req,res){
         var r = req.r;
         var params = req.query;
-
-        r.db('lms').table('user').getAll(params.tags, {index:'tags'})
+        
+        r.db('lms').table('tag')
         .run()
         .then(function(result){
             res.json(result);
@@ -14,11 +14,25 @@ class index{
         })
     }
 
-    select_user_only(req,res){
+    select_tag_only(req,res){
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('user').get(params.id)
+        r.db('lms').table('tag').get(params.id)
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+        
+    }
+
+    insert_tag(req,res){
+        var r = req.r;
+        var params = req.body;
+        r.db('lms').table('tag').insert(params)
         .run()
         .then(function(result){
             res.json(result);
@@ -28,11 +42,11 @@ class index{
         })
     }
 
-    insert_user(req,res){
+    update_tag(req,res){
         var r = req.r;
         var params = req.body;
 
-        r.db('lms').table('user').insert(params)
+        r.db('lms').table('tag').get(params.id).update(params)
         .run()
         .then(function(result){
             res.json(result);
@@ -42,25 +56,11 @@ class index{
         })
     }
 
-    update_user(req,res){
-        var r = req.r;
-        var params = req.body;
-
-        r.db('lms').table('user').get(params.id).update(params)
-        .run()
-        .then(function(result){
-            res.json(result);
-        })
-        .catch(function(err){
-            res.status(500).json(err);
-        })
-    }
-
-    delete_user(req,res){
+    delete_tag(req,res){
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('user').get(params.id).delete()
+        r.db('lms').table('tag').get(params.id).delete()
         .run()
         .then(function(result){
             res.json(result);
@@ -69,7 +69,5 @@ class index{
             res.status(500).json(err);
         })
     }
-
 }
-
 module.exports = new index();
