@@ -6,12 +6,31 @@
             tag-module{
                 cursor: pointer;
             }
+            .label{
+                font-size: var(--tag-module-form-label-font-size);
+                color: #737373;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+            .item{
+               float: left;
+               margin: 5px;
+            }
+            .comBobox{
+               clear: both;
+            }
         </style>
+        <div class="label">
+            [[label]]
+        </div>
         <template is="dom-repeat" items="[[value]]">
-            <tag-module on-tap="deleteTag" item="[[item]]" label="[[mergeDel(item.id)]]" color="[[item.color]]"></tag-module>
-            &nbsp;
+            <div class="item">
+                <tag-module on-tap="deleteTag" item="[[item]]" label="[[mergeDel(item.id)]]" color="[[setColor(item.color)]]"></tag-module>
+            </div>
         </template>
-        <gl-combo-box label="Module" item-label-path="id" item-value-path="id" items="[[items]]" on-value-changed="selectTag"></gl-combo-box>
+        <div class="comBobox">
+            <gl-combo-box no-label-float item-label-path="id" item-value-path="id" items="[[items]]" on-value-changed="selectTag"></gl-combo-box>
+        </div>
     </template>
     <script>
         Polymer({
@@ -20,6 +39,10 @@
                 value:{
                     value:[],
                     notify:true
+                },
+                label:{
+                    type:String,
+                    value: 'label'
                 }
             },
             mergeDel:function(val){
@@ -35,6 +58,14 @@
                     this.push('value',this.items[index]);
                     this.splice('items',index,1);
                     e.currentTarget.value = "";
+                }
+            },
+            setColor:function(value){
+                if(typeof value == 'undefined'){
+                    return '#7B7D7D';
+                }
+                else {
+                    return value;
                 }
             },
             deleteTag:function(e){

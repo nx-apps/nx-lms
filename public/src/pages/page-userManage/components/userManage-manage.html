@@ -57,6 +57,7 @@
                 <div class="flex-horizontal-with-ratios">
                     <div class="flexchild"></div>
                     <div class="flex3child">
+                        <!--<tag-module-form label="END-TAG" items="[[newModule]]" value="{{end_tags}}"></tag-module-form>-->
                         <paper-tags-dropdown items='[[newModule]]' noink label="END-TAG"  value-array="{{data.end_tags}}"></paper-tags-dropdown>
                     </div>
                     <div class="flexchild"></div>
@@ -64,6 +65,7 @@
                 <div class="flex-horizontal-with-ratios">
                     <div class="flexchild"></div>
                     <div class="flex3child">
+                         <!--<tag-module-form label="KEY-TAG" items="[[newModule]]" value="{{key_tags}}"></tag-module-form>-->
                         <paper-tags-dropdown items='[[newModule]]' noink label="KEY-TAG"  value-array="{{data.key_tags}}"></paper-tags-dropdown>
                     </div>
                     <div class="flexchild"></div>
@@ -124,8 +126,11 @@
                 }
             },
             getForm:function(){
+                // this.data.end_tags = this.end_tags;
+                // this.data.key_tags = this.key_tags;
                 this.data.password = this.password;
-                console.log(this.data.id);
+                // console.log(this.data.id);
+                // console.log(this.data);
                 if(typeof this.data.id != 'undefined'){
                     this.dispatchAction('USER_MANAGE_UPDATE',this.data);
                 }
@@ -133,7 +138,6 @@
                     this.dispatchAction('USER_MANAGE_INSERT',this.data);
                 }
                 this.fire('close');
-               
                 // console.log(this.data);
             }
             
