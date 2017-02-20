@@ -108,9 +108,11 @@ class index{
             })
         })
 */
+console.log(params)
+
         r.expr(params).concatMap(function(row){
-            return r.db('lms').table('question').getAll(r.args(row('tags')), {index: "tags"})
-            .filter({dificalty_index:row('dificalty')}).sample(row('amount'))
+            return r.db('lms').table('question').getAll(r.args(row('sub_module')), {index: "tags"})
+            .filter({dificalty_index:row('dificalty_index')}).sample(row('amount'))
         })
         .run()
         .then(function(result){
