@@ -108,7 +108,7 @@ class index{
             })
         })
 */
-        r.expr(params.objective).concatMap(function(row){
+        r.expr(params).concatMap(function(row){
             return r.db('lms').table('question').getAll(r.args(row('tags')), {index: "tags"})
             .filter({dificalty_index:row('dificalty')}).sample(row('amount'))
         })
