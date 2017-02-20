@@ -47,7 +47,13 @@ export function commonSystemAction(store){
             COMMON_SUB_MODULE:function(module){
                 axios.get('./question/sub_module?module='+module)
                 .then((response)=>{
-                     console.log('sub',response.data);
+                     
+                     var tag = response.data;
+                     tag = tag.map((item)=>{
+                         return {id:item}
+                     });
+                     response.data = tag;
+                    //  console.log('sub',response.data);
                      store.dispatch({type:'COMMON_SUB_MODULE',payload:response.data});
                 })
                 .catch((error)=>{

@@ -79,17 +79,27 @@ export function examinationAction(store){
             return axios.post('./examination/examination_random',data)
         },
         EXAMINATION_INSERT:function(data){
-            return new Promise((resolve,reject)=>{
-                axios.post('./examination/examination',data)
-                .then((response)=>{
-                    this.EXAMINATION_GET_LIST(this.tags);
-                    resolve(response);
-                })
-                .catch((error)=>{
-                    reject(error);
-                });
-
+            axios.post('./examination/examination',data)
+            .then((response)=>{
+                // console.log('success!!');
+                this.EXAMINATION_GET_LIST(this.tags);
+                // console.log(response.data);
             })
+            .catch((error)=>{
+                console.log('error');
+                console.log(error);
+            });
+            // return new Promise((resolve,reject)=>{
+            //     axios.post('./examination/examination',data)
+            //     .then((response)=>{
+            //         this.EXAMINATION_GET_LIST(this.tags);
+            //         resolve(response);
+            //     })
+            //     .catch((error)=>{
+            //         reject(error);
+            //     });
+
+            // })
             
         },
         EXAMINATION_UPDATE:function(data){

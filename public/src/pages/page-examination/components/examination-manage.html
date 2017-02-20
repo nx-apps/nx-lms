@@ -52,7 +52,7 @@
                         </tr>
                         <tr class="hideBorder">
                             <th style="width:10%;text-align: right; font-size: 18px;">ชื่อข้อสอบ</th>
-                            <th><gl-form-input placeholder="" no-label-float value="{{data.ex_name}}"></gl-form-input></th>
+                            <th><gl-form-input placeholder="" no-label-float value="{{data.name_examination}}"></gl-form-input></th>
                             <th></th>
                         </tr>
                         <tr>
@@ -64,7 +64,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <template is="dom-repeat" items="{{data.obj}}">
+                        <template is="dom-repeat" items="{{data.objective}}">
                             <tr class="hideBorder">
                                 <td style="text-align: right;">
                                     [[cont(index)]]
@@ -73,10 +73,10 @@
                                 <td>
                                     <div class="flex-horizontal-with-ratios">
                                         <div class="flex4child">
-                                            <gl-form-input style="width: 90%;" placeholder="วัตถุประสงค์ที่ [[cont(index)]]" no-label-float value="{{item.obj_name}}"></gl-form-input>
+                                            <gl-form-input style="width: 90%;" placeholder="วัตถุประสงค์ที่ [[cont(index)]]" no-label-float value="{{item.name}}"></gl-form-input>
                                         </div>
                                         <div class="flex2child">
-                                            <gl-form-input placeholder="จำนวนข้อ" no-label-float value="{{item.obj_qty}}"></gl-form-input>
+                                            <gl-form-input placeholder="จำนวนข้อ" no-label-float value="{{item.amount}}"></gl-form-input>
                                         </div>
                                     </div>
                                     
@@ -90,7 +90,7 @@
                                 <td>
                                     <div class="flex-horizontal-with-ratios">
                                         <div class="flex4child">
-                                             <tag-module-form label="เลือก sub-module" items="{{subModule}}" value="{{item.obj_tag}}"></tag-module-form>
+                                             <tag-module-form label="เลือก sub-module" items="{{subModule}}" value="{{item.sub_module}}"></tag-module-form>
                                             <!--<gl-combo-box style="width: 50%" label="เลือก Module" always-float-label items="{{listTag}}" value="{{item.obj_tag}}"></gl-combo-box>-->
                                         </div>
                                         <div class="flex2child">
@@ -138,8 +138,7 @@
                         
                     </div>
                     <div class="flex2child">
-                        [[countQty(data.obj.*)]]
-                        <gl-form-input class="right" no-label-float value="[[data.qty]]" readonly></gl-form-input>
+                        <gl-form-input class="right" no-label-float value="{{data.amount_all}}"></gl-form-input>
                     </div>
                      <div class="flex2child"></div>
                  </div>
@@ -155,12 +154,10 @@
                     </div>
                 </paper-material>
             </div>-->
-            <!--<div class="flex-end-justified" style="margin-top: 10px;">
-                <template is="dom-if" if="[[data.id]]">
-                    <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
-                </template>
+            <div class="flex-end-justified" style="margin-top: 10px;">
+                <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
                 <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
-            </div>-->
+            </div>
         </div>
         
     </template>
@@ -176,39 +173,49 @@
                     statePath:'commonSystem.difficultyIndex',
                 },
                 subModule:{
-                    // statePath:'commonSystem.subModule',
-                    statePath: function(state){
-                        if(typeof state.commonSystem.subModule !="undefined"){
-                            var tag = state.commonSystem.subModule;
-                            tag = tag.map(function(row){
-                                return {id:row}
-                            });
-                            console.log(tag);
-                            state.commonSystem.subModule = tag;
-                        }
-                        
-                        return state.commonSystem.subModule
-                    }
+                    statePath:'commonSystem.subModule',
                 }
             },
             cont:function(index){
                 return index+1;
             },
             addChoice:function(){
-                this.push('data.obj',{
-                    obj_name:"",
-                    obj_qty:0,
-                    obj_tag:[]
+                this.push('data.objective',{
+                    name:"",
+                    amount:0,
+                    sub_module:[],
+                    dificalty_index:1,
+
                 })
             },
             delChoice:function(e){
-                this.splice('data.obj',e.target.index,1);
+                this.splice('data.objective',e.target.index,1);
             },
             startQuize:function(){
                 // console.log(this.data.id)
                 //console.log(this.data.id);
                 this.fire('close',this.data.id);
                 // this.$$('paper-dialog').open();
+            },
+            getForm:function(){
+                this.data.amount_all = parseInt(this.data.amount_all);
+                this.data.time = parseInt(this.data.time);
+                this.data.objective = this.data.objective.map((item)=>{
+                    item.amount = parseInt(item.amount);
+                    item.sub_module = item.sub_module.map((item)=>{
+                        return item.id;
+                    })
+                    return item;
+                })
+                console.log(this.data);
+                this.EXAMINATION_INSERT(this.data);
+                // if(typeof this.data.id != 'undefined'){
+
+                // }
+                // else{
+                //     this.dispatchAction('EXAMINATION_INSERT',this.data);
+                // }
+                    
             },
             countQty:function(obj){
                 var count = 0;
