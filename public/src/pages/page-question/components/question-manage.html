@@ -4,7 +4,7 @@
 
 <dom-module id="question-manage">
     <template>
-        <style include="page-style tabs-style">
+        <style include="page-style flex-style tabs-style">
             .question{
                 margin-top: 8px;
                 text-align: right;
@@ -31,6 +31,28 @@
         <iron-pages selected="{{selected}}">
             <section>
                 <div class="container">
+                    <paper-material class="bgWhite" style="margin-bottom: 10px" elevation="1">
+                        <div class="container fontCSC flex-horizontal-with-ratios">
+                            <div class="flexchild" style="text-align: right">Module:</div>
+                            <div class="flex3child"></div>
+                            <div class="flexchild"></div>
+                        </div>
+                        <div class="container fontCSC flex-horizontal-with-ratios">
+                            <div class="flexchild" style="text-align: right">SUB-Module:</div>
+                            <div class="flex3child" style="margin: -10px 0px 0px 20px">
+                                <gl-combo-box no-label-float items="" item-label-path="" item-value-path="" value=""></gl-combo-box>
+                            </div>
+                            <div class="flexchild"></div>
+                        </div>
+                        <div class="container fontCSC flex-horizontal-with-ratios">
+                            <div class="flexchild" style="text-align: right">ระดับความยาก:</div>
+                            <div class="flex3child" style="margin: -10px 0px 0px 20px">
+                                <gl-combo-box no-label-float items="" item-label-path="" item-value-path="" value=""></gl-combo-box>
+                            </div>
+                            <div class="flexchild"></div>
+                        </div>
+                    </paper-material>
+                    
                     <paper-material elevation="1">
                         <table class="gl-table-default">
                             <thead>
@@ -72,19 +94,12 @@
                             </tbody>
                         </table>
                     </paper-material>
-
-                    <div style="margin: 15px 0px 15px 0px;">
-                        <paper-material elevation="1">
-                            <div style="padding: 30px; background-color: white;">
-                                <div class="headPanel gl-default">Module</div>
-                                <paper-tags-input label="" placeholder="ป้อน Module ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{data.tag}}"></paper-tags-input>
-                            </div>
-                        </paper-material>
+     
                     </div>
-            <div class="flex-end-justified" style="margin-top: 10px;">
-                <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
-                <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
-            </div>
+                    <div class="flex-end-justified" style="margin-top: 10px;">
+                        <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
+                        <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
+                    </div>
             </div>
             </section>
              <section>
@@ -155,7 +170,7 @@
                
             },
             confirmDel:function(){
-                console.log('1234');
+                // console.log('1234');
                 this.fire('toast',{ 
                     status:'openDialog',
                     text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
