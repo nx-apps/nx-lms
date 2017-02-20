@@ -10,7 +10,7 @@ class index{
         var r = req.r;
         var params = req.query;
         
-        r.db('lms').table('question').getAll(params.module, {index:'module'}).orderBy('time_insert').pluck('id,question','module')
+        r.db('lms').table('question').getAll(params.module, {index:'module'}).orderBy('time_insert').pluck('id','question','module')
         .merge(function(x){
             return {
             module:[x('module')].map(function(fc){ return r.db('lms').table('tag').get(fc) })
