@@ -29,7 +29,8 @@
             </div>
         </template>
         <div class="comBobox">
-            <gl-combo-box no-label-float item-label-path="id" item-value-path="id" items="[[items]]" on-value-changed="selectTag"></gl-combo-box>
+            <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys>
+            <gl-form-input id="input"></gl-form-input>
         </div>
     </template>
     <script>
@@ -44,7 +45,30 @@
                 label:{
                     type:String,
                     value: 'label'
+                },
+                target:{
+                    value:function(){
+                        return this.$.input;
+                    }
+                },
+                front:{
+                    value:''
                 }
+            },
+            onEnter: function() {
+                var val = this.$.input.value.trim();
+                var dep = false;
+                this.value.map((row)=>{
+                    if(row.id==this.front+val){
+                        dep = true;
+                    }
+                })
+
+                if(val!="" && dep==false){
+                    console.log(this.front)
+                    this.push('value',{id:this.front+val})
+                }
+                this.$.input.value = "";
             },
             obValue:function(n){
                 if(typeof n == "undefined"){
@@ -53,18 +77,6 @@
             },
             mergeDel:function(val){
                 return val + ' x'
-            },
-            selectTag:function(e){
-                if(e.detail.value){
-                    var index = -1;
-                    this.items.map(function(row,i){
-                        if(row.id == e.detail.value)
-                        index = i;
-                    })
-                    this.push('value',this.items[index]);
-                    this.splice('items',index,1);
-                    e.currentTarget.value = "";
-                }
             },
             setColor:function(value){
                 if(typeof value == 'undefined'){
@@ -75,7 +87,6 @@
                 }
             },
             deleteTag:function(e){
-                this.push('items',e.currentTarget.item);
                 var index = this.value.indexOf(e.currentTarget.item);
                 this.splice('value',index,1);
             }
