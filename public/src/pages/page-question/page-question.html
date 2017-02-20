@@ -12,9 +12,8 @@
                     <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" item-label-path="" item-value-path="" value="{{moduleSelect}}">
                         <paper-icon-button icon="remove-circle" class="clear-button"></paper-icon-button>
                     </gl-combo-box>
-                </div>
-                    
-                </div>
+                </div>   
+            </div>
         </div>
           
         </div>
@@ -34,13 +33,13 @@
             <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
         </div>
         <panel-right title="{{titleRight}}">
-            <question-manage data="{{data}}" status="[[status]]"></question-manage>
+            <question-manage data="{{data}}" module="[[moduleSelect]]" status="[[status]]"></question-manage>
         </panel-right>
     </template>
     <script>
         Polymer({
             is: 'page-question',
-            behaviors:[nylonBehavior,ReduxBehavior,questionAction,dispatchActionBehavior],
+            behaviors:[nylonBehavior,ReduxBehavior,questionAction],
             observers:['_obModuleSelect(moduleSelect)'],
             listeners:{
                 'close':'closePanelRight',
@@ -53,10 +52,12 @@
             },
             nylonPageActive:function(){
                 this.dispatchAction('USER_MANAGE_SELECT_LIST');
+                this.dispatchAction('COMMON_MODULE');
             },
             _obModuleSelect:function(ob){
                 if(!ob){return}
                 this.dispatchAction('QUESTION_GET_LIST',ob);
+                this.dispatchAction('COMMON_SUB_MODULE',ob);
             },
             selectList:function(e){
                 this.titleRight = 'แก้ไขคำถาม';

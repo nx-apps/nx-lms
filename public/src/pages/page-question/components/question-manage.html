@@ -33,21 +33,22 @@
                 <div class="container">
                     <paper-material class="bgWhite" style="margin-bottom: 10px" elevation="1">
                         <div class="container fontCSC flex-horizontal-with-ratios">
-                            <div class="flexchild" style="text-align: right">Module:</div>
+                            <div class="flexchild" style="text-align: right">Module: [[module]]</div>
                             <div class="flex3child"></div>
                             <div class="flexchild"></div>
                         </div>
                         <div class="container fontCSC flex-horizontal-with-ratios">
                             <div class="flexchild" style="text-align: right">SUB-Module:</div>
                             <div class="flex3child" style="margin: -10px 0px 0px 20px">
-                                <gl-combo-box no-label-float items="" item-label-path="" item-value-path="" value=""></gl-combo-box>
+                                <!--<tag-module-input front="PP" items="[[subModule]]" value="{{selectTest}}"></tag-module-input>-->
+                                <gl-combo-box no-label-float items="[[subModule]]" value=""></gl-combo-box>
                             </div>
                             <div class="flexchild"></div>
                         </div>
                         <div class="container fontCSC flex-horizontal-with-ratios">
                             <div class="flexchild" style="text-align: right">ระดับความยาก:</div>
                             <div class="flex3child" style="margin: -10px 0px 0px 20px">
-                                <gl-combo-box no-label-float items="" item-label-path="" item-value-path="" value=""></gl-combo-box>
+                                <gl-combo-box no-label-float items="[[difficultyIndex]]" item-label-path="label" item-value-path="id" value=""></gl-combo-box>
                             </div>
                             <div class="flexchild"></div>
                         </div>
@@ -111,12 +112,18 @@
     <script>
         Polymer({
             is: 'question-manage',
-            behaviors:[dispatchActionBehavior],
+            behaviors:[ReduxBehavior],
             properties:{
                 selected:{
                     typeo: String,
                     value: '0'
                 },
+                subModule:{
+                    statePath: 'commonSystem.subModule'
+                },
+                difficultyIndex:{
+                    statePath:'commonSystem.difficultyIndex'
+                }
             },
             cont:function(index){
                 return index+1;

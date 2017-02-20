@@ -2,7 +2,8 @@ import axios from '../axios'
 import {commonAction} from '../config'
 
 const initialState = {
-    dataList:[]
+    dataList:[],
+    subModuleList:[]
 }
 
 export function questionReducer(state = initialState,action){

@@ -4,9 +4,16 @@
 
 <dom-module id="page-examRoom">
     <template>
-        <style include="page-style"></style>
+        <style include="page-style flex-style"></style>
         <div class="xcontainer">
-            <div class="header  gl-large">จัดการห้องสอบ</div>
+            <div class="container flex-equal-justified">
+                <div class="header gl-large">จัดการห้องสอบ</div>
+                <div style="padding: 0px 20px 0px 0px">
+                    <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" item-label-path="" item-value-path="" value="{{moduleSelect}}">
+                        <paper-icon-button icon="remove-circle" class="clear-button"></paper-icon-button>
+                    </gl-combo-box>
+                </div>   
+            </div>
             <div class="container">
                 <examRoom-list></examRoom-list>
             </div>
@@ -19,11 +26,20 @@
     <script>
         Polymer({
             is: 'page-examRoom',
+            behaviors:[nylonBehavior,ReduxBehavior,examRoomAction,examinationAction,questionAction],
             listeners:{
                 'open':'openPanelRight',
                 'close':'closePanelRight'
             },
-            behaviors: [ReduxBehavior,examRoomAction,examinationAction],
+            properties:{
+                module:{
+                    statePath:'commonSystem.module'
+                }
+            },
+            nylonPageActive:function(){
+                this.dispatchAction('USER_MANAGE_SELECT_LIST');
+                this.dispatchAction('COMMON_MODULE');
+            },
             openPanelRight:function(){
                 this.EXAMROOM_CLEAR_DATA();
                 this.EXAMINATION_GET_TAG_LIST();
