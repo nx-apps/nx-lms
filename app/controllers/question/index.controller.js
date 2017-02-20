@@ -61,7 +61,7 @@ class index{
         var params = req.body;
 
         r.expr(params).merge(function(){
-            return { time_insert:r.now() }
+            return {correct:0, incorrect:0, time_insert:r.now() }
         }).do(function(result){
             return r.db('lms').table('question').insert(result)
         })
