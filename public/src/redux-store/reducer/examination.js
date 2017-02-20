@@ -35,22 +35,30 @@ export function examinationAction(store){
                 console.log(error);
             });
         },
-        EXAMINATION_GET_TAG_LIST:function(){
-            axios.get('./examination/examination_tagall')
+        // EXAMINATION_GET_TAG_LIST:function(){
+        //     axios.get('./examination/examination_tagall')
+        //     .then((response)=>{
+        //         console.log('success!!');
+        //         store.dispatch({type:'EXAMINATION_GET_TAG_LIST',payload:response.data})
+        //         console.log(response.data);
+        //     })
+        //     .catch((error)=>{
+        //         console.log('error');
+        //         console.log(error);
+        //     });
+        // },
+        EXAMINATION_GET_LIST:function(tags){
+            this.tags = tags;
+            this.fire('toast',{status:'load'});
+            axios.get('./examination/examination?module='+tags)
             .then((response)=>{
-                console.log('success!!');
-                store.dispatch({type:'EXAMINATION_GET_TAG_LIST',payload:response.data})
                 console.log(response.data);
-            })
-            .catch((error)=>{
-                console.log('error');
-                console.log(error);
-            });
-        },
-        EXAMINATION_GET_LIST:function(){
-            axios.get('./examination/examination')
-            .then((response)=>{
                 store.dispatch({type:'EXAMINATION_GET_LIST',payload:response.data});
+                this.fire('toast',{status:'success',
+                    callback:function(){
+                        
+                    }
+                });
             })
             .catch((error)=>{
                 console.log(error);
@@ -74,7 +82,7 @@ export function examinationAction(store){
             return new Promise((resolve,reject)=>{
                 axios.post('./examination/examination',data)
                 .then((response)=>{
-                    this.EXAMINATION_GET_LIST();
+                    this.EXAMINATION_GET_LIST(this.tags);
                     resolve(response);
                 })
                 .catch((error)=>{
@@ -88,7 +96,7 @@ export function examinationAction(store){
             return new Promise((resolve,reject)=>{
                 axios.put('./examination/examination',data)
                 .then((response)=>{
-                    this.EXAMINATION_GET_LIST();
+                    this.EXAMINATION_GET_LIST(this.tags);
                     resolve(response);
                 })
                 .catch((error)=>{
@@ -102,7 +110,7 @@ export function examinationAction(store){
             return new Promise((resolve,reject)=>{
                 axios.delete('./examination/examination?id='+id)
                 .then((response)=>{
-                    this.EXAMINATION_GET_LIST();
+                    this.EXAMINATION_GET_LIST(this.tags);
                     resolve(response);
                 })
                 .catch((error)=>{

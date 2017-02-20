@@ -37,7 +37,7 @@
                                             <div>[[toIndex(index)]]</div>
                                         </td>
                                         <td>
-                                            [[item.ex_name]]
+                                            [[item.name_examination]]
                                         </td>
                                         <td style="text-align: right;">
                                             <iron-icon icon="create"></iron-icon>
@@ -50,7 +50,7 @@
                                             <div>[[toIndex(index)]]</div>
                                         </td>
                                         <td colspan="3">
-                                            [[item.topic]]
+                                            [[item.question]]
                                         </td>
                                     </tr>
                                 </template>
@@ -64,9 +64,13 @@
     <script>
         Polymer({
             is: 'examination-list',
+            behaviors:[ReduxBehavior],
             properties:{
                 typeList:{
                     type:String
+                },
+                dataList:{
+                    statePath:'examination.dataList'
                 }
             },
             checkTypeList:function(typeList,typeSelect){
