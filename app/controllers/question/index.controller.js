@@ -10,11 +10,12 @@ class index{
         var r = req.r;
         var params = req.query;
         
-        r.db('lms').table('question').getAll(params.module, {index:'module'})
-        //.getAll('*'+params.module,{index:'tag'})
-        //.filter({user_id:params.user_id})
-        //.without('choice','answer','user_id')
-        //.orderBy('time_insert')
+        r.db('lms').table('question').getAll(params.module, {index:'module'}).orderBy('time_insert').pluck('question','module')
+        .merge(function(x){
+            return {
+            module:[x('module')].map(function(fc){ return r.db('lms').table('tag').get(fc) })
+            }
+        })
         .run()
         .then(function(result){
             res.json(result);
