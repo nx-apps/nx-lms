@@ -40,24 +40,17 @@
                     <div class="flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flexchild fontCSC margin">
-                            Module
+                            Module 
                         </div>
                         <div class="flex3child" style="text-align: left">
-                            <gl-combo-box  no-label-float items="{{newTag}}" value="{{data.tag}}"></gl-combo-box>
+                            [[module]]
+                            <!--<gl-combo-box  no-label-float items="{{newTag}}" value="{{data.tag}}"></gl-combo-box>-->
                         </div>
                       
                         <div class="flexchild"></div>
                     </div>
                     <div class="flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
-                        <div class="flexchild fontCSC margin">
-                            กำหนดเวลา
-                        </div>
-                        <div class="flexchild" style="text-align: left">
-                            <gl-form-input class"width" type="number" no-label-float value="{{data.time}}">
-                                <div suffix>นาที</div>
-                            </gl-form-input>
-                        </div>
                         <div class="flex2child fontCSC margin">
                            <paper-checkbox checked="{{data.enable}}" class="green">เปิดการใช้งาน</paper-checkbox>
                         </div>
@@ -66,15 +59,14 @@
                     
                 </div>
             </paper-material>
-            <div class="flex-equal-around-justified">
+            <!--<div class="flex-equal-around-justified">-->
                 <!--<div>
                     <student-list id="cancel" data="{{studentList}}" icon="clear" active="cancel" status="false"></student-list>
                 </div>-->
-                <div>
+                <!--<div>
                     <student-list id="join" data="{{studentList}}" icon="add" active="join" status="false"></student-list>
-                    <!--<manage-list></manage-list>-->
-                </div>
-            </div>
+                </div>-->
+            <!--</div>-->
         </div>
         <div class="container flex-end-justified">
             <div>

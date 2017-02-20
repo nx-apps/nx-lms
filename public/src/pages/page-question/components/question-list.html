@@ -31,11 +31,7 @@
                                         <div>[[toIndex(index)]]</div>
                                     </td>
                                     <td>
-                                        [[item.topic]] 
-                                        <template is="dom-repeat" as="module" items="[[item.tag]]">
-                                            <span class="tag">[[module]]</span>
-                                        </template>
-                                        
+                                        [[item.question]]                     
                                     </td>
                                     <td style="text-align: right;">
                                         <iron-icon icon="create"></iron-icon>
@@ -64,12 +60,13 @@
             },
             selectList:function(e){
                 this.QUESTION_SELECT(e.currentTarget.questionId)
-                .then((response)=>{
-                      this.fire('select-data',response.data);
-                 })
-                .catch((error)=>{
-                    console.log(error);
-                });
+                this.fire('select-data');
+                // .then((response)=>{
+                //      
+                //  })
+                // .catch((error)=>{
+                //     console.log(error);
+                // });
                
             },
             toIndex:function(index){

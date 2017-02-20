@@ -3,6 +3,7 @@ import {commonAction} from '../config'
 
 const initialState = {
     dataList:[],
+    dataSelect:{},
     subModuleList:[]
 }
 
@@ -11,6 +12,8 @@ export function questionReducer(state = initialState,action){
     switch (action.type) {
         case 'QUESTION_GET_LIST':
             return Object.assign({},state,{dataList:action.payload});
+        case 'QUESTION_SELECT':
+            return Object.assign({},state,{dataSelect:action.payload});
         default:
             return state
     }
@@ -20,11 +23,13 @@ export function questionReducer(state = initialState,action){
 export function questionAction(store){
     return [commonAction(),
         {
-            QUESTION_GET_LIST:function(module){
+            QUESTION_GET_LIST:function(module){ 
+                this.newTag = module;
                 this.fire('toast',{status:'load'});
                 var user_id = store.getState().auth.user.id;
                 axios.get('./question/question',{params:{user_id,module}})
                 .then((response)=>{
+                    console.log(response.data);
                     store.dispatch({type:'QUESTION_GET_LIST',payload:response.data});
                     this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
                       callback:function(){
@@ -37,61 +42,57 @@ export function questionAction(store){
             },
             QUESTION_INSERT:function(data){
                 data.user_id = store.getState().auth.user.id;
-                return new Promise((resolve,reject)=>{
-                    axios.post('./question/question',data)
-                    .then((response)=>{
-                        this.QUESTION_GET_LIST(this.moduleSelect);
-                        resolve(response);
-                    })
-                    .catch((error)=>{
-                        reject(error);
-                    });
-
+                axios.post('./question/question',data)
+                .then((response)=>{
+                    console.log('success!!');
+                    console.log(response.data);
+                    this.QUESTION_GET_LIST(this.newTag)
                 })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
                 
             },
             QUESTION_UPDATE:function(data){
                 data.user_id = store.getState().auth.user.id;
-                return new Promise((resolve,reject)=>{
-                    axios.put('./question/question',data)
-                    .then((response)=>{
-                        this.QUESTION_GET_LIST(this.moduleSelect);
-                        resolve(response);
-                    })
-                    .catch((error)=>{
-                        reject(error);
-                    });
-
+                axios.put('./question/question',data)
+                .then((response)=>{
+                    this.QUESTION_GET_LIST(this.newTag)
                 })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+                // return new Promise((resolve,reject)=>{
+                //     axios.put('./question/question',data)
+                //     .then((response)=>{
+                //         this.QUESTION_GET_LIST(this.moduleSelect);
+                //         resolve(response);
+                //     })
+                //     .catch((error)=>{
+                //         reject(error);
+                //     });
+
+                // })
                 
             },
             QUESTION_DELETE:function(questionId){
-                return new Promise((resolve,reject)=>{
-                    axios.delete('./question/question?id='+questionId)
-                    .then((response)=>{
-                        this.QUESTION_GET_LIST(this.moduleSelect);
-                        resolve(response);
-                    })
-                    .catch((error)=>{
-                        reject(error);
-                    });
-
+                axios.delete('./question/question?id='+questionId)
+                .then((response)=>{
+                    this.QUESTION_GET_LIST(this.newTag);
                 })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
                 
             },
             QUESTION_SELECT:function(questionId){
                 return new Promise((resolve,reject)=>{
                     axios.get('./question/question_only?id='+questionId)
                     .then((response)=>{
-                        // var choice = response.data.choice.map((row,i)=>{
-                        //     if(i===response.data.answer){
-                        //         return {checked:true,choice:row};
-                        //     }else{
-                        //         return {checked:false,choice:row};
-                        //     }
-                        // });
-                        // response.data.choice = choice;
-                        resolve(response);
+                        store.dispatch({type:'QUESTION_SELECT',payload:response.data});
                     })
                     .catch((error)=>{
                         reject(error);

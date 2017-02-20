@@ -33,23 +33,21 @@
                 <div class="container">
                     <paper-material class="bgWhite" style="margin-bottom: 10px" elevation="1">
                         <div class="container fontCSC flex-horizontal-with-ratios">
-                            <div class="flexchild" style="text-align: right">Module: [[module]]</div>
-                            <div class="flex3child"></div>
+                            <div class="flexchild" style="text-align: right">Module: </div>
+                            <div class="flex3child" style="margin: 0px 0px 0px 20px">{{module}}</div>
                             <div class="flexchild"></div>
                         </div>
                         <div class="container fontCSC flex-horizontal-with-ratios">
                             <div class="flexchild" style="text-align: right">SUB-Module:</div>
-                            <div class="flex3child" style="margin: -10px 0px 0px 20px">
-                                <!--<tag-module-input front="PP" items="[[subModule]]" value="{{selectTest}}"></tag-module-input>-->
-                                <gl-combo-box no-label-float items="[[subModule]]" value=""></gl-combo-box>
+                            <div class="flex3child" style="margin: -20px 0px 0px 20px">
+                                <tag-module-input label="" front="{{module}}" value="{{data.tags}}"></tag-module-input>
                             </div>
                             <div class="flexchild"></div>
                         </div>
                         <div class="container fontCSC flex-horizontal-with-ratios">
                             <div class="flexchild" style="text-align: right">ระดับความยาก:</div>
                             <div class="flex3child" style="margin: -10px 0px 0px 20px">
-                                <!--<tag-module-input label="" front="PP" items="[[test]]" value="{{selectTest}}"></tag-module-input>-->
-                                <gl-combo-box no-label-float items="[[difficultyIndex]]" item-label-path="label" item-value-path="id" value=""></gl-combo-box>
+                                <gl-combo-box no-label-float items="[[difficultyIndex]]" item-label-path="label" item-value-path="id" value="{{data.dificalty_index}}"></gl-combo-box>
                             </div>
                             <div class="flexchild"></div>
                         </div>
@@ -61,7 +59,7 @@
                                 <tr>
                                     <th style="width:10%;text-align: right; font-size: 18px;">คำถาม</th>
                                     <th>
-                                        <gl-form-input style="margin-top: 22px" placeholder="" no-label-float value="{{data.topic}}"></gl-form-input>
+                                        <gl-form-input style="margin-top: 22px" placeholder="" no-label-float value="{{data.question}}"></gl-form-input>
                                         <show-image image-id="[[data.image_id]]"></show-image>
                                     </th>
                                     <th>
@@ -73,10 +71,10 @@
                                 <template is="dom-repeat" items="{{data.choice}}">
                                     <tr>
                                         <td style="text-align: right;">
-                                            <paper-radio-button checked="{{item.checked}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
+                                            <paper-radio-button checked="{{item.check}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
                                         </td>
                                         <td>
-                                            <gl-form-input placeholder="ตัวเลือกที่ [[cont(index)]]" no-label-float value="{{item.choice}}"></gl-form-input>
+                                            <gl-form-input placeholder="ตัวเลือกที่ [[cont(index)]]" no-label-float value="{{item.name}}"></gl-form-input>
                                             <show-image image-id="[[item.image_id]]"></show-image>
                                         </td>
                                         <td style="width:20%;text-align: center;">
@@ -122,6 +120,20 @@
                 subModule:{
                     statePath: 'commonSystem.subModule'
                 },
+                data:{
+                    statePath: function(state){
+
+                        if(typeof state.question.dataSelect.tags!="undefined"){
+                            var tag = state.question.dataSelect.tags;
+                            tag = tag.map(function(row){
+                                return {id:row}
+                            });
+                            state.question.dataSelect.tags = tag;
+                        }
+                        
+                        return state.question.dataSelect
+                    }
+                },
                 difficultyIndex:{
                     statePath:'commonSystem.difficultyIndex'
                 }
@@ -131,8 +143,8 @@
             },
             addChoice:function(){
                 this.push('data.choice',{
-                    checked:false,
-                    choice:'',
+                    check:false,
+                    name:'',
                     image_id:''
                 })
             },
@@ -140,42 +152,16 @@
                 this.splice('data.choice',e.target.index,1);
             },
             getForm:function(){
-
-                var data = JSON.parse(JSON.stringify(this.data));
-                var answer;
-                
-                this.data.choice.map((row,i)=>{
-                    if(row.checked) 
-                    answer = i;
-                });
-
-                data.answer = answer;
-                if(this.status == 'add') {
-                    this.fire('toast',{status:'load'});
-                    this.dispatchAction('QUESTION_INSERT',data)
-                    .then(()=>{
-                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                            callback:()=>{
-                                this.fire('close');
-                            }
-                        });
-                    
-                    });
+                this.data.module = this.module;
+                this.data.tags = this.data.tags.map((item)=>{
+                    return item.id;
+                })
+                if(typeof this.data.id != 'undefined'){
+                     this.dispatchAction('QUESTION_UPDATE',this.data)
                 }
-                else if(this.status =='update'){
-                    data.id = this.data.id;
-                    this.fire('toast',{status:'load'});
-                    this.dispatchAction('QUESTION_UPDATE',data)
-                    .then(()=>{
-                    this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
-                        callback:()=>{
-                            this.fire('close');
-                        }
-                        });
-                    });
-                    console.log(data)
-                }
-               
+                else{
+                     this.dispatchAction('QUESTION_INSERT',this.data)
+                }     
             },
             confirmDel:function(){
                 // console.log('1234');
@@ -187,15 +173,8 @@
             },
             delData:function(result){
                 if(result == true){
-                    this.fire('toast',{status:'load'});
                     this.dispatchAction('QUESTION_DELETE',this.data.id)
-                    .then(()=>{
-                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
-                        callback:()=>{
-                            this.fire('close');
-                        }
-                        });
-                    });
+                    this.fire('close');
                 }
             },
             selectRadio:function(e){
@@ -203,9 +182,9 @@
                 if(typeof this.data.choice!=="undefined"){
                     this.data.choice.map((row,i)=>{
                         if(i===e.currentTarget.index){
-                            this.set('data.choice.'+i+'.checked',true)
+                            this.set('data.choice.'+i+'.check',true)
                         }else{
-                            this.set('data.choice.'+i+'.checked',false)
+                            this.set('data.choice.'+i+'.check',false)
                         }
                     })
                 }

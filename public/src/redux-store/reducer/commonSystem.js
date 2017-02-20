@@ -6,15 +6,15 @@ const initialState = {
     subModule:[],
     difficultyIndex:[
         {
-            id:'1',
+            id:1,
             label:'ง่าย'
         },
         {
-            id:'2',
+            id:2,
             label:'ปานกลาง'
         },
         {
-            id:'3',
+            id:3,
             label:'ยาก'
         }
     ] 
