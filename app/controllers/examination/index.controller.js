@@ -18,7 +18,7 @@ class index{
 */
     select_examination(req,res){
         var r = req.r;
-        var params = req.params;
+        var params = req.query;
 
         r.db('lms').table('examination').getAll(params.module, {index:'module'}).orderBy('time_insert')
         .run()
