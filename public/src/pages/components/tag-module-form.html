@@ -38,11 +38,17 @@
             properties:{
                 value:{
                     value:[],
-                    notify:true
+                    notify:true,
+                    observer:'obValue'
                 },
                 label:{
                     type:String,
                     value: 'label'
+                }
+            },
+            obValue:function(n){
+                if(typeof n == "undefined"){
+                    this.value = [];
                 }
             },
             mergeDel:function(val){
