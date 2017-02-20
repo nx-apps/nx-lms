@@ -83,7 +83,20 @@
                                 <td style="text-align: right;">
                                 </td>
                                 <td>
-                                    <gl-combo-box label="เลือก Module" always-float-label items="{{listTag}}" value="{{item.obj_tag}}"></gl-combo-box>
+                                    <div class="flex-horizontal-with-ratios">
+                                        <div class="flex4child">
+                                            <gl-combo-box style="width: 50%" label="เลือก Module" always-float-label items="{{listTag}}" value="{{item.obj_tag}}"></gl-combo-box>
+                                        </div>
+                                        <div class="flex2child">
+                                              <gl-combo-box label="ระดับความยาก" always-float-label items="{{listTag}}" value="{{item.obj_tag}}"></gl-combo-box>
+                                        </div>
+                                    </div>
+                                    <!--<span>
+                                   
+                                    </span>
+                                    <span>
+                                    <gl-combo-box style="width: 50%" label="เลือก Module" always-float-label items="{{listTag}}" value="{{item.obj_tag}}"></gl-combo-box>
+                                    </span>-->
                                     <!--<paper-tags-input label="" placeholder="ป้อน Tag ที่ต้องการ จากนั้นกดปุ่ม Enter" tags="{{item.obj_tag}}"></paper-tags-input>-->
                                 </td>
                                 <td style="width:10%;text-align: center;">

@@ -1,5 +1,5 @@
 ้<link rel="import" href="./components/examination-list.html">
-<!--<link rel="import" href="./components/examination-manage.html">-->
+<link rel="import" href="./components/examination-manage.html">
 <link rel="import" href="./components/examination-page.html">
 
 <dom-module id="page-examination">
@@ -19,38 +19,22 @@
                 height: auto;
             }
         </style>
-        
-        <div class="xcontainer">
-            <div class="header gl-large">
-                <div class="container flex-equal-justified">
-                    <div class="header gl-large">จัดการชุดข้อสอบ</div>
-                    <div style="padding: 0px 20px 0px 0px">
-                        <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" item-label-path="" item-value-path="" value="{{moduleSelect}}">
-                            <paper-icon-button icon="remove-circle" class="clear-button"></paper-icon-button>
-                        </gl-combo-box>
-                    </div>   
-                </div>
+         <div class="xcontainer">
+            <div class="container flex-equal-justified">
+                <div class="header gl-large">จัดการชุดข้อสอบ</div>
+                <div style="padding: 0px 20px 0px 0px">
+                    <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" item-label-path="" item-value-path="" value="{{moduleSelect}}">
+                    </gl-combo-box>
+                </div>   
             </div>
+        </div>
+        <div class="xcontainer">
             <examination-list data-list="[[dataList]]" type-list="examination"></examination-list>
             <panel-right title="จัดการชุดข้อสอบ">
-                <examination-page selected="0" data="[[data]]"></examination-page>
-                <!--<examination-manage data="[[data]]"></examination-manage>-->
+               <examination-manage data="{{data}}"></examination-manage>
             </panel-right>
         </div>
          <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
-        <!--<paper-dialog id="modal" modal>
-            <div class="container">
-                <div class="gl-default fontCSC">เข้าสู่ระบบ</div>
-                <gl-form-input label="Username" value=""></gl-form-input>
-                <gl-form-input label="Password" type="password" value=""></gl-form-input>
-                
-            </div>
-            <div class="buttons">
-                <paper-button class="gl-btn-success" on-tap="openNewPage" dialog-confirm autofocus>login</paper-button>
-                <paper-button class="gl-btn-danger" dialog-confirm autofocus>close</paper-button>
-            </div>
-        </paper-dialog>-->
-         <!--<paper-fab class="fabSave" icon="icons:save" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>-->
     </template>
     <script>
         Polymer({
