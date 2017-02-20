@@ -10,11 +10,11 @@ class index{
         var r = req.r;
         var params = req.query;
         
-        r.db('lms').table('question')
-        .getAll('*'+params.module,{index:'tag'})
-        .filter({user_id:params.user_id})
-        .without('choice','answer','user_id')
-        .orderBy('time_insert')
+        r.db('lms').table('question').getAll(params.module, {index:'module'})
+        //.getAll('*'+params.module,{index:'tag'})
+        //.filter({user_id:params.user_id})
+        //.without('choice','answer','user_id')
+        //.orderBy('time_insert')
         .run()
         .then(function(result){
             res.json(result);
@@ -39,19 +39,30 @@ class index{
         
     }
 
+    select_sub(req,res){
+        var r = req.r;
+        var params = req.query;
+        
+        r.db('lms').table('question').filter({module:params.module}).concatMap(function(tags){
+            return tags('tags')
+        }).distinct()
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
     insert_question(req,res){
         var r = req.r;
         var params = req.body;
 
-        //r.db('lms').table('question').insert(params)
-        r.db('lms').table('question').insert({
-            answer:params.answer,
-            choice:params.choice,
-            tag:params.tag,
-            topic:params.topic,
-            user_id:params.user_id,
-            image_id:params.image_id,
-            time_insert:r.now()
+        r.expr(params).merge(function(){
+            return { time_insert:r.now() }
+        }).do(function(result){
+            return r.db('lms').table('question').insert(result)
         })
         .run()
         .then(function(result){
