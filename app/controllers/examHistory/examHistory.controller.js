@@ -73,8 +73,16 @@ class examHistory {
 select_ExamList(req,res){
     var r = req.r;
     var params = req.query;
-
-    r.db('lms').table('exam_room').getAll('test','dx',{index:'module'}).filter({enable:true})
+    
+    r.db('lms').table('user').filter({id:params.user_id})
+    .merge(function(x){return { result: [x('end_tags'),x('key_tags')]  }  })
+    .concatMap(function(xx){
+        return xx('result').concatMap(function(i){return i })
+    }).coerceTo('array').distinct()
+    
+    .do(function(x){
+        return r.db('lms').table('exam_room').getAll(r.args(x),{index:'module'}).filter({enable:true})
+    })
     .run()
     .then(function(result){
         res.json(result);
