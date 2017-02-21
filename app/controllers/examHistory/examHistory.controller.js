@@ -96,7 +96,7 @@ select_question(req,res){
     var r = req.r;
     var params = req.query;
 
-    r.db('lms').table('exam_room').filter({id:params.user_id})
+    r.db('lms').table('exam_room').filter({id:params.id})
     .innerJoin(r.db('lms').table('examination'), function(x,xx){
         return x('examination_id').eq(xx('id'))
     }).map(function(mr){
