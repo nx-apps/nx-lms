@@ -126,17 +126,22 @@
                 }
             },
             getForm:function(){
-                // this.data.end_tags = this.end_tags;
-                // this.data.key_tags = this.key_tags;
-                // this.data.password = this.password;
-                // console.log(this.data.id);
-                console.log(this.data);
-                // if(typeof this.data.id != 'undefined'){
-                //     this.dispatchAction('USER_MANAGE_UPDATE',this.data);
-                // }
-                // else{
-                //     this.dispatchAction('USER_MANAGE_INSERT',this.data);
-                // }
+                this.data.end_tags = this.data.end_tags.map((item)=>{
+                    return item.id;
+                })
+                this.data.key_tags = this.data.key_tags.map((item)=>{
+                    return item.id;
+                })
+                this.data.password = this.password;
+                if(this.data.admin != true){
+                    this.data.admin = false;
+                }
+                if(typeof this.data.id != 'undefined'){
+                    this.dispatchAction('USER_MANAGE_UPDATE',this.data);
+                }
+                else{
+                    this.dispatchAction('USER_MANAGE_INSERT',this.data);
+                }
                 // this.fire('close');
                 // console.log(this.data);
             }

@@ -18,7 +18,7 @@
             </div>
         </div>
         <panel-right title="สร้างห้องสอบ">
-            <examRoom-tabs></examRoom-tabs>
+            <examRoom-tabs module="{{moduleSelect}}"></examRoom-tabs>
         </panel-right>
         <paper-fab icon="add" on-tap="openPanelRight"></paper-fab>
     </template>
@@ -26,7 +26,7 @@
         Polymer({
             is: 'page-examRoom',
             observers:['getDataList(moduleSelect)'],
-            behaviors:[nylonBehavior,ReduxBehavior,examRoomAction,questionAction],
+            behaviors:[nylonBehavior,ReduxBehavior,examRoomAction],
             listeners:{
                 'open':'openPanelRight',
                 'close':'closePanelRight'
@@ -37,14 +37,19 @@
                 }
             },
             getDataList:function(module){
-                
+                console.log(module);
+                if(module != ''){
+                    this.dispatchAction('EXAMROOM_GET_EXAM_LIST',module);
+                    this.dispatchAction('EXAMROOM_GET_EXIAMINATION_LIST',module);
+                }
+              
             },
             nylonPageActive:function(){
                 // this.dispatchAction('USER_MANAGE_SELECT_LIST');
                 this.dispatchAction('COMMON_MODULE');
             },
             openPanelRight:function(){
-                // this.EXAMROOM_CLEAR_DATA();
+                this.EXAMROOM_CLEAR_DATA();
                 // this.EXAMINATION_GET_TAG_LIST();
                 this.$$('panel-right').open();
             },

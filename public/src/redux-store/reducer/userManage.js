@@ -44,6 +44,12 @@ export function userManageAction(store){
                 .then((response)=>{
                     this.USER_MANAGE_CLEAR_LIST();
                     console.log(response.data);
+                    response.data.end_tags = response.data.end_tags.map((item)=>{
+                        return {id:item}
+                    })
+                     response.data.key_tags = response.data.key_tags.map((item)=>{
+                        return {id:item}
+                    })
                     store.dispatch({type:'USER_MANAGE_SELECT_LIST',payload:response.data});
                 })
                 .catch((error)=>{

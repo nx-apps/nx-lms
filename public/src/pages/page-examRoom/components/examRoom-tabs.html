@@ -21,7 +21,7 @@
             </paper-tabs>
         </paper-material>
             <iron-pages selected="{{selected}}">
-                <section><examRoom-manage></examRoom-manage></section>
+                <section><examRoom-manage module="[[module]]"></examRoom-manage></section>
                 <section>
                    <student-list data="{{studenList}}" active="view" status="[[status]]"></student-list>
                 </section>
@@ -51,7 +51,7 @@
             },
             selectList:function(){
                 if(typeof this.selectData.id != 'undefined'){
-                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',this.selectData.id);
+                    // this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',this.selectData.id);
                 }
             },
             getStudentList:function(){

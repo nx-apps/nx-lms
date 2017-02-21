@@ -21,10 +21,10 @@
                 </thead>
                 <tbody>
                     
-                    <template is="dom-repeat" items="[[examRoomList]]">
+                    <template is="dom-repeat" items="[[examList]]">
                         <tr on-tap="selectedData" item="[[item.id]]">
                             <td>[[count(index)]]</td>
-                            <td>[[item.name]]</td>
+                            <td>[[item.name_room]]</td>
                         </tr>
                     </template>
                 </tbody>
@@ -34,14 +34,14 @@
     <script>
         Polymer({
             is: 'examRoom-list',
-            behaviors: [ReduxBehavior,dispatchActionBehavior],
+            behaviors: [ReduxBehavior],
             properties:{
-                examRoomList:{
-                    statePath:'examRoom.examRoomList'
+                examList:{
+                    statePath:'examRoom.examList'
                 }
             },
             ready:function(){
-                this.dispatchAction('EXAMROOM_GET_EXAMROOM');
+                // this.dispatchAction('EXAMROOM_GET_EXAMROOM');
             },
             count:function(index){
                 return index+1;

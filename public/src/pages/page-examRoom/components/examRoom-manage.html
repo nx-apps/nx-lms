@@ -23,7 +23,7 @@
                             ชื่อห้องสอบ 
                         </div>
                         <div class="flex3child" style="text-align: left">
-                            <gl-form-input class"width" value="{{data.name}}" no-label-float></gl-form-input>
+                            <gl-form-input class"width" value="{{data.name_room}}" no-label-float></gl-form-input>
                         </div>
                         <div class="flexchild"></div>
                     </div>
@@ -33,7 +33,7 @@
                             เลือกข้อสอบ
                         </div>
                         <div class="flex3child" style="text-align: left">
-                            <gl-combo-box class"width" no-label-float items="[[examList]]" item-label-path="ex_name" item-value-path="id" value="{{data.examination_id}}"></gl-combo-box>
+                            <gl-combo-box class"width" no-label-float items="[[examination_list]]" item-label-path="name_examination" item-value-path="id" value="{{data.examination_id}}"></gl-combo-box>
                         </div>
                         <div class="flexchild"></div>
                     </div>
@@ -42,7 +42,7 @@
                         <div class="flexchild fontCSC margin">
                             Module 
                         </div>
-                        <div class="flex3child" style="text-align: left">
+                        <div class="flex3child fontCSC margin" style="text-align: left;">
                             [[module]]
                             <!--<gl-combo-box  no-label-float items="{{newTag}}" value="{{data.tag}}"></gl-combo-box>-->
                         </div>
@@ -90,8 +90,8 @@
                 user:{
                     statePath:'auth.user'
                 },
-                examList:{
-                    statePath:'examRoom.examList'
+                examination_list:{
+                    statePath:'examRoom.examination_list'
                 },
                 studentList:{
                     statePath:'examRoom.studentList'
@@ -145,7 +145,7 @@
                 }
             },
             getExamList:function(id){
-                this.dispatchAction('EXAMROOM_GET_EXAM_LIST',this.user.id);
+                // this.dispatchAction('EXAMROOM_GET_EXAM_LIST',this.user.id);
             },
             confirmDelete:function(){
                 this.fire('toast',{ 
@@ -157,26 +157,29 @@
             _deleteData:function(check){
                 if(check == true){
                     this.dispatchAction('EXAMROOM_DELETE_DATA',this.data.id);
+                    this.fire('close');
                 }
             },
             getForm:function(){
-                this.data.user_id = this.user.id;
-                this.data.enable =  this.$$('paper-checkbox').checked;
-                this.data.time = parseInt(this.data.time);
-                this.data.learner = this.studentList.map((item)=>{
-                    return item.id;
-                })
-                if(!this.data.id){
-                    // console.log(this.data);
-                     this.dispatchAction('EXAMROOM_INSERT_DATA',this.data);
+                this.data.module = this.module;
+                console.log(this.data.id);
+                if(typeof this.data.id != 'undefined'){
+                    this.dispatchAction('EXAMROOM_UPDATE_DATA',this.data);
                 }
                 else{
-                    var {name,examination_id,time,enable,learner,user_id,id} = this.data;
-                    var newData = {name,examination_id,time,enable,learner,user_id,id}
-                    console.log(newData)
-                    this.dispatchAction('EXAMROOM_UPDATE_DATA',newData);
-                    this.fire('close');
+                    this.dispatchAction('EXAMROOM_INSERT_DATA',this.data);
                 }
+                // if(!this.data.id){
+                //     // console.log(this.data);
+                //      this.dispatchAction('EXAMROOM_INSERT_DATA',this.data);
+                // }
+                // else{
+                //     var {name,examination_id,time,enable,learner,user_id,id} = this.data;
+                //     var newData = {name,examination_id,time,enable,learner,user_id,id}
+                //     console.log(newData)
+                //     this.dispatchAction('EXAMROOM_UPDATE_DATA',newData);
+                //     this.fire('close');
+                // }
                
             }
         });
