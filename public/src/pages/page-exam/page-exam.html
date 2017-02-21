@@ -25,10 +25,10 @@
                     </thead>
                  </table>
             </paper-material>
-             <iron-pages selected="0">
+             <iron-pages selected="[[selected]]">
             <template is="dom-repeat" items="[[dataList.question]]">
                 <section>              
-                    <exam-list data="[[item]]" index="[[cont(index)]]"></exam-list>
+                    <exam-list selected="[[selected]]" count="[[dataList.question.length]]" data="[[item]]" index="[[cont(index)]]"></exam-list>
                 </section>  
             </template>
              </iron-pages>
@@ -48,6 +48,10 @@
                 dataList:{
                     statePath:'examHistory.examSelect',
                     observer:'getData'
+                },
+                selected:{
+                    type:String,
+                    value:'0'
                 }
                 // user:{
                 //     statePath:'auth.user'

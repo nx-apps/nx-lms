@@ -3,7 +3,7 @@
 
 <dom-module id="exam-list">
     <template>
-        <style include="page-style">
+        <style include="page-style flex-style">
             paper-radio-button{
                 --paper-radio-button-size:22px;
             }
@@ -19,6 +19,9 @@
                             <br>
                              <show-image image-id="[[data.image_id]]"></show-image>
                         </th>
+                        <th style="width: 10%">
+                            [[index]]/[[count]]
+                        </th>
                     </tr>
                 </thead>
                 <tbody>   
@@ -32,13 +35,28 @@
                                 <br> 
                                 <show-image image-id="[[item.image_id]]"></show-image>
                             </td>
+                            <td>
+
+                            </td>
                         </tr>
                     </template>
                 </tbody>
-            </table>   
-            <paper-button on-tap="next" raised>ต่อไป</paper-button>
-            <paper-button on-tap="previous" raised>ย้อนกลับ</paper-button>
-        </paper-material>
+            </table> 
+             </paper-material>
+            
+            <template is="dom-if" if="[[checklength(count)]]">
+            
+            <div class="flex-equal-justified" style="margin-top: 10px">
+                <div>
+                    <paper-button class="gl-btn-primary" on-tap="previous">ย้อนกลับ</paper-button>
+                </div>
+                <div>
+                    <paper-button class="gl-btn-primary" on-tap="next">ต่อไป</paper-button>
+                </div>
+            </div>  
+            </template>
+           
+       
     </template>
     <script>
         Polymer({
@@ -47,6 +65,13 @@
                 // this.data.choice.map((item,i)=>{
                 //     this.set('data.choice.'+i+'.checked',false);
                 // }); 
+            },
+            checklength:function(length){
+                if(length == '1'){
+                    return false;
+                }else {
+                    return true;
+                }
             },
             next:function(){
                 this.fire('next');
