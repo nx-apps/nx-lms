@@ -96,9 +96,11 @@ select_ExamList(req,res){
         }) 
     })
 
-    .innerJoin(r.db('lms').table('tag'), function(x,xx){
-      return x('module').eq(xx('id'))
-    }).without({right:['id']}).zip()
+    .merge(function(result){
+      return {
+        tags:[ r.db('lms').table('tag').get(result('module')) ]
+      }
+    })
 
     .run()
     .then(function(result){
@@ -166,12 +168,14 @@ getHistoryList(req,res){
             return x('exam_room_id').eq(xx('id'))
         }).map(function(result){
             return result('left').merge(function(name){
-            return  {name_room: result('right')('name_room') }
+            return  {name_room: result('right')('name_room'), module:result('right')('module') }
         })
         })
-        .innerJoin(r.db('lms').table('tag'), function(x,xx){
-            return x('module').eq(xx('id'))
-        }).without({right:['id']}).zip()
+        .merge(function(result){
+        return {
+            tags:[ r.db('lms').table('tag').get(result('module')) ]
+        }
+        })
 
         .run()
         .then(function(result){
