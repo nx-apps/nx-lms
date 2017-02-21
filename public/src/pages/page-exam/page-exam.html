@@ -38,7 +38,7 @@
     <script>
         Polymer({
             is: 'page-exam',
-            behaviors:[ReduxBehavior,examHistoryAction,examAction],
+            behaviors:[nylonBehavior,ReduxBehavior,examHistoryAction,examAction],
             observers:['getTest(getParam.id)'],
             listeners:{
                 'next':'nextIron',
