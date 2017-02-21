@@ -89,9 +89,10 @@ export function examinationAction(store){
             })
         },
         EXAMINATION_RANDOM:function(data){
+             console.log(JSON.stringify(data));
             axios.post('./examination/examination_random',data)
             .then((response)=>{
-                console.log(JSON.stringify(response.data));
+               
                 store.dispatch({type:'EXAMINATION_RANDOM',payload:response.data});
             })
             .catch((error)=>{
@@ -102,6 +103,7 @@ export function examinationAction(store){
         },
         EXAMINATION_INSERT:function(data){
             data.user_id = store.getState().auth.user.id;
+            // console.log(data);
             axios.post('./examination/examination',data)
             .then((response)=>{
                 // console.log('success!!');

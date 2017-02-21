@@ -41,15 +41,15 @@ export function examHistoryAction(store){
             },
             EXAM_HISTORY_EXAM_LIST_SELECT:function(id){
                 console.log(id);
-                axios.get('./test_exam/test_exam?id='+id)
-                .then((response)=>{
-                    console.log(response.data);
-                    store.dispatch({type:'EXAM_HISTORY_EXAM_LIST_SELECT',payload:response.data})
-                })
-                .catch((error)=>{
-                    console.log('error');
-                    console.log(error);
-                });
+                // axios.get('./test_exam/test_exam?id='+id)
+                // .then((response)=>{
+                //     console.log(response.data);
+                //     store.dispatch({type:'EXAM_HISTORY_EXAM_LIST_SELECT',payload:response.data})
+                // })
+                // .catch((error)=>{
+                //     console.log('error');
+                //     console.log(error);
+                // });
             },
             EXAM_HISTORY_EXAM_LIST_COMPLETE:function(){
                 var id = store.getState().auth.user.id;
