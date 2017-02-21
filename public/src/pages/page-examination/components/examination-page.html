@@ -36,19 +36,19 @@
         </paper-material>
         <iron-pages selected="{{selected}}">
             <section>
-                <examination-manage module="{{module}}"></examination-manage>
+                <examination-manage data="[[data]]" module="{{module}}"></examination-manage>
             </section>
             <section>
                 <examination-random-list></examination-random-list>
                 <!--<examination-list type-list="question" data-list="[[data.question]]" obj="[[data.obj]]"></examination-list>-->
             </section>
         </iron-pages>
-        <div class="flex-end-justified">
+        <!--<div class="flex-end-justified">
             <template is="dom-if" if="[[data.id]]">
                 <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
             </template>
             <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
-        </div>
+        </div>-->
     </template>
     <script>
         Polymer({

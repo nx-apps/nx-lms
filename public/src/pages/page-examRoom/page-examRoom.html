@@ -25,6 +25,7 @@
     <script>
         Polymer({
             is: 'page-examRoom',
+            observers:['getDataList(moduleSelect)'],
             behaviors:[nylonBehavior,ReduxBehavior,examRoomAction,questionAction],
             listeners:{
                 'open':'openPanelRight',
@@ -35,8 +36,11 @@
                     statePath:'commonSystem.module'
                 }
             },
+            getDataList:function(module){
+                
+            },
             nylonPageActive:function(){
-                this.dispatchAction('USER_MANAGE_SELECT_LIST');
+                // this.dispatchAction('USER_MANAGE_SELECT_LIST');
                 this.dispatchAction('COMMON_MODULE');
             },
             openPanelRight:function(){

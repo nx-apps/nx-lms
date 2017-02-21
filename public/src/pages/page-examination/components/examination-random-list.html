@@ -27,11 +27,12 @@
                             <template is="dom-repeat" items="[[dataList]]">
                                     <tr on-tap="selectList" item="[[item]]" examination-id="[[item.id]]">
                                         <td>
-                                            <div>[[toIndex(index)]]</div>
+                                            <div>[[count(index)]]</div>
                                         </td>
                                         <td>
-                                            [[item.name_examination]]
+                                            [[item.question]]
                                         </td>
+                                        <td></td>
                                     </tr>
                             </template>
                         </tbody>
@@ -51,6 +52,9 @@
             },
             random:function(){
                 this.fire('click-tab');
+            },
+            count:function(index){
+                return index+1;
             }
         });
     </script>

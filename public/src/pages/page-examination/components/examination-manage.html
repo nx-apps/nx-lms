@@ -183,12 +183,16 @@
                 return index+1;
             },
             addChoice:function(){
+                if(typeof this.data.objective == 'undefined'){
+                    this.data = {
+                        objective:[]
+                    }
+                }
                 this.push('data.objective',{
                     name:"",
                     amount:0,
                     sub_module:[],
                     dificalty_index:1,
-
                 })
             },
             delChoice:function(e){
@@ -211,13 +215,13 @@
                     })
                     return item;
                 })
-                console.log(this.data);
-                
+                // console.log(this.data);
                 if(typeof this.data.id != 'undefined'){
+                    //   console.log(this.data);
                     this.dispatchAction('EXAMINATION_UPDATE',this.data);
                 }
                 else{
-                    this.dispatchAction('EXAMINATION_INSERT',this.data);
+                    // this.dispatchAction('EXAMINATION_INSERT',this.data);
                 }
                     
             },
