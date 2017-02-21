@@ -5,6 +5,7 @@ class index{
         var params = req.body;
 
         r.expr(params)
+ /*
         .merge(function(x){
         return {
             count_question:x('question').count(),
@@ -16,7 +17,104 @@ class index{
         .do(function(result){
             return r.db('lms').table('exam_answer').insert(result)
         })
+*/
+  .merge(function(xxx){
+    
+    return { 
+      
+      x:xxx('question').merge(function(m){
+     return {
+      choiceQuiz : r.db('lms').table('question').get(m('id')).getField('choice')
+     }
+   })
+   .merge(function(m){
+     return {
+       aquizTrue : m('choiceQuiz').filter(function(ff){
+         return ff('check').eq(true)
+       })(0),
+       ansTrue:m('choice').filter(function(ff){
+         return ff('answer').eq(true)
+       })(0)
+     }
+   })
+   .merge(function(m){
+     return {
+       ascore : r.branch(m('aquizTrue')('name').eq(m('ansTrue')('name')),1,0),
+       aXscore : r.branch(m('aquizTrue')('name').ne(m('ansTrue')('name')),1,0)
+     }
+   })
+   .group(function(g){
+     return g.pluck('id','ascore','aXscore')
+   })
+   .ungroup()
+   .map(function(mm){
+     return mm('group')
+   })
+      
+    }
+      
+  })
+  
+  .merge(function(a){
+    return { score:a('x').sum('ascore'),count_question:a('question').count()  }
+  }) .without('x')
+  
+  .do(function(result){
+    return r.db('lms').table('exam_answer').insert(result)
+  })
+  
+  .do(function(aa){
+    return r.db('lms').table('exam_answer').filter({id:aa('generated_keys')(0)})
+  })
+  
+  
+ .merge(function(xxx){
+   return xxx('question')
+     
+     
+     
+  .merge(function(m){
+     return {
+      choiceQuiz : r.db('lms').table('question').get(m('id')).getField('choice')
+     }
+   })
+   .merge(function(m){
+     return {
+       aquizTrue : m('choiceQuiz').filter(function(ff){
+         return ff('check').eq(true)
+       })(0),
+       ansTrue:m('choice').filter(function(ff){
+         return ff('answer').eq(true)
+       })(0)
+     }
+   })
+   .merge(function(m){
+     return {
+       ascore : r.branch(m('aquizTrue')('name').eq(m('ansTrue')('name')),1,0),
+       aXscore : r.branch(m('aquizTrue')('name').ne(m('ansTrue')('name')),1,0)
+     }
+   })
+   .group(function(g){
+     return g.pluck('id','ascore','aXscore')
+   })
+   .ungroup()
+   .map(function(mm){
+     return mm('group')
+   })
+ 
+  .forEach(function(ff){
+     return r.db('lms').table('question').get(ff('id'))
+  .do(function(dooo){
+    return r.db('lms').table('question').get(ff('id')).update({
+      correct:dooo('correct').add(ff('ascore')),
+      incorrect:dooo('incorrect').add(ff('aXscore'))
+    })
+  })
 
+ })            
+
+  })
+  
         .run()
         .then(function(result){
             res.json(result);
