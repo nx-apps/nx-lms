@@ -31,7 +31,7 @@ export function authAction(store){
                 axios.post('./auth/login',{username:formLogin.user,password:formLogin.pass})
                 .then((response)=>{
 
-
+                   
                     localStorage.setItem("token",response.data.token);
                     store.dispatch({type:'AUTH_SET_USER',payload:response.data})
 
@@ -41,7 +41,7 @@ export function authAction(store){
                     }else{
                         userInfo = response.data;
                     }
-
+                    console.log(userInfo);
                     if(userInfo.role=="teacher"){
                         this.fire('nylon-change-page',{path:'/examRoom'})
                     }else{
