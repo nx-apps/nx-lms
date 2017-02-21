@@ -96,6 +96,10 @@ select_ExamList(req,res){
         }) 
     })
 
+    .innerJoin(r.db('lms').table('tag'), function(x,xx){
+      return x('module').eq(xx('id'))
+    }).without({right:['id']}).zip()
+
     .run()
     .then(function(result){
         res.json(result);
@@ -165,6 +169,9 @@ getHistoryList(req,res){
             return  {name_room: result('right')('name_room') }
         })
         })
+        .innerJoin(r.db('lms').table('tag'), function(x,xx){
+            return x('module').eq(xx('id'))
+        }).without({right:['id']}).zip()
 
         .run()
         .then(function(result){
