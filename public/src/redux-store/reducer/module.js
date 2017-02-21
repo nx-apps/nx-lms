@@ -42,7 +42,9 @@ export function moduleAction(store){
             },
             MODULE_UPDATE:function(data){
                 delete data.edit;
+                // console.log(data);
                 axios.put('/tag/tag',data).then(res=>{
+                    // console.log(res.data);
                     this.MODULE_LIST();
                 }).catch(err=>{
                     cosole.log(err);

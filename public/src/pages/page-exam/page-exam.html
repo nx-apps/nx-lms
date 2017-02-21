@@ -25,11 +25,13 @@
                     </thead>
                  </table>
             </paper-material>
+             <iron-pages selected="0">
             <template is="dom-repeat" items="[[dataList.question]]">
-                <exam-list data="[[item]]" index="[[cont(index)]]"></exam-list>
-                
+                <section>              
+                    <exam-list data="[[item]]" index="[[cont(index)]]"></exam-list>
+                </section>  
             </template>
-            
+             </iron-pages>
         </div>
          <paper-fab icon="icons:send" title="ส่งข้อสอบ" on-tap="confirmToast"></paper-fab>
     </template>
@@ -38,6 +40,10 @@
             is: 'page-exam',
             behaviors:[ReduxBehavior,examHistoryAction,examAction],
             observers:['getTest(getParam.id)'],
+            listeners:{
+                'next':'nextIron',
+                'previous':'previousIron'
+            },
             properties:{
                 dataList:{
                     statePath:'examHistory.examSelect',
@@ -46,6 +52,12 @@
                 // user:{
                 //     statePath:'auth.user'
                 // }
+            },
+            nextIron:function(){
+                this.$$('iron-pages').selectNext();
+            },
+            previousIron:function(){
+                 this.$$('iron-pages').selectPrevious();
             },
             getTest:function(id){
                 if(this.getParam.page=="exam"){

@@ -35,7 +35,9 @@
                         </tr>
                     </template>
                 </tbody>
-            </table>
+            </table>   
+            <paper-button on-tap="next" raised>ต่อไป</paper-button>
+            <paper-button on-tap="previous" raised>ย้อนกลับ</paper-button>
         </paper-material>
     </template>
     <script>
@@ -45,6 +47,12 @@
                 // this.data.choice.map((item,i)=>{
                 //     this.set('data.choice.'+i+'.checked',false);
                 // }); 
+            },
+            next:function(){
+                this.fire('next');
+            },
+            previous:function(){
+                this.fire('previous');  
             },
             selectRadio:function(e){
                 if(typeof this.data.choice !=="undefined"){
