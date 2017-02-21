@@ -100,20 +100,25 @@ select_question(req,res){
     .innerJoin(r.db('lms').table('examination'), function(x,xx){
         return x('examination_id').eq(xx('id'))
     }).map(function(mr){
-        return mr('right')
+        return mr('right').merge(function(data){
+          return {
+            name_room:mr('left')('name_room'),
+            room_id:mr('left')('id')
+          }
+        })
     }).coerceTo('array')(0)
     
     .do(function(x){
-    return {
-        name_examination:x('name_examination'),
-        name_room:x('name_room'),
-        description:x('description'),
-        question :x('objective')
-        .concatMap(function(row){
-            return r.db('lms').table('question').getAll(r.args(row('sub_module')), {index: "tags"})
-            .filter({dificalty_index:row('dificalty_index')}).sample(row('amount'))
-        })
-        }
+        return {
+            name_examination:x('name_examination'),
+            name_room:x('name_room'),
+            description:x('description'),
+            question :x('objective')
+            .concatMap(function(row){
+                return r.db('lms').table('question').getAll(r.args(row('sub_module')), {index: "tags"})
+                .filter({dificalty_index:row('dificalty_index')}).sample(row('amount'))
+            })
+            }
     })
         
     .run()
