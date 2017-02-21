@@ -81,15 +81,15 @@ export function examRoomAction(store){
                 store.dispatch({type:'EXAMROOM_CLEAR_STUDENT_LIST'});
             },
             EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM:function(id){
-                // axios.get('./examRoom/learnerTestList?id='+id)
-                // .then((response)=>{
-                //     // console.log(response.data);
-                //     store.dispatch({type:'EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',payload:response.data});
-                // })
-                // .catch((error)=>{
-                //     console.log('error');
-                //     console.log(error);
-                // });
+                axios.get('./examRoom/student?id='+id)
+                .then((response)=>{
+                    // console.log(response.data);
+                    store.dispatch({type:'EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',payload:response.data});
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
             },
             EXAMROOM_GET_EXAMROOM:function(){
                 var user_id = store.getState().auth.user.id;

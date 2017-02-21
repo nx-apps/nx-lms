@@ -51,7 +51,8 @@
             },
             selectList:function(){
                 if(typeof this.selectData.id != 'undefined'){
-                    // this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',this.selectData.id);
+                    console.log(this.selectData.id);
+                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',this.selectData.id);
                 }
             },
             getStudentList:function(){
