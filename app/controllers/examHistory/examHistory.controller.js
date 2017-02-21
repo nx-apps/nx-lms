@@ -1,3 +1,10 @@
+const auth = require('../auth');
+
+auth.userInfo(req).then(user=>{
+      console.log(user.role);
+ }).catch(err=>{
+       res.json(err);
+ })
 
 class examHistory {
 /*
@@ -160,6 +167,7 @@ select_question(req,res){
 }
 
 getHistoryList(req,res){
+
         var r = req.r;
         var params = req.query;
 
@@ -168,13 +176,13 @@ getHistoryList(req,res){
             return x('exam_room_id').eq(xx('id'))
         }).map(function(result){
             return result('left').merge(function(name){
-            return  {name_room: result('right')('name_room'), module:result('right')('module') }
+            return  {name_room: result('right')('name_room'), module:result('right')('module'), setting:result('right')('setting') }
         })
         })
         .merge(function(result){
-        return {
-            tags:[ r.db('lms').table('tag').get(result('module')) ]
-        }
+            return {
+                tags:[ r.db('lms').table('tag').get(result('module')) ]
+            }
         })
 
         .run()
