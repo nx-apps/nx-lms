@@ -140,6 +140,32 @@ select_question(req,res){
     }) 
 }
 
+
+getHistoryList(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_answer').filter({user_id:params.user_id})
+        .innerJoin(r.db('lms').table('exam_room'), function(x,xx){
+            return x('exam_room_id').eq(xx('id'))
+        }).map(function(result){
+            return result('left').merge(function(name){
+            return  {name_room: result('right')('name_room') }
+        })
+        })
+
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+
+
+        
+    }
+
 }
 
 module.exports = new examHistory();
