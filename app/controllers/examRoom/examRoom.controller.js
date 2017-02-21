@@ -1,6 +1,6 @@
 
 class examRoom {
-
+/*
     getExaminationList(req,res){
         var r = req.r;
         var params = req.query;
@@ -18,8 +18,8 @@ class examRoom {
         })
         
     }
-
-
+*/
+/*
     getLearnerList(req,res){
         var r = req.r;
         var params = req.query;
@@ -36,7 +36,8 @@ class examRoom {
         })
         
     }
-
+*/
+/*
     getExamRoomList(req,res){
         var r = req.r;
         var params = req.query;
@@ -52,7 +53,8 @@ class examRoom {
             res.status(500).json(err);
         })
     }
-
+*/
+/*
     selectExamRoom(req,res){
         var r = req.r;
         var params = req.query;
@@ -66,7 +68,8 @@ class examRoom {
             res.status(500).json(err);
         })
     }
-
+*/
+/*
     insertExamRoom(req,res){
         var r = req.r;
         var params = req.body;
@@ -84,9 +87,9 @@ class examRoom {
         .catch(function(err){
             res.status(500).json(err);
         })
-
     }
-
+*/
+/*
     updateExamRoom(req,res){
         var r = req.r;
         var params = req.body;
@@ -107,8 +110,8 @@ class examRoom {
             res.status(500).json(err);
         })
     }
-
-
+*/
+/*
     deleteExamRoom(req,res){
         var r = req.r;
         var params = req.query;
@@ -121,9 +124,9 @@ class examRoom {
         .catch(function(err){
             res.status(500).json(err);
         })
-
     }
-
+*/
+/*
     getLearnerTestList(req,res){
         var r = req.r;
         var params = req.query;
@@ -150,7 +153,8 @@ class examRoom {
         })
 
     }
-
+*/
+/*
     getUserModuleList(req,res){
         var r = req.r;
         var params = req.query;
@@ -162,11 +166,106 @@ class examRoom {
         })
         .catch(function(err){
             res.status(500).json(err);
+        })  
+    }
+*/
+
+    select_ExamRoom(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_room').getAll(params.module, {index:'module'}).orderBy('time_update')
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
+    insert_ExamRoom(req,res){
+        var r = req.r;
+        var params = req.body;
+        var time = new Date();
+
+        r.expr(params).merge(function(row){
+            return {time_create:time,time_update:time}
+        }).do(function(data){
+            return r.db('lms').table('exam_room').insert(data)
+        })
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
+    select_ExamRoom_only(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_room').get(params.id)
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
+    update_ExamRoom(req,res){
+        var r = req.r;
+        var params = req.body;
+        var time = new Date();
+
+        r.expr(params).merge(function(row){
+            return {time_update:time}
+        }).do(function(data){
+            return r.db('lms').table('exam_room').get(data('id'))
+            .update(data.without('id'))
+        })
+
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
+    delete_ExamRoom(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_room').get(params.id).delete()
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
+    select_Module(){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('examination').getAll(params.module, {index: "module"}).pluck('id','name_examination')
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
         })
         
     }
-
-
 }
 
 module.exports = new examRoom();

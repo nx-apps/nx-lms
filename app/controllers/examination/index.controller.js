@@ -1,21 +1,4 @@
 class index{
-/*
-    select_tagall(req,res){
-        var r = req.r;
-        var params = req.params;
-
-        r.db('lms').table('question').group('tag').ungroup().concatMap(function(x){
-            return x('group')
-        }).distinct()
-        .run()
-        .then(function(result){
-            res.json(result);
-        })
-        .catch(function(err){
-            res.status(500).json(err);
-        })
-    }
-*/
     select_examination(req,res){
         var r = req.r;
         var params = req.query;
@@ -100,16 +83,7 @@ class index{
     random_examination(req,res){
         var r = req.r;
         var params = req.body;
-/* 
-        r.expr(params).concatMap(function (row)  {
-            return r.db('lms').table('question').getAll(r.args(row('obj_tag')), {index: "tag"}).sample(row('obj_qty')).coerceTo('array')
-            .merge(function(id){
-                return row.pluck('obj_index')
-            })
-        })
-*/
-console.log(params)
-
+        
         r.expr(params).concatMap(function(row){
             return r.db('lms').table('question').getAll(r.args(row('sub_module')), {index: "tags"})
             .filter({dificalty_index:row('dificalty_index')}).sample(row('amount'))
