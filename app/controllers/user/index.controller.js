@@ -37,7 +37,7 @@ class index{
     insert_user(req,res){
         var r = req.r;
         var params = req.body;
-        console.log(params+"x1");
+     
         r.expr(params).merge(function(){
             return { password:sha1(params.password)}
         }).do(function(all){
@@ -55,8 +55,13 @@ class index{
     update_user(req,res){
         var r = req.r;
         var params = req.body;
-
-        r.db('lms').table('user').get(params.id).update(params)
+        
+        r.expr(params).merge(function(){
+            return { password:sha1(params.password)}
+        }).do(function(result){
+            r.db('lms').table('user').get(params.id).update(result)
+        })
+        
         .run()
         .then(function(result){
             res.json(result);
