@@ -45,7 +45,8 @@ export function examRoomAction(store){
                 .then((response)=>{
                     console.log('*',response.data);
                     this.fire('toast',{status:'success',
-                      callback:function(){
+                      callback:()=>{
+                          this.fire('close');
                       }
                      });
                     store.dispatch({type:'EXAMROOM_GET_EXAM_LIST',payload:response.data});
@@ -103,11 +104,19 @@ export function examRoomAction(store){
                 });
             },
             EXAMROOM_SELECT_DATA:function(id){
+                this.fire('toast',{status:'load'});
                 axios.get('./examRoom/examRoom_only?id='+id)
                 .then((response)=>{
-                    console.log('success!!');
-                    console.log(response.data);
-                    store.dispatch({type:'EXAMROOM_SELECT_DATA',payload:response.data});
+                    this.fire('toast',{status:'success',
+                      callback:()=>{
+                        this.fire('open');
+                        store.dispatch({type:'EXAMROOM_SELECT_DATA',payload:response.data});
+                      }
+                     });
+                    // console.log('success!!');
+                    // console.log(response.data);
+                  
+                     
                 })
                 .catch((error)=>{
                     console.log('error');
