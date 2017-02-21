@@ -120,7 +120,15 @@ select_question(req,res){
             })
             }
     })
-        
+
+    .merge(function(x){
+            return {
+                question:x('question').merge(function(ran){
+                    return {choice:ran('choice').sample(ran('choice').count())}
+                })
+            }
+    })
+
     .run()
     .then(function(result){
         res.json(result);
