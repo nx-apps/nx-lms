@@ -49,7 +49,7 @@ class index{
             return {time:n('right')('time'),description:n('right')('description'),name_examination:n('right')('name_examination')}
             })
         })
-        .pluck('name','score','time','name_examination','description','question')
+        .pluck('name','score','time','name_examination','description','question')(0)
 /*
         r.db('lms').table('exam_answer').filter({
             user_id:params.user_id,
