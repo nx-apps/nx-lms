@@ -18,7 +18,9 @@ export function examAction(store){
     return [
         commonAction(),{
             EXAM_INSERT_DATA:function(data){
+                console.log(JSON.stringify(data));
                 data.user_id = store.getState().auth.user.id;
+              
                 this.fire('toast',{status:'load'});
                 axios.post('./send_answer/send_answer',data)
                 .then((response)=>{
