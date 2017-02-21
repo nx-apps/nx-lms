@@ -54,7 +54,7 @@
     <script>
         Polymer({
             is: 'page-login',
-            behaviors: [ReduxBehavior,authAction],
+            behaviors: [nylonBehavior,ReduxBehavior,authAction],
             properties:{
                 formLogin:{
                     type:Object,
@@ -63,6 +63,10 @@
                         pass:'1234'
                     }
                 }
+            },
+            nylonPageActive:function(){
+                //this.nylonVisible(false);
+                //this.nylonVisible(true);
             },
             signin:function(){
                 this.AUTH_LOGIN(this.formLogin);

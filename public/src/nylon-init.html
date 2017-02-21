@@ -76,27 +76,73 @@
 			[hidden] {
 				display: none;
 			}
+
+			iron-pages>*{
+				display: none;
+			}
+
+			[nylon-show]{
+				display: block;
+				animation: fadein 0.5s;
+				-moz-animation: fadein 0.5s; 
+				-webkit-animation: fadein 0.5s; 
+				-o-animation: fadein 0.5s; 
+			}
+
+			@keyframes fadein {
+				from {
+					opacity:0;
+				}
+				to {
+					opacity:1;
+				}
+			}
+			@-moz-keyframes fadein { /* Firefox */
+				from {
+					opacity:0;
+				}
+				to {
+					opacity:1;
+				}
+			}
+			@-webkit-keyframes fadein { /* Safari and Chrome */
+				from {
+					opacity:0;
+				}
+				to {
+					opacity:1;
+				}
+			}
+			@-o-keyframes fadein { /* Opera */
+				from {
+					opacity:0;
+				}
+				to {
+					opacity: 1;
+				}
+			}
+
 		</style>
 		
 		<div class="middle" hidden$="[[!loader]]">
 			<div class="loader"></div>
 		</div>
 		<layout-main path="[[selected]]">
-			<iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="visible" on-pull-year="onPullYear">
+			<iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="visible">
 				
-				<page-examinationRoom path="examinationRoom" current-path="[[selected]]"></page-examinationRoom>
-				<page-question path="question" current-path="[[selected]]"></page-question>
-				<page-examination path="examination" current-path="[[selected]]"></page-examination>
-				<page-classRoom path="classRoom" current-path="[[selected]]"></page-classRoom>
-				<page-exam path="exam" current-path="[[selected]]"></page-exam>
-				<page-examRoom path="examRoom" current-path="[[selected]]"></page-examRoom>
-				<page-examHistory path="examHistory" current-path="[[selected]]"></page-examHistory>
-				<page-examResult path="examResult" current-path="[[selected]]"></page-examResult>
-				<page-userManage path="userManage" current-path="[[selected]]"></page-userManage>
-				<page-module path="module" current-path="[[selected]]"></page-module>
-				<!--<page-import path="import" current-path="[[selected]]"></page-import>-->
+				<page-examinationRoom path="examinationRoom"></page-examinationRoom>
+				<page-question path="question"></page-question>
+				<page-examination path="examination"></page-examination>
+				<page-classRoom path="classRoom"></page-classRoom>
+				<page-exam path="exam"></page-exam>
+				<page-examRoom path="examRoom"></page-examRoom>
+				<page-examHistory path="examHistory"></page-examHistory>
+				<page-examResult path="examResult"></page-examResult>
+				<page-userManage path="userManage"></page-userManage>
+				<page-module path="module"></page-module>
+				<!--<page-import path="import"></page-import>-->
 				<!-- // -->
-				<page-login path="login" current-path="[[selected]]"></page-login>
+				<page-login path="login"></page-login>
                 <page-401 path="401"></page-401> <!-- ยังไม่ login -->
                 <page-403 path="403"></page-403> <!-- ไม่มีสิทธิ -->
                 <page-404 path="404"></page-404> <!-- ไม่พบไฟล์ -->
