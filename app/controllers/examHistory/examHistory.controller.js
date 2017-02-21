@@ -103,7 +103,8 @@ select_question(req,res){
         return mr('right').merge(function(data){
           return {
             name_room:mr('left')('name_room'),
-            room_id:mr('left')('id')
+            room_id:mr('left')('id'),
+            examination_id:mr('left')('examination_id')
           }
         })
     }).coerceTo('array')(0)
@@ -111,6 +112,7 @@ select_question(req,res){
     .do(function(x){
         return {
             name_examination:x('name_examination'),
+            examination_id:x('examination_id'),
             name_room:x('name_room'),
             description:x('description'),
             question :x('objective')

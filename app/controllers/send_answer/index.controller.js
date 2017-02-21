@@ -9,7 +9,7 @@ class index{
         return {
             count_question:x('question').count(),
             score:x('question')('choice').count(function(sc){
-                return r.branch( sc.filter({ checked:true,answer:true }).count().eq(0), false, true )
+                return r.branch( sc.filter({ check:true,answer:true }).count().eq(0), false, true )
             })
             }
         })
