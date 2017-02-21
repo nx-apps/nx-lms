@@ -1,10 +1,3 @@
-const auth = require('../auth');
-
-auth.userInfo(req).then(user=>{
-      console.log(user.role);
- }).catch(err=>{
-       res.json(err);
- })
 
 class examHistory {
 /*
@@ -176,7 +169,7 @@ getHistoryList(req,res){
             return x('exam_room_id').eq(xx('id'))
         }).map(function(result){
             return result('left').merge(function(name){
-            return  {name_room: result('right')('name_room'), module:result('right')('module'), setting:result('right')('setting') }
+            return  {name_room: result('right')('name_room'), module:result('right')('module'),setting:result('right')('setting') }
         })
         })
         .merge(function(result){
