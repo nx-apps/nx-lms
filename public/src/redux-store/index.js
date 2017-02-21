@@ -38,7 +38,7 @@ const storeApp = createStore(
 window.ReduxBehavior = [PolymerRedux(storeApp),dispatchActionBehavior()];
 window.dispatchActionBehavior = dispatchActionBehavior();
 
-handleAuth();
+handleAuth(storeApp);
 
 window.commonSystemAction = commonSystemAction(storeApp);
 window.questionAction = questionAction(storeApp);
