@@ -7,6 +7,8 @@ class index{
 
         auth.userInfo(req).then(user=>{
             res.json(user);
+        }).catch(err=>{
+            res.json(err);
         })
 
         
