@@ -59,7 +59,7 @@ class index{
         r.expr(params).merge(function(){
             return { password:sha1(params.password)}
         }).do(function(result){
-            r.db('lms').table('user').get(params.id).update(result)
+            return r.db('lms').table('user').get(params.id).update(result)
         })
         
         .run()

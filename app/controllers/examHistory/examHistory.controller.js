@@ -1,6 +1,6 @@
 
 class examHistory {
-
+/*
     getExamList(req,res){
         var r = req.r;
         var params = req.query;
@@ -68,8 +68,21 @@ class examHistory {
 
         
     }
+*/
 
+select_ExamList(req,res){
+    var r = req.r;
+    var params = req.query;
 
+    r.db('lms').table('exam_room').getAll('test','dx',{index:'module'}).filter({enable:true})
+    .run()
+    .then(function(result){
+        res.json(result);
+    })
+    .catch(function(err){
+        res.status(500).json(err);
+    })
+}
 
 }
 
