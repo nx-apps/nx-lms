@@ -83,13 +83,15 @@
 
                     
                     setTimeout(()=>{
-                        
+
                         if(this.page==""){
                             if(typeof this.user !== "undefined"){
                                 if(this.user.role=="teacher"){
                                     this.page = 'examRoom';
                                 }else if(this.user.role=="learner"){
                                     this.page = 'examHistory';
+                                }else if(this.user.role=="admin"){
+                                    this.page = 'userManage';
                                 }else{
                                     this._routePageChanged('login');
                                 }
@@ -100,16 +102,21 @@
                         }
 
 
-                        //console.log(this.user);
-                        // var pageRole = {
-                        //     question:['teacher'],
-                        //     examination:['teacher'],
-                        //     examHistory:['learner']
-                        // }
+                        
+                        var pageRole = {
+                            module:['admin'],
+                            userManage:['admin'],
+                            examHistory:['learner','teacher','admin'],
+                            question:['teacher'],
+                            examination:['teacher'],
+                            examRoom:['teacher']
+                        }
 
-                        var pageRole = {};
-
+                        //var pageRole = {};
+                        var page = this.page;
                         if(this.user){
+                            //console.log(this.page);
+                            //console.log(pageRole[this.page]);
                             if(pageRole[page]){
                                 var pass = false;
                                 pageRole[page].map((row)=>{

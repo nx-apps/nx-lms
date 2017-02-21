@@ -7,9 +7,16 @@ class auth{
         var r = req.r;
         var params = req.body;
         params.password = sha1(params.password);
-
+        
         r.db('lms').table('user').filter({email:params.username,password:params.password})
-        .coerceTo('array')(0).pluck('username','name','id')
+        .merge(function(row){
+            return {
+                role:r.branch(row('admin').eq(true),'admin',
+                    r.branch(row('key_tags').count().eq(0),'learner','teacher')
+                )
+            }
+        })
+        .coerceTo('array')(0).pluck('username','name','id','role','end_tags','key_tags')
         .run()
         .then((result)=>{
             var token = jwt.sign(result,SECRET_KEY,{

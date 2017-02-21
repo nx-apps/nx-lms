@@ -97,17 +97,17 @@
                         {
                             name: 'จัดการข้อมูลผู้ใช้งาน',
                             path: '/userManage',
-                            role: 'teacher'
+                            role: 'admin'
                         },
                         {
                             name: 'จัดการ Module',
                             path: '/module',
-                            role: 'teacher'
+                            role: 'admin'
                         },
                         {
                             name: 'รายการสอบ',
                             path: '/examHistory',
-                            role: 'learner'
+                            role: ''
                         }
                     ]
                 },
@@ -121,7 +121,11 @@
                     return null;
                 }else{
                     return function(listMenu) {
-                        return (listMenu.role==role) 
+                        if(listMenu.role==''){
+                            return true
+                        }else{
+                            return (listMenu.role==role) 
+                        }
                     };
                 }
             },
