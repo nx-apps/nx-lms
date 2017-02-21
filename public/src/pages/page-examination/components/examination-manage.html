@@ -239,14 +239,18 @@
                 }
             },
             randomExamination:function(){
-                // console.log(this.data.objective);
                 var newData = this.data.objective.map((item)=>{
                     item.sub_module = item.sub_module.map((item2)=>{
-                        return item2.id;
+                        if(typeof item2.id != 'undefined'){
+                             return item2.id;
+                        }
+                        else{
+                            return item2;
+                        }   
                     })
+                   
                     return item;
                 })
-                // console.log('click');
                 this.dispatchAction('EXAMINATION_RANDOM',newData);
             },
             countQty:function(obj){
