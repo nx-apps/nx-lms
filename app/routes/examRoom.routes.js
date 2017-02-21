@@ -15,7 +15,7 @@ module.exports=function(app){
         
     app.get('/examRoom',examRoom.select_ExamRoom);
     app.post('/examRoom',examRoom.insert_ExamRoom);
-    app.post('/examRoom_only',examRoom.select_ExamRoom_only);
+    app.get('/examRoom_only',examRoom.select_ExamRoom_only);
     app.put('/examRoom',examRoom.update_ExamRoom);
     app.delete('/examRoom',examRoom.delete_ExamRoom);
 

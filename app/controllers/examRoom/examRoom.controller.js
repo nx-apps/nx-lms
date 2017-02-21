@@ -18,8 +18,7 @@ class examRoom {
         })
         
     }
-*/
-/*
+
     getLearnerList(req,res){
         var r = req.r;
         var params = req.query;
@@ -36,8 +35,7 @@ class examRoom {
         })
         
     }
-*/
-/*
+
     getExamRoomList(req,res){
         var r = req.r;
         var params = req.query;
@@ -53,8 +51,7 @@ class examRoom {
             res.status(500).json(err);
         })
     }
-*/
-/*
+
     selectExamRoom(req,res){
         var r = req.r;
         var params = req.query;
@@ -68,8 +65,7 @@ class examRoom {
             res.status(500).json(err);
         })
     }
-*/
-/*
+
     insertExamRoom(req,res){
         var r = req.r;
         var params = req.body;
@@ -88,8 +84,7 @@ class examRoom {
             res.status(500).json(err);
         })
     }
-*/
-/*
+
     updateExamRoom(req,res){
         var r = req.r;
         var params = req.body;
@@ -110,8 +105,7 @@ class examRoom {
             res.status(500).json(err);
         })
     }
-*/
-/*
+
     deleteExamRoom(req,res){
         var r = req.r;
         var params = req.query;
@@ -125,8 +119,7 @@ class examRoom {
             res.status(500).json(err);
         })
     }
-*/
-/*
+
     getLearnerTestList(req,res){
         var r = req.r;
         var params = req.query;
@@ -153,8 +146,7 @@ class examRoom {
         })
 
     }
-*/
-/*
+    
     getUserModuleList(req,res){
         var r = req.r;
         var params = req.query;
