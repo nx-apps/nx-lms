@@ -26,6 +26,7 @@ export function examResultAction(store){
                     console.log('success!!');
                     console.log(JSON.stringify(response.data));
                     store.dispatch({type:'EXAM_RESULT_GET_RESULT',payload:response.data})
+                    this.nylonVisible(true);
                 })
                 .catch((error)=>{
                     console.log('error');
