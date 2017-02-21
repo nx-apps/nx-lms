@@ -138,6 +138,7 @@
                         
                     </div>
                     <div class="flex2child">
+                        
                         <gl-form-input class="right" no-label-float value="{{data.amount_all}}"></gl-form-input>
                     </div>
                      <div class="flex2child"></div>
@@ -145,7 +146,7 @@
                 </div>
             </paper-material>
 
-        
+            [[countAmount(data.objective.*)]]
             <!--<div style="margin: 15px 0px 15px 0px;">
                 <paper-material elevation="1">
                     <div style="padding: 30px; background-color: white;">
@@ -211,18 +212,19 @@
                 this.data.objective = this.data.objective.map((item)=>{
                     item.amount = parseInt(item.amount);
                     item.sub_module = item.sub_module.map((item)=>{
+                        if(typeof item.id != 'undefined'){}
                         return item.id;
                     })
                     return item;
                 })
-                // console.log(this.data);
-                if(typeof this.data.id != 'undefined'){
-                    //   console.log(this.data);
-                    this.dispatchAction('EXAMINATION_UPDATE',this.data);
-                }
-                else{
-                    this.dispatchAction('EXAMINATION_INSERT',this.data);
-                }
+                console.log(this.data);
+                // if(typeof this.data.id != 'undefined'){
+                //     //   console.log(this.data);
+                //     this.dispatchAction('EXAMINATION_UPDATE',this.data);
+                // }
+                // else{
+                //     this.dispatchAction('EXAMINATION_INSERT',this.data);
+                // }
                     
             },
             confirmDel:function(e){
@@ -253,19 +255,20 @@
                 })
                 this.dispatchAction('EXAMINATION_RANDOM',newData);
             },
-            countQty:function(obj){
+            countAmount:function(obj){
                 var count = 0;
-                if(obj.base.length!=0){
-                    obj.base.map((row)=>{
-                        if(typeof row.obj_qty == "string"){
-                           count += (row.obj_qty=="")?0:parseInt(row.obj_qty);
-                        }else{
-                            count += row.obj_qty;
+                if(typeof obj.base != 'undefined' && obj.base.length != 0){
+                    obj.base.map((item)=>{
+                        if(typeof item.amount == "string"){
+                            count += parseInt(item.amount);
+                        }
+                        else {
+                            count += item.amount;
                         }
                     })
+                    this.set('data.amount_all',count)
                 }
-                this.set('data.qty',count);
-            },
+            }
            
         });
     </script>

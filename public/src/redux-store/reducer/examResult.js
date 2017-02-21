@@ -24,6 +24,7 @@ export function examResultAction(store){
                 })
                 .then((response)=>{
                     console.log('success!!');
+                    console.log(JSON.stringify(response.data));
                     store.dispatch({type:'EXAM_RESULT_GET_RESULT',payload:response.data})
                 })
                 .catch((error)=>{
