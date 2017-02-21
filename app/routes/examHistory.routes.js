@@ -6,4 +6,5 @@ module.exports = function(app){
     app.get('/examList',examHistoryCtrl.select_ExamList);
     app.get('/test_exam',examHistoryCtrl.select_question);
     app.get('/historyList',examHistoryCtrl.getHistoryList);
+    app.get('/student',examHistoryCtrl.select_student);
 }

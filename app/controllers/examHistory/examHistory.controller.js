@@ -174,10 +174,28 @@ getHistoryList(req,res){
             res.status(500).json(err);
         })
 
-
-        
-    }
-
 }
 
+select_student(req,res){
+        var r = req.r;
+        var params = req.query;
+    
+        r.db('lms').table('exam_answer')
+            .innerJoin(r.db('lms').table('user'), function(x,xx){
+            return x('user_id').eq(xx('id'))
+            }).map(function(data){
+            return data('left').merge(function(mr){
+                return {name:data('right')('name'),user_id:data('right')('id')}
+            })
+            }).without('question')
+
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+}
 module.exports = new examHistory();
