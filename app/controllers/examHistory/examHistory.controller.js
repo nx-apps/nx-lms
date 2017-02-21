@@ -92,6 +92,34 @@ select_ExamList(req,res){
     })
 }
 
+select_question(req,res){
+    var r = req.r;
+    var params = req.query;
+
+    r.db('lms').table('exam_room').filter({id:params.user_id})
+    .innerJoin(r.db('lms').table('examination'), function(x,xx){
+        return x('examination_id').eq(xx('id'))
+    }).map(function(mr){
+        return mr('right')
+    }).coerceTo('array')(0)
+    
+    .do(function(x){
+        return x('objective') 
+        .concatMap(function(row){
+            return r.db('lms').table('question').getAll(r.args(row('sub_module')), {index: "tags"})
+            .filter({dificalty_index:row('dificalty_index')}).sample(row('amount'))
+        })
+    })
+        
+    .run()
+    .then(function(result){
+        res.json(result);
+    })
+    .catch(function(err){
+        res.status(500).json(err);
+    }) 
+}
+
 }
 
 module.exports = new examHistory();
