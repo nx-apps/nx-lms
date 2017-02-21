@@ -80,8 +80,8 @@
                         var {question,id,choice} = item;
                         var newItem = {question,id,choice};
                         newItem.choice = item.choice.map((item)=>{
-                            var {check,answer,choice,image_id} = item;
-                            var newItem = {check,answer,choice,image_id};
+                            var {check,name,answer,image_id} = item;
+                            var newItem = {check,name,answer,image_id};
                             if(typeof newItem.answer == 'undefined'){
                                 newItem.answer = false;
                             }
@@ -90,8 +90,8 @@
                         })
                         return newItem;
                     })
-                    console.log(data);
-                    // this.EXAM_INSERT_DATA(data);
+                    // console.log(data);
+                    this.EXAM_INSERT_DATA(data);
                     this.fire('nylon-change-page',{path:'/examResult/'+this.dataList.examination_id})
                 }
             }

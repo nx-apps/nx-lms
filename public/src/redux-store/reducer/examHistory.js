@@ -43,7 +43,7 @@ export function examHistoryAction(store){
                 console.log(id);
                 axios.get('./examHistory/test_exam?id='+id)
                 .then((response)=>{
-                    console.log(JSON.stringify(response.data));
+                    // console.log(JSON.stringify(response.data));
                     // console.log(response.data);
                     store.dispatch({type:'EXAM_HISTORY_EXAM_LIST_SELECT',payload:response.data})
                 })
@@ -54,8 +54,10 @@ export function examHistoryAction(store){
             },
             EXAM_HISTORY_EXAM_LIST_COMPLETE:function(){
                 var id = store.getState().auth.user.id;
+                // console.log('1234');
                 axios.get('./examHistory/historyList?user_id='+id)
                 .then((response)=>{
+                    console.log(response.data);
                     store.dispatch({type:'EXAM_HISTORY_EXAM_LIST_COMPLETE',payload:response.data})
                 })
                 .catch((error)=>{

@@ -25,7 +25,7 @@
                     <template is="dom-repeat" items="[[examList]]">
                         <tr on-tap="selectData" item="[[item]]">
                             <td>[[getIndex(index)]]</td>
-                            <td>[[item.exam_room_name]]</td>
+                            <td>[[item.name_room]]</td>
                             <td style="text-align: right">[[item.score]]</td>
                             <td style="text-align: right">[[item.count_question]]</td>
                         </tr>
@@ -48,9 +48,9 @@
                 }
             },
             selectData:function(e){
-                console.log(this.examList);
-                console.log(e.currentTarget.item);
-                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.exam_room_id})
+                // console.log(this.examList);
+                // console.log(e.currentTarget.item);
+                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.examination_id})
             }
         });
     </script>
