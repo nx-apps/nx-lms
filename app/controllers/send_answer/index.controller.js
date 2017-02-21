@@ -30,7 +30,34 @@ class index{
     show_answer(req,res){
         var r = req.r;
         var params = req.query;
-
+         r.db('lms').table('exam_answer').filter({
+        user_id:params.user_id,
+        examination_id:params.examination_id
+        })
+        .innerJoin(r.db('lms').table('user'),function(x,xx){
+            return x('user_id').eq(xx('id'))
+        }).map(function(n){
+            return n('left').merge(function(){
+            return {name:n('right')('name')}
+            })
+        })
+        
+        .innerJoin(r.db('lms').table('examination'),function(x,xx){
+            return x('examination_id').eq(xx('id'))
+        }).map(function(n){
+            return n('left').merge(function(){
+            return {time:n('right')('time'),description:n('right')('description'),name_examination:n('right')('name_examination')}
+            })
+        })
+        .pluck('name','score','time','name_examination','description','question')
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+/*
         r.db('lms').table('exam_answer').filter({
             user_id:params.user_id,
             exam_room_id:params.exam_room_id
@@ -54,6 +81,7 @@ class index{
                 return {std_name:n('right')('name')}
             })
         }).without('user_id','exam_room_id','id','examination_id')(0)
+        */
       /*  .merge(function(q){
             return {  question: q('question').map(function(x){
             return {
