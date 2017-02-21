@@ -31,7 +31,8 @@
         <div class="xcontainer">
             <examination-list data-list="[[dataList]]" type-list="examination"></examination-list>
             <panel-right title="จัดการชุดข้อสอบ">
-               <examination-manage data="{{data}}" module="{{moduleSelect}}"></examination-manage>
+                <examination-page selected="0" module="{{moduleSelect}}"></examination-page>
+               <!--<examination-manage data="{{data}}" module="{{moduleSelect}}"></examination-manage>-->
             </panel-right>
         </div>
          <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
@@ -41,6 +42,11 @@
             is: 'page-examination',
             behaviors:[nylonBehavior,ReduxBehavior,examinationAction],
             observers:['getDataList(moduleSelect)'],
+            listeners:{
+                'next-page':'nextPage',
+                'back-page':'backPage',
+                'click-tab':'click'
+            },
             properties:{
                 dataList:{
                     statePath:'examination.dataList'
@@ -106,7 +112,7 @@
           
             },
             selectData:function(e){
-
+                this.$$('panel-right').open();
                 // this.EXAMINATION_SELECT(e.detail)
                 // .then((response)=>{
                 //     var obj = [];

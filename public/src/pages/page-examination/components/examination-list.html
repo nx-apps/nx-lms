@@ -77,11 +77,12 @@
                 return typeList==typeSelect
             },
             selectList:function(e){
-                this.fire('select-data',e.currentTarget.examinationId);
+                 this.dispatchAction('EXAMINATION_GET_DATA_SELECT',e.currentTarget.examinationId);
+                this.fire('select-data');
             },
             random:function(){
                 // console.log(this.dataList);
-                this.fire('click-tab')
+                // this.fire('click-tab')
             },
             toIndex:function(index){
                 return ++index;

@@ -1,0 +1,57 @@
+
+<dom-module id="examination-random-list">
+    <template>
+        <style include="page-style">
+             tbody>tr>td{
+                 cursor: pointer;
+             }
+            tbody>tr:hover{
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+        </style>
+         <div class="container">
+            <paper-material elevation="1">
+                <div class="content">
+                    <table class="gl-table-default">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">ข้อที่</th>
+                                <th>คำถาม</th>
+                                <th style="text-align: right">
+                                    <paper-button on-tap="random" raised>สุ่มข้อสอบ</paper-button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template is="dom-repeat" items="[[dataList]]">
+                                    <tr on-tap="selectList" item="[[item]]" examination-id="[[item.id]]">
+                                        <td>
+                                            <div>[[toIndex(index)]]</div>
+                                        </td>
+                                        <td>
+                                            [[item.name_examination]]
+                                        </td>
+                                    </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </paper-material>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'examination-random-list',
+            behaviors:[ReduxBehavior],
+            properties:{
+                dataList:{
+                    statePath:'examination.examinationRandomList'
+                },
+            },
+            random:function(){
+                this.fire('click-tab');
+            }
+        });
+    </script>
+</dom-module>

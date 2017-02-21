@@ -25,7 +25,7 @@
     <script>
         Polymer({
             is: 'page-examRoom',
-            behaviors:[nylonBehavior,ReduxBehavior,examRoomAction,examinationAction,questionAction],
+            behaviors:[nylonBehavior,ReduxBehavior,examRoomAction,questionAction],
             listeners:{
                 'open':'openPanelRight',
                 'close':'closePanelRight'
@@ -40,8 +40,8 @@
                 this.dispatchAction('COMMON_MODULE');
             },
             openPanelRight:function(){
-                this.EXAMROOM_CLEAR_DATA();
-                this.EXAMINATION_GET_TAG_LIST();
+                // this.EXAMROOM_CLEAR_DATA();
+                // this.EXAMINATION_GET_TAG_LIST();
                 this.$$('panel-right').open();
             },
             closePanelRight:function(){
