@@ -17,6 +17,7 @@
                     <tr>
                         <th style="width:10%">#</th>
                         <th>รายการผลสอบ</th>
+                        <th>Module</th>
                         <th style="text-align: right">จำนวนข้อที่ถูก (ข้อ)</th>
                         <th style="text-align: right">จำนวนข้อทั้งหมด (ข้อ)</th>
                     </tr>
@@ -26,6 +27,9 @@
                         <tr on-tap="selectData" item="[[item]]">
                             <td>[[getIndex(index)]]</td>
                             <td>[[item.name_room]]</td>
+                            <template is="dom-repeat" items="[[item.tags]]">
+                                <td><tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module></td>
+                            </template>
                             <td style="text-align: right">[[item.score]]</td>
                             <td style="text-align: right">[[item.count_question]]</td>
                         </tr>
