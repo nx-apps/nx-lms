@@ -23,7 +23,7 @@
                         <div class="content">
                             <div class="container flex-horizontal-with-ratios">
                                 <div style="text-align: left;">ชื่อ-สกุล :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="[[dataResult.name]]" readonly></gl-form-input></div>
+                                <div class="flex2child" style="margin-top: -10px"><gl-form-input style="width: 90%" no-label-float value="[[dataResult.name]]" readonly></gl-form-input></div>
                             </div>
                             <!--<div class="container flex-horizontal-with-ratios">
                                 <div style="text-align: left;">วิชา :</div>
@@ -31,9 +31,11 @@
                             </div>-->
                             <div class="container flex-horizontal-with-ratios">
                                 <div style="text-align: left;">คะแนน :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input style="width: 90%" no-label-float value="[[dataResult.score]]" readonly></gl-form-input></div>
+                                <div class="flex2child" style="margin-top: -10px"><gl-form-input style="width: 60%" no-label-float value="[[dataResult.score]]" readonly></gl-form-input></div>
                                 <div style="text-align: left;">เวลา :</div>
-                                <div class="flex2child" style="margin-top: -10px"><gl-form-input no-label-float value="[[dataResult.time]]" readonly></gl-form-input></div>
+                                <div class="flex2child" style="margin-top: -10px"><gl-form-input style="width: 60%" no-label-float value="[[dataResult.time]]" readonly>
+                                    <div suffix>นาที</div>
+                                </gl-form-input></div>
                             </div>
                         </div>
                     </div>
@@ -45,7 +47,7 @@
                     <thead>
                         <tr class="hideBorder">
                             <th style="width:20%;text-align: right; font-size: 18px;">ชื่อข้อสอบ</th>
-                            <th><gl-form-input placeholder="" no-label-float value="[[dataResult.name]]" disabled></gl-form-input></th>
+                            <th><gl-form-input placeholder="" no-label-float value="[[dataResult.name_examination]]" disabled></gl-form-input></th>
                             <th></th>
                         </tr>
                         <tr>
