@@ -50,13 +50,6 @@ class index{
             })
         })
         .pluck('name','score','time','name_examination','description','question')
-        .run()
-        .then(function(result){
-            res.json(result);
-        })
-        .catch(function(err){
-            res.status(500).json(err);
-        })
 /*
         r.db('lms').table('exam_answer').filter({
             user_id:params.user_id,
