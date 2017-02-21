@@ -180,7 +180,7 @@ select_student(req,res){
         var r = req.r;
         var params = req.query;
     
-        r.db('lms').table('exam_answer')
+        r.db('lms').table('exam_answer').filter({id:params.id})
             .innerJoin(r.db('lms').table('user'), function(x,xx){
             return x('user_id').eq(xx('id'))
             }).map(function(data){
