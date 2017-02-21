@@ -212,19 +212,24 @@
                 this.data.objective = this.data.objective.map((item)=>{
                     item.amount = parseInt(item.amount);
                     item.sub_module = item.sub_module.map((item)=>{
-                        if(typeof item.id != 'undefined'){}
-                        return item.id;
+                        console.log(item);
+                        if(typeof item.id != 'undefined'){
+                            return item.id;
+                        }
+                        else {
+                            return item;
+                        }
                     })
                     return item;
                 })
-                console.log(this.data);
-                // if(typeof this.data.id != 'undefined'){
-                //     //   console.log(this.data);
-                //     this.dispatchAction('EXAMINATION_UPDATE',this.data);
-                // }
-                // else{
-                //     this.dispatchAction('EXAMINATION_INSERT',this.data);
-                // }
+                // console.log(this.data);
+                if(typeof this.data.id != 'undefined'){
+                    //   console.log(this.data);
+                    this.dispatchAction('EXAMINATION_UPDATE',this.data);
+                }
+                else{
+                    this.dispatchAction('EXAMINATION_INSERT',this.data);
+                }
                     
             },
             confirmDel:function(e){
