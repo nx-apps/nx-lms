@@ -23,7 +23,7 @@ export function difficultyAction(store){
                 this.fire('toast',{status:'load'});
                 axios.get('./question/report_question?module='+module)
                 .then((response)=>{
-                    console.log(JSON.stringify(response.data));
+                    // console.log(JSON.stringify(response.data));
                     this.fire('toast',{status:'success',
                       callback:()=>{
                             store.dispatch({type:'DIFFICULTY_GET_LIST',payload:response.data});
