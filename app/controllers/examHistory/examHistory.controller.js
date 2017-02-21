@@ -81,7 +81,22 @@ select_ExamList(req,res){
     }).coerceTo('array').distinct()
     
     .do(function(x){
-        return r.db('lms').table('exam_room').getAll(r.args(x),{index:'module'}).filter({enable:true})
+        return 
+          //r.db('lms').table('exam_room').getAll(r.args(x),{index:'module'}).filter({enable:true})
+          r.db('lms').table('exam_room').getAll(r.args(x),{index:'module'}).filter(function(row){
+            return 
+              r.branch(
+                r.db('lms').table('exam_answer').filter({
+                    exam_room_id:row('id'),
+                    user_id:params.user_id
+                }).count().ne(0)
+                ,
+                false
+                ,
+                true
+            ).and(row('enable').eq(true))
+        })
+          
     })
     .run()
     .then(function(result){
@@ -139,7 +154,6 @@ select_question(req,res){
         res.status(500).json(err);
     }) 
 }
-
 
 getHistoryList(req,res){
         var r = req.r;
