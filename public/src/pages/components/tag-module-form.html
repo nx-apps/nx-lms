@@ -29,7 +29,7 @@
             </div>
         </template>
         <div class="comBobox">
-            <gl-combo-box no-label-float item-label-path="id" item-value-path="id" items="[[items]]" on-value-changed="selectTag"></gl-combo-box>
+            <gl-combo-box id="comboBox" no-label-float item-label-path="id" item-value-path="id" items="[[myItem]]" on-value-changed="selectTag"></gl-combo-box>
         </div>
     </template>
     <script>
@@ -44,7 +44,13 @@
                 label:{
                     type:String,
                     value: 'label'
+                },
+                items:{
+                    observer:'obItems'
                 }
+            },
+            obItems:function(val){
+                this.myItem = [].concat(val);
             },
             obValue:function(n){
                 if(typeof n == "undefined"){
@@ -57,12 +63,12 @@
             selectTag:function(e){
                 if(e.detail.value){
                     var index = -1;
-                    this.items.map(function(row,i){
+                    this.myItem.map(function(row,i){
                         if(row.id == e.detail.value)
                         index = i;
                     })
-                    this.push('value',this.items[index]);
-                    this.splice('items',index,1);
+                    this.push('value',this.myItem[index]);
+                    this.splice('myItem',index,1);
                     e.currentTarget.value = "";
                 }
             },
@@ -75,9 +81,10 @@
                 }
             },
             deleteTag:function(e){
-                this.push('items',e.currentTarget.item);
+                this.push('myItem',e.currentTarget.item);
                 var index = this.value.indexOf(e.currentTarget.item);
                 this.splice('value',index,1);
+                this.$.comboBox.value="";
             }
         });
     </script>
