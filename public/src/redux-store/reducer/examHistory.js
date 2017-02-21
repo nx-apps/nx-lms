@@ -31,6 +31,7 @@ export function examHistoryAction(store){
                 var id = store.getState().auth.user.id;
                 axios.get('./examHistory/examList?user_id='+id)
                 .then((response)=>{
+                    console.log(response.data);
                     store.dispatch({type:'EXAM_HISTORY_EXAM_LIST',payload:response.data})
                 })
                 .catch((error)=>{

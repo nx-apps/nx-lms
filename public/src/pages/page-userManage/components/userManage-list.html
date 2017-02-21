@@ -102,6 +102,7 @@
             dataSelected:function(e){
                 console.log(e.currentTarget.item);
                 this.dispatchAction('USER_MANAGE_SELECT_LIST',e.currentTarget.item);
+                this.fire('clear');
                 this.fire('open');
             },
             serchTable:function(e){
