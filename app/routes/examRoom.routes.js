@@ -20,4 +20,5 @@ module.exports=function(app){
     app.delete('/examRoom',examRoom.delete_ExamRoom);
 
     app.get('/examRoom_module',examRoom.select_Module);
+    app.get('/student',examRoom.select_student);
 } 
