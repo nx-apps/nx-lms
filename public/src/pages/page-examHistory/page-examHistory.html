@@ -46,16 +46,14 @@
         Polymer({
             is: 'page-examHistory',
             behaviors:[nylonBehavior,examHistoryAction],
-            properties:{
-                getParam:{
-                    type:Object,
-                    value:{
-                        tabs:'0'
-                    }
+            observers:['obParam(getParam)'],
+            obParam:function(params){
+                if(typeof params.tabs == "undefined"){
+                    this.getParam.tabs = '0';
+                    this.notifyPath('getParam.tabs');
                 }
             },
             nylonPageActive:function(){
-                this.getParam.tabs = '0';
                 this.EXAM_HISTORY_EXAM_LIST();
                 this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
             }
