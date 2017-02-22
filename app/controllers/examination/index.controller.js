@@ -157,6 +157,11 @@ class index{
         .reduce(function (l, r) {
              return l.add(r)
         })
+
+        .merge(function(t){
+            return {choice:t('choice').sample(t('choice').count())}
+        })
+
         .run()
         .then(function(result){
             res.json(result);
