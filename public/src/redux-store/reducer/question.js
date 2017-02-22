@@ -95,12 +95,17 @@ export function questionAction(store){
                 this.titleRight = 'แก้ไขคำถาม';
                 this.status = 'update';
                 
-
+                this.fire('toast',{status:'load'});
                 this.QUESTION_CLEAR_SELECT();
                 axios.get('./question/question_only?id='+questionId)
                 .then((response)=>{
-                    store.dispatch({type:'QUESTION_SELECT',payload:response.data});
-                    this.$$('panel-right').open();
+                    this.fire('toast',{status:'success',
+                      callback:()=>{
+                            store.dispatch({type:'QUESTION_SELECT',payload:response.data});
+                            this.$$('panel-right').open();
+                      }
+                     });
+                  
                     
                 })
                 .catch((error)=>{
