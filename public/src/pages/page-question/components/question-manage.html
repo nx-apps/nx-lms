@@ -154,8 +154,14 @@
             getForm:function(){
                 this.data.module = this.module;
                 this.data.tags = this.data.tags.map((item)=>{
-                    return item.id;
+                     if(typeof item.id != 'undefined'){
+                        return item.id;
+                     }
+                     else{
+                         return item;
+                     }
                 })
+                // console.log(this.data);
                 if(typeof this.data.id != 'undefined'){
                      this.dispatchAction('QUESTION_UPDATE',this.data)
                 }
