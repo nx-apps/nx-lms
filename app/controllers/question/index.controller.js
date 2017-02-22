@@ -119,86 +119,28 @@ class index {
             var prefile = files.file[0];
             var x = prefile.path;
             var xx = x.replace(/\\/g, "/");
-            //console.log(prefile);
-            //fmg.unzip(xx);
-            // ***************
+
             auth.userInfo(req).then(user => {
-                console.log(user);
                 fmg.readFile(xx, prefile.originalFilename, user, function (result) {
-                    res.json(result);
+                    if (result.error) {
+                        res.status(500).json(result.error);
+                    } else {
+                        var questions = [];
+                        for (var i = 0; i < result.length; i++) {
+                            // r.db('lms').table('question').insert(result[i].questions).run().then(function (e) { });
+                            questions = questions.concat(result[i].questions);
+                        }
+                        //console.log(questions);
+                        r.db('lms').table('question').insert(questions).run().then(function (e) {
+                            res.json(result);
+                        });
+
+
+                    }
                 });
             }).catch(err => {
-                res.json(err);
-            })
-
-
-            /*
-
-            //Read file here.
-            var  XLSX = require('xlsx');
-            var workbook = XLSX.readFile(xx);
-
-            const tagConvert = (sheet)=>{
-                var index = 0;
-                for(var i=0;i<sheet.length;i++){
-                    index = i;
-                    if(!isNaN(sheet[i])) break;
-                }
-
-                return ["*"+sheet.slice(0,index),sheet.slice(0,sheet.length)]
-            }
-
-            var data = workbook.Sheets;
-            let preData = [];
-            let mainIndex = -1;
-            for (var sheet in data) {
-                for (var key in data[sheet]) {
-                    
-                    if (key !== '!ref') {
-                        if (key[0] === 'A') {
-                            mainIndex++;
-                            preData[mainIndex] = {
-                                topic:data[sheet][key].v,
-                                tag:tagConvert(sheet),
-                                answer:0,
-                                choice:[]
-
-                            };
-                            var index = 0;
-                        }else{
-                            var choice = {checked: false,image_id:""};
-                            if(index===0) choice.checked = true;
-                            index++;
-                            choice.choice = data[sheet][key].v;
-                            preData[mainIndex].choice.push(choice);
-                        }
-                    }
-                }
-            }
-
-            preData = preData.filter(function(row){
-                return (row.topic==='q')?false:true
-            })
-
-            res.json(preData);
-
-            r.expr(preData).merge(function(row){
-                return { 
-                    time_insert:r.now(),user_id:fields.user_id[0]
-                }
-            })
-            .do(function(result){
-                return r.db('lms').table('question').insert(result)
-            })
-            .run()  
-            .then(function(result){
-                res.json(result);
-            })
-            .catch(function(err){
                 res.status(500).json(err);
-            })*/
-
-
+            })
         });
 
     }
@@ -240,19 +182,28 @@ class FileManager {
         if (filename.indexOf(".xlsx") > 0) {
             console.log("start read .xlsx");
             var mod = name.replace(".xlsx", "")
-            this.readExcel(filename, mod, user, function (datas) {
-                console.log(JSON.stringify(datas));
-                callback();
-            });
+            if (user.key_tags.indexOf(mod) > -1 || user.role == "admin") {
+                this.readExcel(filename, mod, user, function (datas) {
+                    //  console.log(JSON.stringify(datas));
+                    callback([{ file: name, module: mod, submodule: mod, total: datas.length, questions: datas }]);
+                });
+            } else {
+                callback({ error: "File Module ไม่ตรงกับของท่านกรุณาตรวจสอบ" });
+            }
+
         }
         else if (filename.indexOf(".xls") > 0) {
             console.log("start read .xls");
             console.log("start read .xls");
             var mod = name.replace(".xls", "")
-            this.readExcel(filename, mod, user, function (datas) {
-                console.log(JSON.stringify(datas));
-                callback();
-            });
+            if (user.key_tags.indexOf(mod) > -1 || user.role == "admin") {
+                this.readExcel(filename, mod, user, function (datas) {
+                    // console.log(JSON.stringify(datas));
+                    callback([{ file: name, module: mod, submodule: mod, total: datas.length, questions: datas }]);
+                });
+            } else {
+                callback({ error: "File Module ไม่ตรงกับของท่านกรุณาตรวจสอบ" });
+            }
         }
         else if (filename.indexOf(".csv") > 0) {
             console.log("start read .csv");
@@ -269,65 +220,77 @@ class FileManager {
                 } catch (e) {
                 }
             }
-            this.readCSV(filename, mod, submod, user, function (datas) {
-                console.log(JSON.stringify(datas));
-                callback();
-            });
+            if (user.key_tags.indexOf(mod) > -1 || user.role == "admin") {
+                this.readCSV(filename, mod, submod, user, function (datas) {
+                    //console.log(JSON.stringify(datas));
+                    callback([{ file: name, module: mod, submodule: submod, total: datas.length, questions: datas }]);
+                });
+            } else {
+                callback({ error: "File Module ไม่ตรงกับของท่านกรุณาตรวจสอบ" });
+            }
 
         }
         else if (filename.indexOf(".zip") > 0) {
             console.log("start read .zip");
-            var mod = name.replace(".zip", "") + "_" + new Date().getTime();
-            this.unzip(filename, mod, function (data) {
-                console.log(process.cwd() + '/temp/' + mod);
-                //  while (true) {
-                fs.readdir(process.cwd() + '/temp/' + mod, function (err, files) {
-                    console.log(err);
-                    //  if (!err) {
-
-                    callback();
-
-                    // }
-
-                });
-                //}
+            var mod = name.replace(".zip", "");
+            var full = process.cwd() + '/temp/' + mod + "_" + new Date().getTime();
+            this.unzip(filename, full, function (data) {
 
 
+                setTimeout(function () {
+                    console.log("upziped");
+                    fs.readdir(full, function (errx, files) {
+                        console.log(files);
+                        var q_list = [];
+                        if (files.length > 0) {
 
+                            async.each(files, function (f, next) {
+                                var fmg = new FileManager();
+                                fmg.readFile(full + "/" + f, f, user, function (result) {
+                                    if (!result.error) {
+                                        q_list.push(result[0]);
+                                    }
+                                    next();
+                                });
+                            }, function (e) {
+                                callback(q_list);
+
+                            });
+                        } else {
+                            callback({ error: "Not file" });
+                        }
+                    });
+                }, 5000);
             });
 
-
         } else {
-            callback({ result: "file format incorrect" });
+            callback({ error: "File Format ไม่ถูกต้อง [.csv,.xls,xlxs,.zip]" });
         }
 
 
     }
     unzip(filename, name, callback) {
-        console.log(filename);
-        var zlib = require('zlib');
         fs.createReadStream(filename)
-            .pipe(unzip.Extract({ path: process.cwd() + '/temp/' + name }))
+            .pipe(unzip.Extract({ path: name }))
             .on('finish', function () {
-
                 callback();
-            });
-
-
+            });;
     }
 
     readCSV(filename, m, s, user, callback) {
         var q_list = [];
         var parser = parse({ delimiter: ',' }, function (err, data) {
-
+            var ref_index = 1;
+            var ref_id = "";
             async.eachSeries(data, function (line, next) {
                 var data = {
                     "correct": 0,
                     "incorrect": 0,
                     "image_id": "",
                     "user_id": user.id,
-                    "est": 0,
-                    "ref": "",
+                    "est": 1,
+                    "ref_id": "",
+                    "ref_index": 0,
                     "choice": [
                     ],
                     "module": m,
@@ -340,13 +303,32 @@ class FileManager {
                 };
                 var c = {
                     "check": true,
-                    "name": line[1],
+                    "name": line[4],
                     "image_id": ""
                 };
                 data.choice.push(c);
-                var chk1 = line[1].replace(" ", "");
+                if (line[1].replace(" ", "")) {
+                    data.est = line[1].replace(" ", "");
+                }
+
+                if (line[2].replace(" ", "")) {
+                    data.dificalty_index = line[2].replace(" ", "");
+                }
+
+                if (line[3]) {
+                    if (ref_id != line[3].replace(" ", "")) {
+                        ref_index = 0;
+                        ref_id = line[3].replace(" ", "");
+                    }
+                    ref_index++;
+                    data.ref_id = line[3].replace(" ", "");
+                    data.ref_index = ref_index;
+                }
+
+                var chk1 = line[4].replace(" ", "");
                 var chk2 = "";
-                for (var i = 2; i < line.length; i++) {
+
+                for (var i = 5; i < line.length; i++) {
                     var c2 = {
                         "checked": false,
                         "choice": line[i],
@@ -372,24 +354,8 @@ class FileManager {
 
     readExcel(filename, mod, user, callback) {
         var workbook = XLSX.readFile(filename);
-
-        /* const tagConvert = (sheet) => {
-             var index = 0;
-             for (var i = 0; i < sheet.length; i++) {
-                 index = i;
-                 if (!isNaN(sheet[i])) break;
-             }
-             return ["*" + sheet.slice(0, index), sheet.slice(0, sheet.length)]
-         }*/
-
-        //  var datas = workbook.Sheets;
-        // let preData = [];
-        // let mainIndex = -1;
         var q_list = [];
-        //  var sheet_name_list = workbook.SheetNames;
         async.each(workbook.SheetNames, function (sheet_name, next) {
-            //for (var key in sheet) {
-            // console.log(sheet);
             var sheet = workbook.Sheets[sheet_name];
             console.log(sheet_name);
             console.log("================================================");
@@ -404,107 +370,72 @@ class FileManager {
                             q_list.push(data);
                         }
                         data = {
-                            "correct": 0,
-                            "incorrect": 0,
-                            "image_id": "",
-                            "user_id": "",
+                            "question": sheet[key].v,
+                            "est": 1,
+                            "dificalty_index": 1,
+                            "ref_index": 0,
+                            "ref_id": "",
                             "choice": [],
                             "module": mod,
                             "tags": [
                                 sheet_name
                             ],
-                            "est": 0,
-                            "ref_index": 0,
-                            "ref_id": "",
-                            "question": sheet[key].v,
                             "correct": 0,
-                            "dificalty_index": 1,
+                            "incorrect": 0,
+                            "image_id": "",
+                            "user_id": user.id,
                         };
                         index++;
                     } else if (key[0] === 'B') {
-                        data.est = sheet[key].v
+                        if (sheet[key].v) {
+                            data.est = sheet[key].v
+                        }
                     }
                     else if (key[0] === 'C') {
-                        data.dificalty_index = sheet[key].v
+                        if (sheet[key].v) {
+                            data.dificalty_index = sheet[key].v
+                        }
                     }
                     else if (key[0] === 'D') {
-                        if (ref_id != sheet[key].v) {
-                            ref_index = 1;
-                            ref_id = sheet[key].v;
+                        if (sheet[key].v) {
+                            if (ref_id != sheet[key].v) {
+                                ref_index = 0;
+                                ref_id = sheet[key].v;
+                            }
+                            ref_index++;
+                            data.ref_id = sheet[key].v
+                            data.ref_index = ref_index;
                         }
-                        data.ref_id = sheet[key].v
-                        data.ref_index = ref_index;
-                        ref_index++;
                     }
                     else if (key[0] === 'E') {
-                        var c = {
-                            "check": true,
-                            "name": sheet[key].v,
-                            "image_id": ""
-                        };
-                        data.choice.push(c);
+                        if (sheet[key].v) {
+                            var c = {
+                                "check": true,
+                                "name": sheet[key].v,
+                                "image_id": ""
+                            };
+                            data.choice.push(c);
+                        }
                     } else {
-                        var c = {
-                            "check": false,
-                            "name": sheet[key].v,
-                            "image_id": ""
-                        };
-                        data.choice.push(c);
+                        if (sheet[key].v) {
+                            var c = {
+                                "check": false,
+                                "name": sheet[key].v,
+                                "image_id": ""
+                            };
+                            data.choice.push(c);
+                        }
                     }
                 }
             }
-            q_list.push(data);
+            if (data.question && data.choice.length >= 2) {
+                q_list.push(data);
+            }
+
             next();
         }, function (e) {
             callback(q_list);
         });
-
-        /*  for (var sheet in data) {
-              for (var key in data[sheet]) {
-  
-                  if (key !== '!ref') {
-                      if (key[0] === 'A') {
-                          mainIndex++;
-                          preData[mainIndex] = {
-                              topic: data[sheet][key].v,
-                              tag: tagConvert(sheet),
-                              answer: 0,
-                              choice: []
-  
-                          };
-                          var index = 0;
-                      } else {
-                          var choice = { checked: false, image_id: "" };
-                          if (index === 0) choice.checked = true;
-                          index++;
-                          choice.choice = data[sheet][key].v;
-                          preData[mainIndex].choice.push(choice);
-                      }
-                  }
-              }
-          }
-  
-          preData = preData.filter(function (row) {
-              return (row.topic === 'q') ? false : true
-          })*/
-
-        // res.json(preData);
-
-        //  r.expr(preData).merge(function (row) {
-        //   return {
-        //     time_insert: r.now(), user_id: fields.user_id[0]
-        // }
-        ///  })
-        //  .do(function (result) {
-        //return r.db('lms').table('question').insert(result)
-        //  })
-        //  .run()
-        //  .then(function (result) {
-        //  res.json(result);
-        // })
-        //.catch(function (err) {
-        // res.status(500).json(err);
-        // })
     }
 
     readImages(filename) {
