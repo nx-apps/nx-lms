@@ -121,15 +121,16 @@ class index {
             var xx = x.replace(/\\/g, "/");
             //console.log(prefile);
             //fmg.unzip(xx);
-           // ***************
-                auth.userInfo(req).then(user => {
-                    console.log(user.role);
-                }).catch(err => {
-                    res.json(err);
-                })
-            fmg.readFile(xx, prefile.originalFilename, function (result) {
-                res.json(result);
-            });
+            // ***************
+            auth.userInfo(req).then(user => {
+                console.log(user);
+                fmg.readFile(xx, prefile.originalFilename, user, function (result) {
+                    res.json(result);
+                });
+            }).catch(err => {
+                res.json(err);
+            })
+
 
             /*
 
@@ -202,44 +203,44 @@ class index {
 
     }
 
-  report_question(req,res){
+    report_question(req, res) {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('question').getAll(params.module,{index:'module'}).pluck('correct','incorrect','question').merge(function(result){
+        r.db('lms').table('question').getAll(params.module, { index: 'module' }).pluck('correct', 'incorrect', 'question').merge(function (result) {
             return {
-                d_tag: r.branch( result('correct').add(result('incorrect')).eq(0),0, 
-                result('correct').div( result('correct').add(result('incorrect')) ).mul(100)  )
+                d_tag: r.branch(result('correct').add(result('incorrect')).eq(0), 0,
+                    result('correct').div(result('correct').add(result('incorrect'))).mul(100))
             }
         })
 
-        .merge(function(result){
-            return {
-            d_index:r.branch(
-                result('d_tag').ge(0).and( result('d_tag').le(33) ),'ยาก',
-                result('d_tag').ge(34).and( result('d_tag').le(67) ),'ปานกลาง','ง่าย'
-            )
-            }
-        })
-        .run()
-        .then(function(result){
-            res.json(result);
-        })
-        .catch(function(err){
-            res.status(500).json(err);
-        })
+            .merge(function (result) {
+                return {
+                    d_index: r.branch(
+                        result('d_tag').ge(0).and(result('d_tag').le(33)), 'ยาก',
+                        result('d_tag').ge(34).and(result('d_tag').le(67)), 'ปานกลาง', 'ง่าย'
+                    )
+                }
+            })
+            .run()
+            .then(function (result) {
+                res.json(result);
+            })
+            .catch(function (err) {
+                res.status(500).json(err);
+            })
     }
 
 
 }
 
 class FileManager {
-    readFile(filename, name, callback) {
+    readFile(filename, name, user, callback) {
         console.log(filename);
         if (filename.indexOf(".xlsx") > 0) {
             console.log("start read .xlsx");
             var mod = name.replace(".xlsx", "")
-            this.readExcel(filename, mod, function (datas) {
+            this.readExcel(filename, mod, user, function (datas) {
                 console.log(JSON.stringify(datas));
                 callback();
             });
@@ -248,7 +249,7 @@ class FileManager {
             console.log("start read .xls");
             console.log("start read .xls");
             var mod = name.replace(".xls", "")
-            this.readExcel(filename, mod, function (datas) {
+            this.readExcel(filename, mod, user, function (datas) {
                 console.log(JSON.stringify(datas));
                 callback();
             });
@@ -268,7 +269,7 @@ class FileManager {
                 } catch (e) {
                 }
             }
-            this.readCSV(filename, mod, submod, function (datas) {
+            this.readCSV(filename, mod, submod, user, function (datas) {
                 console.log(JSON.stringify(datas));
                 callback();
             });
@@ -279,17 +280,17 @@ class FileManager {
             var mod = name.replace(".zip", "") + "_" + new Date().getTime();
             this.unzip(filename, mod, function (data) {
                 console.log(process.cwd() + '/temp/' + mod);
-                while (true) {
-                    fs.readdir(process.cwd() + '/temp/' + mod, function (err, files) {
-                        console.log(err);
-                        if (!err) {
+                //  while (true) {
+                fs.readdir(process.cwd() + '/temp/' + mod, function (err, files) {
+                    console.log(err);
+                    //  if (!err) {
 
-                            callback();
+                    callback();
 
-                        }
+                    // }
 
-                    });
-                }
+                });
+                //}
 
 
 
@@ -315,7 +316,7 @@ class FileManager {
 
     }
 
-    readCSV(filename, m, s, callback) {
+    readCSV(filename, m, s, user, callback) {
         var q_list = [];
         var parser = parse({ delimiter: ',' }, function (err, data) {
 
@@ -324,7 +325,7 @@ class FileManager {
                     "correct": 0,
                     "incorrect": 0,
                     "image_id": "",
-                    "user_id": "",
+                    "user_id": user.id,
                     "est": 0,
                     "ref": "",
                     "choice": [
@@ -369,7 +370,7 @@ class FileManager {
 
     }
 
-    readExcel(filename, mod, callback) {
+    readExcel(filename, mod, user, callback) {
         var workbook = XLSX.readFile(filename);
 
         /* const tagConvert = (sheet) => {
@@ -394,6 +395,8 @@ class FileManager {
             console.log("================================================");
             var index = 0;
             var data = {};
+            var ref_index = 1;
+            var ref_id = "";
             for (var key in sheet) {
                 if (key !== '!ref') {
                     if (key[0] === 'A') {
@@ -411,7 +414,8 @@ class FileManager {
                                 sheet_name
                             ],
                             "est": 0,
-                            "ref": "",
+                            "ref_index": 0,
+                            "ref_id": "",
                             "question": sheet[key].v,
                             "correct": 0,
                             "dificalty_index": 1,
@@ -424,7 +428,13 @@ class FileManager {
                         data.dificalty_index = sheet[key].v
                     }
                     else if (key[0] === 'D') {
-                        data.ref = sheet[key].v
+                        if (ref_id != sheet[key].v) {
+                            ref_index = 1;
+                            ref_id = sheet[key].v;
+                        }
+                        data.ref_id = sheet[key].v
+                        data.ref_index = ref_index;
+                        ref_index++;
                     }
                     else if (key[0] === 'E') {
                         var c = {
