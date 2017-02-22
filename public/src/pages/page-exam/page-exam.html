@@ -39,6 +39,9 @@
         Polymer({
             is: 'page-exam',
             behaviors:[nylonBehavior,ReduxBehavior,examHistoryAction,examAction],
+            nylonPageActive:function(){
+                this.nylonVisible(false);
+            },
             observers:['getTest(getParam.id)'],
             listeners:{
                 'next':'nextIron',
