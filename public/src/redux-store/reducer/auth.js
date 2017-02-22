@@ -43,9 +43,11 @@ export function authAction(store){
                     }
                     console.log(userInfo);
                     if(userInfo.role=="teacher"){
-                        this.fire('nylon-change-page',{path:'/examRoom'})
+                        //this.fire('nylon-change-page',{path:'/examRoom'})
+                        window.location = "/examRoom";
                     }else{
-                        this.fire('nylon-change-page',{path:'/examHistory'})
+                        //this.fire('nylon-change-page',{path:'/examHistory'})
+                        window.location = "/examHistory";
                     }
 
                 })
