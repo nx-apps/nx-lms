@@ -96,11 +96,15 @@
             properties:{
                 data:{
                     statePath: 'userManage.dataSelect',
+                    observer: 'setData'
                 },
                 module:{
                     statePath:'commonSystem.module',
                     observer:'setModule'
                 }
+            },
+            setData:function(){
+                console.log(this.data);
             },
             setModule:function(){
                 if(this.module.length != 0){

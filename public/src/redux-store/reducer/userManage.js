@@ -3,7 +3,10 @@ import {commonAction} from '../config'
 
 const initialState = {
     dataList:[],
-    dataSelect:{}
+    dataSelect:{
+        key_tags:[],
+        end_tags:[]
+    }
 }
 
 export function userManageReducer(state = initialState,action){
@@ -13,7 +16,7 @@ export function userManageReducer(state = initialState,action){
         case 'USER_MANAGE_CLEAR_GET_LIST':
             return Object.assign({},state,{dataList:[]});
         case 'USER_MANAGE_CLEAR_LIST':
-            return Object.assign({},state,{dataSelect:action.payload});
+            return Object.assign({},state,{dataSelect:{key_tags:[],end_tags:[]}});
         case 'USER_MANAGE_SELECT_LIST':
             return Object.assign({},state,{dataSelect:action.payload});
         default:
@@ -31,7 +34,8 @@ export function userManageAction(store){
                 .then((response)=>{
                     console.log(response.data);
                     this.fire('toast',{status:'success',
-                      callback:function(){
+                      callback:()=>{
+                          this.fire('close');
                       }
                      });
                     store.dispatch({type:'USER_MANAGE_GET_LIST',payload:response.data});
