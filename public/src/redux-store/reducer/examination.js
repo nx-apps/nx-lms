@@ -22,6 +22,8 @@ export function examinationReducer(state = initialState,action){
             return Object.assign({},state,{dataSelect:action.payload});
         case 'EXAMINATION_RANDOM':
             return Object.assign({},state,{examinationRandomList:action.payload});
+        case 'EXAMINATION_CLEAR_LIST':
+            return Object.assign({},state,{dataList:[]});
         default:
             return state
     }
@@ -94,6 +96,9 @@ export function examinationAction(store){
             .catch((error)=>{
                 console.log(error);
             })
+        },
+        EXAMINATION_CLEAR_LIST:function(){
+             store.dispatch({type:'EXAMINATION_CLEAR_LIST'});
         },
         EXAMINATION_RANDOM:function(data){
              console.log(JSON.stringify(data));

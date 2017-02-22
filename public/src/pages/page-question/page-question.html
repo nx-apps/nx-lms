@@ -49,6 +49,8 @@
                 }
             },
             nylonPageActive:function(){
+                this.moduleSelect = '';
+                this.dispatchAction('QUESTION_CLEAR_LIST');
                 this.dispatchAction('USER_MANAGE_SELECT_LIST');
                 this.dispatchAction('COMMON_MODULE');
             },

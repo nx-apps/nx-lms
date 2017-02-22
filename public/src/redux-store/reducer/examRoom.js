@@ -29,6 +29,8 @@ export function examRoomReducer(state = initialState,action){
             return Object.assign({},state,{selectexamRoom:{}});
         case 'EXAMROOM_CLEAR_STUDENT_LIST':
             return Object.assign({},state,{studentList:[]});
+        case 'EXAMROOM_CLEAR_LIST':
+            return Object.assign({},state,{examList:[]});
         default:
             return state
     }
@@ -66,6 +68,9 @@ export function examRoomAction(store){
                     console.log('error');
                     console.log(error);
                 });
+            },
+            EXAMROOM_CLEAR_LIST:function(){
+                store.dispatch({type:'EXAMROOM_CLEAR_LIST'});
             },
             EXAMROOM_GET_STUDENT_LIST:function(tag){
                 axios.get('./examRoom/userModuleList?module='+tag)

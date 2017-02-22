@@ -63,6 +63,8 @@
             },
             nylonPageActive:function(){
                 this.dispatchAction('COMMON_MODULE');
+                this.moduleSelect = ""
+                this.dispatchAction('EXAMINATION_CLEAR_LIST');
             },
             listeners:{
                 'select-data':'selectData',
