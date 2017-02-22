@@ -16,6 +16,8 @@ export function questionReducer(state = initialState,action){
             return Object.assign({},state,{dataSelect:action.payload});
         case 'QUESTION_CLEAR_SELECT':
             return Object.assign({},state,{dataSelect:{choice:[]}});
+        case 'QUESTION_CLEAR_LIST':
+            return Object.assign({},state,{dataList:[]});
         default:
             return state
     }
@@ -114,6 +116,9 @@ export function questionAction(store){
             },
             QUESTION_CLEAR_SELECT:function(){
                 store.dispatch({type:'QUESTION_CLEAR_SELECT'});
+            },
+            QUESTION_CLEAR_LIST:function(){
+                 store.dispatch({type:'QUESTION_CLEAR_LIST'});
             },
             QUESTION_IMAGE:function(files){
                 var data = new FormData();
