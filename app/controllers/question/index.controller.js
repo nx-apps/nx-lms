@@ -8,7 +8,7 @@ var iconv = require('iconv-lite');
 var XLSX = require('xlsx');
 var unzip = require('unzip');
 const auth = require('../auth');
-
+const os = require('os');
 class index {
 
     select_question(req, res) {
@@ -233,7 +233,8 @@ class FileManager {
         else if (filename.indexOf(".zip") > 0) {
             console.log("start read .zip");
             var mod = name.replace(".zip", "");
-            var full = process.cwd() + '/temp/' + mod + "_" + new Date().getTime();
+            console.log(os.tmpdir());
+            var full =os.tmpdir()+"/"+ mod + "_" + new Date().getTime();
             this.unzip(filename, full, function (data) {
 
 
