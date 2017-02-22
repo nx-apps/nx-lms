@@ -46,6 +46,7 @@ export function examHistoryAction(store){
                     // console.log(JSON.stringify(response.data));
                     // console.log(response.data);
                     store.dispatch({type:'EXAM_HISTORY_EXAM_LIST_SELECT',payload:response.data})
+                    this.nylonVisible(true);
                 })
                 .catch((error)=>{
                     console.log('error');
