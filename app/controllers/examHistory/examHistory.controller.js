@@ -207,6 +207,10 @@ select_question(req,res){
                 .reduce(function (l, r) {
                     return l.add(r)
                 })
+                .merge(function(t){
+                    return {choice:t('choice').sample(t('choice').count())}
+                })
+
             }
     })
 
