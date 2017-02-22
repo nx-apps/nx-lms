@@ -49,7 +49,7 @@
     <script>
         Polymer({
             is: 'question-list',
-            behaviors:[ReduxBehavior,questionAction],
+            behaviors:[ReduxBehavior],
             properties:{
                 dataList:{
                     statePath:'question.dataList'
@@ -59,14 +59,7 @@
                 //this.QUESTION_GET_LIST();
             },
             selectList:function(e){
-                this.QUESTION_SELECT(e.currentTarget.questionId)
-                this.fire('select-data');
-                // .then((response)=>{
-                //      
-                //  })
-                // .catch((error)=>{
-                //     console.log(error);
-                // });
+                this.dispatchAction('QUESTION_SELECT',e.currentTarget.questionId)
                
             },
             toIndex:function(index){
