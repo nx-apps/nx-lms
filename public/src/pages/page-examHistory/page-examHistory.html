@@ -21,9 +21,10 @@
             }
         </style>
         <div class="bgWhite">
+            <nylon-param params="{{getParam}}" pattern="tabs"></nylon-param>
              <div class="xcontainer">
-                <div class="header gl-large">รายการข้อสอบ</div>
-                <paper-tabs selected="{{selected}}">
+                <div class="header gl-large">ประวัติการสอบ</div>
+                <paper-tabs selected="{{getParam.tabs}}">
                     <paper-tab class="fontCSC">รายการห้องสอบ</paper-tab>
                     <paper-tab class="fontCSC">รายการผลสอบ</paper-tab>
                     <paper-tab disabled></paper-tab>
@@ -35,7 +36,7 @@
              </div>
             </div>
             <div class="xcontainer">
-                <iron-pages selected="{{selected}}">
+                <iron-pages selected="{{getParam.tabs}}">
                     <section><examHistory-list></examHistory-list></section>
                     <section><examHistory-list-complete></examHistory-list-complete></section>
                 </iron-pages> 
@@ -46,15 +47,18 @@
             is: 'page-examHistory',
             behaviors:[nylonBehavior,examHistoryAction],
             properties:{
-                selected:{
-                    type:String,
-                    value:'0'
+                getParam:{
+                    type:Object,
+                    value:{
+                        tabs:'0'
+                    }
                 }
             },
             nylonPageActive:function(){
+                this.getParam.tabs = '0';
                 this.EXAM_HISTORY_EXAM_LIST();
                 this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
-            },
+            }
         });
     </script>
 </dom-module>

@@ -8,4 +8,5 @@ module.exports = function(app){
     app.delete('/question',index.delete_question);
 
     app.post('/upload',index.uploadFile);
+    app.get('/report_question',index.report_question);
 }

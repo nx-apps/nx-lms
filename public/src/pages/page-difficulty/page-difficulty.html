@@ -1,0 +1,62 @@
+
+<dom-module id="page-difficulty">
+    <template>
+        <style include="page-style flex-style"></style>
+        <div class="xcontainer">
+            <div class="container flex-equal-justified">
+                <div class="header gl-large">รายงานความยากง่ายของข้อสอบ</div>
+                <div>
+                    <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" item-label-path="" item-value-path="" value="{{moduleSelect}}">
+                    </gl-combo-box>
+                </div>
+            </div> 
+            <div class="container">
+                <paper-material elevation="1">
+                    <table class="gl-table-default">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%">#</th>
+                                <th>ชื่อข้อสอบ</th>
+                                <th>ระดับความยาก</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template is="dom-repeat" items="[[dataList]]">
+                                <tr>
+                                    <td>[[count(index)]]</td>
+                                    <td>[[item.question]]</td>
+                                    <td>[[item.d_index]]</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </paper-material>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-difficulty',
+            behaviors:[nylonBehavior,ReduxBehavior,difficultyAction],
+            observers:['_obModuleSelect(moduleSelect)'],
+            properties:{
+                module:{
+                    statePath:'commonSystem.module'
+                },
+                dataList:{
+                    statePath:'difficulty.dataList'
+                }
+
+            },
+            count:function(index){
+                return index+1;
+            },
+            nylonPageActive:function(){
+                this.dispatchAction('COMMON_MODULE');
+            },
+            _obModuleSelect:function(module){
+                if(module != '') this.dispatchAction('DIFFICULTY_GET_LIST',module);
+            }
+        });
+    </script>
+</dom-module>

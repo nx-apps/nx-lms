@@ -202,6 +202,7 @@ class index {
 
     }
 
+<<<<<<< HEAD
 
 
 
@@ -477,5 +478,35 @@ class FileManager {
 
 
 
+=======
+    report_question(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('question').getAll(params.module,{index:'module'}).pluck('correct','incorrect','question').merge(function(result){
+            return {
+                d_tag: r.branch( result('correct').add(result('incorrect')).eq(0),0, 
+                result('correct').div( result('correct').add(result('incorrect')) ).mul(100)  )
+            }
+        })
+
+        .merge(function(result){
+            return {
+            d_index:r.branch(
+                result('d_tag').ge(0).and( result('d_tag').le(33) ),'ยาก',
+                result('d_tag').ge(34).and( result('d_tag').le(67) ),'ปานกลาง','ง่าย'
+            )
+            }
+        })
+        .run()
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+>>>>>>> 12eac953ade7f71c690a34395b5abbe4bb73a88b
 }
+
 module.exports = new index();

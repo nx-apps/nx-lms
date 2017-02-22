@@ -20,6 +20,18 @@
                     <div class="flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flexchild fontCSC margin">
+                            Module 
+                        </div>
+                        <div class="flex3child fontCSC margin" style="text-align: left;">
+                            [[module]]
+                            <!--<gl-combo-box  no-label-float items="{{newTag}}" value="{{data.tag}}"></gl-combo-box>-->
+                        </div>
+                      
+                        <div class="flexchild"></div>
+                    </div>
+                    <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
                             ชื่อห้องสอบ 
                         </div>
                         <div class="flex3child" style="text-align: left">
@@ -40,11 +52,21 @@
                     <div class="flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flexchild fontCSC margin">
-                            Module 
+                            ตั้งค่า 
                         </div>
-                        <div class="flex3child fontCSC margin" style="text-align: left;">
-                            [[module]]
-                            <!--<gl-combo-box  no-label-float items="{{newTag}}" value="{{data.tag}}"></gl-combo-box>-->
+                        <div class="flex3child" style="text-align: left;">
+                            <gl-combo-box no-label-float items="{{setting}}" item-label-path="label" item-value-path="id" value="{{data.setting}}"></gl-combo-box>
+                        </div>
+                      
+                        <div class="flexchild"></div>
+                    </div>
+                    <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
+                            กำหนดวันที่สอบ 
+                        </div>
+                        <div class="flex3child" style="text-align: left; margin-top: -22px;">
+                            <vaadin-date-picker placeholder="กำหนดวันที่สอบ" value="{{data.date}}"></vaadin-date-picker>
                         </div>
                       
                         <div class="flexchild"></div>
@@ -102,6 +124,23 @@
                 listTag:{
                     statePath:'examination.listTag',
                     observer:'fillterListTag'
+                },
+                setting:{
+                    type: Array,
+                    value: [
+                        {
+                            id:'1',
+                            label: 'ไม่แจ้งผล'
+                        },
+                        {
+                            id:'2',
+                            label: 'แสดงเฉพาะคะแนนสอบ'
+                        },
+                        {
+                            id:'3',
+                            label: 'แสดงเฉพาะคะแนนสอบ/พร้อมเฉลย'
+                        },
+                    ]
                 }
             },
             fillterListTag:function(listTag){
@@ -157,12 +196,12 @@
             _deleteData:function(check){
                 if(check == true){
                     this.dispatchAction('EXAMROOM_DELETE_DATA',this.data.id);
-                    this.fire('close');
+                    // this.fire('close');
                 }
             },
             getForm:function(){
                 this.data.module = this.module;
-                console.log(this.data.id);
+                console.log(this.data);
                 if(typeof this.data.id != 'undefined'){
                     this.dispatchAction('EXAMROOM_UPDATE_DATA',this.data);
                 }

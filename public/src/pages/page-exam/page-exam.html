@@ -25,27 +25,43 @@
                     </thead>
                  </table>
             </paper-material>
+             <iron-pages selected="[[selected]]">
             <template is="dom-repeat" items="[[dataList.question]]">
-                <exam-list data="[[item]]" index="[[cont(index)]]"></exam-list>
-                
+                <section>              
+                    <exam-list selected="[[selected]]" count="[[dataList.question.length]]" data="[[item]]" index="[[cont(index)]]"></exam-list>
+                </section>  
             </template>
-            
+             </iron-pages>
         </div>
          <paper-fab icon="icons:send" title="ส่งข้อสอบ" on-tap="confirmToast"></paper-fab>
     </template>
     <script>
         Polymer({
             is: 'page-exam',
-            behaviors:[ReduxBehavior,examHistoryAction,examAction],
+            behaviors:[nylonBehavior,ReduxBehavior,examHistoryAction,examAction],
             observers:['getTest(getParam.id)'],
+            listeners:{
+                'next':'nextIron',
+                'previous':'previousIron'
+            },
             properties:{
                 dataList:{
                     statePath:'examHistory.examSelect',
                     observer:'getData'
+                },
+                selected:{
+                    type:String,
+                    value:'0'
                 }
                 // user:{
                 //     statePath:'auth.user'
                 // }
+            },
+            nextIron:function(){
+                this.$$('iron-pages').selectNext();
+            },
+            previousIron:function(){
+                 this.$$('iron-pages').selectPrevious();
             },
             getTest:function(id){
                 if(this.getParam.page=="exam"){
@@ -92,7 +108,7 @@
                     })
                     // console.log(data);
                     this.EXAM_INSERT_DATA(data);
-                    this.fire('nylon-change-page',{path:'/examResult/'+this.dataList.examination_id})
+                    this.fire('nylon-change-page',{path:'/examHistory/1'})
                 }
             }
 

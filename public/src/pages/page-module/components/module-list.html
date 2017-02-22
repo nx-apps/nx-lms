@@ -49,7 +49,7 @@
                         <tr>
                             <td>[[count(index)]]</td>
                             <td>
-                                <gl-form-input class="mar-head" auto-validate error-message="กรุณาใส่จำนวน" no-label-float placeholder="Module name." value="{{item.id}}"></gl-form-input>
+                                <gl-form-input class="mar-head" auto-validate error-message="กรุณาใส่จำนวน" no-label-float placeholder="Module name." value="{{item.id}}" readonly></gl-form-input>
                             </td>
                             <td style="text-align: right;">
                                 <tag-module label="{{item.id}}" color="{{item.color}}"></tag-module>
@@ -137,6 +137,7 @@
                 }
             },
             editData:function(e){
+                // console.log(e.currentTarget.item)
                 this.dispatchAction('MODULE_UPDATE',e.currentTarget.item);
             }
         });

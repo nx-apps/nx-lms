@@ -29,7 +29,7 @@
             </div>
         </template>
         <div class="comBobox">
-            <gl-combo-box no-label-float item-label-path="id" item-value-path="id" items="[[items]]" on-value-changed="selectTag"></gl-combo-box>
+            <gl-combo-box no-label-float item-label-path="id" item-value-path="id" items="[[myItems]]" on-value-changed="selectTag"></gl-combo-box>
         </div>
     </template>
     <script>
@@ -38,18 +38,43 @@
             properties:{
                 value:{
                     value:[],
-                    notify:true,
-                    observer:'obValue'
+                    notify:true
                 },
                 label:{
                     type:String,
                     value: 'label'
+                },
+                items:{
+                    observer:'obItems'
                 }
             },
+            observers:['obValue(value.*)'],
             obValue:function(n){
                 if(typeof n == "undefined"){
                     this.value = [];
+                }else{
+                    //console.log(this.myItems);
+                    if(this.myItems){
+
+                        this.myItems = this.items.filter((row)=>{
+                            var b = true;
+
+                            if(n.base){
+                                n.base.map((row2)=>{
+                                    if(row.id == row2.id)
+                                    b = false;
+                                })
+                            }
+
+                            return b
+                        })
+
+                    }
+                    
                 }
+            },
+            obItems:function(ob){
+                this.myItems = [].concat(ob);
             },
             mergeDel:function(val){
                 return val + ' x'
@@ -57,12 +82,13 @@
             selectTag:function(e){
                 if(e.detail.value){
                     var index = -1;
-                    this.items.map(function(row,i){
+                    this.myItems.map(function(row,i){
                         if(row.id == e.detail.value)
                         index = i;
                     })
-                    this.push('value',this.items[index]);
-                    this.splice('items',index,1);
+
+                    this.push('value',this.myItems[index]);
+                    //console.log(e.detail.value);
                     e.currentTarget.value = "";
                 }
             },
@@ -75,7 +101,6 @@
                 }
             },
             deleteTag:function(e){
-                this.push('items',e.currentTarget.item);
                 var index = this.value.indexOf(e.currentTarget.item);
                 this.splice('value',index,1);
             }

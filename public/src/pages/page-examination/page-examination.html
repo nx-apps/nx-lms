@@ -78,16 +78,12 @@
                     objective:[],
                 }
                 this.$$('panel-right').open();
-            },
-            openNewPage:function(){
-                console.log(this.testId);
-                this.fire('nylon-change-page',{path:'/test/'+this.testId});
-            },           
-            closePanelRight:function(e){
-                this.testId = e.detail;
+            },       
+            closePanelRight:function(){
+                // this.testId = e.detail;
 
                 this.$$('panel-right').close();
-                this.$$('paper-dialog').open();
+                // this.$$('paper-dialog').open();
             },
             insertData:function(e){
 

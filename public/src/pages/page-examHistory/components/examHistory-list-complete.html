@@ -17,6 +17,8 @@
                     <tr>
                         <th style="width:10%">#</th>
                         <th>รายการผลสอบ</th>
+                        <th>Module</th>
+                        <th>สถานะ</th>
                         <th style="text-align: right">จำนวนข้อที่ถูก (ข้อ)</th>
                         <th style="text-align: right">จำนวนข้อทั้งหมด (ข้อ)</th>
                     </tr>
@@ -26,7 +28,13 @@
                         <tr on-tap="selectData" item="[[item]]">
                             <td>[[getIndex(index)]]</td>
                             <td>[[item.name_room]]</td>
-                            <td style="text-align: right">[[item.score]]</td>
+                            <template is="dom-repeat" items="[[item.tags]]">
+                                <td><tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module></td>
+                            </template>
+                            <td>
+                                <iron-icon icon="[[setIcon(item.setting)]]"></iron-icon>
+                            </td>
+                            <td style="text-align: right">[[setScore(item.score,item.setting)]]</td>
                             <td style="text-align: right">[[item.count_question]]</td>
                         </tr>
                     </template>
@@ -47,10 +55,34 @@
                     statePath:'examHistory.examListComplete'
                 }
             },
+            setScore:function(score,setting){
+                console.log(score,setting);
+                if(setting == '1'){
+                    return 'ไม่ได้รับอณุญาติให้แสดงคะแนน'
+                }else{
+                    return score;
+                }
+            },
+            setIcon:function(setting){
+                if(setting == '1' || setting == '2'){
+                    return 'icons:lock'
+                }
+                else{
+                    return 'icons:check'
+                }
+            },
             selectData:function(e){
                 // console.log(this.examList);
                 // console.log(e.currentTarget.item);
-                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.examination_id})
+                if(e.currentTarget.item.setting == '1' || e.currentTarget.item.setting == '2'){
+                     this.fire('toast',{status:'connectError',text:'ไม่ได้รับอณุญาติให้ดูเฉลยข้อสอบ',
+                     callback:function(){
+                     }})
+                }
+                else{
+                    this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.examination_id})
+                }
+                
             }
         });
     </script>

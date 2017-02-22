@@ -43,6 +43,7 @@ export function examinationAction(store){
             });
         },
         EXAMINATION_GET_DATA_SELECT:function(id){
+            this.fire('toast',{status:'load'});
             axios.get('./examination/examination_only?id='+id)
             .then((response)=>{
                 response.data.objective.map((item)=>{
@@ -51,8 +52,14 @@ export function examinationAction(store){
                     })
                     return item
                 })
-                console.log(response.data);
-                store.dispatch({type:'EXAMINATION_GET_DATA_SELECT',payload:response.data})
+                this.fire('toast',{status:'success',
+                  callback:()=>{
+                        this.fire('select-data');
+                       store.dispatch({type:'EXAMINATION_GET_DATA_SELECT',payload:response.data})
+                  }
+                 });
+                // console.log(response.data);
+               
             })
             .catch((error)=>{
                 console.log('error');
@@ -79,8 +86,8 @@ export function examinationAction(store){
                 console.log(response.data);
                 store.dispatch({type:'EXAMINATION_GET_LIST',payload:response.data});
                 this.fire('toast',{status:'success',
-                    callback:function(){
-                        
+                    callback:()=>{
+                        this.fire('close');
                     }
                 });
             })

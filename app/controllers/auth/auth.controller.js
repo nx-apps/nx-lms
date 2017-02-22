@@ -2,6 +2,21 @@ const jwt = require('jsonwebtoken');
 const sha1 = require('js-sha1');
 const SECRET_KEY = "จริงๆแล้วก็ไม่รู้ว่าจะใส่อะไรดีที่เป็นความลับอะนะ";
 
+
+// const auth = require('../auth');
+// select_exam(req,res){
+//     var r = req.r;
+//     var params = req.query;
+
+//     auth.userInfo(req).then(user=>{
+//         res.json(user);
+//     }).catch(err=>{
+//         res.json(err);
+//     })
+    
+// }
+
+
 class auth{
     login(req,res){
         var r = req.r;

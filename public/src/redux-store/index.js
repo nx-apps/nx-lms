@@ -15,6 +15,7 @@ import {examHistoryReducer,examHistoryAction} from './reducer/examHistory'
 import {examReducer,examAction} from './reducer/exam'
 import {examResultReducer,examResultAction} from './reducer/examResult'
 import {userManageReducer,userManageAction} from './reducer/userManage'
+import {difficultyReducer,difficultyAction} from './reducer/difficulty'
 
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
     examHistory:examHistoryReducer,
     exam:examReducer,
     examResult:examResultReducer,
-    userManage:userManageReducer
+    userManage:userManageReducer,
+    difficulty:difficultyReducer
 });
 const storeApp = createStore(
     rootReducer,
@@ -52,3 +54,4 @@ window.examHistoryAction = examHistoryAction(storeApp);
 window.examAction = examAction(storeApp);
 window.examResultAction = examResultAction(storeApp);
 window.userManageAction = userManageAction(storeApp);
+window.difficultyAction = difficultyAction(storeApp);
