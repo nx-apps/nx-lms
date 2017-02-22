@@ -10,6 +10,8 @@ export function userManageReducer(state = initialState,action){
     switch (action.type) {
         case 'USER_MANAGE_GET_LIST':
             return Object.assign({},state,{dataList:action.payload});
+        case 'USER_MANAGE_CLEAR_GET_LIST':
+            return Object.assign({},state,{dataList:[]});
         case 'USER_MANAGE_CLEAR_LIST':
             return Object.assign({},state,{dataSelect:action.payload});
         case 'USER_MANAGE_SELECT_LIST':
@@ -38,6 +40,9 @@ export function userManageAction(store){
                     console.log('error');
                     console.log(error);
                 });
+            },
+            USER_MANAGE_CLEAR_GET_LIST:function(){
+               store.dispatch({type:'USER_MANAGE_CLEAR_GET_LIST'}); 
             },
             USER_MANAGE_SELECT_LIST:function(id){
                 axios.get('./user/select_user?id='+id)

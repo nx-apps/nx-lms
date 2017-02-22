@@ -50,6 +50,8 @@
             },
             nylonPageActive:function(){
                 this.dispatchAction('COMMON_MODULE');
+                this.moduleSelect = "";
+                this.dispatchAction('USER_MANAGE_CLEAR_GET_LIST');
             },
             clearData:function(){
                 this.$$('userManage-manage').password = '';
