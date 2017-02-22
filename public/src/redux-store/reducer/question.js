@@ -32,7 +32,8 @@ export function questionAction(store){
                     console.log(response.data);
                     store.dispatch({type:'QUESTION_GET_LIST',payload:response.data});
                     this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
-                      callback:function(){
+                      callback:()=>{
+                          this.fire('close');
                       }
                      });
                 })
@@ -93,6 +94,7 @@ export function questionAction(store){
                     axios.get('./question/question_only?id='+questionId)
                     .then((response)=>{
                         store.dispatch({type:'QUESTION_SELECT',payload:response.data});
+                        // this.fire('select-data');
                     })
                     .catch((error)=>{
                         reject(error);
