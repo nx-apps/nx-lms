@@ -412,7 +412,7 @@ class FileManager {
                         if (sheet[key].v) {
                             var c = {
                                 "check": true,
-                                "name": sheet[key].v,
+                                "name": String(sheet[key].v),
                                 "image_id": ""
                             };
                             data.choice.push(c);
@@ -421,7 +421,7 @@ class FileManager {
                         if (sheet[key].v) {
                             var c = {
                                 "check": false,
-                                "name": sheet[key].v,
+                                "name": String(sheet[key].v),
                                 "image_id": ""
                             };
                             data.choice.push(c);
