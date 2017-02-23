@@ -208,17 +208,9 @@ select_question(req,res){
                     return l.add(r)
                 })
                 .merge(function(t){
-                    return {choice:t('choice').sample(t('choice').count())}
+                    return {choice:t('choice').sample(t('choice').count()).without('check')}
                 })
 
-            }
-    })
-
-    .merge(function(x){
-            return {
-                question:x('question').merge(function(ran){
-                    return { choice:ran('choice').sample( ran('choice').count())}
-                })
             }
     })
 

@@ -18,6 +18,7 @@ class index{
             return r.db('lms').table('exam_answer').insert(result)
         })
 */
+/*
         .merge(function(xxx){
             return { 
                 x:xxx('question').merge(function(m){
@@ -101,6 +102,61 @@ class index{
                     })
                 })
             })            
+        })
+*/
+        .merge(function(x){
+            return {
+            question:x('question')
+            .merge(function(x){
+                return {a:x('choice').filter({answer:true})(0)}
+            }) 
+                .merge(function(x){
+                return {q:r.db('lms').table('question').get(x('id')).getField('choice').filter({check:true})(0) }
+            })
+            
+            .merge(function(x){
+                return { 
+                Cscore: r.branch(x('a')('name').eq(x('q')('name')),1,0),
+                ICscore: r.branch(x('a')('name').ne(x('q')('name')),1,0),
+                choice:x('choice').merge(function(xx){ return {answer_correct:x('q')('name') } }) 
+                }
+            }),
+            examination_id:x('examination_id'),
+            exam_room_id:x('exam_room_id'),
+            count_question:x('question')('choice').count()
+            }
+        })
+        .do(function(x){
+            return x.merge(function(x){
+            return {score:x('question')('Cscore').sum()}
+            })
+        })
+        .do(function(result){return r.db('lms').table('exam_answer').insert(result)})
+        .do(function(aa){return r.db('lms').table('exam_answer').filter({id:aa('generated_keys')(0)})})
+        
+        .merge(function(x){
+            return x('question')
+        })
+
+        .group(function(x){
+            return x.pluck('id','Cscore','ICscore')
+        }).ungroup()
+
+        .map(function(x){
+            return x('group')
+        })(0)
+
+        .forEach(function(x){
+            return r.db('lms').table('question').get(x('id'))
+            .do(function(doo){
+                return r.db('lms').table('question').get(x('id'))
+                .update({
+                    correct:doo('correct').add(x('Cscore')),
+                    incorrect:doo('incorrect').add(x('ICscore')),
+                    d_tag:r.branch(doo('correct').add(doo('incorrect')).eq(0),0,
+                    doo('correct').add(x('Cscore')) .div( doo('correct').add(x('Cscore')) .add( doo('incorrect').add(x('ICscore')) )).mul(100))
+                })
+            })
         })
 
         .run()
