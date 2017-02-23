@@ -228,7 +228,7 @@ getHistoryList(req,res){
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_answer').filter({user_id:params.user_id})
+        r.db('lms').table('exam_answer').filter({user_id:params.user_id,exam_room_id:params.exam_room_id})
         .innerJoin(r.db('lms').table('exam_room'), function(x,xx){
             return x('exam_room_id').eq(xx('id'))
         }).map(function(result){

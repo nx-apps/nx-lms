@@ -166,7 +166,7 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').getAll(params.module, {index:'module'}).orderBy('time_update')
+        r.db('lms').table('exam_room').getAll(params.module, {index:'module'}).orderBy(r.desc('time_update'))
         .run()
         .then(function(result){
             res.json(result);

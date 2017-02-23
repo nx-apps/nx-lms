@@ -123,7 +123,9 @@ class index{
             }),
             examination_id:x('examination_id'),
             exam_room_id:x('exam_room_id'),
-            count_question:x('question')('choice').count()
+            count_question:x('question')('choice').count(),
+            user_id:x('user_id'),
+            time_insert:r.now()
             }
         })
         .do(function(x){
