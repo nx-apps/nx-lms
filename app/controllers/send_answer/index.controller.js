@@ -176,7 +176,7 @@ class index{
         var params = req.query;
          r.db('lms').table('exam_answer').filter({
         user_id:params.user_id,
-        examination_id:params.examination_id
+        exam_room_id:params.exam_room_id
         })
         .innerJoin(r.db('lms').table('user'),function(x,xx){
             return x('user_id').eq(xx('id'))
