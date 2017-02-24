@@ -1,0 +1,65 @@
+<dom-module id="page-graphql">
+    <template>
+        <template is="dom-repeat" items="[[items]]">
+            [[item.fname]] / [[item.lname]]
+            <button on-tap="deleteTodo" item="[[item]]">ลบ</button>
+            <br>
+        </template>
+        <hr>
+        <input type="text" value="{{formData.fname::input}}">
+        <input type="text" value="{{formData.lname::input}}">
+        <button on-tap="insertTodo">เพิ่ม</button>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-graphql',
+            behaviors: [nylonBehavior],
+            properties: {
+                items: {
+                    type: Array,
+                    value: []
+                },
+                formData: {
+                    type: Object,
+                    value: {}
+                }
+            },
+            ready: function () {
+                console.log(graphql);
+                this.getTodoList()
+            },
+            getTodoList: function () {
+                graphql(`{todoList{id,fname,lname}}`).then((res) => {
+                    this.items = res.data.todoList;
+                }).catch((err) => {
+                    console.log({ err });
+                })
+            },
+            insertTodo: function () {
+
+
+                graphql(`mutation{
+                    insertTodo(fname:"${this.formData.fname}",lname:"${this.formData.lname}"){
+                        inserted
+                    }
+                }`).then((res) => {
+                        this.getTodoList();
+                        this.formData = {};
+                    }).catch((err) => {
+                        console.log({ err });
+                    })
+            },
+            deleteTodo: function (e) {
+
+                graphql(`mutation{
+                    deleteTodo(id:"${e.currentTarget.item.id}")
+                    {deleted}
+                }`).then((res) => {
+                    this.getTodoList();
+                }).catch((err) => {
+                    console.log({ err });
+                })
+            }
+        });
+    </script>
+</dom-module>

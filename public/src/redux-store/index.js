@@ -2,6 +2,7 @@ import {createStore,combineReducers} from 'redux'
 import PolymerRedux from 'polymer-redux'
 import {dispatchActionBehavior} from './config'
 import {handleAuth} from './auth'
+import {graphql} from './graphql'
 
 import {commonSystemReducer,commonSystemAction} from './reducer/commonSystem'
 import {authReducer,authAction} from './reducer/auth'
@@ -39,6 +40,7 @@ const storeApp = createStore(
 
 window.ReduxBehavior = [PolymerRedux(storeApp),dispatchActionBehavior()];
 window.dispatchActionBehavior = dispatchActionBehavior();
+window.graphql = graphql;
 
 handleAuth(storeApp);
 

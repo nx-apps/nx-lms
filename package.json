@@ -22,7 +22,11 @@
   "dependencies": {
     "async": "^2.1.4",
     "axios": "^0.15.3",
+    "body-parser": "^1.16.1",
     "csv-parse": "^1.2.0",
+    "express-graphql": "^0.6.3",
+    "graphql": "^0.9.1",
+    "graphql-tools": "^0.10.0",
     "iconv-lite": "^0.4.15",
     "js-sha1": "^0.4.1",
     "jsonwebtoken": "^7.2.1",
