@@ -118,6 +118,7 @@
                 this.password = "";
                 this.active = false;
                 this.hide = true;
+                this.resetPw = false;
                 this.data.status = false;
                 // this.set('data.status',false);
                 // this.data.password = "";
@@ -177,11 +178,14 @@
                 if(this.data.admin != true){
                     this.data.admin = false;
                 }
-                if(this.data.status == false || typeof this.data.status == 'undefined'){
+                if(this.resetPw == false || typeof this.data.status == 'undefined'){
                      this.data.password = this.password;
                      this.data.status = false;
+                     this.resetPw = true;
                 }
+                // console.log(this.resetPw);
                 console.log(this.data);
+                // console.log(JSON.stringify(this.data));
                 // console.log(this.data.status)
                 if(typeof this.data.id != 'undefined'){
                     this.dispatchAction('USER_MANAGE_UPDATE',this.data);
