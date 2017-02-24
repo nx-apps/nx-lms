@@ -34,7 +34,6 @@
             listeners:{
                 'open':'selectData',
                 'close':'closePanel',
-                'clear':'clearData'
             },
             behaviors:[nylonBehavior,ReduxBehavior,userManageAction],
             properties:{
@@ -52,10 +51,6 @@
                 this.dispatchAction('COMMON_MODULE');
                 this.moduleSelect = "";
                 this.dispatchAction('USER_MANAGE_CLEAR_GET_LIST');
-            },
-            clearData:function(){
-                this.$$('userManage-manage').password = '';
-                this.$$('userManage-manage').ConfirmPassword = '';
             },
             closePanel:function(){
                 this.$$('panel-right').close();

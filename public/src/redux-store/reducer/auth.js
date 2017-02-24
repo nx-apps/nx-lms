@@ -17,6 +17,8 @@ export function authReducer(state = initialState,action){
                 userInfo = action.payload;
             }
             return Object.assign({},state,{user:userInfo});
+        case 'AUTH_CLEAR_USER':
+            return Object.assign({},state,{user:{role:'none'}})
         default:
             return state
     }
@@ -62,17 +64,21 @@ export function authAction(store){
                     alert('error')
                 });
             },
+            AUTH_CLEAR_USER:function(){
+                store.dispatch({type:'AUTH_CLEAR_USER'});
+            },
             AUTH_SET_PASSWORD:function(data){
-               
                 // alert('AUTH_SET_PASSWORD')
                 this.fire('toast',{status:'load'});
                 axios.put('./user/user',data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                       callback:()=>{
-                            window.location = "/examHistory";
+                          
                       }
                      });
+                    this.AUTH_CLEAR_USER();
+                    this.fire('page-login')
                     //  this.USER_MANAGE_GET_LIST(this.newTag);
                 })
                 .catch((error)=>{
