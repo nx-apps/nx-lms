@@ -93,7 +93,7 @@
             <div class="flex-end-justified" style="padding-top: 10px;">
                 <div>
                     <paper-button class="gl-btn-danger" on-tap="confirmData" raised>ลบข้อมูล</paper-button>
-                    <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
+                    <paper-button disabled$="[[disabledBtn]]" class$="[[btnClass]]" on-tap="getForm" raised>บันทึก</paper-button>
                 </div>
             </div>
             
@@ -102,6 +102,7 @@
     <script>
         Polymer({
             is: 'userManage-manage',
+            observers:['checkPassword(password,confirmPassword)'],
             behaviors:[ReduxBehavior],
             properties:{
                 data:{
@@ -113,9 +114,20 @@
                     observer:'setModule'
                 }
             },
+            checkPassword:function(password,confirmPassword){
+                if(password == confirmPassword && password != "" && confirmPassword != ""){
+                    this.btnClass = "gl-btn-success";
+                    this.disabledBtn = false;
+                }
+                else {
+                    this.btnClass = "";
+                    this.disabledBtn = true;
+                }
+            },
             clearPassword:function(){
                 console.log(this.data);
                 this.password = "";
+                this.confirmPassword = "";
                 this.active = false;
                 this.hide = true;
                 this.resetPw = false;
@@ -124,8 +136,7 @@
                 // this.data.password = "";
             },
             setData:function(){
-                this.password = "";
-                this.confirmPassword = "";
+               
                 if(typeof this.data.id == 'undefined'){
                     this.active = false;
                     this.hide = true
@@ -133,6 +144,8 @@
                 else{
                     this.active = true;
                     this.hide = false
+                    this.password = "xxx";
+                    this.confirmPassword = "xxx";
                 } 
             },
             setModule:function(){
@@ -184,7 +197,7 @@
                      this.resetPw = true;
                 }
                 // console.log(this.resetPw);
-                console.log(this.data);
+                // console.log(this.data);
                 // console.log(JSON.stringify(this.data));
                 // console.log(this.data.status)
                 if(typeof this.data.id != 'undefined'){
