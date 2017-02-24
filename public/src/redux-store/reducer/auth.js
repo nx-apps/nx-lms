@@ -41,23 +41,46 @@ export function authAction(store){
                     }else{
                         userInfo = response.data;
                     }
-                    console.log(userInfo);
-                    if(userInfo.role=="teacher"){
-                        //this.fire('nylon-change-page',{path:'/examRoom'})
-                        window.location = "/examRoom";
-                    }else{
-                        //this.fire('nylon-change-page',{path:'/examHistory'})
-                        window.location = "/examHistory";
+                    if(userInfo.status == true){
+                        if(userInfo.role=="teacher"){
+                            //this.fire('nylon-change-page',{path:'/examRoom'})
+                            window.location = "/examRoom";
+                        }else{
+                            // this.fire('nylon-change-page',{path:'/examHistory'})
+                          
+                            // this.selected = '1';
+                            window.location = "/examHistory";
+                        }
                     }
-
+                    else{
+                        this.toPagePassword();
+                    }
                 })
                 .catch((error)=>{
                     //console.log('error');
                     console.log({error});
                     alert('error')
                 });
-            }
+            },
+            AUTH_SET_PASSWORD:function(data){
+               
+                // alert('AUTH_SET_PASSWORD')
+                this.fire('toast',{status:'load'});
+                axios.put('./user/user',data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                            window.location = "/examHistory";
+                      }
+                     });
+                    //  this.USER_MANAGE_GET_LIST(this.newTag);
+                })
+                .catch((error)=>{
+                console.log('error');
+                console.log(error);
+                });
         }
+    }
     ]
 
 }
