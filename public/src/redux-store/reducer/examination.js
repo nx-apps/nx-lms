@@ -101,7 +101,8 @@ export function examinationAction(store){
              store.dispatch({type:'EXAMINATION_CLEAR_LIST'});
         },
         EXAMINATION_RANDOM:function(data){
-             console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
+            // console.log(data);
             axios.post('./examination/examination_random',data)
             .then((response)=>{
                
@@ -111,7 +112,7 @@ export function examinationAction(store){
                 console.log('error');
                 console.log(error);
             });
-            return axios.post('./examination/examination_random',data)
+            // return axios.post('./examination/examination_random',data)
         },
         EXAMINATION_INSERT:function(data){
             data.user_id = store.getState().auth.user.id;
