@@ -1,4 +1,6 @@
 
+<link rel="import" href="./page-setting-password.html">
+
 <dom-module id="page-login">
     <template>
         <style include="page-style flex-style">
@@ -27,34 +29,45 @@
                 text-align: center;
             }
         </style>
-            <div class="xcontainer container flex-center-justified">
-                <paper-material elevation="1">   
-                <div class="container bgWhite">
-                    <div class="container flex-center-justified">
-                        <img src="./../../../images/icon/green/app-icon-128.png"></img>
-                    </div>
-                    <div class="title gl-default">PENGUIN</div>
-                    <paper-input label="E-mail" value="{{formLogin.user}}">
-                        <div prefix>
-                            <iron-icon icon="social:person"></iron-icon>&nbsp;&nbsp;
+            
+        <iron-pages selected="{{selected}}">
+            <section>
+                <div class="xcontainer container flex-center-justified">
+                    <paper-material elevation="1">   
+                    <div class="container bgWhite">
+                        <div class="container flex-center-justified">
+                            <img src="./../../../images/icon/green/app-icon-128.png"></img>
                         </div>
-                    </paper-input>
-                    <paper-input label="Password" type="Password" value="{{formLogin.pass}}">
-                        <div prefix>
-                            <iron-icon icon="lock"></iron-icon>&nbsp;&nbsp;
+                        <div class="title gl-default">BETAGRO</div>
+                        <paper-input label="E-mail" value="{{formLogin.user}}">
+                            <div prefix>
+                                <iron-icon icon="social:person"></iron-icon>&nbsp;&nbsp;
+                            </div>
+                        </paper-input>
+                        <paper-input label="Password" type="Password" value="{{formLogin.pass}}">
+                            <div prefix>
+                                <iron-icon icon="lock"></iron-icon>&nbsp;&nbsp;
+                            </div>
+                        </paper-input>
+                        <div class="flex-end-justified" style="margin-top: 20px">
+                            <paper-button class="gl-bg-primary" on-tap="signin" raised>เข้าสู่ระบบ</paper-button>
                         </div>
-                    </paper-input>
-                    <div class="flex-end-justified" style="margin-top: 20px">
-                        <paper-button class="gl-bg-primary" on-tap="signin" raised>เข้าสู่ระบบ</paper-button>
                     </div>
-                </div>
-                </paper-material>
+                    </paper-material>
+                </section>
+                <section>
+                    <page-setting-password btnset="true"></page-setting-password>
+                </section>
             </div>
+            </iron-pages>
     </template>
     <script>
         Polymer({
             is: 'page-login',
             behaviors: [nylonBehavior,ReduxBehavior,authAction],
+            listeners:{
+                'page-login':'toThisPage'
+            },
             properties:{
                 formLogin:{
                     type:Object,
@@ -62,13 +75,29 @@
                         user:'admin@betagro.com',
                         pass:'1234'
                     }
-                }
+                },
+                selected:{
+                    type:String,
+                    value:'0'
+                },
+                user:{
+					 statePath:'auth.user',
+				}
             },
+            toThisPage:function(){
+                this.selected = '0';
+            },
+            toPagePassword:function(){
+                this.selected = '1';
+            },  
             nylonPageActive:function(){
                 //this.nylonVisible(false);
                 //this.nylonVisible(true);
             },
             signin:function(){
+                // console.log(this.user);
+                // this.selected = '1';
+                
                 this.AUTH_LOGIN(this.formLogin);
             }
         });

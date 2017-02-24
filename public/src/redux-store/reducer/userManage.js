@@ -16,7 +16,7 @@ export function userManageReducer(state = initialState,action){
         case 'USER_MANAGE_CLEAR_GET_LIST':
             return Object.assign({},state,{dataList:[]});
         case 'USER_MANAGE_CLEAR_LIST':
-            return Object.assign({},state,{dataSelect:{key_tags:[],end_tags:[]}});
+            return Object.assign({},state,{dataSelect:{admin:false,key_tags:[],end_tags:[]}});
         case 'USER_MANAGE_SELECT_LIST':
             return Object.assign({},state,{dataSelect:action.payload});
         default:
