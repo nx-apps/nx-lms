@@ -64,7 +64,12 @@
                             </div>
                         </paper-icon-item>
                     </template>
-                    
+                    <paper-icon-item on-tap="dowloadFile">
+                        
+                        <iron-icon icon="chevron-right" item-icon></iron-icon>        
+                        <!--<paper-icon-button icon="icons:get-app" ></paper-icon-button>-->
+                        ดาวน์โหลดคู่มือการใช้งาน
+                    </paper-icon-item>
 				</div>
 			</div>
     </template>
@@ -133,6 +138,9 @@
                         }
                     };
                 }
+            },
+            dowloadFile:function(){
+                window.open("./../../file/คู่มือใช้งานระบบคลังข้อสอบ.pdf");
             },
             selectPage:function(e){
                 if((('/'+this.path) != e.currentTarget.getAttribute('path')) && (e.currentTarget.getAttribute('path')!='')){
