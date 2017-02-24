@@ -24,7 +24,7 @@ class index{
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('user').get(params.id)
+        r.db('lms').table('user').get(params.id).without('password')
         .run()
         .then(function(result){
             res.json(result);
