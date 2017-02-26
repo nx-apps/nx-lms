@@ -134,6 +134,7 @@ select_question(req,res){
             examination_id:x('examination_id'),
             name_room:x('name_room'),
             description:x('description'),
+            time:x('time'),
             question :x('objective')
             /*
             .concatMap(function(row){
