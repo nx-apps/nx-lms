@@ -46,12 +46,14 @@ export function examAction(store){
                     console.log(this.dataList);
                     //Cookies.set('cc', 'value', { expires: 1 });
                     //
-                    
+                    if(x){
+                        clearInterval(x);
+                    }
 
                     var time = this.dataList.time;
 
                     if(!Cookies.get(this.dataList.exam_room_id)){
-                        Cookies.set(this.dataList.exam_room_id, new Date().getTime()+(time*10000), { expires: 1 });
+                        Cookies.set(this.dataList.exam_room_id, new Date().getTime()+(time*60000), { expires: 1 });
                     }
 
                     var countDownDate = Cookies.get(this.dataList.exam_room_id);

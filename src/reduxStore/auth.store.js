@@ -61,7 +61,9 @@ export function authAction(store){
                 .catch((error)=>{
                     //console.log('error');
                     console.log({error});
-                    alert('error')
+                    this.fire('toast',{status:'connectError',text:'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
+                         callback:function(){}
+                    })
                 });
             },
             AUTH_CLEAR_USER:function(){
