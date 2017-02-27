@@ -212,7 +212,15 @@ select_question(req,res){
                 .merge(function(t){
                     return {choice:t('choice').sample(t('choice').count()).without('check')}
                 })
+//
+                .do(function(x){
+                    return { question:x,count:x.count() }
+                })
 
+                .merge(function(t){
+                    return {question:t('question').sample(t('count'))}
+                }).pluck('question').coerceTo('array')(0)(1)
+//
             }
     })
 
