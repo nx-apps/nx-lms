@@ -97,7 +97,7 @@ class index {
             })
             .run()
             .then(function (result) {
-                res.status(500).json(result);
+                res.json(result);
             })
             .catch(function (err) {
                 res.status(500).json(err);
