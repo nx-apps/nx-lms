@@ -31,7 +31,7 @@
         <div class="xcontainer">
             <examination-list data-list="[[dataList]]" type-list="examination"></examination-list>
             <panel-right title="จัดการชุดข้อสอบ">
-                <examination-page data="[[data]]" selected="0" module="{{moduleSelect}}"></examination-page>
+                <examination-page selected="0" module="{{moduleSelect}}"></examination-page>
                <!--<examination-manage data="{{data}}" module="{{moduleSelect}}"></examination-manage>-->
             </panel-right>
         </div>
@@ -68,10 +68,6 @@
             },
             listeners:{
                 'select-data':'selectData',
-                'insert-data':'insertData',
-                'random-data':'randomData',
-                'update-data':'updateData',
-                'delete-data':'delData',
                 'close':'closePanelRight'
             },
             openPanelRight:function(){
@@ -89,99 +85,99 @@
                 this.$$('panel-right').close();
                 // this.$$('paper-dialog').open();
             },
-            insertData:function(e){
+            // insertData:function(e){
 
-                var data = JSON.parse(JSON.stringify(e.detail));
+            //     var data = JSON.parse(JSON.stringify(e.detail));
 
-                var question = data.question.map(function(row){
-                    return { obj_index:row.obj_index,question_id:row.id }
-                })
-                data.question = question;
-                data.time = parseInt(data.time);
+            //     var question = data.question.map(function(row){
+            //         return { obj_index:row.obj_index,question_id:row.id }
+            //     })
+            //     data.question = question;
+            //     data.time = parseInt(data.time);
 
                
-                this.fire('toast',{status:'load'});
-                    this.EXAMINATION_INSERT(data)
-                    .then(()=>{
-                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                            callback:()=>{
-                                    this.$$('panel-right').close();
-                            }
-                        });
-                });
+            //     this.fire('toast',{status:'load'});
+            //         this.EXAMINATION_INSERT(data)
+            //         .then(()=>{
+            //             this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+            //                 callback:()=>{
+            //                         this.$$('panel-right').close();
+            //                 }
+            //             });
+            //     });
           
-            },
+            // },
             selectData:function(e){
                 this.$$('panel-right').open();
-            },
-            randomData:function(e){
-                
-                var obj = e.detail.map(function(row,i){
-                    row.obj_index = i;
-                    row.obj_qty = parseInt(row.obj_qty);
-                    if(typeof row.obj_tag != "object"){
-                        row.obj_tag = [row.obj_tag]
-                    }
-                    return row;
-                })
-
-                this.EXAMINATION_RANDOM(obj)
-                .then((res)=>{
-                    this.set('data.question',res.data);
-                })
-                .catch(function(err){
-                    console.log(err);
-                })
-            },
-            updateData:function(e){
-
-                var data = JSON.parse(JSON.stringify(e.detail));
-                var question = data.question.map(function(row){
-                    return { obj_index:row.obj_index,question_id:row.id }
-                })
-                data.question = question;
-
-                data.time = parseInt(e.detail.time);
-
-
-                var obj = e.detail.obj.map(function(row,i){
-                    row.obj_index = i;
-                    row.obj_qty = parseInt(row.obj_qty);
-                    if(typeof row.obj_tag != "object"){
-                        row.obj_tag = [row.obj_tag]
-                    }
-                    return row;
-                })
-
-                data.obj = obj;
-
-
-                //console.log(data);
-
-                this.fire('toast',{status:'load'});
-                this.EXAMINATION_UPDATE(data)
-                .then(()=>{
-                this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
-                    callback:()=>{
-                         this.$$('panel-right').close();
-                    }
-                    });
-                });
-                
-            },
-            delData:function(e){
-                this.fire('toast',{status:'load'});
-                this.EXAMINATION_DELETE(e.detail)
-                .then(()=>{
-                this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
-                    callback:()=>{
-                         this.$$('panel-right').close();
-                    }
-                    });
-                });
-
-                
             }
+            // randomData:function(e){
+                
+            //     var obj = e.detail.map(function(row,i){
+            //         row.obj_index = i;
+            //         row.obj_qty = parseInt(row.obj_qty);
+            //         if(typeof row.obj_tag != "object"){
+            //             row.obj_tag = [row.obj_tag]
+            //         }
+            //         return row;
+            //     })
+
+            //     this.EXAMINATION_RANDOM(obj)
+            //     .then((res)=>{
+            //         this.set('data.question',res.data);
+            //     })
+            //     .catch(function(err){
+            //         console.log(err);
+            //     })
+            // },
+            // updateData:function(e){
+
+            //     var data = JSON.parse(JSON.stringify(e.detail));
+            //     var question = data.question.map(function(row){
+            //         return { obj_index:row.obj_index,question_id:row.id }
+            //     })
+            //     data.question = question;
+
+            //     data.time = parseInt(e.detail.time);
+
+
+            //     var obj = e.detail.obj.map(function(row,i){
+            //         row.obj_index = i;
+            //         row.obj_qty = parseInt(row.obj_qty);
+            //         if(typeof row.obj_tag != "object"){
+            //             row.obj_tag = [row.obj_tag]
+            //         }
+            //         return row;
+            //     })
+
+            //     data.obj = obj;
+
+
+            //     //console.log(data);
+
+            //     this.fire('toast',{status:'load'});
+            //     this.EXAMINATION_UPDATE(data)
+            //     .then(()=>{
+            //     this.fire('toast',{status:'success',text:'แก้ไขสำเร็จ',
+            //         callback:()=>{
+            //              this.$$('panel-right').close();
+            //         }
+            //         });
+            //     });
+                
+            // },
+            // delData:function(e){
+            //     this.fire('toast',{status:'load'});
+            //     this.EXAMINATION_DELETE(e.detail)
+            //     .then(()=>{
+            //     this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+            //         callback:()=>{
+            //              this.$$('panel-right').close();
+            //         }
+            //         });
+            //     });
+
+                
+            // }
         });
     </script>
 </dom-module>
