@@ -72,7 +72,7 @@ class index {
                 .do(function(x){
                     return r.branch(x.eq(0),
                     r.db('lms').table('question').insert(result),
-                    {error:'ERROR CAN NOT INSERT'}
+                    {error:'ERROR! CAN NOT INSERT'}
                     )
             })
         })
