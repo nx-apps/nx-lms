@@ -68,7 +68,14 @@ class index {
         r.expr(params).merge(function () {
             return { correct: 0, incorrect: 0, time_insert: r.now() }
         }).do(function (result) {
-            return r.db('lms').table('question').insert(result)
+            //return r.db('lms').table('question').insert(result)
+            r.db('lms').table('ex').filter({ module:result.module , ref_id:param.ref_id, ref_index:param.ref_index}).count()
+                .do(function(x){
+                return r.branch(x.eq(0),
+                    r.db('lms').table('ex').insert(result),
+                    'ERROR'
+                    )
+            })
         })
             .run()
             .then(function (result) {
