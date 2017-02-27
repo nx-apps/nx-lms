@@ -96,14 +96,14 @@ class index{
                 a: r.db('lms').table('question')
                     .getAll(r.args(m('sub_module')), { index: 'tags' })
                     .filter({ dificalty_index: m('dificalty_index') })
-                    //.pluck('id', 'refer_id', 'refer_index', 'question')
+                    //.pluck('id', 'ref_id', 'ref_index', 'question')
                     .sample(m('amount')).coerceTo('array')
             }
         })
         .merge(function (m) {
             return {
                 b: m('a').filter(function (ff) {
-                    return ff.hasFields('refer_id').and(ff('refer_index').gt(1))
+                    return ff.hasFields('ref_id').and(ff('ref_index').gt(1))
                 }).coerceTo('array')
 
             }
@@ -112,7 +112,7 @@ class index{
             return {
                 c: m('b').map(function (b_map) {
                     return r.branch(
-                        m('a').filter({ refer_id: b_map('refer_id'), refer_index: 1 }).count().gt(0),
+                        m('a').filter({ ref_id: b_map('ref_id'), ref_index: 1 }).count().gt(0),
                         { del: true },
                         b_map.merge({ del: false })
                     )
@@ -130,9 +130,9 @@ class index{
                     m('c').count().gt(0)
                     , m('c').merge(function (ref_map) {
                         return r.db('lms').table('question').filter({
-                            refer_id: ref_map('refer_id'),
-                            refer_index: 1
-                        }).pluck('id', 'refer_id', 'refer_index', 'question')(0)
+                            ref_id: ref_map('ref_id'),
+                            ref_index: 1
+                        }).pluck('id', 'ref_id', 'ref_index', 'question')(0)
                     })
                     , []
                 )
@@ -145,7 +145,7 @@ class index{
         })
         .merge(function (m) {
             return {
-                f: m('e').union(m('a')).distinct().orderBy('refer_id', 'refer_index')
+                f: m('e').union(m('a')).distinct().orderBy('ref_id', 'ref_index')
             }
         })
         .merge(function (m) {
