@@ -78,7 +78,7 @@ class index{
         }).coerceTo('array').count()
         .do(function(dup){
             return r.branch(dup.eq(0),
-                r.db('lms').table('user').get(params.id).update(r.expr(params))
+                r.db('lms').table('user').get(r.expr(params.id)).update(r.expr(params))
             ,{error:'Duplicate Email'})
         })
         .run()
