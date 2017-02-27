@@ -62,6 +62,9 @@
             },
             openPanelRight:function(){
                 this.USER_MANAGE_CLEAR_LIST();
+                this.USER_MANAGE_SELECT_CLEAR_LIST();
+                this.$$('userManage-manage').password = "";
+                this.$$('userManage-manage').confirmPassword = "";
                 this.fire('clear');
                 this.$$('panel-right').open();
             },
