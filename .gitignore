@@ -1,8 +1,8 @@
 /node_modules
 /public/bower_components
 /public/node_modules
-/public/src/redux-store.js
-/public/src/redux-store.js.map
+/public/bundle.js
+/public/bundle.js.map
 /public/css/main.css
 /temp
 /loggers/*
