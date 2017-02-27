@@ -38,15 +38,24 @@ class index{
         var r = req.r;
         var params = req.body;
         
-        r.expr(params).merge(function(){
-            return { password:sha1(params.password)}
-        }).do(function(all){
-            return r.db('lms').table('user').insert(all)
+        r.db('lms').table('user').filter({email:params.email}).coerceTo('array')
+        .do(function(result){
+            return r.branch(result.count().eq(0),
+                r.expr(params).merge(function(){
+                    return { password:sha1(params.password)}
+                }).do(function(all){
+                    return r.db('lms').table('user').insert(all)
+                })
+            ,{error:'Duplicate Username'})
         })
-
         .run()
         .then(function(result){
-            res.json(result);
+            
+            if(result.error){
+                res.status(500).json(result);
+            }else{
+                res.json(result);
+            }
         })
         .catch(function(err){
             res.status(500).json(err);
