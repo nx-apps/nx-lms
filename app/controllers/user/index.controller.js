@@ -69,8 +69,7 @@ class index{
         params.password =  sha1(params.password)
 
         r.expr(params).do(function(resultParams){
-            return 
-            r.db('lms').table('user').filter(function(row){
+            return r.db('lms').table('user').filter(function(row){
                 return r.branch(row('id').eq(resultParams('id')),false,
                     r.branch(row('email').eq(resultParams('email')),true,false)
                 )
@@ -88,6 +87,7 @@ class index{
             res.json(result)
         })
         .catch(function(err){
+            console.log(err);
             res.status(500).json(err);
         })
     }
