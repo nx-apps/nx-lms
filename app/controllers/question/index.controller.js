@@ -68,18 +68,23 @@ class index {
         r.expr(params).merge(function () {
             return { correct: 0, incorrect: 0, time_insert: r.now() }
         }).do(function (result) {
-            //return r.db('lms').table('question').insert(result)
-            r.db('lms').table('ex').filter({ module:result.module , ref_id:param.ref_id, ref_index:param.ref_index}).count()
+            return r.db('lms').table('question').filter({ module:result('module'), ref_id:result('ref_id'), ref_index:result('ref_index')}).count()
                 .do(function(x){
-                return r.branch(x.eq(0),
-                    r.db('lms').table('ex').insert(result),
-                    'ERROR'
+                    return r.branch(x.eq(0),
+                    r.db('lms').table('question').insert(result),
+                    {error:'ERROR CAN NOT INSERT'}
                     )
             })
         })
+
             .run()
             .then(function (result) {
-                res.json(result);
+                if(result.error){
+                    res.status(500).json(result);
+                }else{
+                    res.json(result);
+                }
+                
             })
             .catch(function (err) {
                 res.status(500).json(err);
