@@ -178,8 +178,12 @@
                     statePath:'commonSystem.subModule'
                 },
                 data:{
-                    statePath:'examination.dataSelect'
+                    statePath:'examination.dataSelect',
+                    observer:'checkData'
                 }
+            },
+            checkData:function(data){
+                console.log('*check',data);
             },
             cont:function(index){
                 return index+1;
@@ -256,21 +260,6 @@
                     this.dispatchAction('EXAMINATION_DELETE',this.data.id);
                     // this.fire('close');
                 }
-            },
-            randomExamination:function(data){
-                var newData = data.objective.map((item)=>{
-                    item.sub_module = item.sub_module.map((item2)=>{
-                        if(typeof item2.id != 'undefined'){
-                             return item2.id;
-                        }
-                        else{
-                            return item2;
-                        }   
-                    })
-                   
-                    return item;
-                })
-                this.dispatchAction('EXAMINATION_RANDOM',newData);
             },
             countAmount:function(obj){
                 var count = 0;

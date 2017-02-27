@@ -38,7 +38,7 @@ export function dispatchActionBehavior(){
                     args:arguments,
                     callback:(promise)=>{
                         if(typeof promise == "undefined"){
-                            reslove('Action no promise.');
+                            //reslove('Action no promise.');
                         }else{
                             promise.then((res)=>{
                                 reslove(promise);

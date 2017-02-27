@@ -113,15 +113,7 @@ export function examinationAction(store){
         EXAMINATION_RANDOM:function(data){
             // console.log(JSON.stringify(data));
             // console.log(data);
-            axios.post('./examination/examination_random',data)
-            .then((response)=>{
-               
-                store.dispatch({type:'EXAMINATION_RANDOM',payload:response.data});
-            })
-            .catch((error)=>{
-                console.log('error');
-                console.log(error);
-            });
+            return axios.post('./examination/examination_random',data)
             // return axios.post('./examination/examination_random',data)
         },
         EXAMINATION_INSERT:function(data){

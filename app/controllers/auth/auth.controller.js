@@ -31,7 +31,7 @@ class auth {
                     )
                 }
             })
-            .coerceTo('array')(0).pluck('username', 'name', 'id', 'role', 'end_tags', 'key_tags')
+            .coerceTo('array')(0).pluck('username', 'name', 'id', 'role', 'end_tags', 'key_tags','status')
             .run()
             .then((result) => {
                 var token = jwt.sign(result, SECRET_KEY, {

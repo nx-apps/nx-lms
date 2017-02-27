@@ -39,7 +39,7 @@
                 <examination-manage data="[[data]]" module="{{module}}"></examination-manage>
             </section>
             <section>
-                <examination-random-list></examination-random-list>
+                <examination-random-list data-list="[[randomList]]"></examination-random-list>
                 <!--<examination-list type-list="question" data-list="[[data.question]]" obj="[[data.obj]]"></examination-list>-->
             </section>
         </iron-pages>
@@ -51,31 +51,18 @@
             listeners:{
                 'next-page':'nextPage',
                 'back-page':'backPage',
-                'click-tab':'click',
                 'random':'getData'
             },
             nextPage:function(){
                 this.$$('iron-pages').selectNext();
             },
-            click:function(){
-                // console.log('click');
-                
-            },
             backPage:function(){
                 this.$$('iron-pages').selectPrevious();
-            },
-             getForm:function(){
-                if(typeof this.data.id == "undefined" || this.data.id==""){
-                    this.fire('insert-data',this.data);
-                }else{
-                    this.fire('update-data',this.data);
-                }
-                
             },
             getData:function(){
                 var data = this.$$('examination-manage').valueData();
                 var newData = data.map((item)=>{
-                    console.log(item);
+                    // console.log(item);
                     var newItem = {
                         amount: parseInt(item.amount),
                         dificalty_index: parseInt(item.dificalty_index),
@@ -92,21 +79,14 @@
                     })
                     return newItem;
                 })
+                // console.log('count');
                 // console.log(newData)
-                this.dispatchAction('EXAMINATION_RANDOM',newData);
+                this.dispatchAction('EXAMINATION_RANDOM',newData)
+                .then((response)=>{
+                    this.randomList = response.data;
+                    // console.log(data);
+                })
                 
-            },
-            confirmDel:function(e){
-                this.fire('toast',{ 
-                    status:'openDialog',
-                    text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
-                    confirmed:this.delData.bind(this), 
-                 })
-            },
-            delData:function(result){   
-                if(result == true){
-                    this.fire('delete-data',this.data.id);
-                }
             }
         });
     </script>
