@@ -46,7 +46,7 @@ class index{
                 }).do(function(all){
                     return r.db('lms').table('user').insert(all)
                 })
-            ,{error:'Duplicate Username'})
+            ,{error:'Duplicate Email'})
         })
         .run()
         .then(function(result){
@@ -65,31 +65,31 @@ class index{
     update_user(req,res){
         var r = req.r;
         var params = req.body;
-                
-        if(typeof params.password == 'undefined'){
-            r.db('lms').table('user').get(params.id).update(params)
-            .run()
-            .then(function(result){
-                res.json(result);
+        if(params.password)
+        params.password =  sha1(params.password)
+
+        r.expr(params).do(function(resultParams){
+            return 
+            r.db('lms').table('user').filter(function(row){
+                return r.branch(row('id').eq(resultParams('id')),false,
+                    r.branch(row('email').eq(resultParams('email')),true,false)
+                )
             })
-            .catch(function(err){
-                res.status(500).json(err);
-            })
-        }else{
-            r.expr(params).merge(function(){
-                return { password:sha1(params.password)}
-            }).do(function(result){
-                return r.db('lms').table('user').get(params.id).update(result)
-            })
-            
-            .run()
-            .then(function(result){
-                res.json(result);
-            })
-            .catch(function(err){
-                res.status(500).json(err);
-            })
-        }
+        }).coerceTo('array').count()
+        .do(function(dup){
+            return r.branch(dup.eq(0),
+                r.db('lms').table('user').get(params.id).update(r.expr(params))
+            ,{error:'Duplicate Email'})
+        })
+        .run()
+        .then(function(result){
+            if(result.error)
+            res.status(500).json(result)
+            res.json(result)
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
     }
 
     delete_user(req,res){
