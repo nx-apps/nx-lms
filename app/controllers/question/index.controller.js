@@ -332,7 +332,7 @@ class FileManager {
                 for (var i = 5; i < line.length; i++) {
                     var c2 = {
                         "checked": false,
-                        "choice": line[i],
+                        "name": line[i],
                         "image_id": ""
                     };
                     chk2 = line[i].replace(" ", "");
