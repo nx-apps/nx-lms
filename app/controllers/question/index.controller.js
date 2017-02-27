@@ -64,19 +64,19 @@ class index {
     insert_question(req, res) {
         var r = req.r;
         var params = req.body;
-
-        r.expr(params).merge(function () {
-            return { correct: 0, incorrect: 0, time_insert: r.now() }
-        }).do(function (result) {
-            return r.db('lms').table('question').filter({ module:result('module'), ref_id:result('ref_id'), ref_index:result('ref_index')}).count()
-                .do(function(x){
-                    return r.branch(x.eq(0),
-                    r.db('lms').table('question').insert(result),
-                    {error:'ERROR! CAN NOT INSERT'}
-                    )
+        
+        if(params.ref_index != 0 ){
+            r.expr(params).merge(function () {
+                return { correct: 0, incorrect: 0, time_insert: r.now() }
+            }).do(function (result) {
+                return r.db('lms').table('question').filter({ module:result('module'), ref_id:result('ref_id'), ref_index:result('ref_index')}).count()
+                    .do(function(x){
+                        return r.branch(x.eq(0),
+                        r.db('lms').table('question').insert(result),
+                        {error:'ERROR! CAN NOT INSERT'}
+                        )
+                })
             })
-        })
-
             .run()
             .then(function (result) {
                 if(result.error){
@@ -89,6 +89,21 @@ class index {
             .catch(function (err) {
                 res.status(500).json(err);
             })
+        }else{
+            r.expr(params).merge(function () {
+                return { correct: 0, incorrect: 0, time_insert: r.now() }
+            }).do(function (result) {
+                return r.db('lms').table('question').insert(result)
+            })
+            .run()
+            .then(function (result) {
+                res.status(500).json(result);
+            })
+            .catch(function (err) {
+                res.status(500).json(err);
+            })
+        }
+            
     }
 
     update_question(req, res) {
