@@ -81,7 +81,13 @@ export function userManageAction(store){
                 })
                 .catch((error)=>{
                     console.log('error');
-                    console.log(error);
+                    console.log({error});
+                    console.log("*",error.response.data.error);
+                    if(error.response.data.error == "Duplicate Email"){
+                         this.fire('toast',{status:'connectError',text:'Email นี้มีอยู่ในระบบแล้ว กรุณากรอก Email ใหม่',
+                         callback:function(){
+                         }})
+                    }
                 });
             },
             USER_MANAGE_UPDATE:function(data){
@@ -97,7 +103,12 @@ export function userManageAction(store){
                 })
                 .catch((error)=>{
                 console.log('error');
-                console.log(error);
+                console.log({error});
+                 if(error.response.data.error == "Duplicate Email"){
+                    this.fire('toast',{status:'connectError',text:'Email นี้มีอยู่ในระบบแล้ว กรุณากรอก Email ใหม่',
+                    callback:function(){
+                    }})
+                }
                 });
             },
             USER_MANAGE_DELETE:function(id){

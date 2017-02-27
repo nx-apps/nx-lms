@@ -47,6 +47,7 @@ export function questionAction(store){
             },
             QUESTION_INSERT:function(data){
                 data.user_id = store.getState().auth.user.id;
+                console.log(JSON.stringify(data));
                 axios.post('./question/question',data)
                 .then((response)=>{
                     console.log('success!!');
@@ -55,7 +56,13 @@ export function questionAction(store){
                 })
                 .catch((error)=>{
                     console.log('error');
-                    console.log(error);
+                    console.log({error});
+                    console.log(JSON.stringify(error));
+                    if(error.response.data.error == "ERROR CAN NOT INSERT"){
+                         this.fire('toast',{status:'connectError',text:'ข้อที่ ซ้ำ !!',
+                         callback:function(){
+                         }})
+                    }               
                 });
                 
             },
