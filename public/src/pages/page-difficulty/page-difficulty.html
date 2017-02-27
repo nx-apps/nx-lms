@@ -53,6 +53,8 @@
             },
             nylonPageActive:function(){
                 this.dispatchAction('COMMON_MODULE');
+                this.moduleSelect = "";
+                this.dispatchAction('DIFFICULTY_CLEAR_LIST');
             },
             _obModuleSelect:function(module){
                 if(module != '') this.dispatchAction('DIFFICULTY_GET_LIST',module);

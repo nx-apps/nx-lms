@@ -15,16 +15,26 @@
                 <div class="flex-horizontal-with-ratios">
                     <div class="flexchild"></div>
                     <div class="flex3child">
-                        <gl-form-input label="Password" type="Password" placeholder="กรอก Password" value="{{password}}"></gl-form-input>
+                        <gl-form-input hidden="[[active]]" label="Password" type="Password" placeholder="กรอก Password" value="{{password}}"></gl-form-input>
                     </div>
                     <div class="flexchild"></div>
                 </div>
                 <div class="flex-horizontal-with-ratios">
                     <div class="flexchild"></div>
                     <div class="flex3child">
-                        <gl-form-input label="Confirm-Password" type="Password" placeholder="ยืนยัน Password" value="{{ConfirmPassword}}"></gl-form-input>
+                        <gl-form-input hidden="[[active]]" label="Confirm-Password" type="Password" placeholder="ยืนยัน Password" value="{{confirmPassword}}"></gl-form-input>
                     </div>
                     <div class="flexchild"></div>
+                </div>
+                <div class="flex-horizontal-with-ratios">
+                    <div class="flexchild"></div>
+                    <div class="flex3child">
+                         <paper-button class="gl-btn-primary" style="width: 100%" on-tap="clearPassword" hidden="[[hide]]">
+                         <iron-icon icon="icons:cached"></iron-icon>
+                         &nbsp;&nbsp;RESET PASSOWRD</paper-button>
+                    </div>  
+                    <div class="flexchild">
+                    </div>
                 </div>
                 </div>
             </paper-material>
@@ -83,7 +93,7 @@
             <div class="flex-end-justified" style="padding-top: 10px;">
                 <div>
                     <paper-button class="gl-btn-danger" on-tap="confirmData" raised>ลบข้อมูล</paper-button>
-                    <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
+                    <paper-button disabled$="[[disabledBtn]]" class$="[[btnClass]]" on-tap="getForm" raised>บันทึก</paper-button>
                 </div>
             </div>
             
@@ -92,15 +102,51 @@
     <script>
         Polymer({
             is: 'userManage-manage',
-            behaviors:[ReduxBehavior,dispatchActionBehavior],
+            observers:['checkPassword(password,confirmPassword)'],
+            behaviors:[ReduxBehavior],
             properties:{
                 data:{
                     statePath: 'userManage.dataSelect',
+                    observer: 'setData'
                 },
                 module:{
                     statePath:'commonSystem.module',
                     observer:'setModule'
                 }
+            },
+            checkPassword:function(password,confirmPassword){
+                if(password == confirmPassword && password != "" && confirmPassword != ""){
+                    this.btnClass = "gl-btn-success";
+                    this.disabledBtn = false;
+                }
+                else {
+                    this.btnClass = "";
+                    this.disabledBtn = true;
+                }
+            },
+            clearPassword:function(){
+                console.log(this.data);
+                this.password = "";
+                this.confirmPassword = "";
+                this.active = false;
+                this.hide = true;
+                this.resetPw = false;
+                this.data.status = false;
+                // this.set('data.status',false);
+                // this.data.password = "";
+            },
+            setData:function(){
+               
+                if(typeof this.data.id == 'undefined'){
+                    this.active = false;
+                    this.hide = true
+                }
+                else{
+                    this.active = true;
+                    this.hide = false
+                    this.password = "xxx";
+                    this.confirmPassword = "xxx";
+                } 
             },
             setModule:function(){
                 if(this.module.length != 0){
@@ -127,15 +173,33 @@
             },
             getForm:function(){
                 this.data.end_tags = this.data.end_tags.map((item)=>{
-                    return item.id;
+                    if(typeof item.id != 'undefined'){
+                         return item.id;
+                    }
+                    else{
+                        return item;
+                    }
                 })
                 this.data.key_tags = this.data.key_tags.map((item)=>{
-                    return item.id;
+                    if(typeof item.id != 'undefined'){
+                         return item.id;
+                    }
+                    else{
+                        return item;
+                    }
                 })
-                this.data.password = this.password;
                 if(this.data.admin != true){
                     this.data.admin = false;
                 }
+                if(this.resetPw == false || typeof this.data.status == 'undefined'){
+                     this.data.password = this.password;
+                     this.data.status = false;
+                     this.resetPw = true;
+                }
+                // console.log(this.resetPw);
+                // console.log(this.data);
+                // console.log(JSON.stringify(this.data));
+                // console.log(this.data.status)
                 if(typeof this.data.id != 'undefined'){
                     this.dispatchAction('USER_MANAGE_UPDATE',this.data);
                 }
@@ -143,7 +207,7 @@
                     this.dispatchAction('USER_MANAGE_INSERT',this.data);
                 }
                 // this.fire('close');
-                // console.log(this.data);
+                
             }
             
         });

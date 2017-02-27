@@ -77,6 +77,7 @@
                 return typeList==typeSelect
             },
             selectList:function(e){
+                this.dispatchAction('EXAMINATION_CLEAR_RANDOM');
                  this.dispatchAction('EXAMINATION_GET_DATA_SELECT',e.currentTarget.examinationId);
                 // this.fire('select-data');
             },

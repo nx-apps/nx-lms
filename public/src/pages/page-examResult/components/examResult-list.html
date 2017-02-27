@@ -27,7 +27,7 @@
                                 <show-image image-id="[[item.image_id]]"></show-image>
                             </td>
                             <td>
-                                <div hidden="[[!item.check]]">
+                                <div hidden="[[checkAnswer(item.name,item.answer_correct)]]">
                                     <iron-icon icon="done"></iron-icon>
                                 </div>
                             </td>
@@ -39,7 +39,15 @@
     </template>
     <script>
         Polymer({
-            is: 'examResult-list'
+            is: 'examResult-list',
+            checkAnswer:function(name,answer_correct){
+                if(name == answer_correct){
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
         });
     </script>
 </dom-module>

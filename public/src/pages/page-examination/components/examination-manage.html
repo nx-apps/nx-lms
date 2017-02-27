@@ -59,9 +59,10 @@
                             <th style="width:10%;text-align: right; font-size: 18px;">คำอธิบาย</th>
                             <th><gl-form-textarea placeholder="" no-label-float value="{{data.description}}"></gl-form-textarea></th>
                              <th style="width:20%;">
-                                 <!--<paper-button on-tap="startQuize" raised>เริ่มทำข้อสอบ</paper-button>-->
+                                 
                             </th>
                         </tr>
+                       
                     </thead>
                     <tbody>
                         <template is="dom-repeat" items="{{data.objective}}">
@@ -171,10 +172,10 @@
                     statePath:'examination.listTag'
                 },
                 difficultyIndex:{
-                    statePath:'commonSystem.difficultyIndex',
+                    statePath:'commonSystem.difficultyIndex'
                 },
                 subModule:{
-                    statePath:'commonSystem.subModule',
+                    statePath:'commonSystem.subModule'
                 },
                 data:{
                     statePath:'examination.dataSelect'
@@ -183,9 +184,15 @@
             cont:function(index){
                 return index+1;
             },
+            // getSubModule:function(sub){
+            //     console.log('x',sub);
+            //     // console.log(this.data.objective[0].sub_module);
+            // },
             addChoice:function(){
                 if(typeof this.data.objective == 'undefined'){
                     this.data = {
+                        name_examination:this.data.name_examination,
+                        description:this.data.description,
                         objective:[]
                     }
                 }
@@ -199,20 +206,26 @@
             delChoice:function(e){
                 this.splice('data.objective',e.target.index,1);
             },
-            startQuize:function(){
-                // console.log(this.data.id)
-                //console.log(this.data.id);
-                this.fire('close',this.data.id);
-                // this.$$('paper-dialog').open();
+            valueData:function(){
+                // console.log('*',this.data.objective);
+                return this.data.objective;
             },
             getForm:function(){
-                this.data.module = this.module;
-                this.data.amount_all = parseInt(this.data.amount_all);
-                this.data.time = parseInt(this.data.time);
-                this.data.objective = this.data.objective.map((item)=>{
-                    item.amount = parseInt(item.amount);
-                    item.sub_module = item.sub_module.map((item)=>{
-                        console.log(item);
+                var data = {};
+                data.id = this.data.id;
+                data.name_examination = this.data.name_examination;
+                data.description = this.data.description;
+                data.module = this.module;
+                data.amount_all = parseInt(this.data.amount_all);
+                data.time = parseInt(this.data.time);
+                data.objective = this.data.objective.map((item)=>{
+                    var newItem = {
+                        name:item.name,
+                        amount : parseInt(item.amount),
+                        dificalty_index : item.dificalty_index
+                    };
+                   
+                    newItem.sub_module = item.sub_module.map((item)=>{
                         if(typeof item.id != 'undefined'){
                             return item.id;
                         }
@@ -220,15 +233,14 @@
                             return item;
                         }
                     })
-                    return item;
+                    return newItem;
                 })
-                // console.log(this.data);
+                console.log(data);
                 if(typeof this.data.id != 'undefined'){
-                    //   console.log(this.data);
-                    this.dispatchAction('EXAMINATION_UPDATE',this.data);
+                    this.dispatchAction('EXAMINATION_UPDATE',data);
                 }
                 else{
-                    this.dispatchAction('EXAMINATION_INSERT',this.data);
+                    this.dispatchAction('EXAMINATION_INSERT',data);
                 }
                     
             },
@@ -245,8 +257,8 @@
                     // this.fire('close');
                 }
             },
-            randomExamination:function(){
-                var newData = this.data.objective.map((item)=>{
+            randomExamination:function(data){
+                var newData = data.objective.map((item)=>{
                     item.sub_module = item.sub_module.map((item2)=>{
                         if(typeof item2.id != 'undefined'){
                              return item2.id;

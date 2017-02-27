@@ -122,7 +122,7 @@ select_question(req,res){
         return mr('right').merge(function(data){
           return {
             name_room:mr('left')('name_room'),
-            room_id:mr('left')('id'),
+            exam_room_id:mr('left')('id'),
             examination_id:mr('left')('examination_id')
           }
         })
@@ -134,6 +134,8 @@ select_question(req,res){
             examination_id:x('examination_id'),
             name_room:x('name_room'),
             description:x('description'),
+            time:x('time'),
+            exam_room_id:x('exam_room_id'),
             question :x('objective')
             /*
             .concatMap(function(row){
@@ -207,14 +209,10 @@ select_question(req,res){
                 .reduce(function (l, r) {
                     return l.add(r)
                 })
-            }
-    })
-
-    .merge(function(x){
-            return {
-                question:x('question').merge(function(ran){
-                    return { choice:ran('choice').sample( ran('choice').count())}
+                .merge(function(t){
+                    return {choice:t('choice').sample(t('choice').count()).without('check')}
                 })
+
             }
     })
 

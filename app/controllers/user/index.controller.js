@@ -5,7 +5,7 @@ class index{
     select_user(req,res){
         var r = req.r;
         var params = req.query;
-        r.db('lms').table("user").getAll(params.tags,{index:'tags'}).merge(function(c){
+        r.db('lms').table("user").getAll(params.tags,{index:'tags'}).without('password').merge(function(c){
             return{ 
                 end_tags:c('end_tags').map(function(fc){ return r.db('lms').table('tag').get(fc)}),
                 key_tags:c('key_tags').map(function(fc){ return r.db('lms').table('tag').get(fc)}) 
@@ -24,7 +24,7 @@ class index{
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('user').get(params.id)
+        r.db('lms').table('user').get(params.id).without('password')
         .run()
         .then(function(result){
             res.json(result);
@@ -37,12 +37,13 @@ class index{
     insert_user(req,res){
         var r = req.r;
         var params = req.body;
-     
+        
         r.expr(params).merge(function(){
             return { password:sha1(params.password)}
         }).do(function(all){
             return r.db('lms').table('user').insert(all)
         })
+
         .run()
         .then(function(result){
             res.json(result);
@@ -55,20 +56,31 @@ class index{
     update_user(req,res){
         var r = req.r;
         var params = req.body;
-        
-        r.expr(params).merge(function(){
-            return { password:sha1(params.password)}
-        }).do(function(result){
-            return r.db('lms').table('user').get(params.id).update(result)
-        })
-        
-        .run()
-        .then(function(result){
-            res.json(result);
-        })
-        .catch(function(err){
-            res.status(500).json(err);
-        })
+                
+        if(typeof params.password == 'undefined'){
+            r.db('lms').table('user').get(params.id).update(params)
+            .run()
+            .then(function(result){
+                res.json(result);
+            })
+            .catch(function(err){
+                res.status(500).json(err);
+            })
+        }else{
+            r.expr(params).merge(function(){
+                return { password:sha1(params.password)}
+            }).do(function(result){
+                return r.db('lms').table('user').get(params.id).update(result)
+            })
+            
+            .run()
+            .then(function(result){
+                res.json(result);
+            })
+            .catch(function(err){
+                res.status(500).json(err);
+            })
+        }
     }
 
     delete_user(req,res){

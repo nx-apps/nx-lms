@@ -80,7 +80,8 @@
                      }})
                 }
                 else{
-                    this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.examination_id})
+                    console.log(e.currentTarget.item);
+                    this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.exam_room_id})
                 }
                 
             }

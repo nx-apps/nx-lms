@@ -31,7 +31,7 @@
             <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
         </div>
         <panel-right title="{{titleRight}}">
-            <question-manage data="{{data}}" module="{{moduleSelect}}" status="[[status]]"></question-manage>
+            <question-manage module="{{moduleSelect}}" status="[[status]]"></question-manage>
         </panel-right>
     </template>
     <script>
@@ -49,6 +49,8 @@
                 }
             },
             nylonPageActive:function(){
+                this.moduleSelect = '';
+                this.dispatchAction('QUESTION_CLEAR_LIST');
                 this.dispatchAction('USER_MANAGE_SELECT_LIST');
                 this.dispatchAction('COMMON_MODULE');
             },
@@ -56,25 +58,10 @@
                 if(!ob){return}
                 this.dispatchAction('QUESTION_GET_LIST',ob);
             },
-            selectList:function(e){
-                this.titleRight = 'แก้ไขคำถาม';
-                this.status = 'update';
-                //console.log(e.detail);
-                this.data = {
-                    choice:[]
-                }
-                setTimeout(()=>{
-                    this.data = e.detail;
-                },'20')
-                
-                this.$$('panel-right').open();
-            },
             openPanelRight:function(){
                 this.titleRight = 'เพิ่มคำถาม';
-                this.data = {
-                    choice:[],
-                }
                 this.status = 'add';
+                this.QUESTION_CLEAR_SELECT();
                 this.$$('panel-right').open();
             },
             closePanelRight:function(){

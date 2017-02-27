@@ -43,27 +43,23 @@
                 <!--<examination-list type-list="question" data-list="[[data.question]]" obj="[[data.obj]]"></examination-list>-->
             </section>
         </iron-pages>
-        <!--<div class="flex-end-justified">
-            <template is="dom-if" if="[[data.id]]">
-                <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
-            </template>
-            <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
-        </div>-->
     </template>
     <script>
         Polymer({
             is: 'examination-page',
+            behaviors:[ReduxBehavior],
             listeners:{
                 'next-page':'nextPage',
                 'back-page':'backPage',
-                'click-tab':'click'
+                'click-tab':'click',
+                'random':'getData'
             },
             nextPage:function(){
                 this.$$('iron-pages').selectNext();
             },
             click:function(){
                 // console.log('click');
-                this.$$('examination-manage').randomExamination();
+                
             },
             backPage:function(){
                 this.$$('iron-pages').selectPrevious();
@@ -74,6 +70,30 @@
                 }else{
                     this.fire('update-data',this.data);
                 }
+                
+            },
+            getData:function(){
+                var data = this.$$('examination-manage').valueData();
+                var newData = data.map((item)=>{
+                    console.log(item);
+                    var newItem = {
+                        amount: parseInt(item.amount),
+                        dificalty_index: parseInt(item.dificalty_index),
+                        name:item.name,
+                        sub_module:[]
+                    }
+                    newItem.sub_module = item.sub_module.map((item2)=>{
+                        if(typeof item2.id != 'undefined'){
+                             return item2.id;
+                        }
+                        else{
+                            return item2;
+                        }   
+                    })
+                    return newItem;
+                })
+                // console.log(newData)
+                this.dispatchAction('EXAMINATION_RANDOM',newData);
                 
             },
             confirmDel:function(e){

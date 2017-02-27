@@ -14,6 +14,10 @@ export function questionReducer(state = initialState,action){
             return Object.assign({},state,{dataList:action.payload});
         case 'QUESTION_SELECT':
             return Object.assign({},state,{dataSelect:action.payload});
+        case 'QUESTION_CLEAR_SELECT':
+            return Object.assign({},state,{dataSelect:{choice:[]}});
+        case 'QUESTION_CLEAR_LIST':
+            return Object.assign({},state,{dataList:[]});
         default:
             return state
     }
@@ -32,7 +36,8 @@ export function questionAction(store){
                     console.log(response.data);
                     store.dispatch({type:'QUESTION_GET_LIST',payload:response.data});
                     this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
-                      callback:function(){
+                      callback:()=>{
+                          this.fire('close');
                       }
                      });
                 })
@@ -89,15 +94,31 @@ export function questionAction(store){
                 
             },
             QUESTION_SELECT:function(questionId){
-                return new Promise((resolve,reject)=>{
-                    axios.get('./question/question_only?id='+questionId)
-                    .then((response)=>{
-                        store.dispatch({type:'QUESTION_SELECT',payload:response.data});
-                    })
-                    .catch((error)=>{
-                        reject(error);
-                    });
+                this.titleRight = 'แก้ไขคำถาม';
+                this.status = 'update';
+                
+                this.fire('toast',{status:'load'});
+                this.QUESTION_CLEAR_SELECT();
+                axios.get('./question/question_only?id='+questionId)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',
+                      callback:()=>{
+                            store.dispatch({type:'QUESTION_SELECT',payload:response.data});
+                            this.$$('panel-right').open();
+                      }
+                     });
+                  
+                    
+                })
+                .catch((error)=>{
+                    console.log(error)
                 });
+            },
+            QUESTION_CLEAR_SELECT:function(){
+                store.dispatch({type:'QUESTION_CLEAR_SELECT'});
+            },
+            QUESTION_CLEAR_LIST:function(){
+                 store.dispatch({type:'QUESTION_CLEAR_LIST'});
             },
             QUESTION_IMAGE:function(files){
                 var data = new FormData();

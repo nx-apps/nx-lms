@@ -42,6 +42,7 @@ class auth {
             .catch((err) => {
                 res.status(500).json(err);
             })
+
     }
 
     checkToken(req, res) {

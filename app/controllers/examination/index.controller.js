@@ -83,13 +83,13 @@ class index{
     random_examination(req,res){
         var r = req.r;
         var params = req.body;
-        /*
+       /* 
         r.expr(params)
         .concatMap(function(row){
             return r.db('lms').table('question').getAll(r.args(row('sub_module')), {index: "tags"})
             .filter({dificalty_index:row('dificalty_index')}).sample(row('amount'))
         })
-        */ 
+        */
         
         r.expr(params).merge(function (m) {
             return {
@@ -157,6 +157,11 @@ class index{
         .reduce(function (l, r) {
              return l.add(r)
         })
+
+        .merge(function(t){
+            return {choice:t('choice').sample(t('choice').count())}
+        })
+
         .run()
         .then(function(result){
             res.json(result);

@@ -20,8 +20,14 @@ export function examinationReducer(state = initialState,action){
             return Object.assign({},state,{dataTest:action.payload});
         case 'EXAMINATION_GET_DATA_SELECT' : 
             return Object.assign({},state,{dataSelect:action.payload});
+        case 'EXAMINATION_CLEAR_DATA_SELECT' : 
+            return Object.assign({},state,{dataSelect:{}});
         case 'EXAMINATION_RANDOM':
             return Object.assign({},state,{examinationRandomList:action.payload});
+        case 'EXAMINATION_CLEAR_RANDOM':
+            return Object.assign({},state,{examinationRandomList:[]});
+        case 'EXAMINATION_CLEAR_LIST':
+            return Object.assign({},state,{dataList:[]});
         default:
             return state
     }
@@ -66,6 +72,9 @@ export function examinationAction(store){
                 console.log(error);
             });
         },
+        EXAMINATION_CLEAR_DATA_SELECT:function(){
+             store.dispatch({type:'EXAMINATION_CLEAR_DATA_SELECT'})
+        },
         // EXAMINATION_GET_TAG_LIST:function(){
         //     axios.get('./examination/examination_tagall')
         //     .then((response)=>{
@@ -95,8 +104,15 @@ export function examinationAction(store){
                 console.log(error);
             })
         },
+        EXAMINATION_CLEAR_LIST:function(){
+             store.dispatch({type:'EXAMINATION_CLEAR_LIST'});
+        },
+        EXAMINATION_CLEAR_RANDOM:function(){
+             store.dispatch({type:'EXAMINATION_CLEAR_RANDOM'});
+        },
         EXAMINATION_RANDOM:function(data){
-             console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
+            // console.log(data);
             axios.post('./examination/examination_random',data)
             .then((response)=>{
                
@@ -106,7 +122,7 @@ export function examinationAction(store){
                 console.log('error');
                 console.log(error);
             });
-            return axios.post('./examination/examination_random',data)
+            // return axios.post('./examination/examination_random',data)
         },
         EXAMINATION_INSERT:function(data){
             data.user_id = store.getState().auth.user.id;

@@ -47,6 +47,8 @@
             nylonPageActive:function(){
                 // this.dispatchAction('USER_MANAGE_SELECT_LIST');
                 this.dispatchAction('COMMON_MODULE');
+                this.moduleSelect = "";
+                this.dispatchAction('EXAMROOM_CLEAR_LIST');
             },
             openPanelRight:function(){
                 this.EXAMROOM_CLEAR_DATA();

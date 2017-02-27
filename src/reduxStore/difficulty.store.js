@@ -10,6 +10,8 @@ export function difficultyReducer(state = initialState,action){
     switch (action.type) {
         case 'DIFFICULTY_GET_LIST':
             return Object.assign({},state,{dataList:action.payload});
+        case 'DIFFICULTY_CLEAR_LIST':
+            return Object.assign({},state,{dataList:[]});
         default:
             return state
     }
@@ -36,6 +38,9 @@ export function difficultyAction(store){
                     console.log('error');
                     console.log(error);
                 });
+            },
+            DIFFICULTY_CLEAR_LIST:function(){
+                store.dispatch({type:'DIFFICULTY_CLEAR_LIST'});
             }
         }
     ]
