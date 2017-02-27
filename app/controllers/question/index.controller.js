@@ -331,7 +331,7 @@ class FileManager {
 
                 for (var i = 5; i < line.length; i++) {
                     var c2 = {
-                        "checked": false,
+                        "check": false,
                         "name": line[i],
                         "image_id": ""
                     };
