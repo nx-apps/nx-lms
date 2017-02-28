@@ -35,7 +35,9 @@
                <!--<examination-manage data="{{data}}" module="{{moduleSelect}}"></examination-manage>-->
             </panel-right>
         </div>
-         <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
+        <div hidden="[[hideBtn(moduleSelect)]]">
+            <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
+        </div>
     </template>
     <script>
         Polymer({
@@ -53,6 +55,14 @@
                 },
                 module:{
                     statePath:'commonSystem.module'
+                }
+            },
+            hideBtn:function(active){
+                if(active != "" &&typeof active != "undefined"){
+                    return false;
+                }
+                else{
+                    return true;
                 }
             },
             getDataList:function(tags){
