@@ -209,9 +209,7 @@ class examRoom {
             params.create_time = dateNow.toISOString();
             params.update_time = dateNow.toISOString();
 
-            //res.json(params)
             r.db('lms').table('exam_room').insert(params)
-            //r.expr(params)
             .then((result)=>{
                 return res.json(result);
             }).catch((err)=>{
@@ -241,21 +239,45 @@ class examRoom {
     update_ExamRoom(req,res){
         var r = req.r;
         var params = req.body;
-        var time = new Date();
 
-        r.expr(params).merge(function(row){
-            return {time_update:time}
-        }).do(function(data){
-            return r.db('lms').table('exam_room').get(data('id'))
-            .update(data.without('id'))
-        })
+        var start_date,end_date,start_time = "";
+        r.db('lms').table('examination').get(params.examination_id)
+        .then((result)=>{
+            switch(params.case_time) {
+                case 'allDay':
+                    start_date=params.start_date+'T00:00:00.000Z';
+                    end_date=params.start_date+'T23:59:59.000Z';
+                    break;
+                case 'period':
+                    start_date=params.start_date+'T00:00:00.000Z';
+                    end_date=params.end_date+'T23:59:59.000Z';
+                    break;
+                case 'time':
+                    start_date=params.start_date+'T'+params.start_time+':00.000Z';
+                    end_date= new Date(params.start_date+'T'+params.start_time+':00.000Z');
+                    end_date.setMinutes(end_date.getMinutes()+result.time);
+                    end_date = end_date.toISOString();
+                    start_time = params.start_time;
+            }
+            
+            params.period_start_date = start_date;
+            params.period_end_date = end_date;
+            params.start_time = start_time;
 
-        .run()
-        .then(function(result){
-            res.json(result);
-        })
-        .catch(function(err){
-            res.status(500).json(err);
+            
+            var dateNow = new Date();
+            params.create_time = dateNow.toISOString();
+            params.update_time = dateNow.toISOString();
+
+            r.db('lms').table('exam_room').update(params)
+            .then((result)=>{
+                return res.json(result);
+            }).catch((err)=>{
+                return res.status(500).json(err)
+            })
+
+        }).catch((err)=>{
+            return res.status(500).json(err)
         })
     }
 
