@@ -40,7 +40,7 @@ export function examHistoryAction(store){
                 });
             },
             EXAM_HISTORY_EXAM_LIST_SELECT:function(id){
-                console.log(id);
+                // console.log(id);
                 axios.get('./examHistory/test_exam?id='+id)
                 .then((response)=>{
                     // console.log(JSON.stringify(response.data));
