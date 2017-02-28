@@ -94,8 +94,8 @@ Custom property | Description | Default
 
     <label hidden$="[[hideLabel]]">[[label]]</label>
     <div class="time-input-wrap">
-
       <!-- Hour Input -->
+
       <paper-input
         id="hour"
         value="{{hour}}"
@@ -145,6 +145,10 @@ Custom property | Description | Default
         label: {
           type: String,
           value: 'Time'
+        },
+        getTime:{
+          type: String,
+          observer:'setTime'
         },
         /**
          * auto validate time inputs
@@ -231,6 +235,17 @@ Custom property | Description | Default
         if(this.min.toString().length === 1){
           this.min = (this.min < 10) ? ("0" + this.min) : this.min;
         }
+      },
+      setTime:function(time){
+        if(time != "" && typeof time != "undefined"){
+          var newTime = time.split(":");
+          this.hour = newTime[0];
+          this.min = newTime[1];
+        }else{
+          this.hour = "";
+          this.min = "";
+        }
+       
       }
     });
   </script>
