@@ -140,6 +140,23 @@ class index{
         })
         .merge(function (m) {
             return {
+                d: m('d').pluck('id').distinct()
+            }
+        })
+        .merge(function (m) {
+            return {
+                d: r.branch(
+                    m('d').count().gt(0)
+                    , m('d').merge(function (ref_map) {
+                        return r.db('lms').table('question').get(ref_map('id'))
+                        //.pluck('id', 'ref_id', 'ref_index', 'question')
+                    })
+                    , []
+                )
+            }
+        })
+        .merge(function (m) {
+            return {
                 e: m('d').union(m('c'))
             }
         })
@@ -161,7 +178,7 @@ class index{
         .merge(function(t){
             return {choice:t('choice').sample(t('choice').count())}
         })
-//
+
         .do(function(x){
             return { question:x,count:x.count() }
         })

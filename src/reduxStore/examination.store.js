@@ -112,7 +112,7 @@ export function examinationAction(store){
         },
         EXAMINATION_RANDOM:function(data){
             // console.log(JSON.stringify(data));
-            // console.log(data);
+           // console.log(data.g);
             return axios.post('./examination/examination_random',data)
             // return axios.post('./examination/examination_random',data)
         },
