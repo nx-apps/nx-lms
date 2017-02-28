@@ -1,10 +1,4 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../paper-listbox/paper-listbox.html">
-<link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../paper-styles/typography.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
 
 <!--
 `<paper-time-input>` Polymer element to accept a time with paper-input & paper-dropdown-menu
@@ -105,7 +99,6 @@ Custom property | Description | Default
       <paper-input
         id="hour"
         value="{{hour}}"
-        required
         auto-validate="[[autoValidate]]"
         prevent-invalid-input
         maxlength="2"
@@ -121,7 +114,6 @@ Custom property | Description | Default
         id="min"
         value="{{min}}"
         on-change="_formatMin"
-        required
         auto-validate="[[autoValidate]]"
         prevent-invalid-input
         maxlength="2"
@@ -132,12 +124,12 @@ Custom property | Description | Default
       </paper-input>
 
       <!-- Dropdown Menu -->
-      <paper-dropdown-menu no-label-float disabled="[[disabled]]">
+      <!--<paper-dropdown-menu no-label-float disabled="[[disabled]]">
         <paper-listbox attr-for-selected="name" selected="{{amPm}}" class="dropdown-content">
           <paper-item name="AM">AM</paper-item>
           <paper-item name="PM">PM</paper-item>
         </paper-listbox>
-      </paper-dropdown-menu>
+      </paper-dropdown-menu>-->
 
     </div>
 
@@ -204,7 +196,7 @@ Custom property | Description | Default
           type: String,
           notify: true,
           readOnly: true,
-          computed: '_computeTime(min, hour, amPm)'
+          computed: '_computeTime(min, hour)'
         },
       },
       /**
@@ -220,8 +212,17 @@ Custom property | Description | Default
       /**
        * Create time string
        */
-      _computeTime: function(min, hour, amPm){
-        return hour + ":" + min + " " + amPm;
+      _computeTime: function(min, hour){
+        if(min == "" || hour == ""){
+          return undefined;
+        }
+        else if(min != "" && hour != ""){
+          return hour+":"+min;
+        }
+        else{
+            return undefined;
+        }
+        
       },
       /**
        * Format min
