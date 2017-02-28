@@ -82,10 +82,10 @@
                      <div class="flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flexchild fontCSC margin">
-                            กำหนดเวลาสอบ: 
+                            กำหนดเวลาสอบ:
                         </div>
                         <div class="flex3child">
-                            <paper-time-input-edit hide-label value="{{data.start_time}}"></paper-time-input-edit>
+                            <paper-time-input-edit hide-label get-time="{{data.start_time}}" value="{{data.start_time}}"></paper-time-input-edit>
                         </div>
                         <div class="flexchild"></div>
                     </div>
@@ -120,7 +120,7 @@
     <script>
         Polymer({
             is: 'examRoom-manage',
-            observers:['getExamList(user.id)','check(data.id)','getStudentList(data.tag)'],
+            observers:['getExamList(user.id)','check(data.id)','getStudentList(data.tag)','checkHide(data.end_date)'],
             listeners:{
                 'join-student':'joinStudent',
                 'cancel-student':'cancelStudent'
@@ -165,6 +165,15 @@
                 this.newTag = this.listTag.filter((item)=>{
                      return item[0] == '*'
                 })
+            },
+            checkHide:function(data){
+                console.log("endDate",data)
+                if(typeof data == "undefined" || data == ""){
+                    this.hidden = false;
+                }
+                else{
+                     this.hidden = true;
+                }
             },
             getStudentList:function(tag){
                 if(tag != '' && typeof tag != 'undefined'){
@@ -243,11 +252,48 @@
                 }
                  console.log(this.data);
                  console.log(JSON.stringify(this.data));
+
                 if(typeof this.data.id != 'undefined'){
-                    this.dispatchAction('EXAMROOM_UPDATE_DATA',this.data);
+                    var newData = {
+                        id:this.data.id,
+                        setting:this.data.setting,
+                        case_time:this.data.case_time,
+                        enable:this.data.enable,
+                        end_date:this.data.end_date,
+                        examination_id:this.data.examination_id,
+                        module:this.data.module,
+                        name_room:this.data.name_room,
+                        start_date:this.data.start_date,
+                        start_time:this.data.start_time
+                    }
+                    if(typeof newData.end_date == "undefined"){
+                        newData.end_date = "";
+                    }
+                    if(typeof newData.start_time == "undefined"){
+                        newData.start_time = ""
+                    }
+                    this.dispatchAction('EXAMROOM_UPDATE_DATA',newData);
                 }
                 else{
-                    this.dispatchAction('EXAMROOM_INSERT_DATA',this.data);
+                    var newDataInsert = {
+                        setting:this.data.setting,
+                        case_time:this.data.case_time,
+                        enable:this.data.enable,
+                        end_date:this.data.end_date,
+                        examination_id:this.data.examination_id,
+                        module:this.data.module,
+                        name_room:this.data.name_room,
+                        start_date:this.data.start_date,
+                        start_time:this.data.start_time
+                    }
+                    if(typeof newDataInsert.end_date == "undefined"){
+                        newDataInsert.end_date = "";
+                    }
+                    if(typeof newDataInsert.start_time == "undefined"){
+                        newDataInsert.start_time = ""
+                    }
+                    console.log(newDataInsert);
+                    this.dispatchAction('EXAMROOM_INSERT_DATA',newDataInsert);
                 }
                
             }
