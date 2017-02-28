@@ -6,14 +6,23 @@ class examHistory {
         var r = req.r;
 
         auth.userInfo(req).then(user=>{
-            
+            var dateNow = new Date().toISOString();
+
             r.db('lms').table('exam_room').getAll(
                 r.args(r.db('lms').table('user').get(user.id)('end_tags'))
                 ,{index:'module'}
-            ).merge(function(row){
-                return {tags:[r.db('lms').table('tag').get(row('module'))]}
+            )
+            // .filter(function(row){
+            //     return r.expr(dateNow).lt(row('period_end_date')).and(
+            //         r.expr(dateNow).gt(row('period_start_date'))
+            //     )
+            // })
+            .merge(function(row){
+                return {
+                    tags:[r.db('lms').table('tag').get(row('module'))],
+                }
             })
-                
+            
             .then(result=>{
                 res.json(result);
             }).catch(err=>{
