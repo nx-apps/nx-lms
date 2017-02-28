@@ -20,7 +20,10 @@
         <panel-right title="สร้างห้องสอบ">
             <examRoom-tabs module="{{moduleSelect}}"></examRoom-tabs>
         </panel-right>
-        <paper-fab icon="add" on-tap="openPanelRight"></paper-fab>
+        <div hidden="[[hideBtn(moduleSelect)]]">
+            <paper-fab icon="add" on-tap="openPanelRight"></paper-fab>
+        </div>
+        
     </template>
     <script>
         Polymer({
@@ -34,6 +37,14 @@
             properties:{
                 module:{
                     statePath:'commonSystem.module'
+                }
+            },
+            hideBtn:function(active){
+                if(active != "" &&typeof active != "undefined"){
+                    return false;
+                }
+                else{
+                    return true;
                 }
             },
             getDataList:function(module){

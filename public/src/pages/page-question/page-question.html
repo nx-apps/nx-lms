@@ -27,7 +27,7 @@
             </div>
             <question-list></question-list>
         </div>
-        <div class="fixed">
+        <div class="fixed" hidden="[[hideBtn(moduleSelect)]]">
             <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
         </div>
         <panel-right title="{{titleRight}}">
@@ -53,6 +53,14 @@
                 this.dispatchAction('QUESTION_CLEAR_LIST');
                 this.dispatchAction('USER_MANAGE_SELECT_LIST');
                 this.dispatchAction('COMMON_MODULE');
+            },
+            hideBtn:function(active){
+                if(active != "" &&typeof active != "undefined"){
+                    return false;
+                }
+                else{
+                    return true;
+                }
             },
             _obModuleSelect:function(ob){
                 if(!ob){return}
