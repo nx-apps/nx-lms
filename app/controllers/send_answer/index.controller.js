@@ -108,7 +108,8 @@ class index{
             return {
             question:x('question')
             .merge(function(x){
-                return {a:x('choice').filter({answer:true})}
+                //return {a:x('choice').filter({answer:true})}
+                return{ a: r.branch( x('choice').filter({answer:true}).isEmpty().eq(true), {name:''}, x('choice').filter({answer:true})(0))}
             }) 
                 .merge(function(x){
                 return {q:r.db('lms').table('question').get(x('id')).getField('choice').filter({check:true})(0) }

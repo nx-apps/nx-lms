@@ -169,6 +169,7 @@ class index{
         .merge(function(t){
             return {question:t('question').sample(t('count'))}
         }).pluck('question').coerceTo('array')(0)(1)
+        .orderBy('ref_id','ref_index')
 //
         .run()
         .then(function(result){
