@@ -40,23 +40,21 @@ export function examAction(store){
             },
             EXAM_COUNTDOWN:function(){
 
-                
+                var userIdAndexamRoomId = store.getState().auth.user.id + this.dataList.exam_room_id;
 
                 if(typeof this.dataList.time != "undefined"){
-                    console.log(this.dataList);
-                    //Cookies.set('cc', 'value', { expires: 1 });
-                    //
+
                     if(x){
                         clearInterval(x);
                     }
 
                     var time = this.dataList.time;
 
-                    if(!Cookies.get(this.dataList.exam_room_id)){
-                        Cookies.set(this.dataList.exam_room_id, new Date().getTime()+(time*60000), { expires: 1 });
+                    if(!Cookies.get(userIdAndexamRoomId)){
+                        Cookies.set(userIdAndexamRoomId, new Date().getTime()+(time*60000), { expires: 1 });
                     }
 
-                    var countDownDate = Cookies.get(this.dataList.exam_room_id);
+                    var countDownDate = Cookies.get(userIdAndexamRoomId);
 
                     const transform=(digi)=>{
                         if(digi<10){
@@ -80,7 +78,7 @@ export function examAction(store){
                         if (distance < 0) {
                             clearInterval(x);
                             this.countDown = "หมดเวลา";
-                            Cookies.remove(this.dataList.exam_room_id);
+                            Cookies.remove(userIdAndexamRoomId);
                             this.sendAnswer(true);
                         }
                     }, 1000);
