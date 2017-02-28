@@ -8,11 +8,12 @@
             -webkit-transition: opacity 2s; /* Safari and Chrome */
             -o-transition: opacity 2s;
             transition: opacity 2s;
+            max-width: 300px;
         }​
         </style>
-        <template is="dom-if" if="[[imageId]]">
-            <img id="image" onload="this.style.opacity='1';" src="[[linkImage(imageId)]]" style="max-width: 300px" alt="">
-        </template>
+        
+        <img id="image" onload="this.style.opacity='1';" src="[[linkImage(imageId)]]" alt="">
+        
     </template>
     <script>
         Polymer({
@@ -20,6 +21,8 @@
             linkImage:function(id){
                 if(id){
                     return '/api/image/image/'+id
+                }else{
+                    this.$.image.style = '0';
                 }
             }
         });
