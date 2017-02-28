@@ -65,10 +65,28 @@
                         <div class="flexchild fontCSC margin">
                             กำหนดวันที่สอบ 
                         </div>
-                        <div class="flex3child" style="text-align: left; margin-top: -22px;">
-                            <vaadin-date-picker placeholder="กำหนดวันที่สอบ" value="{{data.date}}"></vaadin-date-picker>
+                        <div class="flexchild" style="text-align: left; margin-top: -22px;">
+                            <vaadin-date-picker placeholder="กำหนดวันที่สอบ" value="{{data.date_start}}"></vaadin-date-picker>
                         </div>
-                      
+                         <div class="flexchild fontCSC margin">
+                            <paper-checkbox checked="{{hidden}}"></paper-checkbox>
+                             ถึงวันที่
+                         </div>
+                        <div class="flexchild" style="text-align: left; margin-top: -22px;">
+                            <div hidden="{{!hidden}}">
+                                <vaadin-date-picker placeholder="กำหนดวันที่สอบ" value="{{data.date_end}}"></vaadin-date-picker>
+                            </div>
+                        </div>
+                        <div class="flexchild"></div>
+                    </div>
+                     <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
+                            กำหนดเวลาสอบ: 
+                        </div>
+                        <div class="flex3child">
+                            <paper-time-input-edit hide-label value="{{result}}" hour="4" min="20" am-pm="AM"></paper-time-input-edit>
+                        </div>
                         <div class="flexchild"></div>
                     </div>
                     <div class="flex-horizontal-with-ratios">
