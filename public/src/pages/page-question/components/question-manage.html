@@ -56,7 +56,7 @@
                                 
                             </div>
                             <div class="flex3child" style="margin: -10px 0px 0px 20px">
-                                 <paper-checkbox checked="{{settypeQuize(data.ref_id,data.ref_index)}}"></paper-checkbox>:สร้างคำถามแบบต่อเนื่อง
+                                 <paper-checkbox checked="{{typeQuize}}"></paper-checkbox>:สร้างคำถามแบบต่อเนื่อง
                             </div>
                             <div class="flexchild"></div>
                         </div>
@@ -135,6 +135,7 @@
     <script>
         Polymer({
             is: 'question-manage',
+            observers:['settypeQuize(data.ref_id)'],
             behaviors:[ReduxBehavior],
             properties:{
                 selected:{
@@ -174,15 +175,22 @@
                 return index+1;
             },
             settypeQuize:function(type){
-                console.log("*",type);
-                if(type != ""){
-                    this.typeQuize = true;
-                    return true;
+                // console.log("*",type);
+                if(typeof type == "undefined" || type == ""){
+                    this.typeQuize = false;
                 }
                 else{
-                    this.typeQuize = false;
-                    return false;
+                    this.typeQuize = true;
                 }
+                
+                // if(type != ""){
+                //     this.typeQuize = true;
+                //     return true;
+                // }
+                // else{
+                //     this.typeQuize = false;
+                //     return false;
+                // }
                 
             },      
             addChoice:function(){
