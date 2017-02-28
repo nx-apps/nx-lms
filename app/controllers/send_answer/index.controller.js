@@ -108,7 +108,7 @@ class index{
             return {
             question:x('question')
             .merge(function(x){
-                return {a:x('choice').filter({answer:true})(0)}
+                return {a:x('choice').filter({answer:true})}
             }) 
                 .merge(function(x){
                 return {q:r.db('lms').table('question').get(x('id')).getField('choice').filter({check:true})(0) }

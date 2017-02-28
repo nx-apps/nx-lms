@@ -186,7 +186,7 @@ class index {
             .merge(function (result) {
                 return {
                     d_index: r.branch(
-                        result('d_tag').ge(0).and(result('d_tag').le(33)), 'ยาก',
+                        result('d_tag').ge(1).and(result('d_tag').le(33)), 'ยาก',
                         result('d_tag').ge(34).and(result('d_tag').le(67)), 'ปานกลาง', 'ง่าย'
                     )
                 }
