@@ -19,6 +19,13 @@ export function userManageReducer(state = initialState,action){
             return Object.assign({},state,{dataSelect:{admin:false,key_tags:[],end_tags:[]}});
         case 'USER_MANAGE_SELECT_LIST':
             return Object.assign({},state,{dataSelect:action.payload});
+        case 'USER_MANAGE_SELECT_CLEAR_LIST':
+            return Object.assign({},state,{
+                dataSelect:{
+                    key_tags:[],
+                    end_tags:[]
+                }
+            });
         default:
             return state;
     }
@@ -28,6 +35,7 @@ export function userManageAction(store){
     return [commonAction(),
         {
             USER_MANAGE_GET_LIST:function(tag){
+                this.USER_MANAGE_SELECT_CLEAR_LIST();
                 this.newTag = tag;
                 this.fire('toast',{status:'load'});
                 axios.get('./user/user?tags='+tag)
@@ -129,6 +137,9 @@ export function userManageAction(store){
             },
             USER_MANAGE_CLEAR_LIST:function(){
                  store.dispatch({type:'USER_MANAGE_CLEAR_LIST',payload:{}});
+            },
+            USER_MANAGE_SELECT_CLEAR_LIST:function(){
+                store.dispatch({type:'USER_MANAGE_SELECT_CLEAR_LIST',payload:{}});
             }        
         }
     ]
