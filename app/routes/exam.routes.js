@@ -3,5 +3,5 @@ module.exports = function(app){
     app.get('/examList',examCtrl.select_ExamList); 
     app.get('/test_exam',examCtrl.select_question);
     app.get('/historyList',examCtrl.getHistoryList);
-
+    app.get('/exam',examCtrl.getExam);
 }
