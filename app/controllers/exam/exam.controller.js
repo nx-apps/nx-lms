@@ -9,7 +9,11 @@ class examHistory {
             
             r.db('lms').table('exam_room').getAll(
                 r.args(r.db('lms').table('user').get(user.id)('end_tags'))
-                ,{index:'module'})
+                ,{index:'module'}
+            ).merge(function(row){
+                return {tags:[r.db('lms').table('tag').get(row('module'))]}
+            })
+                
             .then(result=>{
                 res.json(result);
             }).catch(err=>{
