@@ -85,6 +85,10 @@
 				}
             },
             toThisPage:function(){
+                this.formLogin = {
+                    user: this.formLogin.user,
+                    pass:""
+                }
                 this.selected = '0';
             },
             toPagePassword:function(){
@@ -95,9 +99,6 @@
                 //this.nylonVisible(true);
             },
             signin:function(){
-                // console.log(this.user);
-                // this.selected = '1';
-                
                 this.AUTH_LOGIN(this.formLogin);
             }
         });
