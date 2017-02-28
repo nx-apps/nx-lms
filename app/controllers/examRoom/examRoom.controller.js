@@ -185,17 +185,31 @@ class examRoom {
         .then((result)=>{
             switch(params.case_time) {
                 case 'allDay':
-                    start_date=params.start_date+'T00:00:00.000Z';
-                    end_date=params.start_date+'T23:59:59.000Z';
+                    start_date=new Date(params.start_date+'T00:00:00.000Z');
+                    start_date.setHours(start_date.getHours()-7);
+                    start_date = start_date.toISOString();
+
+                    end_date=new Date(params.start_date+'T23:59:59.000Z');
+                    end_date.setHours(end_date.getHours()-7);
+                    end_date = end_date.toISOString();
                     break;
                 case 'period':
-                    start_date=params.start_date+'T00:00:00.000Z';
-                    end_date=params.end_date+'T23:59:59.000Z';
+                    start_date=new Date(params.start_date+'T00:00:00.000Z');
+                    start_date.setHours(start_date.getHours()-7);
+                    start_date = start_date.toISOString();
+
+                    end_date=new Date(params.end_date+'T23:59:59.000Z');
+                    end_date.setHours(end_date.getHours()-7);
+                    end_date = end_date.toISOString();
                     break;
                 case 'time':
-                    start_date=params.start_date+'T'+params.start_time+':00.000Z';
+                    start_date=new Date(params.start_date+'T'+params.start_time+':00.000Z');
+                    start_date.setHours(start_date.getHours()-7);
+                    start_date = start_date.toISOString();
+
                     end_date= new Date(params.start_date+'T'+params.start_time+':00.000Z');
                     end_date.setMinutes(end_date.getMinutes()+result.time);
+                    end_date.setHours(end_date.getHours()-7);
                     end_date = end_date.toISOString();
                     start_time = params.start_time;
             }
@@ -204,7 +218,6 @@ class examRoom {
             params.period_end_date = end_date;
             params.start_time = start_time;
 
-            
             var dateNow = new Date();
             params.create_time = dateNow.toISOString();
             params.update_time = dateNow.toISOString();
@@ -247,30 +260,30 @@ class examRoom {
                 case 'allDay':
                     start_date=new Date(params.start_date+'T00:00:00.000Z');
                     start_date.setHours(start_date.getHours()-7);
-                    start_date=start_date.toISOString();
+                    start_date = start_date.toISOString();
 
-                    end_date=new Date(params.end_date+'T23:59:59.000Z');
+                    end_date=new Date(params.start_date+'T23:59:59.000Z');
                     end_date.setHours(end_date.getHours()-7);
-                    end_date=end_date.toISOString();
+                    end_date = end_date.toISOString();
                     break;
                 case 'period':
                     start_date=new Date(params.start_date+'T00:00:00.000Z');
                     start_date.setHours(start_date.getHours()-7);
-                    start_date=start_date.toISOString();
+                    start_date = start_date.toISOString();
 
                     end_date=new Date(params.end_date+'T23:59:59.000Z');
                     end_date.setHours(end_date.getHours()-7);
-                    end_date=end_date.toISOString();
+                    end_date = end_date.toISOString();
                     break;
                 case 'time':
                     start_date=new Date(params.start_date+'T'+params.start_time+':00.000Z');
                     start_date.setHours(start_date.getHours()-7);
-                    start_date=start_date.toISOString();
+                    start_date = start_date.toISOString();
 
                     end_date= new Date(params.start_date+'T'+params.start_time+':00.000Z');
                     end_date.setMinutes(end_date.getMinutes()+result.time);
                     end_date.setHours(end_date.getHours()-7);
-                    end_date=end_date.toISOString();
+                    end_date = end_date.toISOString();
                     start_time = params.start_time;
             }
             
@@ -278,7 +291,6 @@ class examRoom {
             params.period_end_date = end_date;
             params.start_time = start_time;
 
-            
             var dateNow = new Date();
             params.create_time = dateNow.toISOString();
             params.update_time = dateNow.toISOString();
