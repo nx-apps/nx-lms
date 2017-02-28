@@ -75,7 +75,8 @@ select_ExamList(req,res){
     var params = req.query;
     
     r.db('lms').table('user').filter({id:params.user_id})
-    .merge(function(x){return { result: [x('end_tags'),x('key_tags')]  }  })
+   // .merge(function(x){return { result: [x('end_tags'),x('key_tags')]  }  })
+    .merge(function(x){return { result: [x('end_tags')]  }  })
     .concatMap(function(xx){
         return xx('result').concatMap(function(i){return i })
     }).coerceTo('array').distinct()
