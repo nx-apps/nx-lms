@@ -19,7 +19,7 @@ export function examAction(store){
     return [
         commonAction(),{
             EXAM_INSERT_DATA:function(data){
-                console.log(JSON.stringify(data));
+                // console.log(JSON.stringify(data));
                 data.user_id = store.getState().auth.user.id;
               
                 this.fire('toast',{status:'load'});
@@ -27,6 +27,7 @@ export function examAction(store){
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                         callback:()=>{
+                            this.fire('nylon-change-page',{path:'/examHistory/1'})
                             // this.stat = false;
                             // console.log(response.data);
                         }
