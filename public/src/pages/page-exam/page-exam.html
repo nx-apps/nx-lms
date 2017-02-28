@@ -100,8 +100,8 @@
                         // std_id: this.user.id,
                     }
                     data.question = this.dataList.question.map((item)=>{
-                        var {question,id,choice} = item;
-                        var newItem = {question,id,choice};
+                        var {question,id,choice,image_id} = item;
+                        var newItem = {question,id,choice,image_id};
                         newItem.choice = item.choice.map((item)=>{
                             var {check,name,answer,image_id} = item;
                             var newItem = {check,name,answer,image_id};
@@ -115,6 +115,8 @@
                     })
                     // console.log(data);
                     this.EXAM_INSERT_DATA(data);
+                    this.EXAM_HISTORY_EXAM_LIST();
+                    this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
                     this.fire('nylon-change-page',{path:'/examHistory/1'})
                 }
             }
