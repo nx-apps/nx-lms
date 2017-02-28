@@ -4,6 +4,31 @@
         <style include="page-style"></style>
         <div class="container">
             <vaadin-upload on-upload-success="fileChange" ></vaadin-upload>
+
+            <div class="container">
+            <paper-material elevation="1"> 
+             <table class="gl-table-default">
+                <thead>
+                    <tr>
+                        <th style="width:10%">#</th>
+                        <th>ไฟล์</th>
+                        <th>Module</th>
+                        <th>จำนวน(ข้อ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="[[dataList]]">
+                        <tr>
+                            <td>[[count(index)]]</td>
+                            <td>[[item.file]]</td>
+                            <td>[[item.module]]</td>
+                            <td>[[item.total]] ข้อ</td>
+                        </tr>
+                    </template>
+                </tbody>
+             </table>
+              </paper-material>
+            </div>
         </div>
         <!--<paper-button class="gl-btn-success" on-tap="selectFile" raised>อัปโหลดคำถาม</paper-button>-->
         <!--<input id="file" type="file" on-change="fileChange"  hidden>-->
@@ -16,21 +41,31 @@
                 imageId:{
                     notify:true,
                     value:""
+                },
+                dataList:{
+                    type:Array,
+                    value:[]
                 }
             },
             behaviors:[dispatchActionBehavior],
             selectFile:function(){
                 this.$.file.click();
             },
+            count:function(index){
+                return index+1;
+            },
             fileChange:function(e){
                 this.fire('toast',{status:'load'});
                 this.dispatchAction('QUESTION_UPLOAD',e.currentTarget.files)
                 .then(res=>{
                     console.log(res);
+                    res.data.map((item)=>{
+                        this.push('dataList',item);
+                    })
                     // alert('upload ok');
                     this.fire('toast',{status:'success',text:'อัพโหลดสำเร็จ',
                       callback:()=>{
-                           this.fire('close');
+                        //    this.fire('close');
                       }
                      });
                    
