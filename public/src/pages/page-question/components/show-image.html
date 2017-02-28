@@ -10,21 +10,17 @@
             transition: opacity 2s;
         }​
         </style>
-        <img id="image" onload="this.style.opacity='1';" src="[[linkImage(imageId)]]" style="max-width: 300px" alt="" hidden$="[[checkImage(imageId)]]">
+        <template is="dom-if" if="[[imageId]]">
+            <img id="image" onload="this.style.opacity='1';" src="[[linkImage(imageId)]]" style="max-width: 300px" alt="">
+        </template>
     </template>
     <script>
         Polymer({
             is: 'show-image',
-            observers:['imageChange(imageId)'],
             linkImage:function(id){
-                return '/api/image/image/'+id
-            },
-            checkImage:function(imageId){
-                return (typeof imageId=="undefined" || imageId=="")
-            },
-            imageChange:function(id){
-                //console.log(this.$.image);
-                this.$.image.style.opacity='0';
+                if(id){
+                    return '/api/image/image/'+id
+                }
             }
         });
     </script>
