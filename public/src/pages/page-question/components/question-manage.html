@@ -75,8 +75,18 @@
                             </div>
                             <div class="flexchild"></div>
                         </div>
+                     </template>
+                        <div class="container fontCSC flex-horizontal-with-ratios">
+                            <div class="flexchild" style="text-align: right">
+                                EST: 
+                            </div>
+                            <div class="flex3child" style="margin: -10px 0px 0px 20px">
+                                 <paper-input no-label-float value="{{data.est}}"></paper-input>
+                            </div>
+                            <div class="flexchild"></div>
+                        </div>
                     </paper-material>
-                    </template>
+                   
                     <paper-material elevation="1">
                         <table class="gl-table-default">
                             <thead>
@@ -212,13 +222,14 @@
                     correct: 0,
                     incorrect:0,
                     dificalty_index:this.data.dificalty_index,
-                    est:"1",
+                    est:parseFloat(this.data.est),
                     image_id:this.data.image_id,
                     choice: this.data.choice,
                     question:this.data.question,
                     ref_id:this.data.ref_id || "",
                     ref_index:parseInt(this.data.ref_index) || 0,
                 }
+                console.log(newData);
                 console.log(JSON.stringify(newData));
                 if(typeof this.data.id != 'undefined'){
                     newData.id = this.data.id;
