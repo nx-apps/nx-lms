@@ -42,6 +42,17 @@ export function examAction(store){
                 //     console.log(error);
                 // });
             },
+            EXAM_POST_ANSWER:function(data){
+                axios.post('link',)
+                .then((response)=>{
+                    console.log('success!!');
+                    console.log(response.data);
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
             EXAM_GET_DATA:function(id){
                 axios.get('./exam/exam?exam_room_id='+id)
                 .then((response)=>{
