@@ -73,11 +73,24 @@
                     return true;
                 }
             },
-            next:function(){
-                this.fire('next');
+            next:function(e){
+                var data = {
+                    choice:this.data.choice.filter((item)=>{
+                        return item.answer == true;
+                    }),
+                    id:this.data.id
+                }
+                // console.log(data);
+                this.fire('next',data);
             },
             previous:function(){
-                this.fire('previous');  
+                 var data = {
+                    choice:this.data.choice.filter((item)=>{
+                        return item.answer == true;
+                    }),
+                    id:this.data.id
+                }
+                this.fire('previous',data);  
             },
             selectRadio:function(e){
                 if(typeof this.data.choice !=="undefined"){

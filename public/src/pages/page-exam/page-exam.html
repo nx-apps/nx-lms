@@ -63,11 +63,19 @@
                 //     statePath:'auth.user'
                 // }
             },
-            nextIron:function(){
+            nextIron:function(e){
+                this.getChoice(e.detail)
                 this.$$('iron-pages').selectNext();
             },
-            previousIron:function(){
+            previousIron:function(e){
+                 this.getChoice(e.detail)
                  this.$$('iron-pages').selectPrevious();
+            },
+            getChoice:function(item){
+                if(item.choice.length != 0){
+                    // console.log(item);
+                    this.EXAM_PUT_CHOICE(item);
+                }
             },
             getTest:function(id){
                 if(this.getParam.page=="exam"){
@@ -79,7 +87,7 @@
                 }
             },
             getData:function(data){
-                console.log('*',data)
+                // console.log('*',data)
                 this.dispatchAction('EXAM_COUNTDOWN');
                 
             },
