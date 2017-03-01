@@ -4,7 +4,7 @@ import {commonAction} from '../config'
 
 const initialState = {
    examResult:{},
-   dataSelect:[]
+   dataSelect:{}
 }
 
 export function examReducer(state = initialState,action){
@@ -48,6 +48,18 @@ export function examAction(store){
                     console.log('success!!');
                     console.log(response.data);
                     store.dispatch({type:'EXAM_GET_DATA',payload:response.data})
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            EXAM_PUT_CHOICE:function(data){
+                console.log(data);
+                axios.put('./exam/exam',data)
+                .then((response)=>{
+                    console.log('success!!');
+                    console.log(response.data);
                 })
                 .catch((error)=>{
                     console.log('error');
