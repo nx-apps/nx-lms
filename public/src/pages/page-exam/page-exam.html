@@ -20,7 +20,9 @@
                         <tr>
                             <th style="width:20%;text-align: right; font-size: 18px;">คำอธิบาย</th>
                             <th><gl-form-textarea placeholder="" no-label-float value="[[dataList.description]]" disabled></gl-form-textarea></th>
-                            <th style="text-align: right;  font-size: 18px;"><paper-button on-tap="confirmToast" class="gl-btn-danger" on-tap="next">ส่งคำตอบ</paper-button></th>
+                            <th style="text-align: right;  font-size: 18px;">
+                                <!--<paper-button on-tap="confirmToast" class="gl-btn-success" on-tap="next">ส่งข้อสอบ</paper-button>-->
+                            </th>
                         </tr>
                     </thead>
                  </table>
@@ -44,7 +46,8 @@
             observers:['getTest(getParam.id)'],
             listeners:{
                 'next':'nextIron',
-                'previous':'previousIron'
+                'previous':'previousIron',
+                'send-exam':'confirmToast'
             },
             nylonPageActive:function(){
                 console.log('sss')
@@ -97,37 +100,41 @@
             cont:function(index){
                 return index+1;
             },
-            confirmToast:function(){
+            confirmToast:function(e){
                 this.fire('toast',{ 
                  status:'openDialog',
                  text:'ต้องการส่งแบบทดสอบใช่หรือไม่ ?',
-                 confirmed:this.sendAnswer.bind(this), 
-                 })
+                 confirmed:this.sendAnswer.bind(this),
+                 data:e.detail
+                })
             },
-            sendAnswer:function(check){
+            sendAnswer:function(check,data){
                 // console.log(this.dataList);
                 if(check == true){
-                    var data = {
-                        examination_id: this.dataList.examination_id, 
-                        exam_room_id: this.exam_room_id,
-                        // std_id: this.user.id,
-                    }
-                    data.question = this.dataList.question.map((item)=>{
-                        var {question,id,choice,image_id} = item;
-                        var newItem = {question,id,choice,image_id};
-                        newItem.choice = item.choice.map((item)=>{
-                            var {check,name,answer,image_id} = item;
-                            var newItem = {check,name,answer,image_id};
-                            if(typeof newItem.answer == 'undefined'){
-                                newItem.answer = false;
-                            }
-                            // newItem.answer = newItem.answer;
-                            return newItem;
-                        })
-                        return newItem;
-                    })
+                    console.log(data);
+                    // var data = {
+                    //     examination_id: this.dataList.examination_id, 
+                    //     exam_room_id: this.exam_room_id,
+                    //     id: this.dataList.id
+                    //     // std_id: this.user.id,
+                    // }
+                    // data.question = this.dataList.question.map((item)=>{
+                    //     var {question,id,choice,image_id} = item;
+                    //     var newItem = {question,id,choice,image_id};
+                    //     newItem.choice = item.choice.map((item)=>{
+                    //         var {check,name,answer,image_id} = item;
+                    //         var newItem = {check,name,answer,image_id};
+                    //         if(typeof newItem.answer == 'undefined'){
+                    //             newItem.answer = false;
+                    //         }
+                    //         // newItem.answer = newItem.answer;
+                    //         return newItem;
+                    //     })
+                    //     return newItem;
+                    // })
+                    // console.log(JSON.stringify(data));
                     // console.log(data);
-                    this.EXAM_INSERT_DATA(data);
+                    // this.EXAM_INSERT_DATA(data);
                     // this.EXAM_HISTORY_EXAM_LIST();
                     // this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
                     
