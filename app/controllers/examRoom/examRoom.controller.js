@@ -181,16 +181,14 @@ class examRoom {
         var r = req.r;
         var params = req.query;
     
-        r.db('lms').table('exam_answer').filter({exam_room_id:params.id})
-            .innerJoin(r.db('lms').table('user'), function(x,xx){
-            return x('user_id').eq(xx('id'))
-            }).map(function(data){
-            return data('left').merge(function(mr){
-                return {name:data('right')('name'),user_id:data('right')('id')}
+        r.db('lms').table('exam_test').filter({exam_room_id:params.id,status:'complete'})
+        .innerJoin(r.db('lms').table('user'),function(left,right){
+            return left('user_id').eq(right('id'))
+        }).map(function(row){
+            return row('left').merge(function(row2){
+                return row('right').pluck('name')
             })
-            }).without('question')
-
-        .run()
+        })
         .then(function(result){
             res.json(result);
         })

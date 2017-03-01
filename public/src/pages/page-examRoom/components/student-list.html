@@ -22,6 +22,7 @@
                         <tr>
                             <th style="width: 10%">#</th>
                             <th>ชื่อ-สกุล</th>
+                            <th style="text-align: right;">คะแนน</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,6 +42,9 @@
                                 </template>
                                 <td>
                                     [[item.name]]
+                                </td>
+                                <td style="text-align: right;">
+                                   [[item.sum]]/[[item.qty_question]]
                                 </td>
                             </tr>
                         </template>
@@ -98,7 +102,7 @@
             },
             chagePage:function(e){
                 // console.log(e.currentTarget.item);
-                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.exam_room_id+'/'+e.currentTarget.item.user_id})
+                this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.id+'/'+e.currentTarget.item.user_id})
             },
             getValue:function(){
                 this.data.map((item)=>{
