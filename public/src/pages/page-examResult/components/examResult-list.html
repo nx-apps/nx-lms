@@ -27,7 +27,7 @@
                                 <show-image image-id="[[item.image_id]]"></show-image>
                             </td>
                             <td>
-                                <div hidden="[[checkAnswer(item.name,item.answer_correct)]]">
+                                <div hidden="[[!item.check]]">
                                     <iron-icon icon="done"></iron-icon>
                                 </div>
                             </td>
