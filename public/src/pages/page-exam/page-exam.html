@@ -105,6 +105,7 @@
                 var newItem = item.choice.filter((item)=>{
                     return item.answer == true
                 })
+                this.exam_test = this.dataList.question[0].exam_test_id;
                 var data = {
                     id: item.id,
                     choice: newItem
@@ -118,7 +119,7 @@
                         confirm();
                     })
                     .catch((error)=>{
-                        confirm();
+                        // confirm();
                     })
                 }else{
                     confirm();
@@ -129,7 +130,7 @@
                         status:'openDialog',
                         text:'ต้องการส่งแบบทดสอบใช่หรือไม่ ?',
                         confirmed:()=>{
-                            
+                            this.EXAM_POST_ANSWER(this.exam_test)
                         },
                         data:e.detail
                     })
