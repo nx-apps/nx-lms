@@ -268,20 +268,19 @@ class examHistory {
             // .run()
             auth.userInfo(req).then((user)=>{
                 return r.db('lms').table('exam_test')
-                //.filter({status:'complete'})
+                .filter({status:'complete'})
                 .merge(function(row){
                     return {
                         name_room:r.db('lms').table('exam_room').get(row('exam_room_id'))('name_room'),
                         count_question:r.db('lms').table('exam_test_detail').coerceTo('array')
-                        .filter({exam_test_id:row('id')}).count(),
-                        score:'ยังคิวรี่บ่ได้'
+                        .filter({exam_test_id:row('id')}).count()
                     }
                 })
                 .merge(function(row){
                     return r.db('lms').table('exam_room').get(row('exam_room_id'))
                     .merge(function(row2){
                         return {tags:[r.db('lms').table('tag').get(row2('module'))]}
-                    }).pluck('name_room','setting','tags')
+                    }).pluck('name_room','setting','tags','score')
 
                 })
                 .then(function (result) {
