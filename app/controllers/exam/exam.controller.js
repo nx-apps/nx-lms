@@ -268,7 +268,7 @@ class examHistory {
             // .run()
             auth.userInfo(req).then((user)=>{
                 return r.db('lms').table('exam_test')
-                .filter({status:'complete'})
+                .filter({status:'complete',user_id:user.id})
                 .merge(function(row){
                     return {
                         name_room:r.db('lms').table('exam_room').get(row('exam_room_id'))('name_room'),

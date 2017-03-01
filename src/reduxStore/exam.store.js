@@ -42,7 +42,13 @@ export function examAction(store){
                 //     console.log(error);
                 // });
             },
+            nylonPageUnActive:function(){
+                console.log('ssss');
+                clearInterval(window.x);
+                clearInterval(window.asyncGetTime);
+            },
             EXAM_POST_ANSWER:function(data){
+                console.log('ssss');
                 this.fire('toast',{status:'load'});
                 axios.post('./exam/complete',{exam_test_id:data})
                 .then((response)=>{
@@ -85,13 +91,19 @@ export function examAction(store){
                     });
                 }
                 getTime();
-                var asyncGetTime = setInterval(()=>{
-                    getTime();
-                },10000);
+                
 
-                    if(x){
-                        clearInterval(x);
+                    if(window.x){
+                        clearInterval(window.x);
+                        console.log('sssxxx');
+                        clearInterval(window.asyncGetTime);
                     }
+
+                    window.asyncGetTime = setInterval(()=>{
+                        console.log('run')
+                        getTime();
+                    },10000);
+
                     var time = this.dataList.time;
 
                     const transform=(digi)=>{
@@ -102,7 +114,7 @@ export function examAction(store){
                         }
                     }
                     
-                    var x = setInterval(()=>{
+                    window.x = setInterval(()=>{
                         
                         var distance = new Date(countDownDate).getTime() - this.timeServer;
                         
@@ -113,9 +125,11 @@ export function examAction(store){
 
                         this.countDown = `${transform(hours)}:${transform(minutes)}:${transform(seconds)}`
                         if (distance < 0) {
-                            clearInterval(x);
+                            clearInterval(window.x);
+                            clearInterval(window.asyncGetTime);
                             this.countDown = "หมดเวลา";
                             //this.sendAnswer(true);
+                            this.EXAM_POST_ANSWER(this.dataList.question[0].exam_test_id);
                         }
                         this.timeServer = this.timeServer+1000;
                     }, 1000);
