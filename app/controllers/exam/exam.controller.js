@@ -10,8 +10,21 @@ class examHistory {
     get_answer(req,res){
         var r = req.r;
         var params = req.query;
-
-        r.db('lms').table('exam_test_detail').filter({exam_test_id:'c971d1c4-2884-4481-8025-28250efb8906'})
+        r.db('lms').table('exam_test').get(params.exam_test_id)
+        .merge(function(row){
+            return {
+                question:r.db('lms').table('exam_test_detail').filter({exam_test_id:row('id')}).coerceTo('array')
+            }
+        })
+        .merge(function(row){
+            return r.db('lms').table('exam_room').get(row('exam_room_id'))
+        })
+        .merge(function(row){
+            return r.db('lms').table('examination').get(row('examination_id'))
+        })
+        .pluck('name_examination','description','time','question')
+        
+        //r.db('lms').table('exam_test_detail').filter({exam_test_id:'c971d1c4-2884-4481-8025-28250efb8906'})
         .then(function(result){
             res.json(result);
         })
