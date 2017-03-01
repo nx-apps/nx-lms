@@ -458,7 +458,10 @@ class examHistory {
             })
             }
         })
-                    
+        .do(function(data){
+            return r.db('lms').table('exam_test_detail').get(data('id')).update({choice:data('choice')})
+        })       
+        
         .run()
         .then(function (result) {
             res.json(result);
