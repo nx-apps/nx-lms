@@ -285,7 +285,7 @@ class examHistory {
                                             return {
 
                                                 question: row('objective')
-
+      
                                                     .merge(function (m) {
                                                         return {
                                                             a: r.db('lms').table('question')
