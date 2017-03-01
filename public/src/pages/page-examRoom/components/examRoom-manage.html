@@ -227,74 +227,67 @@
                 }
             },
             getForm:function(){
+                // console.log(this.module);
                 this.data.module = this.module;
+                var newData = {
+                    module:this.data.module,
+                    setting:this.data.setting,
+                    enable:this.data.enable,
+                    end_date:this.data.end_date,
+                    examination_id:this.data.examination_id,
+                    module:this.data.module,
+                    name_room:this.data.name_room,
+                    start_date:this.data.start_date,
+                    start_time:this.data.start_time
+                }
                 var end_date = this.data.end_date;
                 if(this.hidden != true){
-                    this.data.end_date = undefined;
+                    newData.end_date = undefined;
                 }
                 else if(this.hidden == true){
-                     this.data.end_date = end_date;
+                     newData.end_date = end_date;
                 }
 
-                if(typeof this.data.start_time != "undefined" && typeof this.data.end_date != "undefined"){
-                    this.data.case_time = "time"
+                if(typeof newData.end_date == "undefined"){
+                    newData.end_date = "";
                 }
-                else if(typeof this.data.start_time == "undefined" && typeof this.data.end_date != "undefined"){
-                    this.data.case_time = "period"
+                if(typeof newData.start_time == "undefined"){
+                    newData.start_time = ""
+                }
+                if(typeof this.data.end_date == "undefined"){
+                    this.data.end_date = "";
+                }
+                if(typeof this.data.start_time == "undefined"){
+                    this.data.start_time = ""
+                }
+
+                if(this.data.start_time != "" && this.data.end_date != ""){
+                    newData.case_time = "time"
+                }
+                else if(this.data.start_time == "" && this.data.end_date != ""){
+                    newData.case_time = "period"
                 }
                 else{
-                    if(typeof this.data.start_time != "undefined"){
-                        this.data.case_time = "time"
+                    if(this.data.start_time != ""){
+                        newData.case_time = "time"
                     }
                     else{
-                        this.data.case_time = "allDay"
+                        newData.case_time = "allDay"
                     }
                 }
                 //  console.log(this.data);
                 //  console.log(JSON.stringify(this.data));
-
+                 console.log(newData);
                 if(typeof this.data.id != 'undefined'){
-                    var newData = {
-                        id:this.data.id,
-                        setting:this.data.setting,
-                        case_time:this.data.case_time,
-                        enable:this.data.enable,
-                        end_date:this.data.end_date,
-                        examination_id:this.data.examination_id,
-                        module:this.data.module,
-                        name_room:this.data.name_room,
-                        start_date:this.data.start_date,
-                        start_time:this.data.start_time
-                    }
-                    if(typeof newData.end_date == "undefined"){
-                        newData.end_date = "";
-                    }
-                    if(typeof newData.start_time == "undefined"){
-                        newData.start_time = ""
-                    }
-                    console.log(newData);
+                    //  alert('update');
+                    newData.id = this.data.id;
+                    // console.log(newData);
                     this.dispatchAction('EXAMROOM_UPDATE_DATA',newData);
                 }
                 else{
-                    var newDataInsert = {
-                        setting:this.data.setting,
-                        case_time:this.data.case_time,
-                        enable:this.data.enable,
-                        end_date:this.data.end_date,
-                        examination_id:this.data.examination_id,
-                        module:this.data.module,
-                        name_room:this.data.name_room,
-                        start_date:this.data.start_date,
-                        start_time:this.data.start_time
-                    }
-                    if(typeof newDataInsert.end_date == "undefined"){
-                        newDataInsert.end_date = "";
-                    }
-                    if(typeof newDataInsert.start_time == "undefined"){
-                        newDataInsert.start_time = ""
-                    }
-                    console.log(newDataInsert);
-                    this.dispatchAction('EXAMROOM_INSERT_DATA',newDataInsert);
+                    // alert('insert');
+                    // console.log(newData);
+                    this.dispatchAction('EXAMROOM_INSERT_DATA',newData);
                 }
                
             }
