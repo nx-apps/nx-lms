@@ -21,6 +21,7 @@ class examHistory {
         })
         .merge(function(row){
             return r.db('lms').table('examination').get(row('examination_id'))
+            .without('user_id')
         })
         .merge(function(row){
             return r.db('lms').table('user').get(row('user_id'))
