@@ -43,10 +43,16 @@ export function examAction(store){
                 // });
             },
             EXAM_POST_ANSWER:function(data){
-                axios.post('link',)
+                this.fire('toast',{status:'load'});
+                axios.post('./exam/complete',{exam_test_id:data})
                 .then((response)=>{
-                    console.log('success!!');
-                    console.log(response.data);
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                        this.fire('nylon-change-page',{path:'/examHistory/1'})
+                      }
+                     });
+                    // console.log('success!!');
+                    // console.log(response.data);
                 })
                 .catch((error)=>{
                     console.log('error');
