@@ -87,8 +87,11 @@
                 }
             },
             getData:function(data){
-                // console.log('*',data)
-                this.dispatchAction('EXAM_COUNTDOWN');
+                //console.log('*',data)
+                if(data.countdown_time){
+                    this.dispatchAction('EXAM_COUNTDOWN',data.countdown_time);
+                }
+                
                 
             },
             cont:function(index){
