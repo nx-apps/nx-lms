@@ -22,25 +22,25 @@ export function examAction(store){
     return [
         commonAction(),{
             EXAM_INSERT_DATA:function(data){
-                // console.log(JSON.stringify(data));
-                data.user_id = store.getState().auth.user.id;
+                console.log(JSON.stringify(data));
+                // data.user_id = store.getState().auth.user.id;
               
-                this.fire('toast',{status:'load'});
-                axios.post('./send_answer/send_answer',data)
-                .then((response)=>{
-                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                        callback:()=>{
-                            this.fire('nylon-change-page',{path:'/examHistory/1'})
-                            // this.stat = false;
-                            // console.log(response.data);
-                        }
-                     });
+                // this.fire('toast',{status:'load'});
+                // axios.post('./send_answer/send_answer',data)
+                // .then((response)=>{
+                //     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                //         callback:()=>{
+                //             this.fire('nylon-change-page',{path:'/examHistory/1'})
+                //             // this.stat = false;
+                //             // console.log(response.data);
+                //         }
+                //      });
                     
-                })
-                .catch((error)=>{
-                    console.log('error');
-                    console.log(error);
-                });
+                // })
+                // .catch((error)=>{
+                //     console.log('error');
+                //     console.log(error);
+                // });
             },
             EXAM_GET_DATA:function(id){
                 axios.get('./exam/exam?exam_room_id='+id)
