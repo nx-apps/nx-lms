@@ -7,6 +7,19 @@ class examHistory {
         res.json({date:dateNow});
     }
 
+    get_answer(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_test_detail').filter({exam_test_id:'c971d1c4-2884-4481-8025-28250efb8906'})
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
     getExamList(req, res) {
         var r = req.r;
 
@@ -19,13 +32,23 @@ class examHistory {
             )
             .filter(function(row){
                 return r.expr(dateNow).lt(row('period_end_date')).and(
-                    r.expr(dateNow).gt(row('period_start_date'))
+                    r.expr(dateNow).gt(row('period_start_date')).and({enable:true})
                 )
             })
             .merge(function(row){
                 return {
                     tags:[r.db('lms').table('tag').get(row('module'))],
+                    status:r.db('lms').table('exam_test').coerceTo('array')
+                    .filter(function(row2){
+                        return row2('user_id').eq(user.id).and(
+                            row2('exam_room_id').eq(row('id'))
+                        )
+                    }).do(function(result){
+                        return r.branch(result.count().eq(0),'wait',result(0)('status'))
+                    })
                 }
+            }).filter(function(row){
+                return row('status').ne('complete')
             })
             
             .then(result=>{
@@ -212,27 +235,52 @@ class examHistory {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_answer').filter({ user_id: params.user_id })
-            .innerJoin(r.db('lms').table('exam_room'), function (x, xx) {
-                return x('exam_room_id').eq(xx('id'))
-            }).map(function (result) {
-                return result('left').merge(function (name) {
-                    return { name_room: result('right')('name_room'), module: result('right')('module'), setting: result('right')('setting') }
+            // r.db('lms').table('exam_answer').filter({ user_id: params.user_id })
+            // .innerJoin(r.db('lms').table('exam_room'), function (x, xx) {
+            //     return x('exam_room_id').eq(xx('id'))
+            // }).map(function (result) {
+            //     return result('left').merge(function (name) {
+            //         return { name_room: result('right')('name_room'), module: result('right')('module'), setting: result('right')('setting') }
+            //     })
+            // })
+            // .merge(function (result) {
+            //     return {
+            //         tags: [r.db('lms').table('tag').get(result('module'))]
+            //     }
+            // })
+
+            // .run()
+            auth.userInfo(req).then((user)=>{
+                return r.db('lms').table('exam_test')
+                //.filter({status:'complete'})
+                .merge(function(row){
+                    return {
+                        name_room:r.db('lms').table('exam_room').get(row('exam_room_id'))('name_room'),
+                        count_question:r.db('lms').table('exam_test_detail').coerceTo('array')
+                        .filter({exam_test_id:row('id')}).count(),
+                        score:'ยังคิวรี่บ่ได้'
+                    }
                 })
+                .merge(function(row){
+                    return r.db('lms').table('exam_room').get(row('exam_room_id'))
+                    .merge(function(row2){
+                        return {tags:[r.db('lms').table('tag').get(row2('module'))]}
+                    }).pluck('name_room','setting','tags')
+
+                })
+                .then(function (result) {
+                    res.json(result);
+                })
+                .catch(function (err) {
+                    res.status(500).json(err);
+                })
+
             })
-            .merge(function (result) {
-                return {
-                    tags: [r.db('lms').table('tag').get(result('module'))]
-                }
+            .catch(err => {
+                res.json(err);
             })
 
-            .run()
-            .then(function (result) {
-                res.json(result);
-            })
-            .catch(function (err) {
-                res.status(500).json(err);
-            })
+            
 
     }
 
@@ -411,6 +459,12 @@ class examHistory {
                                             .merge(function (show) {
                                                 return {question:show('question').merge(function(x){return {choice:x('choice').without('check')} })}
                                             })
+                                            .merge(function(row){
+                                                return r.db('lms').table('exam_room').get(row('exam_room_id'))('examination_id')
+                                                .do(function(examination_id){
+                                                    return r.db('lms').table('examination').get(examination_id).pluck('name_examination','description')
+                                                })
+                                            })
                                      })
                                 ,
                                 //HAVE
@@ -422,6 +476,12 @@ class examHistory {
                                 })
                                 .merge(function (show) {
                                     return {question:show('question').merge(function(x){return {choice:x('choice').without('check')} })}
+                                })
+                                .merge(function(row){
+                                    return r.db('lms').table('exam_room').get(row('exam_room_id'))('examination_id')
+                                    .do(function(examination_id){
+                                        return r.db('lms').table('examination').get(examination_id).pluck('name_examination','description')
+                                    })
                                 })
 
                             )//end branch
