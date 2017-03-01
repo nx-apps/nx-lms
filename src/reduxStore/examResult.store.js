@@ -18,11 +18,11 @@ export function examResultReducer(state = initialState,action){
 export function examResultAction(store){
     return [commonAction(),
         {
-            EXAM_RESULT_GET_RESULT:function(exam_room_id,user_id=store.getState().auth.user.id){
+            EXAM_RESULT_GET_RESULT:function(exam_room_id){
                 // alert('1234');
                 // console.log('user_id',user_id);
                 // console.log('exam_room_id',exam_room_id);
-                axios.get('./send_answer/show_answer',{
+                axios.get('./exam/answer',{
                     params:{exam_room_id,user_id}
                 })
                 .then((response)=>{
