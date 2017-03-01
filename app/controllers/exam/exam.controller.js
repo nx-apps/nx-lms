@@ -440,6 +440,33 @@ class examHistory {
         
         })
      }
+
+     updateAnswer(req, res){
+        var r = req.r;
+        var params = req.body;
+
+        r.expr(params)
+        .merge(function(x){
+            return r.db('lms').table('exam_test_detail').get(x('id')).merge(function(xx){
+            return {ans:x('choice')(0)}
+            })
+        })
+        .merge(function(xx){
+            return {
+            choice:xx('choice').merge(function(a){
+                return { answer: r.branch( a('name').eq(xx('ans')('name')),true,false ) }
+            })
+            }
+        })
+                    
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })  
+     }
 }
 
 module.exports = new examHistory();
