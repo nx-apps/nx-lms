@@ -37,7 +37,7 @@
     <script>
         Polymer({
             is: 'page-exam',
-            behaviors:[nylonBehavior,ReduxBehavior,examHistoryAction,examAction],
+            behaviors:[nylonBehavior,ReduxBehavior,examAction],
             nylonPageActive:function(){
                 this.nylonVisible(false);
             },
@@ -52,7 +52,7 @@
             },
             properties:{
                 dataList:{
-                    statePath:'examHistory.examSelect',
+                    statePath:'exam.dataSelect',
                     observer:'getData'
                 },
                 selected:{
@@ -74,10 +74,12 @@
                     this.stat = true;
                     console.log(id);
                     this.exam_room_id = id;
-                    this.EXAM_HISTORY_EXAM_LIST_SELECT(id);
+                    this.EXAM_GET_DATA(id);
+                    // this.EXAM_HISTORY_EXAM_LIST_SELECT(id);
                 }
             },
             getData:function(data){
+                console.log('*',data)
                 this.dispatchAction('EXAM_COUNTDOWN');
                 
             },

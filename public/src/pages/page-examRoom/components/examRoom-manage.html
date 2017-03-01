@@ -250,8 +250,8 @@
                         this.data.case_time = "allDay"
                     }
                 }
-                 console.log(this.data);
-                 console.log(JSON.stringify(this.data));
+                //  console.log(this.data);
+                //  console.log(JSON.stringify(this.data));
 
                 if(typeof this.data.id != 'undefined'){
                     var newData = {
@@ -272,6 +272,7 @@
                     if(typeof newData.start_time == "undefined"){
                         newData.start_time = ""
                     }
+                    console.log(newData);
                     this.dispatchAction('EXAMROOM_UPDATE_DATA',newData);
                 }
                 else{

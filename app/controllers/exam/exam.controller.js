@@ -2,6 +2,11 @@ const auth = require('../auth');
 
 class examHistory {
 
+    getTime(req, res) {
+        var dateNow = new Date().toISOString();
+        res.json({date:dateNow});
+    }
+
     getExamList(req, res) {
         var r = req.r;
 
