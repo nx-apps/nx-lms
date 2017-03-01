@@ -411,6 +411,12 @@ class examHistory {
                                             .merge(function (show) {
                                                 return {question:show('question').merge(function(x){return {choice:x('choice').without('check')} })}
                                             })
+                                            .merge(function(row){
+                                                return r.db('lms').table('exam_room').get(row('exam_room_id'))('examination_id')
+                                                .do(function(examination_id){
+                                                    return r.db('lms').table('examination').get(examination_id).pluck('name_examination','description')
+                                                })
+                                            })
                                      })
                                 ,
                                 //HAVE
@@ -422,6 +428,12 @@ class examHistory {
                                 })
                                 .merge(function (show) {
                                     return {question:show('question').merge(function(x){return {choice:x('choice').without('check')} })}
+                                })
+                                .merge(function(row){
+                                    return r.db('lms').table('exam_room').get(row('exam_room_id'))('examination_id')
+                                    .do(function(examination_id){
+                                        return r.db('lms').table('examination').get(examination_id).pluck('name_examination','description')
+                                    })
                                 })
 
                             )//end branch
