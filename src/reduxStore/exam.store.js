@@ -55,16 +55,7 @@ export function examAction(store){
                 });
             },
             EXAM_PUT_CHOICE:function(data){
-                console.log(data);
-                axios.put('./exam/exam',data)
-                .then((response)=>{
-                    console.log('success!!');
-                    console.log(response.data);
-                })
-                .catch((error)=>{
-                    console.log('error');
-                    console.log(error);
-                });
+                return axios.put('./exam/exam',data)
             },
             EXAM_COUNTDOWN:function(countDownDate){
                 const getTime = ()=>{
