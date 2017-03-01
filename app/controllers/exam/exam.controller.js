@@ -7,6 +7,19 @@ class examHistory {
         res.json({date:dateNow});
     }
 
+    get_answer(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_test_detail').filter({exam_test_id:'c971d1c4-2884-4481-8025-28250efb8906'})
+        .then(function(result){
+            res.json(result);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+        })
+    }
+
     getExamList(req, res) {
         var r = req.r;
 
