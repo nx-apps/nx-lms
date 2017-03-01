@@ -56,15 +56,15 @@ export function examHistoryAction(store){
             EXAM_HISTORY_EXAM_LIST_COMPLETE:function(){
                 // var id = store.getState().auth.user.id;
                 // console.log('1234');
-                // axios.get('./examHistory/historyList?user_id='+id)
-                // .then((response)=>{
-                //     console.log(response.data);
-                //     store.dispatch({type:'EXAM_HISTORY_EXAM_LIST_COMPLETE',payload:response.data})
-                // })
-                // .catch((error)=>{
-                //     console.log('error');
-                //     console.log(error);
-                // });
+                axios.get('./exam/historyList')
+                .then((response)=>{
+                    console.log(response.data);
+                    store.dispatch({type:'EXAM_HISTORY_EXAM_LIST_COMPLETE',payload:response.data})
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
             }   
         }
     ]
