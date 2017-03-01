@@ -19,13 +19,23 @@ class examHistory {
             )
             .filter(function(row){
                 return r.expr(dateNow).lt(row('period_end_date')).and(
-                    r.expr(dateNow).gt(row('period_start_date'))
+                    r.expr(dateNow).gt(row('period_start_date')).and({enable:true})
                 )
             })
             .merge(function(row){
                 return {
                     tags:[r.db('lms').table('tag').get(row('module'))],
+                    status:r.db('lms').table('exam_test').coerceTo('array')
+                    .filter(function(row2){
+                        return row2('user_id').eq(user.id).and(
+                            row2('exam_room_id').eq(row('id'))
+                        )
+                    }).do(function(result){
+                        return r.branch(result.count().eq(0),'wait',result(0)('status'))
+                    })
                 }
+            }).filter(function(row){
+                return row('status').ne('complete')
             })
             
             .then(result=>{
