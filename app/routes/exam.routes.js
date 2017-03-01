@@ -9,4 +9,5 @@ module.exports = function(app){
     app.get('/historyList',examCtrl.getHistoryList);
     app.get('/exam',examCtrl.getExam);
     app.put('/exam',examCtrl.updateAnswer);
+    app.post('/complete',examCtrl.complete);
 }
