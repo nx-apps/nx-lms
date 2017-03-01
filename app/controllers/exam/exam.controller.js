@@ -546,6 +546,65 @@ class examHistory {
             res.status(500).json(err);
         })  
      }
+
+      complete(req, res){
+        var r = req.r;
+        var params = req.body;
+
+        r.db('lms').table('exam_test_detail').filter({exam_test_id:params.exam_test_id})
+                .merge(function(x){
+            return {
+            score:x('choice').filter({answer:true,check:true}).count()
+            }
+        })
+        .merge(function(x){
+            return {
+            correct: r.branch(x('score').eq(1),1,0),
+            incorrect: r.branch(x('score').eq(0),1,0)
+            }
+        }) .coerceTo('array')
+        
+        
+        .do(function(result){
+            
+            return result.forEach(function(x){
+            return r.db('lms').table('question').get(x('question_id'))
+            .do(function(doo){
+                return r.db('lms').table('question').get(x('question_id'))
+                .update({
+                    correct:doo('correct').add(x('correct')),
+                    incorrect:doo('incorrect').add(x('incorrect'))
+                })
+            })
+            })
+            
+            .do(function(){
+            return {
+                sum:result('correct').sum(),
+                exam_test_id:result('exam_test_id')(0),
+                qty_question:result.count()
+            }
+            })
+            
+            .do(function(x){
+                return r.db('lms').table('exam_test').get(x('exam_test_id')).update({
+                    sum:x('sum'),
+                    qty_question:x('qty_question'),
+                    status:'complete'
+                })
+            })
+            
+        })
+
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })  
+     }
+
 }
 
 module.exports = new examHistory();
