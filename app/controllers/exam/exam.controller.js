@@ -49,7 +49,7 @@ class examHistory {
             )
             .filter(function(row){
                 return r.expr(dateNow).lt(row('period_end_date')).and(
-                    r.expr(dateNow).gt(row('period_start_date')).and({enable:true})
+                    r.expr(dateNow).gt(row('period_start_date')).and(r.expr(true).eq(row('enable')))
                 )
             })
             .merge(function(row){
