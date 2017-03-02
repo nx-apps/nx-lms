@@ -4,6 +4,6 @@ module.exports = function(app){
     app.get('/user',authenticate(["admin"]),index.select_user);
     app.get('/select_user',authenticate(["admin"]),index.select_user_only);
     app.post('/user',authenticate(["admin"]),index.insert_user);
-    app.put('/user',authenticate(["admin"]),index.update_user);
+    app.put('/user',authenticate(),index.update_user);
     app.delete('/user',authenticate(["admin"]),index.delete_user);
 }
