@@ -5,6 +5,7 @@ var config = {
       port: 3000,
       cluster:1
     },
+    
     database: {
       max: 10,
       servers: [

@@ -6,6 +6,14 @@ const initialState = {
     user:{role:'none'}
 }
 
+
+
+//function _initUser(){
+  //  var token=_getCookie("token");
+  //  localStorage.setItem("token",token);
+//}
+//_initUser();
+
 export function authReducer(state = initialState,action){
 
     switch (action.type) {
@@ -33,8 +41,8 @@ export function authAction(store){
                 axios.post('./auth/login',{username:formLogin.user,password:formLogin.pass})
                 .then((response)=>{
 
-                   
-                    localStorage.setItem("token",response.data.token);
+                   _setCookie("token",response.data.token,1);
+                   // localStorage.setItem("token",response.data.token);
                     store.dispatch({type:'AUTH_SET_USER',payload:response.data})
 
                     let userInfo;
@@ -67,6 +75,8 @@ export function authAction(store){
                 });
             },
             AUTH_CLEAR_USER:function(){
+               // localStorage.removeItem("token");
+                _deleteCookie("token");
                 store.dispatch({type:'AUTH_CLEAR_USER'});
             },
             AUTH_SET_PASSWORD:function(data){

@@ -240,6 +240,8 @@ class controlTest {
 
 class examHistory {
 
+  
+
     getTime(req, res) {
         var dateNow = new Date().toISOString();
         res.json({ date: dateNow });
