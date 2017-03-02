@@ -455,7 +455,7 @@ class examHistory {
                                             .do(function (send) {
                                                 return send('question').forEach(function(row){
                                                     return r.db('lms').table('exam_test_detail').insert(
-                                                        row.pluck('question','choice','id').merge(function(x){
+                                                        row.pluck('question','choice','id','image_id').merge(function(x){
                                                             return {
                                                                 exam_test_id:send('exam_test_id'),
                                                                 question_id:x('id')
