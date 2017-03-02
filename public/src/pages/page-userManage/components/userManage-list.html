@@ -135,7 +135,7 @@
             },
             //chonEdit//
             searchName: function (e) {
-                var input, filter, table, tr, td, i;
+                var input, filter, table, tr, td, i,content;
                 input = this.$$('#myInput').value;
                 filter = input.toUpperCase();
                 table = this.$$("#myTable");
@@ -143,8 +143,16 @@
 
                 for (i = 0; i < tr.length; i++) {
                     td = tr[i].getElementsByTagName("td")[1];
-                    if (td) {
-                        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    content="";
+                    if(td){
+                        content=td.innerHTML.toUpperCase();
+                    }
+                    td = tr[i].getElementsByTagName("td")[2];
+                     if(td){
+                        content=content+td.innerHTML.toUpperCase();
+                    }
+                    if (content) {
+                        if (content.indexOf(filter) > -1) {
                             tr[i].style.display = "";
                         } else {
                             tr[i].style.display = "none";
