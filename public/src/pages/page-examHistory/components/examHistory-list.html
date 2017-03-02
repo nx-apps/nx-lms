@@ -59,7 +59,7 @@
             selectData:function(e){
                 console.log(e.currentTarget.item);
                 //  this.dispatchAction('EXAM_HISTORY_EXAM_LIST_SELECT',e.currentTarget.item.id);
-                this.fire('nylon-change-page',{path:'/exam/'+e.currentTarget.item.id})
+                this.fire('nylon-change-page',{path:'/exam/'+e.currentTarget.item.test_url})
             },
             setTextStatus:function(status){
                 if(status == "working"){

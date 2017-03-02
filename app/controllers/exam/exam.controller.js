@@ -1,4 +1,6 @@
 //const auth = require('../auth');
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = "จริงๆแล้วก็ไม่รู้ว่าจะใส่อะไรดีที่เป็นความลับอะนะ";
 
 class controlTest {
     rendomTest(exam_room_id, r, callback) {
@@ -240,7 +242,7 @@ class controlTest {
 
 class examHistory {
 
-  
+
 
     getTime(req, res) {
         var dateNow = new Date().toISOString();
@@ -250,77 +252,100 @@ class examHistory {
     get_answer(req, res) {
         var r = req.r;
         var params = req.query;
-        r.db('lms').table('exam_test').get(params.exam_test_id)
-            .merge(function (row) {
-                return {
-                    question: r.db('lms').table('exam_test_detail').filter({ exam_test_id: row('id') }).coerceTo('array')
-                }
-            })
-            .merge(function (row) {
-                return r.db('lms').table('exam_room').get(row('exam_room_id'))
-            })
-            .merge(function (row) {
-                return r.db('lms').table('examination').get(row('examination_id'))
-                    .without('user_id')
-            })
-            .merge(function (row) {
-                return r.db('lms').table('user').get(row('user_id'))
-            })
-            .pluck('name_examination', 'description', 'time', 'question', 'user_id', 'name', 'sum')
+        var exam_test_id = params.exam_test_id;
+        jwt.verify(exam_test_id, SECRET_KEY, function (err, decode) {
 
-            //r.db('lms').table('exam_test_detail').filter({exam_test_id:'c971d1c4-2884-4481-8025-28250efb8906'})
-            .then(function (result) {
-                res.json(result);
-            })
-            .catch(function (err) {
-                res.status(500).json(err);
-            })
+            if (err) {
+                //reject({ error: 'wrong token' });
+                // res.status(401).send("Unauthorized");
+                res.status(403).send("คุณไม่สิทธิดูข้อสอบนี้");
+            } else {
+                exam_test_id = decode.id;
+                if (decode.user_id != req.user.id) {
+                    res.status(403).send("คุณไม่สิทธิดูข้อสอบนี้");
+                } else {
+                    r.db('lms').table('exam_test').get(exam_test_id)
+                        .merge(function (row) {
+                            return {
+                                question: r.db('lms').table('exam_test_detail').filter({ exam_test_id: row('id') }).coerceTo('array')
+                            }
+                        })
+                        .merge(function (row) {
+                            return r.db('lms').table('exam_room').get(row('exam_room_id'))
+                        })
+                        .merge(function (row) {
+                            return r.db('lms').table('examination').get(row('examination_id'))
+                                .without('user_id')
+                        })
+                        .merge(function (row) {
+                            return r.db('lms').table('user').get(row('user_id'))
+                        })
+                        .pluck('name_examination', 'description', 'time', 'question', 'user_id', 'name', 'sum')
+
+                        //r.db('lms').table('exam_test_detail').filter({exam_test_id:'c971d1c4-2884-4481-8025-28250efb8906'})
+                        .then(function (result) {
+                            res.json(result);
+                        })
+                        .catch(function (err) {
+                            res.status(500).json(err);
+                        })
+                }
+            }
+        });
+
     }
 
 
     getExamList(req, res) {
         var r = req.r;
 
-      
-      
-    //  auth.userInfo(req).then(user => {
-            var user=req.user;
-            var dateNow = new Date().toISOString();
 
-            r.db('lms').table('exam_room').getAll(
-                r.args(r.db('lms').table('user').get(user.id)('end_tags'))
-                , { index: 'module' }
-            )
-                .filter(function (row) {
-                    return r.expr(dateNow).lt(row('period_end_date')).and(
-                        r.expr(dateNow).gt(row('period_start_date')).and(r.expr(true).eq(row('enable')))
-                    )
-                })
-                .merge(function (row) {
-                    return {
-                        tags: [r.db('lms').table('tag').get(row('module'))],
-                        status: r.db('lms').table('exam_test').coerceTo('array')
-                            .filter(function (row2) {
-                                return row2('user_id').eq(user.id).and(
-                                    row2('exam_room_id').eq(row('id'))
-                                )
-                            }).do(function (result) {
-                                return r.branch(result.count().eq(0), 'wait', result(0)('status'))
-                            })
-                    }
-                }).filter(function (row) {
-                    return row('status').ne('complete')
-                })
 
-                .then(result => {
-                    res.json(result);
-                }).catch(err => {
-                    res.status(500).json(err);
-                })
+        //  auth.userInfo(req).then(user => {
+        var user = req.user;
+        var dateNow = new Date().toISOString();
 
-      //  }).catch(err => {
+        r.db('lms').table('exam_room').getAll(
+            r.args(r.db('lms').table('user').get(user.id)('end_tags'))
+            , { index: 'module' }
+        )
+            .filter(function (row) {
+                return r.expr(dateNow).lt(row('period_end_date')).and(
+                    r.expr(dateNow).gt(row('period_start_date')).and(r.expr(true).eq(row('enable')))
+                )
+            })
+            .merge(function (row) {
+                return {
+                    tags: [r.db('lms').table('tag').get(row('module'))],
+                    status: r.db('lms').table('exam_test').coerceTo('array')
+                        .filter(function (row2) {
+                            return row2('user_id').eq(user.id).and(
+                                row2('exam_room_id').eq(row('id'))
+                            )
+                        }).do(function (result) {
+                            return r.branch(result.count().eq(0), 'wait', result(0)('status'))
+                        })
+                }
+            }).filter(function (row) {
+                return row('status').ne('complete')
+            })
+
+            .then(result => {
+                for (var i = 0; i < result.length; i++) {
+
+                    var test_url = jwt.sign({ id: result[i].id, user_id: req.user.id }, SECRET_KEY, {
+                        expiresIn: '1 days'
+                    });
+                    result[i].test_url = test_url;
+                }
+                res.json(result);
+            }).catch(err => {
+                res.status(500).json(err);
+            })
+
+        //  }).catch(err => {
         //    res.status(500).json(err);
-       // })
+        // })
 
 
 
@@ -512,34 +537,41 @@ class examHistory {
 
         // .run()
         //auth.userInfo(req).then((user) => {
-            var user=req.user;
-            return r.db('lms').table('exam_test')
-                .filter({ status: 'complete', user_id: user.id })
-                .merge(function (row) {
-                    return {
-                        name_room: r.db('lms').table('exam_room').get(row('exam_room_id'))('name_room'),
-                        count_question: r.db('lms').table('exam_test_detail').coerceTo('array')
-                            .filter({ exam_test_id: row('id') }).count()
-                    }
-                })
-                .merge(function (row) {
-                    return r.db('lms').table('exam_room').get(row('exam_room_id'))
-                        .merge(function (row2) {
-                            return { tags: [r.db('lms').table('tag').get(row2('module'))] }
-                        }).pluck('name_room', 'setting', 'tags', 'score')
+        var user = req.user;
+        return r.db('lms').table('exam_test')
+            .filter({ status: 'complete', user_id: user.id })
+            .merge(function (row) {
+                return {
+                    name_room: r.db('lms').table('exam_room').get(row('exam_room_id'))('name_room'),
+                    count_question: r.db('lms').table('exam_test_detail').coerceTo('array')
+                        .filter({ exam_test_id: row('id') }).count()
+                }
+            })
+            .merge(function (row) {
+                return r.db('lms').table('exam_room').get(row('exam_room_id'))
+                    .merge(function (row2) {
+                        return { tags: [r.db('lms').table('tag').get(row2('module'))] }
+                    }).pluck('name_room', 'setting', 'tags', 'score')
 
-                })
-                .then(function (result) {
-                    res.json(result);
-                })
-                .catch(function (err) {
-                    res.status(500).json(err);
-                })
+            })
+            .then(function (result) {
+                for (var i = 0; i < result.length; i++) {
 
-       // })
-           // .catch(err => {
-          //      res.json(err);
-          //  })
+                    var test_url = jwt.sign({ id: result[i].id, user_id: req.user.id }, SECRET_KEY, {
+                        expiresIn: '1 days'
+                    });
+                    result[i].test_url = test_url;
+                }
+                res.json(result);
+            })
+            .catch(function (err) {
+                res.status(500).json(err);
+            })
+
+        // })
+        // .catch(err => {
+        //      res.json(err);
+        //  })
 
 
 
@@ -580,54 +612,71 @@ class examHistory {
         var r = req.r;
         var params = req.query;
         var control = new controlTest();
-      //  auth.userInfo(req).then(user => {
-            var user=req.user;
-            var user_id = user.id;
-            var exam_room_id = params.exam_room_id;
-            console.log("start get getExam");
-            control.getExamTest(exam_room_id, user_id, r, function (datas) {
-                console.log("getExamTest");
-                // console.log(datas);
-                if (!datas.error) {
-                    res.json(datas);
+        //  auth.userInfo(req).then(user => {
+        var user = req.user;
+        var user_id = user.id;
+        var exam_room_id = params.exam_room_id;
+
+        jwt.verify(exam_room_id, SECRET_KEY, function (err, decode) {
+
+            if (err) {
+                //reject({ error: 'wrong token' });
+                // res.status(401).send("Unauthorized");
+                res.status(403).send("คุณไม่สิทธิทำข้อสอบนี้");
+            } else {
+                exam_room_id = decode.id;
+                if (decode.user_id != req.user.id) {
+                    res.status(403).send("คุณไม่สิทธิทำข้อสอบนี้");
                 } else {
-                    control.rendomTest(exam_room_id, r, function (questions) {
-                        console.log("rendomTest");
-                        // console.log(questions);
-                        if (!questions.error) {
-                            control.insertExamTest(exam_room_id, user_id, r, function (exam_test) {
-                                console.log("insertExamTest");
-                                console.log(exam_test);
-                                if (!exam_test.error) {
-                                    control.insertExamTestDetail(exam_test.exam_test_id, questions, r, function (details) {
-                                        console.log("insertExamTestDetail");
-                                        //  console.log(details);
-                                        if (!details.error) {
-                                            control.getExamTest(exam_room_id, user_id, r, function (qq) {
-                                                console.log("getExamTest2");
-                                                //console.log(qq);
-                                                if (!qq.error) {
-                                                    res.json(qq);
-                                                } else {
-                                                    res.status(500).send(qq.error);
+
+                    console.log("start get getExam");
+                    control.getExamTest(exam_room_id, user_id, r, function (datas) {
+                        console.log("getExamTest");
+                        // console.log(datas);
+                        if (!datas.error) {
+                            res.json(datas);
+                        } else {
+                            control.rendomTest(exam_room_id, r, function (questions) {
+                                console.log("rendomTest");
+                                // console.log(questions);
+                                if (!questions.error) {
+                                    control.insertExamTest(exam_room_id, user_id, r, function (exam_test) {
+                                        console.log("insertExamTest");
+                                        console.log(exam_test);
+                                        if (!exam_test.error) {
+                                            control.insertExamTestDetail(exam_test.exam_test_id, questions, r, function (details) {
+                                                console.log("insertExamTestDetail");
+                                                //  console.log(details);
+                                                if (!details.error) {
+                                                    control.getExamTest(exam_room_id, user_id, r, function (qq) {
+                                                        console.log("getExamTest2");
+                                                        //console.log(qq);
+                                                        if (!qq.error) {
+                                                            res.json(qq);
+                                                        } else {
+                                                            res.status(500).send(qq.error);
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    res.status(500).send(details.error);
                                                 }
                                             });
-                                        }
-                                        else {
-                                            res.status(500).send(details.error);
+                                        } else {
+                                            res.status(500).send(exam_test.error);
                                         }
                                     });
                                 } else {
-                                    res.status(500).send(exam_test.error);
+                                    res.status(500).send(questions.error);
                                 }
                             });
-                        } else {
-                            res.status(500).send(questions.error);
                         }
                     });
+                    //  });
+
                 }
-            });
-      //  });
+            }
+        });
     }
 
 
