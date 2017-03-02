@@ -557,10 +557,10 @@ class examHistory {
             .then(function (result) {
                 for (var i = 0; i < result.length; i++) {
 
-                    var test_url = jwt.sign({ id: result[i].id, user_id: req.user.id }, SECRET_KEY, {
+                    var answer_url = jwt.sign({ id: result[i].id, user_id: req.user.id }, SECRET_KEY, {
                         expiresIn: '1 days'
                     });
-                    result[i].test_url = test_url;
+                    result[i].answer_url = answer_url;
                 }
                 res.json(result);
             })
