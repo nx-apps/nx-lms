@@ -14,7 +14,11 @@
                     <thead>
                         <tr class="hideBorder">
                             <th style="width:20%;text-align: right; font-size: 18px;">ชื่อข้อสอบ</th>
-                            <th><gl-form-input placeholder="" no-label-float value="[[dataList.name_examination]]" disabled></gl-form-input></th>
+                            <th>
+                                <a href="/api/exam/gen/[[getParam.id]]/[[dataList.user_id]]" target="_blank">
+                                <gl-form-input placeholder="" no-label-float value="[[dataList.name_examination]]" disabled></gl-form-input>
+                                </a>
+                                </th>
                             <th style="text-align: right;">[[countDown]]</th>
                         </tr>
                         <tr>
