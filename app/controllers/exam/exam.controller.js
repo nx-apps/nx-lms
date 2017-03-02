@@ -572,9 +572,6 @@ class examHistory {
     getExam(req, res) {
         var r = req.r;
         var params = req.query;
-
-        //res.json(params);
-
         var control = new controlTest();
         auth.userInfo(req).then(user => {
             var user_id = user.id;
@@ -624,127 +621,7 @@ class examHistory {
             });
         });
     }
-    //(
-    //  r.db('lms').table('exam_test').filter({ exam_room_id:exam_room_id, user_id: params('user_id') })
-    //.run()
-    // .then(function(data){})
-
-
-
-
-
-
-
-
-
-
-    /*
-
-    params.user_id = user.id;
-
-    r.db('lms').table('exam_test').filter({ exam_room_id: params('exam_room_id'), user_id: params('user_id') })
-
-
-
-    r.db('lms').table('exam_room').get(params.exam_room_id)
-        .merge(function (row) {
-            return r.db('lms').table('examination').get(row('examination_id')).pluck('time')
-        })
-        .then(resultExamRoom => {
-
-
-
-            var start_time = new Date();
-            start_time = start_time.toISOString();
-            var countdown_time = "";
-
-            switch (resultExamRoom.case_time) {
-                case 'allDay':
-                    countdown_time = new Date(start_time);
-                    countdown_time.setMinutes(countdown_time.getMinutes() + resultExamRoom.time);
-                    countdown_time = countdown_time.toISOString();
-                    break;
-                case 'period':
-                    countdown_time = new Date(start_time);
-                    countdown_time.setMinutes(countdown_time.getMinutes() + resultExamRoom.time);
-                    countdown_time = countdown_time.toISOString();
-                    break;
-                case 'time':
-                    countdown_time = resultExamRoom.period_end_date;
-            }
-
-            params.start_time = start_time;
-            params.countdown_time = countdown_time;
-
-
-
-
-
-
-            // res.json(params);
-            r.expr(params).do(function (params) {
-
-                return r.db('lms').table('exam_test').filter({ exam_room_id: params('exam_room_id'), user_id: params('user_id') })
-                    .coerceTo('array')
-                    .do(function (result) {
-                        return r.branch(result.count().eq(0),
-                            //don't have
- 
-
-                             
-
-                            .do(function (xd) {
-                            return r.db('lms').table('exam_test').filter({ exam_room_id: params('exam_room_id'), user_id: params('user_id') }).coerceTo('array')(0)
-                                .do(function (data) {
-                                    return data.merge(function (x) {
-                                        return { question: r.db('lms').table('exam_test_detail').filter({ exam_test_id: data('id') }).coerceTo('array') }
-                                    })
-                                })
-                        })
-                            .merge(function (show) {
-                                return { question: show('question').merge(function (x) { return { choice: x('choice').without('check') } }) }
-                            })
-                            .merge(function (row) {
-                                return r.db('lms').table('exam_room').get(row('exam_room_id'))('examination_id')
-                                    .do(function (examination_id) {
-                                        return r.db('lms').table('examination').get(examination_id).pluck('name_examination', 'description')
-                                    })
-                            })
-                        })
-                    ,
-                    //HAVE
-                    r.db('lms').table('exam_test').filter({ exam_room_id: params('exam_room_id'), user_id: params('user_id') }).coerceTo('array')(0)
-                        .do(function (data) {
-                            return data.merge(function (x) {
-                                return { question: r.db('lms').table('exam_test_detail').filter({ exam_test_id: data('id') }).coerceTo('array') }
-                            })
-                        })
-                        .merge(function (show) {
-                            return { question: show('question').merge(function (x) { return { choice: x('choice').without('check') } }) }
-                        })
-                        .merge(function (row) {
-                            return r.db('lms').table('exam_room').get(row('exam_room_id'))('examination_id')
-                                .do(function (examination_id) {
-                                    return r.db('lms').table('examination').get(examination_id).pluck('name_examination', 'description')
-                                })
-                        })
-
-                        )//end branch
-        })
-
-})
-
-    .then((result) => {
-        return res.json(result);
-    })
-    .catch(err => {
-        res.json(err);
-    })
-
-})
-
-})*/
-    //   }
+    
 
     updateAnswer(req, res) {
         var r = req.r;
