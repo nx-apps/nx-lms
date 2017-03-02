@@ -51,14 +51,15 @@
                 this.dispatchAction('COMMON_MODULE');
                 this.moduleSelect = "";
                 this.dispatchAction('USER_MANAGE_CLEAR_GET_LIST');
+                this.USER_MANAGE_GET_LIST('PM');
             },
             closePanel:function(){
                 this.$$('panel-right').close();
             },
             getStudentList:function(tag){
-                if(tag != ''){
+              //  if(tag = ''){
                     this.USER_MANAGE_GET_LIST(tag);
-                } 
+                //} 
             },
             openPanelRight:function(){
                 this.USER_MANAGE_CLEAR_LIST();

@@ -1,75 +1,134 @@
-
 <dom-module id="question-upload">
     <template>
         <style include="page-style"></style>
         <div class="container">
-            <vaadin-upload on-upload-success="fileChange" ></vaadin-upload>
+            <vaadin-upload on-upload-success="fileChange"></vaadin-upload>
 
             <div class="container">
-            <paper-material elevation="1"> 
-             <table class="gl-table-default">
-                <thead>
-                    <tr>
-                        <th style="width:10%">#</th>
-                        <th>ไฟล์</th>
-                        <th>Module</th>
-                        <th>จำนวน(ข้อ)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template is="dom-repeat" items="[[dataList]]">
-                        <tr>
-                            <td>[[count(index)]]</td>
-                            <td>[[item.file]]</td>
-                            <td>[[item.module]]</td>
-                            <td>[[item.total]] ข้อ</td>
-                        </tr>
-                    </template>
-                </tbody>
-             </table>
-              </paper-material>
+                <paper-material elevation="1">
+                    <table class="gl-table-default">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">#</th>
+                                <th>ไฟล์</th>
+                                <th>Module</th>
+                                <th>จำนวน(ข้อ)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template is="dom-repeat" items="[[dataList]]">
+                                <tr>
+                                    <td>[[count(index)]]</td>
+                                    <td>[[item.file]]</td>
+                                    <td>[[item.module]]</td>
+                                    <td>[[item.total]] ข้อ</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </paper-material>
             </div>
+            <div class="flex-end-justified" style="margin-top: 10px;">
+                <div>
+                    <paper-button hidden="[[active]]" class="gl-btn-success" on-tap="confirmUpload" raised>ยืนยัน</paper-button>
+                    <paper-button hidden="[[active]]" class="gl-btn-danger" on-tap="cancleUpload" raised>ยกเลิก</paper-button>
+                </div>
+            </div>
+
         </div>
         <!--<paper-button class="gl-btn-success" on-tap="selectFile" raised>อัปโหลดคำถาม</paper-button>-->
         <!--<input id="file" type="file" on-change="fileChange"  hidden>-->
+
     </template>
     <script>
         Polymer({
             is: 'question-upload',
-            behaviors:[dispatchActionBehavior],
-            properties:{
-                imageId:{
-                    notify:true,
-                    value:""
+            behaviors: [dispatchActionBehavior],
+            properties: {
+                imageId: {
+                    notify: true,
+                    value: ""
                 },
-                dataList:{
-                    type:Array,
-                    value:[]
-                }
+                dataList: {
+                    type: Array,
+                    value: []
+                },
+                active: true
+
             },
-            behaviors:[dispatchActionBehavior],
-            selectFile:function(){
+            behaviors: [dispatchActionBehavior],
+            selectFile: function () {
                 this.$.file.click();
             },
-            count:function(index){
-                return index+1;
+            count: function (index) {
+                return index + 1;
             },
-            fileChange:function(e){
-                this.fire('toast',{status:'load'});
-                this.dispatchAction('QUESTION_UPLOAD',e.currentTarget.files)
-                .then(res=>{
-                    console.log(res);
-                    res.data.map((item)=>{
-                        this.push('dataList',item);
+            clearList: function (result) {
+                if (result == true) {
+                    this.dataList = [];
+                    this.active = true;
+                }
+            },
+            saveList: function (result) {
+                if (result == true) {
+                    this.fire('toast', { status: 'load' });
+                    this.dispatchAction('QUESTION_UPLOAD_CONFIRM', this.dataList)
+                        .then(res => {
+                            this.clearList(true);
+                            this.fire('toast', {
+                                status: 'success', text: 'อัพโหลดสำเร็จ',
+                                callback: () => {
+                                    //    this.fire('close');
+                                }
+                            });
+
+                        });
+                }
+            },
+            confirmUpload: function () {
+                if (this.dataList.length > 0) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
+                        confirmed: this.saveList.bind(this),
                     })
-                    // alert('upload ok');
-                    this.fire('toast',{status:'success',text:'อัพโหลดสำเร็จ',
-                      callback:()=>{
-                        //    this.fire('close');
-                      }
-                     });
-                   
-                });
+                } else {
+                    this.clearList(true);
+                }
+
+            },
+            cancleUpload: function () {
+                if (this.dataList.length > 0) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'ต้องการยกเลิกใช่หรือไม่ ?',
+                        confirmed: this.clearList.bind(this),
+                    })
+                } else {
+                    this.clearList(true);
+                }
+            },
+            fileChange: function (e) {
+                this.fire('toast', { status: 'load' });
+                this.dispatchAction('QUESTION_UPLOAD', e.currentTarget.files)
+                    .then(res => {
+                        console.log(res);
+                        res.data.map((item) => {
+                            this.push('dataList', item);
+
+                        })
+                        if (this.dataList.length > 0) {
+                            this.active = false;
+                        }
+                        // alert('upload ok');
+                        this.fire('toast', {
+                            status: 'success', text: 'อัพโหลดสำเร็จ',
+                            callback: () => {
+                                //    this.fire('close');
+                            }
+                        });
+
+                    });
             }
         });
     </script>

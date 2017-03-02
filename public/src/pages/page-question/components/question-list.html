@@ -1,37 +1,43 @@
-
 <dom-module id="question-list">
     <template>
         <style include="page-style">
-             tbody>tr>td{
-                 cursor: pointer;
-             }
-            tbody>tr:hover{
+            tbody>tr>td {
+                cursor: pointer;
+            }
+            
+            tbody>tr:hover {
                 font-weight: bold;
                 border-bottom: 2px solid dodgerblue;
             }
-     
         </style>
         <div class="container">
-            
+
             <paper-material elevation="1">
                 <div class="content">
-                    <table class="gl-table-default">
+                    <paper-input id="myInput" on-keyup="searchName" placeholder="ค้นหา..."> </paper-input>
+                    <table class="gl-table-default" id="myTable">
                         <thead>
                             <tr>
                                 <th style="width:10%">ข้อที่</th>
                                 <th>คำถาม</th>
+                                <th>Sub Module</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <template is="dom-repeat" items="[[dataList]]">
-                                
+
                                 <tr on-tap="selectList" item="[[item]]" question-id="[[item.id]]">
                                     <td>
                                         <div>[[toIndex(index)]]</div>
                                     </td>
                                     <td>
-                                        [[item.question]]                     
+                                        [[item.question]]
+                                    </td>
+                                    <td>
+                                        <template is="dom-repeat" items="[[item.tags]]">
+                                            [[item]]
+                                        </template>
                                     </td>
                                     <td style="text-align: right;">
                                         <iron-icon icon="create"></iron-icon>
@@ -40,7 +46,7 @@
                             </template>
                         </tbody>
                     </table>
-                     <!--<paper-icon-button icon="alarm-on" title="wake up" class="giant"></paper-icon-button>
+                    <!--<paper-icon-button icon="alarm-on" title="wake up" class="giant"></paper-icon-button>
                      <span>toppic</span>-->
                 </div>
             </paper-material>
@@ -49,21 +55,51 @@
     <script>
         Polymer({
             is: 'question-list',
-            behaviors:[ReduxBehavior],
-            properties:{
-                dataList:{
-                    statePath:'question.dataList'
+            behaviors: [ReduxBehavior],
+            properties: {
+                dataList: {
+                    statePath: 'question.dataList'
                 }
             },
-            ready:function(){
+            ready: function () {
                 //this.QUESTION_GET_LIST();
             },
-            selectList:function(e){
-                this.dispatchAction('QUESTION_SELECT',e.currentTarget.questionId)
-               
+            selectList: function (e) {
+                this.dispatchAction('QUESTION_SELECT', e.currentTarget.questionId)
+
             },
-            toIndex:function(index){
+            toIndex: function (index) {
                 return ++index;
+            },
+            searchName: function (e) {
+                var input, filter, table, tr, td, i,content;
+                input = this.$$('#myInput').value;
+                filter = input.toUpperCase();
+                table = this.$$("#myTable");
+                tr = table.getElementsByTagName("tr");
+
+                for (i = 0; i < tr.length; i++) {
+                    content="";
+                    td = tr[i].getElementsByTagName("td")[1];
+                    if(td){
+                        content=td.innerHTML.toUpperCase();
+                    }
+                    td = tr[i].getElementsByTagName("td")[2];
+                    if(td){
+                        content=content+td.innerHTML.toUpperCase();
+                    }
+
+                   // var td2 = tr[i].getElementsByTagName("td")[2];
+                   // var content =td.innerHTML.toUpperCase()+" "+td2.innerHTML.toUpperCase();
+                    if (content) {
+                        if (content.indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+
+                }
             }
         });
     </script>

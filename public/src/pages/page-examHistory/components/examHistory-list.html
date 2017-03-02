@@ -1,71 +1,87 @@
-
 <dom-module id="examHistory-list">
     <template>
         <style include="page-style">
-            tbody>tr>td{
-                 cursor: pointer;
+            tbody>tr>td {
+                cursor: pointer;
             }
-            tbody>tr:hover{
+            
+            tbody>tr:hover {
                 font-weight: bold;
                 border-bottom: 2px solid dodgerblue;
             }
         </style>
         <div class="container">
             <paper-material elevation="1">
-            <table class="gl-table-default">
-                <thead>
-                    <tr>
-                        <th style="width:10%">#</th>
-                        <th>รายการห้องสอบ</th>
-                        <th>Module</th>
-                        <!--<th>time</th>-->
-                        <!--<th>จำนวนข้อ</th>-->
-                        <th style="width:20%"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template is="dom-repeat" items="[[examList]]">
-                        <tr on-tap="selectData" item="[[item]]">
-                            <td>[[getIndex(index)]]</td>
-                            <td>[[item.name_room]]</td>
-                            <template is="dom-repeat" items="[[item.tags]]">
-                                <td><tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module></td>
-                            </template>
-                             <!--<td>[[item.start_time]]</td>-->
-                            <!--<td>[[item.qty]]</td>-->
-                            <td>
-                               <iron-icon icon="create"></iron-icon>
-                                [[setTextStatus(item.status)]]
-                            </td>
+                <table class="gl-table-default">
+                    <thead>
+                        <tr>
+                            <th style="width:10%">#</th>
+                            <th>รายการห้องสอบ</th>
+                            <th>Module</th>
+                            <th>วันที่ทำข้อสอบ</th>
+                            <th>ชุดข้อสอบ</th>
+                            <th>จำนวน (ข้อ)</th>
+                            <th>เวลา (นาที)</th>
+                            <!--<th>time</th>-->
+                            <!--<th>จำนวนข้อ</th>-->
+                            <th style="width:20%"></th>
                         </tr>
-                    </template>
-                </tbody>
-            </table>
-             </paper-material>
-             </div>
+                    </thead>
+                    <tbody>
+                        <template is="dom-repeat" items="[[examList]]">
+                            <tr on-tap="selectData" item="[[item]]">
+                                <td>[[getIndex(index)]]</td>
+                                <td>[[item.name_room]]</td>
+                                <template is="dom-repeat" items="[[item.tags]]">
+                                    <td>
+                                        <tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module>
+                                    </td>
+                                </template>
+                                <!--<td>[[item.start_time]]</td>-->
+                                <!--<td>[[item.qty]]</td>-->
+                                <td>[[item.start_date]] [[item.start_time]]</td>
+                                <td>
+                                    [[item.examination.name_examination]]
+                                </td>
+                                <td>
+                                    [[item.examination.amount_all]]
+                                </td>
+                                <td>
+                                    [[item.examination.time]]
+                                </td>
+                                <td>
+                                    <iron-icon icon="create"></iron-icon>
+                                    [[setTextStatus(item.status)]]
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </paper-material>
+        </div>
     </template>
     <script>
         Polymer({
             is: 'examHistory-list',
-            behaviors:[ReduxBehavior,dispatchActionBehavior],
-            getIndex:function(index){
-                return index+1;
+            behaviors: [ReduxBehavior, dispatchActionBehavior],
+            getIndex: function (index) {
+                return index + 1;
             },
-            properties:{
-                examList:{
-                    statePath:'examHistory.examList'
+            properties: {
+                examList: {
+                    statePath: 'examHistory.examList'
                 }
             },
-            selectData:function(e){
+            selectData: function (e) {
                 console.log(e.currentTarget.item);
                 //  this.dispatchAction('EXAM_HISTORY_EXAM_LIST_SELECT',e.currentTarget.item.id);
-                this.fire('nylon-change-page',{path:'/exam/'+e.currentTarget.item.test_url})
+                this.fire('nylon-change-page', { path: '/exam/' + e.currentTarget.item.test_url })
             },
-            setTextStatus:function(status){
-                if(status == "working"){
+            setTextStatus: function (status) {
+                if (status == "working") {
                     return "ทำข้อสอบต่อ"
                 }
-                else{
+                else {
                     return "เริ่มทำข้อสอบ"
                 }
             }

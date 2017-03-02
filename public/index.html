@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
   <title>BETAGRO</title>
-
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
   <link rel="shortcut icon" sizes="32x32" href="/images/icon/green/app-icon-32.png">
   <link rel="manifest" href="/manifest.json">
   <link rel="import" href="/api/push/import">
@@ -39,7 +39,10 @@
     function _deleteCookie(name) {
       document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
+
+
   </script>
+  
   <script src="/bundle.js"></script>
   <link rel="import" href="/bower_components/polymer/polymer.html">
   <link rel="import" href="/src/nylon-app.html" async>

@@ -326,7 +326,15 @@ class examHistory {
                             return r.branch(result.count().eq(0), 'wait', result(0)('status'))
                         })
                 }
-            }).filter(function (row) {
+            })
+            .merge(function (row) {
+                return {
+                    examination: r.db('lms').table('examination')
+                        .get(row('examination_id'))
+                        .pluck('name_examination', 'amount_all', 'time')
+                }
+            })
+            .filter(function (row) {
                 return row('status').ne('complete')
             })
 
@@ -579,28 +587,44 @@ class examHistory {
 
     generateTest(req, res) {
         var r = req.r;
-        console.log(req.params.exid);
-        console.log(req.params.uid);
-        var userid = req.params.uid;
-        var examid = req.params.exid;
+        //  console.log(req.params.exid);
+        //  console.log(req.params.uid);
+        // var userid = req.params.uid;
+        var exam_test_id = req.params.exid;
         var control = new controlTest();
-        control.getExamTest(examid, userid, r, function (data) {
-            if (!data.error) {
-                var myDate = new Date(data.start_time);
-                res.render('listExam', {
-                    name_examination: data.name_examination,
-                    description: data.description,
-                    start_time: myDate,
-                    user: data.user,
-                    time: data.time,
-                    objectives: data.objective,
-                    qty_question: data.question.length,
-                    datas: data.question
-                });
+
+        jwt.verify(exam_test_id, SECRET_KEY, function (err, decode) {
+            if (err) {
+                res.status(403).send("คุณไม่สิทธิดูข้อสอบนี้");
             } else {
-                res.send("ไม่พบข้อสอบ");
+                exam_test_id = decode.id;
+
+                if (decode.user_id != req.user.id) {
+                    res.status(403).send("คุณไม่สิทธิดูข้อสอบนี้");
+                } else {
+                    control.getExamTest(exam_test_id, req.user.id, r, function (data) {
+                        if (!data.error) {
+                            var myDate = new Date(data.start_time);
+                            res.render('listExam', {
+                                name_examination: data.name_examination,
+                                description: data.description,
+                                start_time: myDate,
+                                user: data.user,
+                                time: data.time,
+                                objectives: data.objective,
+                                qty_question: data.question.length,
+                                datas: data.question
+                            });
+                        } else {
+                            res.send("ไม่พบข้อสอบ");
+                        }
+                    });
+
+                }
             }
         });
+
+
 
     }
 

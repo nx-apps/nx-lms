@@ -13,11 +13,11 @@ function parseCookies(req) {
     return list;
 }
 
-module.exports = function () {
-
+module.exports = function (options) {
+    options = options || ["*"];
     return function authenticate(req, res, next) {
         var cookies = parseCookies(req);
-        console.log(cookies);
+        //  console.log(cookies);
         if (cookies.token) {
             jwt.verify(cookies.token, SECRET_KEY, function (err, decode) {
 
@@ -26,8 +26,33 @@ module.exports = function () {
                     res.status(401).send("Unauthorized");
                 } else {
                     // resolve(decode);
-                    req.user = decode;
-                    next();
+                    //for(var i=0;i<options.length;i++){
+                    //  if(options)
+                    // }
+                 // console.log(decode);
+                   //user
+                   //admin
+                   //key
+                  //  key_tags
+                  //  end_tags
+                   // if()
+                   var role="user";
+                   if(decode.role=="admin"){
+                        role="admin"
+                   }else if(decode.role=="teacher"){
+                       role="key";
+                   }
+                   console.log(role);
+
+                    if (options.includes("*") || options.includes(role)) {
+                        req.user = decode;
+                        next();
+                    } else {
+                        res.status(403).send("Access Denied");
+                    }
+                   // console.log(decode);
+                   // req.user = decode;
+                   // next();
 
                 }
             });

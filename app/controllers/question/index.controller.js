@@ -15,12 +15,13 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('question').getAll(params.module, { index: 'module' }).orderBy('time_insert').pluck('id', 'question', 'module')
+        r.db('lms').table('question').getAll(params.module, { index: 'module' }).orderBy('time_insert').pluck('id', 'question', 'module', 'tags')
             .merge(function (x) {
                 return {
                     module: [x('module')].map(function (fc) { return r.db('lms').table('tag').get(fc) })
                 }
             })
+            .orderBy('tags', 'ref_id', 'ref_index', 'id')
             .run()
             .then(function (result) {
                 res.json(result);
@@ -64,46 +65,46 @@ class index {
     insert_question(req, res) {
         var r = req.r;
         var params = req.body;
-        
-        if(params.ref_index != 0 ){
+
+        if (params.ref_index != 0) {
             r.expr(params).merge(function () {
                 return { correct: 0, incorrect: 0, time_insert: r.now() }
             }).do(function (result) {
-                return r.db('lms').table('question').filter({ module:result('module'), ref_id:result('ref_id'), ref_index:result('ref_index')}).count()
-                    .do(function(x){
+                return r.db('lms').table('question').filter({ module: result('module'), ref_id: result('ref_id'), ref_index: result('ref_index') }).count()
+                    .do(function (x) {
                         return r.branch(x.eq(0),
-                        r.db('lms').table('question').insert(result),
-                        {error:'ERROR! CAN NOT INSERT'}
+                            r.db('lms').table('question').insert(result),
+                            { error: 'ERROR! CAN NOT INSERT' }
                         )
+                    })
+            })
+                .run()
+                .then(function (result) {
+                    if (result.error) {
+                        res.status(500).json(result);
+                    } else {
+                        res.json(result);
+                    }
+
                 })
-            })
-            .run()
-            .then(function (result) {
-                if(result.error){
-                    res.status(500).json(result);
-                }else{
-                    res.json(result);
-                }
-                
-            })
-            .catch(function (err) {
-                res.status(500).json(err);
-            })
-        }else{
+                .catch(function (err) {
+                    res.status(500).json(err);
+                })
+        } else {
             r.expr(params).merge(function () {
                 return { correct: 0, incorrect: 0, time_insert: r.now() }
             }).do(function (result) {
                 return r.db('lms').table('question').insert(result)
             })
-            .run()
-            .then(function (result) {
-                res.json(result);
-            })
-            .catch(function (err) {
-                res.status(500).json(err);
-            })
+                .run()
+                .then(function (result) {
+                    res.json(result);
+                })
+                .catch(function (err) {
+                    res.status(500).json(err);
+                })
         }
-            
+
     }
 
     update_question(req, res) {
@@ -134,6 +135,21 @@ class index {
             })
     }
 
+    confirm(req, res) {
+        var questions = [];
+        var result = req.body;
+        // console.log(result);
+        // res.json(result);
+
+        for (var i = 0; i < result.length; i++) {
+            // r.db('lms').table('question').insert(result[i].questions).run().then(function (e) { });
+            questions = questions.concat(result[i].questions);
+        }
+        r.db('lms').table('question').insert(questions).run().then(function (e) {
+            res.json(e);
+        });
+    }
+
     uploadFile(req, res) {
         var r = req.r;
         var params = req.params;
@@ -147,28 +163,28 @@ class index {
             var x = prefile.path;
             var xx = x.replace(/\\/g, "/");
 
-           // auth.userInfo(req).then(user => {
-                var user=req.user;
-                fmg.readFile(xx, prefile.originalFilename, user, function (result) {
-                    if (result.error) {
-                        res.status(500).json(result.error);
-                    } else {
-                        var questions = [];
-                        for (var i = 0; i < result.length; i++) {
-                            // r.db('lms').table('question').insert(result[i].questions).run().then(function (e) { });
-                            questions = questions.concat(result[i].questions);
-                        }
-                        //console.log(questions);
-                        r.db('lms').table('question').insert(questions).run().then(function (e) {
-                            res.json(result);
-                        });
+            // auth.userInfo(req).then(user => {
+            var user = req.user;
+            fmg.readFile(xx, prefile.originalFilename, user, function (result) {
+                if (result.error) {
+                    res.status(500).json(result.error);
+                } else {
+                    // var questions = [];
+                    //for (var i = 0; i < result.length; i++) {
+                    // r.db('lms').table('question').insert(result[i].questions).run().then(function (e) { });
+                    // questions = questions.concat(result[i].questions);
+                    //}
+                    //console.log(questions);
+                    // r.db('lms').table('question').insert(questions).run().then(function (e) {
+                    res.json(result);
+                    // });
 
 
-                    }
-                });
-          //  }).catch(err => {
-             //   res.status(500).json(err);
-           // })
+                }
+            });
+            //  }).catch(err => {
+            //   res.status(500).json(err);
+            // })
         });
 
     }
@@ -262,7 +278,7 @@ class FileManager {
             console.log("start read .zip");
             var mod = name.replace(".zip", "");
             console.log(os.tmpdir());
-            var full =os.tmpdir()+"/"+ mod + "_" + new Date().getTime();
+            var full = os.tmpdir() + "/" + mod + "_" + new Date().getTime();
             this.unzip(filename, full, function (data) {
 
 
@@ -274,13 +290,24 @@ class FileManager {
                         if (files.length > 0) {
 
                             async.each(files, function (f, next) {
-                                var fmg = new FileManager();
-                                fmg.readFile(full + "/" + f, f, user, function (result) {
-                                    if (!result.error) {
-                                        q_list.push(result[0]);
+                                var file_path = full + "/" + f;
+                                fs.stat(file_path, function (err, stat) {
+                                    if (stat.isDirectory()) {
+
+                                    } else {
+                                        var fmg = new FileManager();
+                                        fmg.readFile(full + "/" + f, f, user, function (result) {
+                                            if (!result.error) {
+                                                q_list.push(result[0]);
+                                            }
+                                            next();
+                                        });
                                     }
-                                    next();
                                 });
+
+
+
+
                             }, function (e) {
                                 callback(q_list);
 

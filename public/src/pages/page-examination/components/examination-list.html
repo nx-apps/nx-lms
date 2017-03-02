@@ -1,11 +1,11 @@
-
 <dom-module id="examination-list">
     <template>
         <style include="page-style">
-             tbody>tr>td{
-                 cursor: pointer;
-             }
-            tbody>tr:hover{
+            tbody>tr>td {
+                cursor: pointer;
+            }
+            
+            tbody>tr:hover {
                 font-weight: bold;
                 border-bottom: 2px solid dodgerblue;
             }
@@ -19,6 +19,10 @@
                                 <template is="dom-if" if="[[checkTypeList(typeList,'examination')]]">
                                     <th style="width:10%">ลำดับ</th>
                                     <th colspan="2">ชุดข้อสอบ</th>
+
+                                    <th>จำนวน (ข้อ)</th>
+                                    <th>เวลา (นาที)</th>
+                                    <th></th>
                                 </template>
                                 <template is="dom-if" if="[[checkTypeList(typeList,'question')]]">
                                     <th style="width:10%">ข้อที่</th>
@@ -36,8 +40,14 @@
                                         <td>
                                             <div>[[toIndex(index)]]</div>
                                         </td>
-                                        <td>
+                                        <td  colspan="2">
                                             [[item.name_examination]]
+                                        </td>
+                                          <td>
+                                            [[item.amount_all]]
+                                        </td>
+                                          <td>
+                                            [[item.time]]
                                         </td>
                                         <td style="text-align: right;">
                                             <iron-icon icon="create"></iron-icon>
@@ -64,28 +74,28 @@
     <script>
         Polymer({
             is: 'examination-list',
-            behaviors:[ReduxBehavior],
-            properties:{
-                typeList:{
-                    type:String
+            behaviors: [ReduxBehavior],
+            properties: {
+                typeList: {
+                    type: String
                 },
-                dataList:{
-                    statePath:'examination.dataList'
+                dataList: {
+                    statePath: 'examination.dataList'
                 }
             },
-            checkTypeList:function(typeList,typeSelect){
-                return typeList==typeSelect
+            checkTypeList: function (typeList, typeSelect) {
+                return typeList == typeSelect
             },
-            selectList:function(e){
+            selectList: function (e) {
                 this.dispatchAction('EXAMINATION_CLEAR_RANDOM');
-                 this.dispatchAction('EXAMINATION_GET_DATA_SELECT',e.currentTarget.examinationId);
+                this.dispatchAction('EXAMINATION_GET_DATA_SELECT', e.currentTarget.examinationId);
                 // this.fire('select-data');
             },
-            random:function(){
+            random: function () {
                 // console.log(this.dataList);
                 // this.fire('click-tab')
             },
-            toIndex:function(index){
+            toIndex: function (index) {
                 return ++index;
             }
         });

@@ -1,23 +1,25 @@
-
 <dom-module id="userManage-list">
     <template>
         <style include="page-style flex-style">
-           .responTable{
+            .responTable {
                 max-height: 500px;
-                overflow-y:auto; 
-           }
-            tbody>tr>td{
-                 cursor: pointer;
+                overflow-y: auto;
             }
-            tbody>tr:hover{
+            
+            tbody>tr>td {
+                cursor: pointer;
+            }
+            
+            tbody>tr:hover {
                 font-weight: bold;
                 border-bottom: 2px solid dodgerblue;
             }
+            
             #myInput {
-                padding: 15px ;
+                padding: 15px;
             }
         </style>
-        
+
         <!--<div class="container flex-horizontal-with-ratios">
                 <div class="flex3child"></div>
                 <div class="flexchild">
@@ -34,120 +36,120 @@
 
         <paper-material elevation="1">
             <div class="responTable">
-            <paper-input id="myInput" on-keyup="searchName" placeholder="ค้นหาจากชื่อ..." > </paper-input>
-            <table class="gl-table-default" id="myTable">
-                 <thead>
-                    <tr>
-                        <th style="width: 10%">#</th>
-                        <th style="width: 30%">ชื่อ-สกุล</th>
-                        <th style="width: 20%">END-USER</th>
-                        <th style="width: 20%">KEY-USER</th>
-                        <th style="width: 20%">email</th>
-                        <!--<th style="margin-right: 10px"> username</th>-->
-                    </tr>
-                </thead>
-                <tbody>
-                    <template is="dom-repeat" items="[[newDataList]]">
-                        <tr on-tap="dataSelected" item="[[item.id]]">
-                            <td>[[count(index)]]</td>
-                            <td>[[item.name]]</td>
-                            <td>
-                                <template is="dom-repeat" items="[[item.end_tags]]">
-                                    <span style="padding: 2px">
+                <paper-input id="myInput" on-keyup="searchName" placeholder="ค้นหาจากชื่อ..."> </paper-input>
+                <table class="gl-table-default" id="myTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%">#</th>
+                            <th style="width: 30%">ชื่อ-สกุล</th>
+                            <th style="width: 20%">END-USER</th>
+                            <th style="width: 20%">KEY-USER</th>
+                            <th style="width: 20%">email</th>
+                            <!--<th style="margin-right: 10px"> username</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template is="dom-repeat" items="[[newDataList]]">
+                            <tr on-tap="dataSelected" item="[[item.id]]">
+                                <td>[[count(index)]]</td>
+                                <td>[[item.name]]</td>
+                                <td>
+                                    <template is="dom-repeat" items="[[item.end_tags]]">
+                                        <span style="padding: 2px">
                                         <tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module>
                                     </span>
-                                </template>
-                            </td>
-                             <td>
-                                <template is="dom-repeat" items="[[item.key_tags]]">
-                                      <span style="padding: 2px">
+                                    </template>
+                                </td>
+                                <td>
+                                    <template is="dom-repeat" items="[[item.key_tags]]">
+                                        <span style="padding: 2px">
                                    <tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module>
                                       </span>
-                                </template>
-                            </td>
-                            <td>[[item.email]]</td>
-                            <!--<td>[[item.username]]</td>-->
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
+                                    </template>
+                                </td>
+                                <td>[[item.email]]</td>
+                                <!--<td>[[item.username]]</td>-->
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
             </div>
         </paper-material>
     </template>
     <script>
         Polymer({
             is: 'userManage-list',
-            behaviors:[ReduxBehavior,dispatchActionBehavior],
-            properties:{
-                dataList:{
+            behaviors: [ReduxBehavior, dispatchActionBehavior],
+            properties: {
+                dataList: {
                     statePath: 'userManage.dataList',
-                    observer:'getData'
+                    observer: 'getData'
                 },
-                typeTable:{
-                    type:Array,
-                    value:[
+                typeTable: {
+                    type: Array,
+                    value: [
                         {
-                            label:'ชื่อ-สกุล',
-                            key:'name'
+                            label: 'ชื่อ-สกุล',
+                            key: 'name'
                         },
                         {
-                            label:'E-mail',
-                            key:'email'
-                        }       
+                            label: 'E-mail',
+                            key: 'email'
+                        }
                     ]
                 }
             },
-            getData:function(){
+            getData: function () {
                 this.newDataList = this.dataList;
             },
-            count:function(index){
-                return index+1;
+            count: function (index) {
+                return index + 1;
             },
-            dataSelected:function(e){
+            dataSelected: function (e) {
                 console.log(e.currentTarget.item);
-                this.dispatchAction('USER_MANAGE_SELECT_LIST',e.currentTarget.item);
+                this.dispatchAction('USER_MANAGE_SELECT_LIST', e.currentTarget.item);
                 this.fire('clear');
                 this.fire('open');
             },
-            serchTable:function(e){
+            serchTable: function (e) {
                 this.newDataList = [];
-                if(e.target.value != '' && (this.selectType != '' || typeof this.selectType == 'undefined')){
-                    for(var i = 0; i< this.dataList.length; i++){
-                            if(this.selectType == 'name'){
-                                if(this.dataList[i].name.search(e.target.value) > -1){
-                                    this.push('newDataList',this.dataList[i]); 
-                                }
+                if (e.target.value != '' && (this.selectType != '' || typeof this.selectType == 'undefined')) {
+                    for (var i = 0; i < this.dataList.length; i++) {
+                        if (this.selectType == 'name') {
+                            if (this.dataList[i].name.search(e.target.value) > -1) {
+                                this.push('newDataList', this.dataList[i]);
                             }
-                            else if(this.selectType == 'email'){
-                                if(this.dataList[i].email.search(e.target.value) > -1){
-                                    this.push('newDataList',this.dataList[i]); 
-                                }
+                        }
+                        else if (this.selectType == 'email') {
+                            if (this.dataList[i].email.search(e.target.value) > -1) {
+                                this.push('newDataList', this.dataList[i]);
                             }
-                    }  
+                        }
+                    }
                 }
                 else {
                     this.newDataList = this.dataList;
                 }
             },
             //chonEdit//
-            searchName:function(e) {
+            searchName: function (e) {
                 var input, filter, table, tr, td, i;
                 input = this.$$('#myInput').value;
                 filter = input.toUpperCase();
-                table =  this.$$("#myTable");
+                table = this.$$("#myTable");
                 tr = table.getElementsByTagName("tr");
-                
-                    for (i = 0; i < tr.length; i++) {
-                        td = tr[i].getElementsByTagName("td")[1];
-                        if (td) {
+
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[1];
+                    if (td) {
                         if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                             tr[i].style.display = "";
                         } else {
                             tr[i].style.display = "none";
                         }
-                        }       
                     }
                 }
+            }
             //end//
         });
     </script>

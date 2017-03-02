@@ -14,12 +14,12 @@ module.exports=function(app){
     // app.get('/userModuleList',examRoom.getUserModuleList);
     // app.get('/learnerTestList',examRoom.getLearnerTestList);
         
-    app.get('/examRoom',authenticate(),examRoom.select_ExamRoom);
-    app.post('/examRoom',authenticate(),examRoom.insert_ExamRoom);
-    app.get('/examRoom_only',authenticate(),examRoom.select_ExamRoom_only);
-    app.put('/examRoom',authenticate(),examRoom.update_ExamRoom);
-    app.delete('/examRoom',authenticate(),examRoom.delete_ExamRoom);
+    app.get('/examRoom',authenticate(["key"]),examRoom.select_ExamRoom);
+    app.post('/examRoom',authenticate(["key"]),examRoom.insert_ExamRoom);
+    app.get('/examRoom_only',authenticate(["key"]),examRoom.select_ExamRoom_only);
+    app.put('/examRoom',authenticate(["key"]),examRoom.update_ExamRoom);
+    app.delete('/examRoom',authenticate(["key"]),examRoom.delete_ExamRoom);
 
-    app.get('/examRoom_module',authenticate(),examRoom.select_Module);
-    app.get('/student',authenticate(),examRoom.select_student);
+    app.get('/examRoom_module',authenticate(["key"]),examRoom.select_Module);
+    app.get('/student',authenticate(["key"]),examRoom.select_student);
 } 

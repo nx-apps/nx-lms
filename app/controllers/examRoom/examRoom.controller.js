@@ -8,7 +8,15 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').getAll(params.module, { index: 'module' }).orderBy(r.desc('time_update'))
+        r.db('lms').table('exam_room').getAll(params.module, { index: 'module' })
+            .merge(function (row) {
+                return {
+                    examination : r.db('lms').table('examination')
+                        .get(row('examination_id'))
+                        .pluck('name_examination','amount_all','time')
+                }
+            })
+            .orderBy(r.desc('time_update'))
             .run()
             .then(function (result) {
                 res.json(result);
