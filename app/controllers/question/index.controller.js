@@ -7,7 +7,7 @@ var async = require('async');
 var iconv = require('iconv-lite');
 var XLSX = require('xlsx');
 var unzip = require('unzip');
-const auth = require('../auth');
+//const auth = require('../auth');
 const os = require('os');
 class index {
 
@@ -147,7 +147,8 @@ class index {
             var x = prefile.path;
             var xx = x.replace(/\\/g, "/");
 
-            auth.userInfo(req).then(user => {
+           // auth.userInfo(req).then(user => {
+                var user=req.user;
                 fmg.readFile(xx, prefile.originalFilename, user, function (result) {
                     if (result.error) {
                         res.status(500).json(result.error);
@@ -165,9 +166,9 @@ class index {
 
                     }
                 });
-            }).catch(err => {
-                res.status(500).json(err);
-            })
+          //  }).catch(err => {
+             //   res.status(500).json(err);
+           // })
         });
 
     }

@@ -1,4 +1,4 @@
-const auth = require('../auth');
+//const auth = require('../auth');
 
 class common{
 /*
@@ -54,9 +54,9 @@ class common{
             var r = req.r;
             var params = req.query; 
 
-            auth.userInfo(req).then(user=>{
+           // auth.userInfo(req).then(user=>{
 
-
+                var user=req.user;
                 //var tags = Array.from(new Set(user.end_tags.concat(user.key_tags)));
 
                 r.branch(
@@ -75,9 +75,9 @@ class common{
                     res.status(500).json(err);
                 })
 
-            }).catch(err=>{
-                res.json(err);
-            })
+          //  }).catch(err=>{
+            //    res.json(err);
+          //  })
             
             
             

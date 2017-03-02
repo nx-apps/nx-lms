@@ -1,4 +1,4 @@
-const auth = require('../auth');
+//const auth = require('../auth');
 
 class controlTest {
     rendomTest(exam_room_id, r, callback) {
@@ -281,7 +281,10 @@ class examHistory {
     getExamList(req, res) {
         var r = req.r;
 
-        auth.userInfo(req).then(user => {
+      
+      
+    //  auth.userInfo(req).then(user => {
+            var user=req.user;
             var dateNow = new Date().toISOString();
 
             r.db('lms').table('exam_room').getAll(
@@ -315,9 +318,9 @@ class examHistory {
                     res.status(500).json(err);
                 })
 
-        }).catch(err => {
-            res.status(500).json(err);
-        })
+      //  }).catch(err => {
+        //    res.status(500).json(err);
+       // })
 
 
 
@@ -508,7 +511,8 @@ class examHistory {
         // })
 
         // .run()
-        auth.userInfo(req).then((user) => {
+        //auth.userInfo(req).then((user) => {
+            var user=req.user;
             return r.db('lms').table('exam_test')
                 .filter({ status: 'complete', user_id: user.id })
                 .merge(function (row) {
@@ -532,10 +536,10 @@ class examHistory {
                     res.status(500).json(err);
                 })
 
-        })
-            .catch(err => {
-                res.json(err);
-            })
+       // })
+           // .catch(err => {
+          //      res.json(err);
+          //  })
 
 
 
@@ -576,7 +580,8 @@ class examHistory {
         var r = req.r;
         var params = req.query;
         var control = new controlTest();
-        auth.userInfo(req).then(user => {
+      //  auth.userInfo(req).then(user => {
+            var user=req.user;
             var user_id = user.id;
             var exam_room_id = params.exam_room_id;
             console.log("start get getExam");
@@ -622,7 +627,7 @@ class examHistory {
                     });
                 }
             });
-        });
+      //  });
     }
 
 
