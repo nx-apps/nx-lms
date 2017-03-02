@@ -395,7 +395,7 @@ class examHistory {
                                                                     return r.db('lms').table('question').filter({
                                                                         ref_id: ref_map('ref_id'),
                                                                         ref_index: 1
-                                                                    }).pluck('id', 'ref_id', 'ref_index', 'question')(0)
+                                                                    }).pluck('id', 'ref_id', 'ref_index', 'question','image_id')(0)
                                                                 })
                                                                 , []
                                                             )
