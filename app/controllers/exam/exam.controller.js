@@ -237,6 +237,7 @@ class controlTest {
 }
 
 
+
 class examHistory {
 
     getTime(req, res) {
@@ -576,16 +577,16 @@ class examHistory {
         auth.userInfo(req).then(user => {
             var user_id = user.id;
             var exam_room_id = params.exam_room_id;
-             console.log("start get getExam");
+            console.log("start get getExam");
             control.getExamTest(exam_room_id, user_id, r, function (datas) {
-                 console.log("getExamTest");
+                console.log("getExamTest");
                 // console.log(datas);
                 if (!datas.error) {
                     res.json(datas);
                 } else {
                     control.rendomTest(exam_room_id, r, function (questions) {
-                          console.log("rendomTest");
-                       // console.log(questions);
+                        console.log("rendomTest");
+                        // console.log(questions);
                         if (!questions.error) {
                             control.insertExamTest(exam_room_id, user_id, r, function (exam_test) {
                                 console.log("insertExamTest");
@@ -593,7 +594,7 @@ class examHistory {
                                 if (!exam_test.error) {
                                     control.insertExamTestDetail(exam_test.exam_test_id, questions, r, function (details) {
                                         console.log("insertExamTestDetail");
-                                      //  console.log(details);
+                                        //  console.log(details);
                                         if (!details.error) {
                                             control.getExamTest(exam_room_id, user_id, r, function (qq) {
                                                 console.log("getExamTest2");
@@ -621,7 +622,7 @@ class examHistory {
             });
         });
     }
-    
+
 
     updateAnswer(req, res) {
         var r = req.r;
