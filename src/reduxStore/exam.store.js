@@ -75,6 +75,9 @@ export function examAction(store){
                 .catch((error)=>{
                     console.log('error');
                     console.log(error);
+                      this.fire('toast',{status:'connectError',text:error.response.data.error,
+                         callback:function(){}
+                    })
                 });
             },
             EXAM_PUT_CHOICE:function(data){

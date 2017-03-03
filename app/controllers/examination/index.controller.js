@@ -71,9 +71,10 @@ class index {
         var params = req.query;
 
         r.db('lms').table('exam_room').filter({ examination_id: params.id })
+            .count()
             .run()
-            .then(function (re) {
-                if (re.length > 0) {
+            .then(function (out) {
+                if (out > 0) {
                     res.status(500).json({ error: "ชุดข้อสอบนี้มีการใช้งาน" });
                 } else {
                     r.db('lms').table('examination').get(params.id).delete()

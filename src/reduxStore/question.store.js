@@ -98,8 +98,9 @@ export function questionAction(store) {
                     this.QUESTION_GET_LIST(this.newTag);
                 })
                 .catch((error) => {
-                    console.log('error');
-                    console.log(error);
+                     this.fire('toast',{status:'connectError',text:error.response.data.error,
+                         callback:function(){}
+                    })
                 });
 
         },

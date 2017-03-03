@@ -131,8 +131,9 @@ export function userManageAction(store){
                       this.USER_MANAGE_GET_LIST(this.newTag);
                 })
                 .catch((error)=>{
-                    console.log('error');
-                    console.log(error);
+                      this.fire('toast',{status:'connectError',text:error.response.data.error,
+                         callback:function(){}
+                    })
                 });
             },
             USER_MANAGE_CLEAR_LIST:function(){

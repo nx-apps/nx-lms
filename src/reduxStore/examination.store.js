@@ -190,8 +190,9 @@ export function examinationAction(store) {
                     // this.fire('delete-data');
                 })
                 .catch((error) => {
-                    console.log('error');
-                    console.log(error);
+                      this.fire('toast',{status:'connectError',text:error.response.data.error,
+                         callback:function(){}
+                    })
                 });
         }
 
