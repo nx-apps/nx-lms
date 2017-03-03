@@ -166,7 +166,7 @@ class examRoom {
             .count()
             .run()
             .then(function (out) {
-                if (out> 0) {
+                if (out > 0) {
                     res.status(500).json({ error: "ห้องสอบนี้มีการใช้งาน" });
                 } else {
                     r.db('lms').table('exam_room').get(params.id).delete()
@@ -201,15 +201,44 @@ class examRoom {
     select_student(req, res) {
         var r = req.r;
         var params = req.query;
-
-        r.db('lms').table('exam_test').filter({ exam_room_id: params.id, status: 'complete' })
-            .innerJoin(r.db('lms').table('user'), function (left, right) {
-                return left('user_id').eq(right('id'))
-            }).map(function (row) {
-                return row('left').merge(function (row2) {
-                    return row('right').pluck('name')
+            r.db('lms').table('exam_room').get(params.id)
+            .do(function(x){
+                return r.db('lms').table('user').getAll(x('module'),'*',{index:'tags'})
+                 .merge(function(row){
+                    return {exam_room_id:x('id')}
                 })
+            }).distinct()
+
+            .merge(function(re){
+                return r.db('lms').table('exam_test').filter({user_id:re('id')}).coerceTo('array').do(function(result){
+                return r.branch(result.count().eq(0),{},result(0).pluck('sum','qty_question','id'))
+                })
+            }).orderBy(r.desc('sum'))
+/*
+            r.db('lms').table('exam_room').get(params.id)
+            .do(function (x) {
+                return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' })
             })
+
+            .outerJoin(r.db('lms').table('exam_test'),
+            function(action, user){
+                return action('id').eq(user('user_id'))
+            })
+            .zip().orderBy(r.desc('sum')).distinct()
+*/
+            /*
+                        r.db('lms').table('exam_room').get(params.id)
+                        .do(function(x){
+                            return r.db('lms').table('user').getAll(x('module'),'*',{index:'tags'})
+                        })
+                        .innerJoin(r.db('lms').table('exam_test'), function(right,left){
+                            return right('id').eq(left('user_id'))
+                        }).map(function(x){
+                            return x('left').merge(function(){
+                            return {name:x('right')('sum')}
+                            })
+                        }).distinct()
+             */
             .then(function (result) {
                 for (var i = 0; i < result.length; i++) {
                     var answer_url = jwt.sign({ id: result[i].id, user_id: req.user.id }, SECRET_KEY, {
@@ -224,20 +253,20 @@ class examRoom {
             })
     }
 
-    ejectExamTest(req,res){
+    ejectExamTest(req, res) {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_test_detail').filter({exam_test_id:params.id}).delete()
-        .do(function(result){
-            return r.db('lms').table('exam_test').get(params.id).delete();
-        })
-        .then(function (result) {
-            res.json(result);
-        })
-        .catch(function (err) {
-            res.status(500).json(err);
-        })
+        r.db('lms').table('exam_test_detail').filter({ exam_test_id: params.id }).delete()
+            .do(function (result) {
+                return r.db('lms').table('exam_test').get(params.id).delete();
+            })
+            .then(function (result) {
+                res.json(result);
+            })
+            .catch(function (err) {
+                res.status(500).json(err);
+            })
     }
 }
 

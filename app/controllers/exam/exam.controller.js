@@ -307,7 +307,7 @@ class examHistory {
 
         var filter_module = r.db('lms').table('exam_room');
 
-        if (req.user.end_tags.indexOf('*')==-1) {
+        if (req.user.end_tags.indexOf('*') == -1) {
             filter_module = filter_module.getAll(r.args(req.user.end_tags), { index: 'module' });
         }
 
@@ -586,51 +586,51 @@ class examHistory {
 
 
     }
-/*
-    generateTest(req, res) {
-        var r = req.r;
-        //  console.log(req.params.exid);
-        //  console.log(req.params.uid);
-        // var userid = req.params.uid;
-        var exam_test_id = req.params.exid;
-        var control = new controlTest();
-
-        jwt.verify(exam_test_id, SECRET_KEY, function (err, decode) {
-            if (err) {
-                res.status(403).send("คุณไม่สิทธิดูข้อสอบนี้");
-            } else {
-                exam_test_id = decode.id;
-
-                if (decode.user_id != req.user.id) {
+    /*
+        generateTest(req, res) {
+            var r = req.r;
+            //  console.log(req.params.exid);
+            //  console.log(req.params.uid);
+            // var userid = req.params.uid;
+            var exam_test_id = req.params.exid;
+            var control = new controlTest();
+    
+            jwt.verify(exam_test_id, SECRET_KEY, function (err, decode) {
+                if (err) {
                     res.status(403).send("คุณไม่สิทธิดูข้อสอบนี้");
                 } else {
-                    control.getExamTest(exam_test_id, req.user.id, r, function (data) {
-                        if (!data.error) {
-                            var myDate = new Date(data.start_time);
-                            res.render('listExam', {
-                                name_examination: data.name_examination,
-                                description: data.description,
-                                start_time: myDate,
-                                user: data.user,
-                                time: data.time,
-                                objectives: data.objective,
-                                qty_question: data.question.length,
-                                datas: data.question
-                            });
-                        } else {
-                            res.send("ไม่พบข้อสอบ");
-                        }
-                    });
-
+                    exam_test_id = decode.id;
+    
+                    if (decode.user_id != req.user.id) {
+                        res.status(403).send("คุณไม่สิทธิดูข้อสอบนี้");
+                    } else {
+                        control.getExamTest(exam_test_id, req.user.id, r, function (data) {
+                            if (!data.error) {
+                                var myDate = new Date(data.start_time);
+                                res.render('listExam', {
+                                    name_examination: data.name_examination,
+                                    description: data.description,
+                                    start_time: myDate,
+                                    user: data.user,
+                                    time: data.time,
+                                    objectives: data.objective,
+                                    qty_question: data.question.length,
+                                    datas: data.question
+                                });
+                            } else {
+                                res.send("ไม่พบข้อสอบ");
+                            }
+                        });
+    
+                    }
                 }
-            }
-        });
-
-
-
-    }
-
-*/
+            });
+    
+    
+    
+        }
+    
+    */
 
 
 
@@ -642,7 +642,7 @@ class examHistory {
         var user = req.user;
         var user_id = user.id;
         var exam_room_id = params.exam_room_id;
-       // console.log(exam_room_id);
+        // console.log(exam_room_id);
 
         jwt.verify(exam_room_id, SECRET_KEY, function (err, decode) {
 
@@ -652,7 +652,7 @@ class examHistory {
                 res.status(403).send("คุณไม่สิทธิทำข้อสอบนี้");
             } else {
                 exam_room_id = decode.id;
-               // console.log(exam_room_id);
+                // console.log(exam_room_id);
                 if (decode.user_id != req.user.id) {
                     res.status(403).send("คุณไม่สิทธิทำข้อสอบนี้");
                 } else {
@@ -666,7 +666,7 @@ class examHistory {
                         } else {
                             control.rendomTest(exam_room_id, r, function (questions) {
                                 console.log("rendomTest");
-                                 console.log(questions);
+                                console.log(questions);
                                 if (!questions.error) {
                                     control.insertExamTest(exam_room_id, user_id, r, function (exam_test) {
                                         console.log("insertExamTest");
@@ -712,30 +712,36 @@ class examHistory {
         var r = req.r;
         var params = req.body;
 
-        r.expr(params)
-            .merge(function (x) {
-                return r.db('lms').table('exam_test_detail').get(x('id')).merge(function (xx) {
-                    return { ans: x('choice')(0) }
-                })
-            })
-            .merge(function (xx) {
-                return {
-                    choice: xx('choice').merge(function (a) {
-                        return { answer: r.branch(a('name').eq(xx('ans')('name')), true, false) }
+        if (params.choice.length == 1 ) {
+            r.expr(params)
+                .merge(function (x) {
+                    return r.db('lms').table('exam_test_detail').get(x('id')).merge(function (xx) {
+                        return { ans: x('choice')(0) }
                     })
-                }
-            })
-            .do(function (data) {
-                return r.db('lms').table('exam_test_detail').get(data('id')).update({ choice: data('choice') })
-            })
+                })
+                .merge(function (xx) {
+                    return {
+                        choice: xx('choice').merge(function (a) {
+                            return { answer: r.branch(a('name').eq(xx('ans')('name')), true, false) }
+                        })
+                    }
+                })
+                .do(function (data) {
+                    return r.db('lms').table('exam_test_detail').get(data('id')).update({ choice: data('choice') })
+                })
 
-            .run()
-            .then(function (result) {
-                res.json(result);
-            })
-            .catch(function (err) {
-                res.status(500).json(err);
-            })
+                .run()
+                .then(function (result) {
+                    res.json(result);
+                })
+                .catch(function (err) {
+                    res.status(500).json(err);
+                })
+        } else {
+            res.status(500).json({ error: "คุณไม่เลือกคำตอบ" });
+        }
+
+
     }
 
     complete(req, res) {

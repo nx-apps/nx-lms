@@ -162,10 +162,11 @@ export function examRoomAction(store){
             EXAMROOM_CLEAR_DATA:function(){
                 store.dispatch({type:'EXAMROOM_CLEAR_DATA'});
             },
-            EXAMROOM_EJECT:function(examTestId){
+            EXAMROOM_EJECT:function(examTestId,examRoomId){
                 axios.delete('./examRoom/ejectExamTest?id='+examTestId)
                 .then((response)=>{
-                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',examTestId);
+                    console.log(examTestId);
+                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',examRoomId);
                 })
                 .catch((error)=>{
                     console.log('error');
