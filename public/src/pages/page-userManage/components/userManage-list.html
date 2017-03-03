@@ -4,6 +4,7 @@
             .responTable {
                 max-height: 500px;
                 overflow-y: auto;
+                background-color: white;
             }
             
             tbody>tr>td {
@@ -17,6 +18,10 @@
             
             #myInput {
                 padding: 15px;
+            }
+            .setPositon{
+                width:50%;
+                margin: auto;
             }
         </style>
 
@@ -36,7 +41,7 @@
 
         <paper-material elevation="1">
             <div class="responTable">
-                <paper-input id="myInput" on-keyup="searchName" placeholder="ค้นหาจากชื่อ..."> </paper-input>
+                <paper-input class="setPositon" id="myInput" on-keyup="searchName" placeholder="ค้นหาจากชื่อ..."> </paper-input>
                 <table class="gl-table-default" id="myTable">
                     <thead>
                         <tr>
