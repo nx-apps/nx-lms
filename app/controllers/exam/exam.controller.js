@@ -748,7 +748,8 @@ class examHistory {
                     res.status(500).json(err);
                 })
         } else {
-            res.status(500).json({ error: "คุณไม่เลือกคำตอบ" });
+           // if (answer.length == 1 ) {
+            res.status(200).json({ error: "คุณไม่เลือกคำตอบ" });
         }
 
 
