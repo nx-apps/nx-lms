@@ -8,7 +8,7 @@ module.exports = function(app){
 
     app.get('/test_exam',authenticate(),examCtrl.select_question);
     app.get('/historyList',authenticate(),examCtrl.getHistoryList);
-    app.get('/gen/:exid/:uid',authenticate(["key"]),examCtrl.generateTest);
+  //  app.get('/gen/:exid/:uid',authenticate(["key"]),examCtrl.generateTest);
     app.get('/exam',authenticate(),examCtrl.getExam);
     app.put('/exam',authenticate(),examCtrl.updateAnswer);
     app.post('/complete',authenticate(),examCtrl.complete);

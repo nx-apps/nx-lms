@@ -586,7 +586,7 @@ class examHistory {
 
 
     }
-
+/*
     generateTest(req, res) {
         var r = req.r;
         //  console.log(req.params.exid);
@@ -630,7 +630,7 @@ class examHistory {
 
     }
 
-
+*/
 
 
 
