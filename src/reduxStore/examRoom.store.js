@@ -154,8 +154,9 @@ export function examRoomAction(store){
                     this.EXAMROOM_GET_EXAM_LIST(this.tags2);
                 })
                 .catch((error)=>{
-                    console.log('error');
-                    console.log(error);
+                    this.fire('toast',{status:'connectError',text:error.response.data.error,
+                         callback:function(){}
+                    })
                 });
             },
             EXAMROOM_CLEAR_DATA:function(){

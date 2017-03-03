@@ -47,7 +47,9 @@ export function moduleAction(store){
                     // console.log(res.data);
                     this.MODULE_LIST();
                 }).catch(err=>{
-                    cosole.log(err);
+                      this.fire('toast',{status:'connectError',text:err.response.data.error,
+                         callback:function(){}
+                    })
                 })
             },
             MODULE_DELETE:function(id){
@@ -59,7 +61,9 @@ export function moduleAction(store){
                       }
                      });
                 }).catch(err=>{
-                    cosole.log(err);
+                      this.fire('toast',{status:'connectError',text:err.response.data.error,
+                         callback:function(){}
+                    })
                 })
             }
         }
