@@ -22,4 +22,7 @@ module.exports=function(app){
 
     app.get('/examRoom_module',authenticate(["key"]),examRoom.select_Module);
     app.get('/student',authenticate(["key"]),examRoom.select_student);
+
+
+    app.delete('/ejectExamTest',authenticate(["key"]),examRoom.ejectExamTest);
 } 

@@ -222,6 +222,22 @@ class examRoom {
                 res.status(500).json(err);
             })
     }
+
+    ejectExamTest(req,res){
+        var r = req.r;
+        var params = req.query;
+
+        r.db('lms').table('exam_test_detail').filter({exam_test_id:params.id}).delete()
+        .do(function(result){
+            return r.db('lms').table('exam_test').get(params.id).delete();
+        })
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+    }
 }
 
 module.exports = new examRoom();

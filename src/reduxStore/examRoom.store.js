@@ -160,6 +160,16 @@ export function examRoomAction(store){
             },
             EXAMROOM_CLEAR_DATA:function(){
                 store.dispatch({type:'EXAMROOM_CLEAR_DATA'});
+            },
+            EXAMROOM_EJECT:function(examTestId){
+                axios.delete('./examRoom/ejectExamTest?id='+examTestId)
+                .then((response)=>{
+                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',examTestId);
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
             }
         }
     ]
