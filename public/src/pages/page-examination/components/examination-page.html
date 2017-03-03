@@ -4,25 +4,27 @@
 
 
 <dom-module id="examination-page">
-    <template>   
+    <template>
         <style include="page-style">
-            paper-tabs{
-                --paper-tabs-selection-bar-color:#95bf31;
-                --paper-tabs-selection-bar:{
+            paper-tabs {
+                --paper-tabs-selection-bar-color: #95bf31;
+                --paper-tabs-selection-bar: {
                     border: 2px solid #95bf31;
                 }
-                --paper-tabs:{
+                --paper-tabs: {
                     background-color: white;
                 }
             }
-            paper-tab{
-                color:#95bf31;
+            
+            paper-tab {
+                color: #95bf31;
                 font-family: 'CSChatThaiUI', sans-serif;
                 font-size: 18px;
-                --paper-tab-content-unselected:{
+                --paper-tab-content-unselected: {
                     color: black;
                 }
             }
+            
             .flex-end-justified {
                 @apply(--layout-horizontal);
                 @apply(--layout-end-justified);
@@ -47,47 +49,85 @@
     <script>
         Polymer({
             is: 'examination-page',
-            behaviors:[ReduxBehavior],
-            listeners:{
-                'next-page':'nextPage',
-                'back-page':'backPage',
-                'random':'getData'
+            behaviors: [ReduxBehavior],
+            listeners: {
+                'next-page': 'nextPage',
+                'back-page': 'backPage',
+                'random': 'getData',
+                'printOnly': 'printOnly',
+                'printAns': 'printAns'
             },
-            nextPage:function(){
+            nextPage: function () {
                 this.$$('iron-pages').selectNext();
             },
-            backPage:function(){
+            backPage: function () {
                 this.$$('iron-pages').selectPrevious();
             },
-            getData:function(){
-                var data = this.$$('examination-manage').valueData();
-                var newData = data.map((item)=>{
+            printOnly: function () {
+                if (this.randomList.length > 0) {
+                    var header = this.$$('examination-manage').valueData();
+                    this.dispatchAction('EXAMINATION_PRINT', header, this.randomList, false);
+                }
+
+            },
+            printAns: function () {
+                if (this.randomList.length > 0) {
+                    var header = this.$$('examination-manage').valueData();
+                    this.dispatchAction('EXAMINATION_PRINT', header, this.randomList, true);
+                }
+            },
+            getFormData: function () {
+                var data = this.$$('examination-manage').valueData().objective;
+                var newData = data.map((item) => {
                     // console.log(item);
                     var newItem = {
                         amount: parseInt(item.amount),
                         dificalty_index: parseInt(item.dificalty_index),
-                        name:item.name,
-                        sub_module:[]
+                        name: item.name,
+                        sub_module: []
                     }
-                    newItem.sub_module = item.sub_module.map((item2)=>{
-                        if(typeof item2.id != 'undefined'){
-                             return item2.id;
+                    newItem.sub_module = item.sub_module.map((item2) => {
+                        if (typeof item2.id != 'undefined') {
+                            return item2.id;
                         }
-                        else{
+                        else {
                             return item2;
-                        }   
+                        }
                     })
                     return newItem;
                 })
+                return newData;
+            },
+            getData: function () {
+                //var data = this.$$('examination-manage').valueData();
+                var newData = this.getFormData();
+                /* data.map((item) => {
+                    // console.log(item);
+                    var newItem = {
+                        amount: parseInt(item.amount),
+                        dificalty_index: parseInt(item.dificalty_index),
+                        name: item.name,
+                        sub_module: []
+                    }
+                    newItem.sub_module = item.sub_module.map((item2) => {
+                        if (typeof item2.id != 'undefined') {
+                            return item2.id;
+                        }
+                        else {
+                            return item2;
+                        }
+                    })
+                    return newItem;
+                })*/
                 // console.log('count');
                 // console.log(newData)
-                this.dispatchAction('EXAMINATION_RANDOM',newData)
-                .then((response)=>{
+                this.dispatchAction('EXAMINATION_RANDOM', newData)
+                    .then((response) => {
 
-                    this.randomList = response.data;
-                    // console.log(data);
-                })
-                
+                        this.randomList = response.data;
+                        // console.log(data);
+                    })
+
             }
         });
     </script>

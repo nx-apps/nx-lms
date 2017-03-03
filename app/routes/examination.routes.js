@@ -7,4 +7,5 @@ module.exports = function(app){
     app.post('/examination',authenticate(["key"]),index.insert_examination);
     app.put('/examination',authenticate(["key"]),index.update_examination);
     app.delete('/examination',authenticate(["key"]),index.delete_examination);
+    app.post('/print',authenticate(["key"]),index.print);
 }

@@ -207,6 +207,25 @@ class index {
             })
     }
 
+    print(req, res) {
+        var qs = req.body.data;
+        var ans = req.body.ans;
+        var header=req.body.header;
+        //console.log(header);
+
+        res.render('listExam', {
+            name_examination: header.name_examination,
+            description: header.description,
+            user: req.user,
+            time: header.time,
+            objectives: header.objective,
+            qty_question: qs.length,
+            datas: qs,
+            ans:ans
+        });
+    }
+
 }
+
 
 module.exports = new index();
