@@ -131,7 +131,8 @@
                     this.fire('toast',{ 
                         status:'openDialog',
                         text:'ต้องการส่งแบบทดสอบใช่หรือไม่ ?',
-                        confirmed:()=>{
+                        confirmed:(result)=>{
+                            if(result)
                             this.EXAM_POST_ANSWER(this.exam_test)
                         },
                         data:e.detail
