@@ -307,15 +307,10 @@ class examHistory {
 
         var filter_module = r.db('lms').table('exam_room');
 
-        if (!req.user.end_tags.include('*')) {
+        if (req.user.end_tags.indexOf('*')==-1) {
             filter_module = filter_module.getAll(r.args(req.user.end_tags), { index: 'module' });
         }
 
-
-        /* r.db('lms').table('exam_room').getAll(
-             r.args(r.db('lms').table('user').get(user.id)('end_tags'))
-             , { index: 'module' }
-         )*/
         filter_module.filter(function (row) {
             return r.expr(dateNow).lt(row('period_end_date')).and(
                 r.expr(dateNow).gt(row('period_start_date')).and(r.expr(true).eq(row('enable')))
