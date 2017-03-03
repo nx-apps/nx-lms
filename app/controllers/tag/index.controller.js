@@ -47,10 +47,10 @@ class index {
         var params = req.body;
 
         r.do(
-            r.db('lms').table('question').filter({ module: 'TM' }).count(),
-            r.db('lms').table('examination').filter({ module: 'TM' }).count(),
-            r.db('lms').table('exam_room').filter({ module: 'TM' }).count(),
-            r.db('lms').table('user').getAll('TM', { index: 'tags' }).count(),
+            r.db('lms').table('question').filter({ module: params.id }).count(),
+            r.db('lms').table('examination').filter({ module: params.id }).count(),
+            r.db('lms').table('exam_room').filter({ module: params.id }).count(),
+            r.db('lms').table('user').getAll(params.id, { index: 'tags' }).count(),
             function (a, b, c, d) {
                 return a.add(b).add(c).add(d);
             }
@@ -78,10 +78,10 @@ class index {
         var params = req.query;
 
          r.do(
-            r.db('lms').table('question').filter({ module: 'TM' }).count(),
-            r.db('lms').table('examination').filter({ module: 'TM' }).count(),
-            r.db('lms').table('exam_room').filter({ module: 'TM' }).count(),
-            r.db('lms').table('user').getAll('TM', { index: 'tags' }).count(),
+            r.db('lms').table('question').filter({ module: params.id }).count(),
+            r.db('lms').table('examination').filter({ module: params.id }).count(),
+            r.db('lms').table('exam_room').filter({ module: params.id }).count(),
+            r.db('lms').table('user').getAll(params.id, { index: 'tags' }).count(),
             function (a, b, c, d) {
                 return a.add(b).add(c).add(d);
             }
