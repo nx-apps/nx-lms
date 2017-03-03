@@ -48,7 +48,7 @@
                 }
             },
             nylonPageActive:function(){
-                this.dispatchAction('COMMON_MODULE');
+                this.dispatchAction('COMMON_MODULE',true);
                 this.moduleSelect = "";
                 this.dispatchAction('USER_MANAGE_CLEAR_GET_LIST');
                 this.USER_MANAGE_GET_LIST('PM');

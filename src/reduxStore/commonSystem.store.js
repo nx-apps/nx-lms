@@ -34,9 +34,11 @@ export function commonSystemReducer(state = initialState,action){
 export function commonSystemAction(store){
     return [
         commonAction(),{
-            COMMON_MODULE:function(data){
+            COMMON_MODULE:function(getall=false){
                 // var user = store.getState().auth.user;
-                axios.get('/common/module/')
+                axios.get('/common/module/',{
+                    params:{getall}
+                })
                 .then(res=>{
                     store.dispatch({type:'COMMON_MODULE',payload:res.data})
                 })
