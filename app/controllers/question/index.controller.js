@@ -124,15 +124,23 @@ class index {
     delete_question(req, res) {
         var r = req.r;
         var params = req.query;
-
-        r.db('lms').table('question').get(params.id).delete()
+        r.db('lms').table('exam_test_detail').filter({ question_id: params.id })
             .run()
-            .then(function (result) {
-                res.json(result);
+            .then(function (re) {
+                if (re.length > 0) {
+                    res.status(500).json({error:"ข้อสอบนี้มีการใช้งาน"});
+                } else {
+                    r.db('lms').table('question').get(params.id).delete()
+                        .run()
+                        .then(function (result) {
+                            res.json(result);
+                        })
+                        .catch(function (err) {
+                            res.status(500).json(err);
+                        })
+                }
             })
-            .catch(function (err) {
-                res.status(500).json(err);
-            })
+
     }
 
     confirm(req, res) {
@@ -226,7 +234,7 @@ class FileManager {
         if (filename.indexOf(".xlsx") > 0) {
             console.log("start read .xlsx");
             var mod = name.replace(".xlsx", "")
-            if (user.key_tags.indexOf(mod) > -1 || user.role == "admin") {
+            if (user.key_tags.indexOf(mod) > -1 || user.key_tags.indexOf("*")>-1 || user.role == "admin") {
                 this.readExcel(filename, mod, user, function (datas) {
                     //  console.log(JSON.stringify(datas));
                     callback([{ file: name, module: mod, submodule: mod, total: datas.length, questions: datas }]);
@@ -240,7 +248,7 @@ class FileManager {
             console.log("start read .xls");
             console.log("start read .xls");
             var mod = name.replace(".xls", "")
-            if (user.key_tags.indexOf(mod) > -1 || user.role == "admin") {
+            if (user.key_tags.indexOf(mod) > -1 || user.key_tags.indexOf("*")>-1 || user.role == "admin") {
                 this.readExcel(filename, mod, user, function (datas) {
                     // console.log(JSON.stringify(datas));
                     callback([{ file: name, module: mod, submodule: mod, total: datas.length, questions: datas }]);
@@ -264,7 +272,7 @@ class FileManager {
                 } catch (e) {
                 }
             }
-            if (user.key_tags.indexOf(mod) > -1 || user.role == "admin") {
+            if (user.key_tags.indexOf(mod) > -1 || user.key_tags.indexOf("*")>-1 || user.role == "admin") {
                 this.readCSV(filename, mod, submod, user, function (datas) {
                     //console.log(JSON.stringify(datas));
                     callback([{ file: name, module: mod, submodule: submod, total: datas.length, questions: datas }]);

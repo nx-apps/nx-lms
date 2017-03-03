@@ -305,15 +305,22 @@ class examHistory {
         var user = req.user;
         var dateNow = new Date().toISOString();
 
-        r.db('lms').table('exam_room').getAll(
-            r.args(r.db('lms').table('user').get(user.id)('end_tags'))
-            , { index: 'module' }
-        )
-            .filter(function (row) {
-                return r.expr(dateNow).lt(row('period_end_date')).and(
-                    r.expr(dateNow).gt(row('period_start_date')).and(r.expr(true).eq(row('enable')))
-                )
-            })
+        var filter_module = r.db('lms').table('exam_room');
+
+        if (!req.user.end_tags.include('*')) {
+            filter_module = filter_module.getAll(r.args(req.user.end_tags), { index: 'module' });
+        }
+
+
+        /* r.db('lms').table('exam_room').getAll(
+             r.args(r.db('lms').table('user').get(user.id)('end_tags'))
+             , { index: 'module' }
+         )*/
+        filter_module.filter(function (row) {
+            return r.expr(dateNow).lt(row('period_end_date')).and(
+                r.expr(dateNow).gt(row('period_start_date')).and(r.expr(true).eq(row('enable')))
+            )
+        })
             .merge(function (row) {
                 return {
                     tags: [r.db('lms').table('tag').get(row('module'))],
