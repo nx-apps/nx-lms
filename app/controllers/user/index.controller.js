@@ -5,9 +5,10 @@ class index {
     select_user(req, res) {
         var r = req.r;
         var params = req.query;
-        var filter = r.db('lms').table("user");
-        if (params.tags) {
-            filter = filter.getAll(params.tags, { index: 'tags' });
+        
+        var filter=  r.db('lms').table("user");
+        if(params.tags){
+           filter= filter.getAll(r.args([params.tags,'*']),{index:'tags'});
         }
         filter.without('password').merge(function (c) {
             return {

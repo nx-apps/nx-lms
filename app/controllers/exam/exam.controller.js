@@ -148,7 +148,7 @@ class controlTest {
                                 end_time: '',
                                 countdown_time: countdown_time,
                                 status: 'working',
-                                case_time: 'allDay'
+                                case_time: resultExamRoom.case_time
                             }).run()
                                 .then(function (result) {
 
@@ -307,15 +307,10 @@ class examHistory {
 
         var filter_module = r.db('lms').table('exam_room');
 
-        if (!req.user.end_tags.include('*')) {
+        if (req.user.end_tags.indexOf('*')==-1) {
             filter_module = filter_module.getAll(r.args(req.user.end_tags), { index: 'module' });
         }
 
-
-        /* r.db('lms').table('exam_room').getAll(
-             r.args(r.db('lms').table('user').get(user.id)('end_tags'))
-             , { index: 'module' }
-         )*/
         filter_module.filter(function (row) {
             return r.expr(dateNow).lt(row('period_end_date')).and(
                 r.expr(dateNow).gt(row('period_start_date')).and(r.expr(true).eq(row('enable')))
@@ -647,6 +642,7 @@ class examHistory {
         var user = req.user;
         var user_id = user.id;
         var exam_room_id = params.exam_room_id;
+       // console.log(exam_room_id);
 
         jwt.verify(exam_room_id, SECRET_KEY, function (err, decode) {
 
@@ -656,6 +652,7 @@ class examHistory {
                 res.status(403).send("คุณไม่สิทธิทำข้อสอบนี้");
             } else {
                 exam_room_id = decode.id;
+               // console.log(exam_room_id);
                 if (decode.user_id != req.user.id) {
                     res.status(403).send("คุณไม่สิทธิทำข้อสอบนี้");
                 } else {
@@ -669,7 +666,7 @@ class examHistory {
                         } else {
                             control.rendomTest(exam_room_id, r, function (questions) {
                                 console.log("rendomTest");
-                                // console.log(questions);
+                                 console.log(questions);
                                 if (!questions.error) {
                                     control.insertExamTest(exam_room_id, user_id, r, function (exam_test) {
                                         console.log("insertExamTest");
