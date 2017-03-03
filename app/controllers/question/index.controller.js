@@ -125,9 +125,10 @@ class index {
         var r = req.r;
         var params = req.query;
         r.db('lms').table('exam_test_detail').filter({ question_id: params.id })
+            .count()
             .run()
-            .then(function (re) {
-                if (re.length > 0) {
+            .then(function (out) {
+                if (out > 0) {
                     res.status(500).json({error:"ข้อสอบนี้มีการใช้งาน"});
                 } else {
                     r.db('lms').table('question').get(params.id).delete()

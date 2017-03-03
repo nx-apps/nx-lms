@@ -163,9 +163,10 @@ class examRoom {
         var params = req.query;
 
         r.db('lms').table('exam_test').filter({ exam_room_id: params.id })
+            .count()
             .run()
-            .then(function (re) {
-                if (re.length > 0) {
+            .then(function (out) {
+                if (out> 0) {
                     res.status(500).json({ error: "ห้องสอบนี้มีการใช้งาน" });
                 } else {
                     r.db('lms').table('exam_room').get(params.id).delete()

@@ -102,9 +102,10 @@ class index {
         var params = req.query;
 
         r.db('lms').table('exam_test').filter({ user_id: params.id })
+            .count()
             .run()
-            .then(function (re) {
-                if (re.length > 0) {
+            .then(function (out) {
+                if (out > 0) {
                     res.status(500).json({ error: "ผู้ใช้งานนี้มีการใช้งาน" });
                 } else {
                     r.db('lms').table('user').get(params.id).delete()
