@@ -11,9 +11,9 @@ class examRoom {
         r.db('lms').table('exam_room').getAll(params.module, { index: 'module' })
             .merge(function (row) {
                 return {
-                    examination : r.db('lms').table('examination')
+                    examination: r.db('lms').table('examination')
                         .get(row('examination_id'))
-                        .pluck('name_examination','amount_all','time')
+                        .pluck('name_examination', 'amount_all', 'time')
                 }
             })
             .orderBy(r.desc('time_update'))
@@ -162,14 +162,24 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').get(params.id).delete()
+        r.db('lms').table('exam_test').filter({ exam_room_id: params.id })
             .run()
-            .then(function (result) {
-                res.json(result);
-            })
-            .catch(function (err) {
-                res.status(500).json(err);
-            })
+            .then(function (re) {
+                if (re.length > 0) {
+                    res.status(500).json({ error: "ห้องสอบนี้มีการใช้งาน" });
+                } else {
+                    r.db('lms').table('exam_room').get(params.id).delete()
+                        .run()
+                        .then(function (result) {
+                            res.json(result);
+                        })
+                        .catch(function (err) {
+                            res.status(500).json(err);
+                        })
+                }
+            });
+
+
     }
 
     select_Module(req, res) {
