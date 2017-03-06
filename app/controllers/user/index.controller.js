@@ -2,6 +2,16 @@ sha1 = require('js-sha1');
 
 class index {
 
+    current_user(req,res){
+        var u={
+            id:req.user.id,
+            name:req.user.name,
+            email:req.user.email,
+            emp_id:req.user.emp_id,
+            end_tags:req.user.end_tags
+        };
+        res.json(u);
+    }
     select_user(req, res) {
         var r = req.r;
         var params = req.query;
