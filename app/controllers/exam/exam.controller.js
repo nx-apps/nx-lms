@@ -722,7 +722,7 @@ class examHistory {
             }
         }
 
-        if (answer.length == 1 ) {
+        //if (answer.length == 1 ) {
             r.expr(params)
                 .merge(function (x) {
                     return r.db('lms').table('exam_test_detail').get(x('id')).merge(function (xx) {
@@ -747,10 +747,10 @@ class examHistory {
                 .catch(function (err) {
                     res.status(500).json(err);
                 })
-        } else {
+       // } else {
            // if (answer.length == 1 ) {
-            res.status(200).json({ error: "คุณไม่เลือกคำตอบ" });
-        }
+            //res.status(200).json({ error: "คุณไม่เลือกคำตอบ" });
+       //}
 
 
     }
