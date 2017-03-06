@@ -629,6 +629,7 @@ class examHistory {
                     }).pluck('name_room', 'setting', 'tags', 'score')
 
             })
+            .orderBy('start_time','exam_room_id','round')
             .then(function (result) {
                 for (var i = 0; i < result.length; i++) {
 
