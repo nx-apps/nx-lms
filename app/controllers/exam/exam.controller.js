@@ -780,18 +780,18 @@ class examHistory {
         var r = req.r;
         var params = req.body;
         var answer = [];
-        if (params.choice.length > 1) {
-            for (var i = 0; i < params.choice.length; i++) {
-                if (params.choice[i].answer) {
-                    answer.push(params.choice[i]);
-                    params.choice = answer;
-                    break;
-                }
+        
+        
+        params.choice = params.choice.filter(function(row){
+            if (row.answer) {
+                return true
+            }else{
+                return false;
             }
-        }
+        })
 
-        //if (answer.length == 1 ) {
-        r.expr(params)
+        if(params.choice.length==1){
+            r.expr(params)
             .merge(function (x) {
                 return r.db('lms').table('exam_test_detail').get(x('id')).merge(function (xx) {
                     return { ans: x('choice')(0) }
@@ -815,10 +815,12 @@ class examHistory {
             .catch(function (err) {
                 res.status(500).json(err);
             })
-        // } else {
-        // if (answer.length == 1 ) {
-        //res.status(200).json({ error: "คุณไม่เลือกคำตอบ" });
-        //}
+
+        }else{
+            res.json({error:'NOT SEND ANSWER.'});
+        }
+        
+        
 
 
     }
