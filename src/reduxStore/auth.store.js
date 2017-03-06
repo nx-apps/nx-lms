@@ -101,7 +101,7 @@ export function authAction(store) {
 
             _deleteCookie("token");
             store.dispatch({ type: 'AUTH_CLEAR_USER' });
-            window.location="/login";
+           // window.location="/login";
             // axios.post('/auth/checkToken')
             //.then(res=>{
              //   store.dispatch({type:'AUTH_SET_USER',payload:res.data})
