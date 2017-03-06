@@ -28,8 +28,8 @@
                                 <th style="width: 10%">#</th>
                                 <th>ชื่อ-สกุล</th>
                                 <th>รอบที่</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
+                                <th>เวลาเริ่มทำ</th>
+                                <th>ใช้เวลาทำ</th>
                                 <th style="text-align: right;">คะแนน</th>
                                 <th style="text-align: right;"></th>
                             </tr>
@@ -56,10 +56,10 @@
                                         [[item.round]]
                                     </td>
                                     <td>
-                                        [[item.start_time]]
+                                        [[startTime(item.start_time)]]
                                     </td>
                                     <td>
-                                        [[item.end_time]]
+                                        [[useTime(item.start_time,item.end_time)]]
                                     </td>
                                     <td style="text-align: right;">
                                         <template is="dom-if" if="[[checkSum(item.sum)]]">
@@ -95,6 +95,32 @@
                     value: [],
                     notify: true
                 }
+            },
+            digi:function(digi){
+                if(digi.toString().length==1){
+                    return '0'+digi
+                }else{
+                    return digi
+                }
+            },
+            startTime:function(time){
+                if(!time)return "-";
+                var date = new Date(time);
+                
+                return `${date.getFullYear()}-${this.digi(date.getMonth())}-${this.digi(date.getDate())} ${this.digi(date.getHours())}:${this.digi(date.getMinutes())}`
+            },
+            useTime:function(startTime,endTime){
+                if(!startTime||!endTime)return "-";
+                var stateDate = new Date(startTime).getTime();
+                var endDate = new Date(endTime).getTime();
+
+                var distance = endDate-stateDate;
+
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                return `${this.digi(hours)}:${this.digi(minutes)}:${this.digi(seconds)}`
             },
             checkSum: function (data) {
                 return typeof data != "undefined"

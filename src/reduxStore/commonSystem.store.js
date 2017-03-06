@@ -34,17 +34,23 @@ export function commonSystemReducer(state = initialState,action){
 export function commonSystemAction(store){
     return [
         commonAction(),{
-            COMMON_MODULE:function(getall=false){
+            COMMON_MODULE:function(getall=false,allModule=false){
                 // var user = store.getState().auth.user;
-                axios.get('/common/module/',{
-                    params:{getall}
+                return new Promise((resolve,reject)=>{
+                    axios.get('/common/module/',{
+                        params:{getall,allModule}
+                    })
+                    .then(res=>{
+                        store.dispatch({type:'COMMON_MODULE',payload:res.data})
+                        console.log('sssss');
+                        resolve();
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                        reject();
+                    })
                 })
-                .then(res=>{
-                    store.dispatch({type:'COMMON_MODULE',payload:res.data})
-                })
-                .catch(err=>{
-                    console.log(err);
-                })
+                
             },
             COMMON_SUB_MODULE:function(module){
                 axios.get('./question/sub_module?module='+module)

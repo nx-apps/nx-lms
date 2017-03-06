@@ -71,6 +71,7 @@ export function examAction(store){
                     console.log('success!!');
                     console.log(response.data);
                     store.dispatch({type:'EXAM_GET_DATA',payload:response.data})
+                    this.nylonVisible(true);
                 })
                 .catch((error)=>{
                     console.log('error');
