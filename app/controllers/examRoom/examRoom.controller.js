@@ -210,7 +210,7 @@ class examRoom {
             }).distinct()
 
             .merge(function(re){
-                return r.db('lms').table('exam_test').filter({user_id:re('id')}).coerceTo('array').do(function(result){
+                return r.db('lms').table('exam_test').filter({user_id:re('id'),exam_room_id:re('exam_room_id')}).coerceTo('array').do(function(result){
                 return r.branch(result.count().eq(0),{},result(0).pluck('sum','qty_question','id'))
                 })
             }).orderBy(r.desc('sum'))
