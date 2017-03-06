@@ -144,7 +144,7 @@ class controlTest {
             .then(function (out) {
                 var round = 1;
                 if (out > 0) {
-                    round = out++;
+                    round =round+(out++);
                 }
 
                 r.db('lms').table('exam_test').filter({ exam_room_id: exam_room_id, user_id: user_id, _remark: "last" })
