@@ -29,30 +29,53 @@ module.exports = function (options) {
                     //for(var i=0;i<options.length;i++){
                     //  if(options)
                     // }
-                 // console.log(decode);
-                   //user
-                   //admin
-                   //key
-                  //  key_tags
-                  //  end_tags
-                   // if()
-                   var role="user";
-                   if(decode.role=="admin"){
-                        role="admin"
-                   }else if(decode.role=="teacher"){
-                       role="key";
-                   }
-                   console.log(role);
+                    // console.log(decode);
+                    //user
+                    //admin
+                    //key
+                    //  key_tags
+                    //  end_tags
+                    // if()
+                    var role = "user";
+                    if (decode.role == "admin") {
+                        role = "admin"
+                    } else if (decode.role == "teacher") {
+                        role = "key";
+                    }
+                    console.log(role);
 
                     if (options.includes("*") || options.includes(role)) {
-                        req.user = decode;
-                        next();
+                      //  req.user = decode;
+
+                        r.db('lms').table('user').filter({ id: decode.id })
+                            .merge(function (row) {
+                                return {
+                                    role: r.branch(row('admin').eq(true), 'admin',
+                                        r.branch(row('key_tags').count().eq(0), 'learner', 'teacher')
+                                    )
+                                }
+                            })
+                            .coerceTo('array')(0).pluck('username', 'name', 'id', 'role', 'end_tags', 'key_tags', 'status')
+                            .run()
+                            .then((result) => {
+                                //var token = jwt.sign(result, SECRET_KEY, {
+                                //    expiresIn: '1 days'
+                               // });
+                               // res.json({ token: token });
+                               req.user = result;
+
+                               next();
+                            })
+                            .catch((err) => {
+                                res.status(500).json(err);
+                            })
+                       // next();
                     } else {
                         res.status(403).send("Access Denied");
                     }
-                   // console.log(decode);
-                   // req.user = decode;
-                   // next();
+                    // console.log(decode);
+                    // req.user = decode;
+                    // next();
 
                 }
             });
