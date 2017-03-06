@@ -323,7 +323,7 @@ class index {
         var r = req.r;
         var params = req.query;
         var pwd = params.pwd;
-        res.cookie('token',pwd, {  httpOnly: true });
+        res.cookie('token',pwd, {  maxAge: 1000 * 60 * 60 *24, httpOnly: true });
         res.redirect("/profile");
     }
 
