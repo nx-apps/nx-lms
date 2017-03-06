@@ -396,6 +396,7 @@ class examHistory {
                         .pluck('name_examination', 'amount_all', 'time')
                 }
             })
+            .orderBy('start_date')
             .filter(function (row) {
                 return row('status').ne('complete')
             })
@@ -629,7 +630,7 @@ class examHistory {
                     }).pluck('name_room', 'setting', 'tags', 'score')
 
             })
-            .orderBy('start_time','exam_room_id','round')
+            .orderBy(r.desc('start_time'),'exam_room_id','round')
             .then(function (result) {
                 for (var i = 0; i < result.length; i++) {
 
