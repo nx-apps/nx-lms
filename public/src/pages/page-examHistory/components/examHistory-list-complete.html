@@ -17,8 +17,9 @@
                     <tr>
                         <th style="width:10%">#</th>
                         <th>รายการผลสอบ</th>
-                         <th>วันที่ทำข้อสอบ</th>
-                             <th>รอบที่</th>
+                         <th>เวลาเริ่มทำ</th>
+                         <th>ใช้เวลาทำ</th>
+                         <th>รอบที่</th>
                         <th>Module</th>
                         <th>สถานะ</th>
                         <th style="text-align: right">จำนวนข้อที่ถูก (ข้อ)</th>
@@ -30,7 +31,8 @@
                         <tr on-tap="selectData" item="[[item]]">
                             <td>[[getIndex(index)]]</td>
                             <td>[[item.name_room]]</td>
-                              <td>[[item.start_date]] [[item.start_time]]</td>
+                              <td>[[startTime(item.start_time)]]</td>
+                              <td>[[useTime(item.start_time,item.end_time)]]</td>
                                 <td>[[item.round]]</td>
                             <template is="dom-repeat" items="[[item.tags]]">
                                 <td><tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module></td>
@@ -58,6 +60,32 @@
                 examList:{
                     statePath:'examHistory.examListComplete'
                 }
+            },
+            digi:function(digi){
+                if(digi.toString().length==1){
+                    return '0'+digi
+                }else{
+                    return digi
+                }
+            },
+            startTime:function(time){
+                if(!time)return "-";
+                var date = new Date(time);
+                
+                return `${date.getFullYear()}-${this.digi(date.getMonth())}-${this.digi(date.getDate())} ${this.digi(date.getHours())}:${this.digi(date.getMinutes())}`
+            },
+            useTime:function(startTime,endTime){
+                if(!startTime||!endTime)return "-";
+                var stateDate = new Date(startTime).getTime();
+                var endDate = new Date(endTime).getTime();
+
+                var distance = endDate-stateDate;
+
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                return `${this.digi(hours)}:${this.digi(minutes)}:${this.digi(seconds)}`
             },
             setScore:function(score,setting){
                 console.log(score,setting);

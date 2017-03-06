@@ -339,7 +339,7 @@ class examHistory {
                         .merge(function (row) {
                             return r.db('lms').table('user').get(row('user_id'))
                         })
-                        .pluck('name_examination', 'description', 'time', 'question', 'user_id', 'name', 'sum')
+                        .pluck('name_examination', 'description', 'time', 'question', 'user_id', 'name', 'sum','round')
 
                         //r.db('lms').table('exam_test_detail').filter({exam_test_id:'c971d1c4-2884-4481-8025-28250efb8906'})
                         .then(function (result) {
