@@ -172,6 +172,17 @@ export function examRoomAction(store){
                     console.log('error');
                     console.log(error);
                 });
+            },
+            EXAMROOM_RETEST:function(examTestId,examRoomId){
+                axios.delete('./examRoom/retestExamTest?id='+examTestId)
+                .then((response)=>{
+                    console.log(examTestId);
+                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',examRoomId);
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
             }
         }
     ]
