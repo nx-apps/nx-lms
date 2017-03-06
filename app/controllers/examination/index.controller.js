@@ -3,7 +3,7 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('examination').getAll(params.module, { index: 'module' }).orderBy('time_insert')
+        r.db('lms').table('examination').getAll(params.module, { index: 'module' }).orderBy('name_examination')
             .run()
             .then(function (result) {
                 res.json(result);

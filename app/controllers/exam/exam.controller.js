@@ -396,7 +396,7 @@ class examHistory {
                         .pluck('name_examination', 'amount_all', 'time')
                 }
             })
-            .orderBy('start_date')
+           .orderBy(r.desc('start_date'))
             .filter(function (row) {
                 return row('status').ne('complete')
             })

@@ -16,7 +16,7 @@ class examRoom {
                         .pluck('name_examination', 'amount_all', 'time')
                 }
             })
-            .orderBy(r.desc('time_update'))
+            .orderBy(r.desc('start_date'))
             .run()
             .then(function (result) {
                 res.json(result);
