@@ -65,6 +65,13 @@ class common{
 
                 var user=req.user;
                 //var tags = Array.from(new Set(user.end_tags.concat(user.key_tags)));
+                if(!user){
+                    user ={
+                        role:"admin",
+                        key_tags:[]
+                    }
+                  
+                }
 
                 r.branch(
                     r.expr(user.role).eq('admin').or(r.expr(user.key_tags).contains('*')),

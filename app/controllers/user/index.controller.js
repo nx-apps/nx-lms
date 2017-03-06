@@ -1,24 +1,26 @@
 sha1 = require('js-sha1');
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = "จริงๆแล้วก็ไม่รู้ว่าจะใส่อะไรดีที่เป็นความลับอะนะ";
 
 class index {
 
-    current_user(req,res){
-        var u={
-            id:req.user.id,
-            name:req.user.name,
-            email:req.user.email,
-            emp_id:req.user.emp_id,
-            end_tags:req.user.end_tags
+    current_user(req, res) {
+        var u = {
+            id: req.user.id,
+            name: req.user.name,
+            email: req.user.email,
+            emp_id: req.user.emp_id,
+            end_tags: req.user.end_tags
         };
         res.json(u);
     }
     select_user(req, res) {
         var r = req.r;
         var params = req.query;
-        
-        var filter=  r.db('lms').table("user");
-        if(params.tags){
-           filter= filter.getAll(r.args([params.tags,'*']),{index:'tags'});
+
+        var filter = r.db('lms').table("user");
+        if (params.tags) {
+            filter = filter.getAll(r.args([params.tags, '*']), { index: 'tags' });
         }
         filter.without('password').merge(function (c) {
             return {
@@ -53,7 +55,7 @@ class index {
         var r = req.r;
         var params = req.body;
 
-        r.db('lms').table('user').filter({ email: params.email }).coerceTo('array')
+        r.db('lms').table('user').filter({ email: params.email.toLowerCase() }).coerceTo('array')
             .do(function (result) {
                 return r.branch(result.count().eq(0),
                     r.expr(params).merge(function () {
@@ -128,6 +130,189 @@ class index {
                         })
                 }
             })
+
+
+    }
+
+    register_user(req, res) {
+        var r = req.r;
+        var params = req.body;
+        params.status = true;
+        params.email = params.email.toLowerCase();
+
+        r.db('lms').table('user').filter({ email: params.email.toLowerCase() })
+            .count()
+            /*.coerceTo('array')
+            .do(function (result) {
+                return r.branch(result.count().eq(0),
+                    r.expr(params).merge(function () {
+                        return { password: sha1(params.password) }
+                    }).do(function (all) {
+                        return r.db('lms').table('user').insert(all)
+                    })
+                    , { error: 'Email นี้มีอยู่ในระบบแล้ว กรุณากรอก Email ใหม่' })
+            })*/
+            .run()
+            .then(function (out) {
+
+                if (out > 0) {
+                    res.status(500).json({ error: 'Email นี้มีอยู่ในระบบแล้ว กรุณากรอก Email ใหม่' });
+                } else {
+                    //var uid = result.generated_keys[0];
+                    var uid = jwt.sign(params, SECRET_KEY, {
+                        expiresIn: '30m'
+                    });
+                    var mailer = require("nodemailer");
+                    var smtpTransport = mailer.createTransport({
+                        service: "Gmail",
+                        auth: {
+                            user: "quiz.btg@gmail.com",
+                            pass: "next@2017"
+                        }
+                    });
+                    var html = "<p>ชื่อผู้ใช้งาน : " + params.name + "</p>";
+                    html += "<p>รหัสพนักงาน : " + params.emp_id + "</p>";
+                    html += "<p>email/user : " + params.email + "</p>";
+                    html += "<a href='https://quiz.nexts-corp.com/api/user/verify?uid=" + uid + "'>กรุณายืนยันการลงทะเบีัยนระบบคลังข้อสอบ (Betagro)</a>";
+
+
+                    var mail = {
+                        from: "quiz btg <quiz.btg@gmail.com>",
+                        to: params.email,
+                        subject: "กรุณายืนยันการลงทะเบีัยนระบบคลังข้อสอบ (Betagro)",
+                        //text: "Password : "+ user.emp_id,
+                        html: html
+                    }
+
+                    smtpTransport.sendMail(mail, function (error, response) {
+                        if (error) {
+                            console.log(error);
+                            res.status(500).json({ error: error });
+                        } else {
+                            //console.log("Message sent: " + response.message);
+                            res.status(200).json({ ok: "กรุณาตรวจสอบ Inbox อีเมล์ของคุณเพื่อยืนยันการลงทะเบียน" });
+                        }
+
+                        smtpTransport.close();
+                    });
+
+                    //res.json(result);
+                }
+            })
+            .catch(function (err) {
+                res.status(500).json(err);
+            })
+    }
+
+    verify(req, res) {
+        var r = req.r;
+        var params = req.query;
+        var uid = params.uid;
+        jwt.verify(uid, SECRET_KEY, function (err, user) {
+            if (err) {
+                res.status(500).json(err);
+            } else {
+                r.db('lms').table('user').filter({ email: user.email.toLowerCase() }).coerceTo('array')
+                    .do(function (result) {
+                        return r.branch(result.count().eq(0),
+                            r.expr(user).merge(function () {
+                                return { password: sha1(user.password) }
+                            }).do(function (all) {
+                                return r.db('lms').table('user').insert(all)
+                            })
+                            , { error: 'Duplicate Email' })
+                    })
+                    .run()
+                    .then(function (result) {
+
+                        if (result.error) {
+                            res.status(500).json(result);
+                        } else {
+                           // res.json(result);
+                           res.redirect("/login");
+                        }
+                    })
+                    .catch(function (err) {
+                        res.status(500).json(err);
+                    })
+            }
+
+        });
+        /* r.db('lms').table('user').get(uid).update({ status: true })
+             .run()
+             .then(function (out) {
+                 res.redirect("/login");
+             })
+             .catch(function (err) {
+                 res.status(500).json(err);
+             })*/
+
+    }
+
+    forgetPassword(req, res) {
+        var r = req.r;
+        var params = req.query;
+        var email = params.email;
+        r.db('lms').table('user').filter({ email: email.toLowerCase() })
+            .run()
+            .then(function (users) {
+                if (users.length > 0) {
+                    //res.status(500).json({ error: "รหัสผ่านของคุณไม่ถูกต้อง", case: 2 });
+                    var user = users[0];
+                    user.status = false;
+                    user.password = sha1(user.emp_id);
+
+                    r.db('lms').table('user').get(user.id).update(user)
+                        .run()
+                        .then(function (out) {
+                            var mailer = require("nodemailer");
+                            var smtpTransport = mailer.createTransport({
+                                service: "Gmail",
+                                auth: {
+                                    user: "quiz.btg@gmail.com",
+                                    pass: "next@2017"
+                                }
+                            });
+
+                            var html = "<p>ชื่อผู้ใช้งาน : " + user.name + "</p>";
+                            html += "<p>รหัสพนักงาน : " + user.emp_id + "</p>";
+                            html += "<p>email/user : " + user.email + "</p>";
+                            html += "<p>Password : " + user.emp_id + "</p>";
+                            //      html += "<a href='https://quiz.nexts-corp.com/api/user/verify?uid=" + uid + "'>กรุณายืนยันการลงทะเบีัยนระบบคลังข้อสอบ (Betagro)</a>";
+
+
+                            var mail = {
+                                from: "quiz btg <quiz.btg@gmail.com>",
+                                to: email,
+                                subject: "เปลี่ยนแปลงรหัสผ่าน",
+                                // text: "Password : " + user.emp_id,
+                                html: html
+                                //html: "<b>Node.js New world for me</b>"
+                            }
+
+                            smtpTransport.sendMail(mail, function (error, response) {
+                                if (error) {
+                                    console.log(error);
+                                    res.status(500).json({ error: error });
+                                } else {
+                                    //console.log("Message sent: " + response.message);
+                                    res.status(200).json({ ok: "ระบบได้ส่งรหัสผ่านใหม่ไปให้คุณแล้วทางอีเมล์ของคุณ" });
+                                }
+
+                                smtpTransport.close();
+                            });
+
+                        })
+
+
+
+                } else {
+                    res.status(500).json({ error: "ชื่อผู้ใช้งานไม่ถูกต้อง กรุณาลงทะเบียน", case: 1 });
+                }
+            })
+            .catch((err) => {
+                res.status(500).json(err);
+            });
 
 
     }

@@ -1,0 +1,206 @@
+<dom-module id="page-register">
+    <template>
+        <style include="page-style flex-style"></style>
+        <div class="xcontainer">
+            <div class="container flex-equal-justified">
+                <div class="header gl-large">ลงทะเบียนใช้งานระบบ</div>
+
+            </div>
+        </div>
+
+        <!--<template is="dom-repeat" items="[[selectTest]]">[[item]]</template>-->
+
+        <div class="xcontainer">
+            <div class="container">
+                <div style="padding: 20px 20px 10px 20px">
+                    <paper-material elevation="1">
+                        <div class="container bgWhite">
+                            <div class="flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <gl-form-input label="E-mail *" placeholder="กรอก Email" value="{{data.email}}"></gl-form-input>
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+                            <!---chonEdit-->
+                            <div class="flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <gl-form-input label="รหัสพนักงาน *" placeholder="กรอกรหัสพนักงาน" value="{{data.emp_id}}"></gl-form-input>
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+                            <!---end-->
+                            <div class="flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <gl-form-input label="ชื่อ-สกุล *" placeholder="กรอกชื่อ-สกุล" value="{{data.name}}"></gl-form-input>
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+
+                            <div class="flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <!--<gl-combo-box label="ประเภท" placeholder="กรอก username" items="[[role]]" item-label-path="name" item-value-path="id" value="{{data.role}}"></gl-combo-box>-->
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+                            <div class="flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <tag-module-form label="Register Module (เรียน)" items="[[newModule]]" value="{{data.end_tags}}"></tag-module-form>
+                                    <!--<paper-tags-dropdown items='[[newModule]]' noink label="END-TAG"  value-array="{{data.end_tags}}"></paper-tags-dropdown>-->
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+
+                        </div>
+                    </paper-material>
+                </div>
+                <div style="padding: 0px 20px 20px 20px">
+                    <paper-material elevation="1">
+                        <div class="container bgWhite">
+                            <div class="flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <gl-form-input label="Password" type="Password" placeholder="กรอก Password" value="{{password}}"></gl-form-input>
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+                            <div class="flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <gl-form-input label="Confirm-Password" type="Password" placeholder="ยืนยัน Password" value="{{confirmPassword}}"></gl-form-input>
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+                            <!--div class="flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <paper-button class="gl-btn-primary" style="width: 100%" on-tap="clearPassword" hidden="[[hide]]">
+                                        <iron-icon icon="icons:cached"></iron-icon>
+                                        &nbsp;&nbsp;RESET PASSOWRD</paper-button>
+                                </div>
+                                <div class="flexchild">
+                                </div>
+                            </div-->
+
+                        </div>
+                    </paper-material>
+
+                    <div class="flex-end-justified" style="padding-top: 10px;">
+                        <div>
+                            <paper-button disabled$="[[disabledBtn]]" class$="[[btnClass]]" on-tap="getForm" raised>บันทึก</paper-button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'page-register',
+            behaviors: [nylonBehavior, ReduxBehavior, userManageAction],
+            observers: ['checkPassword(password,confirmPassword)'],
+            properties: {
+
+                data: {
+                    statePath: 'userManage.dataSelect'
+                },
+                module: {
+                    statePath: 'commonSystem.module',
+                    observer: 'setModule'
+                }
+            },
+            nylonPageActive: function () {
+
+                this.dispatchAction('USER_MANAGE_SELECT_CLEAR_LIST');
+                this.dispatchAction('COMMON_MODULE', false);
+
+            },
+            checkPassword: function (password, confirmPassword) {
+                if (password == confirmPassword && password != "" && confirmPassword != "") {
+                    this.btnClass = "gl-btn-success";
+                    this.disabledBtn = false;
+                }
+                else {
+                    this.btnClass = "";
+                    this.disabledBtn = true;
+                }
+            },
+            /*clearPassword: function () {
+                console.log(this.data);
+                this.password = "";
+                this.confirmPassword = "";
+                this.active = false;
+                this.hide = true;
+                this.resetPw = false;
+                // this.data.status = false;
+                // this.set('data.status',false);
+                // this.data.password = "";
+            },*/
+            /*setData: function () {
+
+                if (typeof this.data.id == 'undefined') {
+                    this.active = false;
+                    this.hide = true
+                }
+                else {
+                    this.active = true;
+                    this.hide = false
+                    this.password = "xxx";
+                    this.confirmPassword = "xxx";
+                }
+                //  this.setModule();
+            },*/
+            setModule: function () {
+                if (this.module.length != 0) {
+                    console.log("setModule.......");
+                    this.newModule = this.module.map((item, index) => {
+                        return {
+                            id: item,
+                            label: item
+                        }
+                    })
+                }
+            },
+            getForm: function () {
+                this.data.end_tags = this.data.end_tags.map((item) => {
+                    if (typeof item.id != 'undefined') {
+                        return item.id;
+                    }
+                    else {
+                        return item;
+                    }
+                })
+                this.data.password = this.password;
+                this.data.status = true;
+                this.data.admin = false;
+
+
+                if (this.data.email && this.data.name && this.data.emp_id) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'คุณต้องการบันทึกข้อมูลใช่หรือไม่',
+                        confirmed: this.confirmed.bind(this),
+                    })
+                } else {
+                    this.fire('toast', {
+                        status: 'connectError', text: 'กรุณาป้อนข้อมูลให้สมบูรณ์',
+                        callback: function () {
+                        }
+                    })
+                }
+
+            },
+            confirmed(result) {
+                if (result) {
+                    this.dispatchAction('USER_MANAGE_REGISTER', this.data);
+                }
+            }
+        });
+    </script>
+</dom-module>

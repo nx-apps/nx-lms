@@ -1,6 +1,7 @@
 import axios from '../axios'
 import { commonAction } from '../config'
 
+
 const initialState = {
     dataList: [],
     dataSelect: {
@@ -67,7 +68,7 @@ export function userManageAction(store) {
                     response.data.end_tags = response.data.end_tags.map((item) => {
                         return { id: item }
                     })
-                    
+
                     store.dispatch({ type: 'USER_MANAGE_CURRENT', payload: response.data });
                 })
                 .catch((error) => {
@@ -121,12 +122,43 @@ export function userManageAction(store) {
                 });
         },
 
+         USER_MANAGE_REGISTER: function (data) {
+              // this.fire('toast',{status:'load'});
+              this.fire('toast',{status:'load'});
+              axios.post('./user/register', data)
+                  .then((response) => {
+                      this.USER_MANAGE_SELECT_CLEAR_LIST();
+                       this.fire('toast',{status:'connectError',text:response.data.ok,
+                         callback:()=>{
+                            // console.log(response.data);
+                            window.location="/login";
+  
+                         }
+                      });
+                      
+  
+                  })
+                  .catch((error) => {
+                      console.log('error');
+                      console.log({ error });
+                      console.log("*", error.response.data.error);
+                     // if (error.response.data.error == "Duplicate Email") {
+                          this.fire('toast', {
+                              status: 'connectError', text: error.response.data.error,
+                              callback: function () {
+                              }
+                          })
+                     // }
+                  });
+          },
+
         USER_MANAGE_UPDATE_PROFILE: function (data) {
+            //this.fire('toast',{status:'load'});
             axios.put('./user/user', data)
                 .then((response) => {
                     this.fire('toast', {
                         status: 'success',
-                        text:'บันทึกข้อมูลเรียบร้อย',
+                        text: 'บันทึกข้อมูลเรียบร้อย',
                         callback: () => {
                             this.fire('close');
                         }

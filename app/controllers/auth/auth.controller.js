@@ -43,7 +43,22 @@ class auth {
                 res.json({ token: token });
             })
             .catch((err) => {
-                res.status(500).json(err);
+
+                r.db('lms').table('user').filter({ email: params.username.toLowerCase() })
+                    .count()
+                    .run()
+                    .then(function (out) {
+                        if (out > 0) {
+                            res.status(500).json({error:"รหัสผ่านของคุณไม่ถูกต้อง",case:2});
+                        } else {
+                            res.status(500).json({error:"ชื่อผู้ใช้งานไม่ถูกต้อง กรุณาลงทะเบียน",case:1});
+                        }
+                    })
+                    .catch((err) => {
+                        res.status(500).json(err);
+                    });
+
+
             })
 
     }
