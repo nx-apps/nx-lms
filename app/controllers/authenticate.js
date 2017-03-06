@@ -36,43 +36,48 @@ module.exports = function (options) {
                     //  key_tags
                     //  end_tags
                     // if()
-                    var role = "user";
-                    if (decode.role == "admin") {
-                        role = "admin"
-                    } else if (decode.role == "teacher") {
-                        role = "key";
-                    }
-                    console.log(role);
 
-                    if (options.includes("*") || options.includes(role)) {
-                      //  req.user = decode;
 
-                        r.db('lms').table('user').filter({ id: decode.id })
-                            .merge(function (row) {
-                                return {
-                                    role: r.branch(row('admin').eq(true), 'admin',
-                                        r.branch(row('key_tags').count().eq(0), 'learner', 'teacher')
-                                    )
-                                }
-                            })
-                            .coerceTo('array')(0).pluck('username','email','emp_id', 'name', 'id', 'role', 'end_tags', 'key_tags', 'status')
-                            .run()
-                            .then((result) => {
+                    r.db('lms').table('user').filter({ id: decode.id })
+                        .merge(function (row) {
+                            return {
+                                role: r.branch(row('admin').eq(true), 'admin',
+                                    r.branch(row('key_tags').count().eq(0), 'learner', 'teacher')
+                                )
+                            }
+                        })
+                        .coerceTo('array')(0).pluck('username', 'email', 'emp_id', 'name', 'id', 'role', 'end_tags', 'key_tags', 'status')
+                        .run()
+                        .then((result) => {
+
+                            var role = "user";
+                            if (result.role == "admin") {
+                                role = "admin"
+                            } else if (result.role == "teacher") {
+                                role = "key";
+                            }
+                            console.log(role);
+
+                            if (options.includes("*") || options.includes(role)) {
+                                //  req.user = decode;
+
                                 //var token = jwt.sign(result, SECRET_KEY, {
                                 //    expiresIn: '1 days'
-                               // });
-                               // res.json({ token: token });
-                               req.user = result;
+                                // });
+                                // res.json({ token: token });
+                                req.user = result;
 
-                               next();
-                            })
-                            .catch((err) => {
-                                res.status(500).json(err);
-                            })
-                       // next();
-                    } else {
-                        res.status(403).send("Access Denied");
-                    }
+                                next();
+
+                                // next();
+                            } else {
+                                res.status(403).send("Access Denied");
+                            }
+
+                        })
+                        .catch((err) => {
+                            res.status(500).json(err);
+                        })
                     // console.log(decode);
                     // req.user = decode;
                     // next();

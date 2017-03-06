@@ -9,7 +9,8 @@ module.exports = function (app) {
     app.delete('/user', authenticate(["admin"]), index.delete_user);
     app.get('/current', authenticate(), index.current_user);
     app.post('/register', index.register_user);
- app.get('/forget', index.forgetPassword);
- app.get('/verify', index.verify);
-    
+    app.get('/forget', index.forgetPassword);
+    app.get('/verify', index.verify);
+    app.get('/reset', index.reset);
+
 }

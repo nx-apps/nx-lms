@@ -111,14 +111,14 @@
                     statePath: 'userManage.dataSelect'
                 },
                 module: {
-                    statePath: 'commonSystem.module',
+                    statePath: 'commonSystem.module2',
                     observer: 'setModule'
                 }
             },
             nylonPageActive: function () {
 
                 this.dispatchAction('USER_MANAGE_SELECT_CLEAR_LIST');
-                this.dispatchAction('COMMON_MODULE', false);
+                this.dispatchAction('COMMON_MODULE2', false);
 
             },
             checkPassword: function (password, confirmPassword) {

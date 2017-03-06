@@ -98,8 +98,17 @@ export function authAction(store) {
         },
         AUTH_CLEAR_USER: function () {
             // localStorage.removeItem("token");
+
             _deleteCookie("token");
             store.dispatch({ type: 'AUTH_CLEAR_USER' });
+            window.location="/login";
+            // axios.post('/auth/checkToken')
+            //.then(res=>{
+             //   store.dispatch({type:'AUTH_SET_USER',payload:res.data})
+            //})
+           // .catch(err=>{
+             //  _deleteCookie("token");
+           // })
         },
         AUTH_SET_PASSWORD: function (data) {
             // alert('AUTH_SET_PASSWORD')

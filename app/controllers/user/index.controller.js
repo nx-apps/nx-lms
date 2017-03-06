@@ -139,6 +139,7 @@ class index {
         var params = req.body;
         params.status = true;
         params.email = params.email.toLowerCase();
+        params.key_tags=[];
 
         r.db('lms').table('user').filter({ email: params.email.toLowerCase() })
             .count()
@@ -177,9 +178,9 @@ class index {
 
 
                     var mail = {
-                        from: "quiz btg <quiz.btg@gmail.com>",
+                        from: "quiz service <quiz.btg@gmail.com>",
                         to: params.email,
-                        subject: "กรุณายืนยันการลงทะเบีัยนระบบคลังข้อสอบ (Betagro)",
+                        subject: "กรุณายืนยันการลงทะเบียนระบบคลังข้อสอบ (Betagro)",
                         //text: "Password : "+ user.emp_id,
                         html: html
                     }
@@ -228,8 +229,8 @@ class index {
                         if (result.error) {
                             res.status(500).json(result);
                         } else {
-                           // res.json(result);
-                           res.redirect("/login");
+                            // res.json(result);
+                            res.redirect("/login");
                         }
                     })
                     .catch(function (err) {
@@ -260,7 +261,7 @@ class index {
                     //res.status(500).json({ error: "รหัสผ่านของคุณไม่ถูกต้อง", case: 2 });
                     var user = users[0];
                     user.status = false;
-                    user.password = sha1(user.emp_id);
+                    //user.password = sha1(user.emp_id);
 
                     r.db('lms').table('user').get(user.id).update(user)
                         .run()
@@ -273,18 +274,21 @@ class index {
                                     pass: "next@2017"
                                 }
                             });
+                            var pwd = jwt.sign({id:user.id}, SECRET_KEY, {
+                                expiresIn: '30m'
+                            });
 
                             var html = "<p>ชื่อผู้ใช้งาน : " + user.name + "</p>";
                             html += "<p>รหัสพนักงาน : " + user.emp_id + "</p>";
                             html += "<p>email/user : " + user.email + "</p>";
-                            html += "<p>Password : " + user.emp_id + "</p>";
-                            //      html += "<a href='https://quiz.nexts-corp.com/api/user/verify?uid=" + uid + "'>กรุณายืนยันการลงทะเบีัยนระบบคลังข้อสอบ (Betagro)</a>";
+                            //  html += "<p>Password : " + user.emp_id + "</p>";
+                            html += "<a href='https://quiz.nexts-corp.com/api/user/reset?pwd=" + pwd + "'>ตั้งค่ารหัสผ่านใหม่</a>";
 
 
                             var mail = {
-                                from: "quiz btg <quiz.btg@gmail.com>",
+                                from: "quiz service <quiz.btg@gmail.com>",
                                 to: email,
-                                subject: "เปลี่ยนแปลงรหัสผ่าน",
+                                subject: "ตั้งค่ารหัสผ่านใหม่",
                                 // text: "Password : " + user.emp_id,
                                 html: html
                                 //html: "<b>Node.js New world for me</b>"
@@ -313,8 +317,14 @@ class index {
             .catch((err) => {
                 res.status(500).json(err);
             });
+    }
 
-
+    reset(req, res) {
+        var r = req.r;
+        var params = req.query;
+        var pwd = params.pwd;
+        res.cookie('token',pwd, {  httpOnly: true });
+        res.redirect("/profile");
     }
 
 }
