@@ -10,4 +10,5 @@
 npm-debug*
 .DS_Store
 /src/main.js
+yarn.lock
 
