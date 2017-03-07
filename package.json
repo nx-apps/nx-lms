@@ -7,7 +7,9 @@
     "start": "npm-run-all --parallel gulp redux nylon",
     "nylon": "nylon-cli serve",
     "gulp": "gulp",
-    "redux": "webpack"
+    "redux": "webpack",
+    "webpack": "webpack",
+    "dev": "npm-run-all --parallel webpack nylon "
   },
   "author": "",
   "license": "ISC",
@@ -22,7 +24,9 @@
     "gulp": "^3.9.1",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.1",
-    "webpack": "^2.2.1"
+    "wc-loader": "^1.1.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
   },
   "dependencies": {
     "async": "^2.1.4",
@@ -34,7 +38,7 @@
     "jsonwebtoken": "^7.2.1",
     "jwt-decode": "^2.1.0",
     "multiparty": "^4.1.2",
-     "nodemailer": "^3.1.4",
+    "nodemailer": "^3.1.4",
     "polymer-redux": "^0.3.0",
     "redux": "^3.6.0",
     "sleep": "^5.1.0",
