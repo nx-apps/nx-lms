@@ -32,7 +32,8 @@
                                         <div>[[toIndex(index)]]</div>
                                     </td>
                                     <td>
-                                        [[item.question]]
+
+                                        <polymer-quill-html-render content="[[item.question]]" store-as="html"></polymer-quill-html-render>
                                     </td>
                                     <td>
                                         <template is="dom-repeat" items="[[item.tags]]">

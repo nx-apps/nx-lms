@@ -8,7 +8,8 @@
                     <tr>
                         <th style="width: 10%">ข้อที่ [[index]]</th>
                         <th>
-                            [[data.question]]
+                           
+                            <polymer-quill-html-render content="[[data.question]]" store-as="html"></polymer-quill-html-render>
                             <br>
                              <show-image image-id="[[data.image_id]]"></show-image>
                         </th>
