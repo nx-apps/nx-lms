@@ -1,0 +1,16 @@
+<link rel="import" href="./pages/pages.html">
+
+<dom-module id="nylon-init">
+	<template>
+        <iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="visible">
+            <page-test path="test"></page-test>
+        </iron-pages>
+	</template>
+
+
+	<script>
+        Polymer({
+            is:'nylon-init'
+        });
+    </script>
+</dom-module>
