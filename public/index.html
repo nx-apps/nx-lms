@@ -1,15 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>BETAGRO</title>
+    <link rel="shortcut icon" sizes="32x32" href="/images/icon/green/app-icon-32.png">
+    <link rel="manifest" href="/manifest.json">
+
+    <style>
+        @font-face {
+            font-family: 'CSChatThaiUI';
+            src: url('/bower_components/gl-font/fonts/csChatThai/CSChatThaiUI.ttf');
+        }
+
+        body {
+            margin: 0;
+            background: #efefef;
+        }
+
+        #toolbar {
+            background-color: #95bf31;
+            color: white;
+            font-family: 'rsuregular', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            --app-toolbar-font-size: 20px;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            height: 64px;
+        }
+
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 5px solid #3498db;
+            width: 30px;
+            height: 30px;
+            -webkit-animation: spin 0.5s linear infinite;
+            animation: spin 0.5s linear infinite;
+            margin: auto;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+
+
+        .middle {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            display: -webkit-flex;
+            display: flex;
+        }
+
+        /**{
+            font-family: 'CSChatThaiUI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }*/
+
+
+
+        #toolbar>.icon {
+            margin-left: 76px;
+            padding-top: 18px;
+            float: left;
+        }
+
+
+
+        #toolbar>.title {
+            line-height: 62px;
+            margin-left: 20px;
+            font-size: 16px;
+            font-weight: 590;
+            float: left;
+        }
+    </style>
 </head>
 
 <body>
-    <nylon-app></nylon-app>
+    <nylon-app unresolved>
+        <div id="toolbar">
+            <div class="icon">
+                <img src="/images/icon/white/app-icon-32.png" alt="">
+            </div>
+            <div class="title">
+                BETAGRO
+            </div>
+        </div>
+        <div class="middle">
+            <div class="loader"></div>
+        </div>
+    </nylon-app>
     <script src="/bundle.js"></script>
 </body>
+
 </html>

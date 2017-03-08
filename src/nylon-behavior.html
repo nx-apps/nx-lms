@@ -1,0 +1,48 @@
+<script>
+    window.nylonBehavior = {
+        properties:{
+            nylonShow:{
+                value:true,
+                reflectToAttribute: true
+            },
+            active:{
+                type:Boolean,
+                observer:'_checkActive'
+            }
+        },
+        _checkActive:function(ob){
+            if(ob){
+                if(typeof this.nylonPageActive != "undefined"){
+                    this.nylonPageActive();
+                }
+            }else{
+                if(typeof this.nylonPageUnActive != "undefined"){
+                    this.nylonPageUnActive();
+                }
+                //this.nylonVisible(false);
+            }
+
+        },
+        nylonVisible:function(b=true){
+            this.nylonShow = b;
+        }
+
+    };
+
+    window.nylonLocalize = {
+        attached:function(){
+            nylonLocalize.subscribe((x)=>{ 
+                this.language = x;
+            });
+        },
+        nylonLocalizeImport:function(path){
+            this.loadResources(this.resolveUrl('/src/localize'+path));
+        },
+        nylonLocalizeChange:function(lang){
+            nylonLocalize.onNext(lang);
+        }
+    }
+    window.nylonLocalizeBehavior = [ Polymer.AppLocalizeBehavior, window.nylonLocalize ]
+
+
+</script>

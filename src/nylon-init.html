@@ -2,9 +2,112 @@
 
 <dom-module id="nylon-init">
 	<template>
-        <iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="visible">
-            <page-test path="test"></page-test>
-        </iron-pages>
+        <style is="custom-style">
+			app-toolbar {
+				/* Toolbar is the main header, so give it some color */
+				background-color: #FBFBFB;
+				/*font-family: 'Roboto', Helvetica, sans-serif;*/
+				/*color: white;*/
+				--app-toolbar-font-size: 24px;
+				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+			}
+			:host{
+				--page-font-csc: 'CSChatThaiUI', sans-serif;
+				--page-font-rsu: 'rsuregular', sans-serif;
+			}
+
+			.loader {
+				border: 5px solid #f3f3f3;
+				border-radius: 50%;
+				border-top: 5px solid #3498db;
+				width: 30px;
+				height: 30px;
+				-webkit-animation: spin 0.5s linear infinite;
+				animation: spin 0.5s linear infinite;
+				margin: auto;
+			}
+				
+			@-webkit-keyframes spin {
+				0% {
+					-webkit-transform: rotate(0deg);
+				}
+				100% {
+					-webkit-transform: rotate(360deg);
+				}
+			}
+				
+			@keyframes spin {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+				
+			.middle {
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				z-index: 1;
+				display: -webkit-flex;
+				display: flex;
+			}
+
+			iron-pages>*:not([nylon-show]){
+				display: none;
+			}
+
+			[nylon-show]{
+				display: block;
+				animation: fadein 0.5s;
+				-moz-animation: fadein 0.5s; 
+				-webkit-animation: fadein 0.5s; 
+				-o-animation: fadein 0.5s; 
+			}
+
+			@keyframes fadein {
+				from {
+					opacity:0;
+				}
+				to {
+					opacity:1;
+				}
+			}
+			@-moz-keyframes fadein { /* Firefox */
+				from {
+					opacity:0;
+				}
+				to {
+					opacity:1;
+				}
+			}
+			@-webkit-keyframes fadein { /* Safari and Chrome */
+				from {
+					opacity:0;
+				}
+				to {
+					opacity:1;
+				}
+			}
+			@-o-keyframes fadein { /* Opera */
+				from {
+					opacity:0;
+				}
+				to {
+					opacity: 1;
+				}
+			}
+
+		</style>
+        
+        <layout-main path="[[selected]]">
+            <iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="active">
+                <page-test path="test"></page-test>
+            </iron-pages>
+        </layout-main>
 	</template>
 
 

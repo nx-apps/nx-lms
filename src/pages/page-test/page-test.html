@@ -1,10 +1,16 @@
 <dom-module id="page-test">
     <template>
         page-test
+        [[nylonShow]]
     </template>
     <script>
         Polymer({
-            is:'page-test'
+            is:'page-test',
+            behaviors:[nylonBehavior],
+            nylonPageActive:function(){
+                //this.nylonVisible(false);
+                //this.nylonVisible();
+            }
         });
     </script>
 </dom-module>
