@@ -62,7 +62,7 @@
                 this.dispatchAction('EXAMROOM_CLEAR_LIST');
             },
             openPanelRight:function(){
-                this.EXAMROOM_CLEAR_DATA();
+                this.dispatchAction('EXAMROOM_CLEAR_DATA');
                 // this.EXAMINATION_GET_TAG_LIST();
                 this.$$('panel-right').open();
             },

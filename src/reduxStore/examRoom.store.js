@@ -26,7 +26,7 @@ export function examRoomReducer(state = initialState,action){
         case 'EXAMROOM_SELECT_DATA':
             return Object.assign({},state,{selectexamRoom:action.payload});
         case 'EXAMROOM_CLEAR_DATA':
-            return Object.assign({},state,{selectexamRoom:{}});
+            return Object.assign({},state,{selectexamRoom:{},studentList:[],studentListCompleteExam:[]});
         case 'EXAMROOM_CLEAR_STUDENT_LIST':
             return Object.assign({},state,{studentList:[]});
         case 'EXAMROOM_CLEAR_LIST':
