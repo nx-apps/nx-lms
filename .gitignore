@@ -6,8 +6,8 @@
 /public_bak/css/main.css
 /src/bower_components
 /src/node_modules
-/src/bundle.js
-/src/bundle.js.map
+/public/bundle.js
+/public/bundle.js.map
 /src/css/main.css
 /temp
 /loggers/*
