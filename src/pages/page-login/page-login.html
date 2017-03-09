@@ -1,0 +1,132 @@
+<link rel="import" href="./page-setting-password.html">
+
+<dom-module id="page-login">
+    <template>
+        <style include="page-style flex-style">
+            paper-material {
+                width: 50%;
+                height: auto;
+            }
+
+            @media screen and (max-width: 800px) {
+                paper-material {
+                    width: 60%;
+                }
+            }
+
+            @media screen and (max-width: 500px) {
+                paper-material {
+                    width: 100%;
+                }
+            }
+
+
+
+            paper-button {
+                width: 100%;
+            }
+
+
+            .title {
+                text-align: center;
+            }
+
+            
+        </style>
+
+        <iron-pages selected="{{selected}}">
+            <section>
+                <div class="xcontainer container flex-center-justified">
+                    <paper-material elevation="1">
+                        <div class="container bgWhite">
+                            <div class="container flex-center-justified">
+                                <img src="../../images/icon/green/app-icon-128.png"></img>
+                            </div>
+                            <div class="title gl-default">BETAGRO</div>
+                            <paper-input label="E-mail" value="{{formLogin.user}}">
+                                <div prefix>
+                                    <iron-icon icon="social:person"></iron-icon>&nbsp;&nbsp;
+                                </div>
+                            </paper-input>
+                            <paper-input label="Password" type="Password" value="{{formLogin.pass}}">
+                                <div prefix>
+                                    <iron-icon icon="lock"></iron-icon>&nbsp;&nbsp;
+                                </div>
+                            </paper-input>
+                            <div class="flex-end-justified" style="margin-top: 20px">
+                                <paper-button class="gl-bg-primary" on-tap="signin" raised>เข้าสู่ระบบ</paper-button>
+                            </div>
+
+                            <div class="flex-end-justified" style="margin-top: 20px">
+                                <a href="#" on-tap="forget">ลืมรหัสผ่าน</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="/register">ลงทะเบียน</a>
+                            </div>
+
+
+                        </div>
+                    </paper-material>
+            </section>
+            <section>
+                <page-setting-password btnset="true"></page-setting-password>
+            </section>
+            </div>
+        </iron-pages>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-login',
+            //behaviors: [nylonBehavior, ReduxBehavior, authAction],
+            behaviors: [nylonBehavior],
+            listeners: {
+                'page-login': 'toThisPage'
+            },
+            properties: {
+                formLogin: {
+                    type: Object,
+                    value: {
+                        user: '',
+                        pass: ''
+                    }
+                },
+                selected: {
+                    type: String,
+                    value: '0'
+                },
+                user: {
+                    statePath: 'auth.user',
+                }
+            },
+            getCurrentUser: function (user) {
+                return '/api/user/forget?email=' + user;
+            },
+            toThisPage: function () {
+                this.formLogin = {
+                    user: this.formLogin.user,
+                    pass: ""
+                }
+                this.selected = '0';
+            },
+            toPagePassword: function () {
+                this.selected = '1';
+            },
+            nylonPageActive: function () {
+                //this.nylonVisible(false);
+                //this.nylonVisible(true);
+            },
+            forget: function () {
+                if (this.formLogin.user) {
+                    this.AUTH_FORGET(this.formLogin.user);
+                } else {
+                    this.fire('toast', {
+                        status: 'connectError', text: 'กรุณากรอกอีเมล์',
+                        callback: function () {
+                        }
+                    })
+                }
+
+            },
+            signin: function () {
+                this.AUTH_LOGIN(this.formLogin);
+            }
+        });
+    </script>
+</dom-module>

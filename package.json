@@ -22,6 +22,7 @@
     "bulma": "^0.3.1",
     "css-loader": "^0.26.2",
     "exec": "^0.2.1",
+    "file-loader": "^0.10.1",
     "gulp": "^3.9.1",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.1",

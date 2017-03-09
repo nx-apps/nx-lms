@@ -10,6 +10,11 @@
 /public/bundle.js.map
 /src/css/main.css
 /temp
+
+
+/public/dist/*
+
+
 /loggers/*
 !/loggers/file.log
 npm-debug*
