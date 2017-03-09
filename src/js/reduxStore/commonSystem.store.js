@@ -38,6 +38,7 @@ export function commonSystemAction(store) {
     return [
         commonAction(), {
             COMMON_MODULE: function (getall = false, allModule = false) {
+                console.log('xxxx');
                 // var user = store.getState().auth.user;
                 return new Promise((resolve, reject) => {
                     axios.get('/common/module/', {

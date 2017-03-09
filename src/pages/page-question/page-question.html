@@ -1,0 +1,87 @@
+<link rel="import" href="./components/question-list.html">
+<link rel="import" href="./components/question-manage.html">
+
+
+<dom-module id="page-question">
+    
+    <template>
+
+        <style include="page-style flex-style">
+        </style>
+         
+        <div class="xcontainer">
+            <div class="container flex-equal-justified">
+                <div class="header gl-large">จัดการคำถาม</div>
+                <div style="padding: 0px 20px 0px 0px">
+                    <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" item-label-path="" item-value-path="" value="{{moduleSelect}}">
+                    </gl-combo-box>
+                </div>   
+            </div>
+        </div>
+        </div>
+        <div class="xcontainer">
+
+            <div class="flex-equal-justified">
+                <!--<div class="container">
+                    <paper-material elevation="1">
+                        <div class="bgWhite" style="padding: 10px">
+                    
+                        </div>
+                    </paper-material>
+                </div>-->
+            </div>
+            <question-list></question-list>
+        </div>
+        <div class="fixed" hidden="[[hideBtn(moduleSelect)]]">
+            <paper-fab icon="icons:add" title="นำเข้ารายงาน" on-tap="openPanelRight"></paper-fab>
+        </div>
+        <panel-right title="{{titleRight}}">
+            <question-manage module="{{moduleSelect}}" status="[[status]]"></question-manage>
+        </panel-right>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-question',
+            behaviors:[nylonBehavior,ReduxBehavior,questionAction],
+            observers:['_obModuleSelect(moduleSelect)'],
+            listeners:{
+                'close':'closePanelRight',
+                'select-data':'selectList'
+            },
+            properties:{
+                module:{
+                    statePath:'commonSystem.module'
+                }
+            },
+            nylonPageActive:function(){
+                this.moduleSelect = '';
+                this.dispatchAction('QUESTION_CLEAR_LIST');
+                this.dispatchAction('USER_MANAGE_SELECT_LIST');
+                this.dispatchAction('COMMON_MODULE');
+            },
+            hideBtn:function(active){
+                if(active != "" &&typeof active != "undefined"){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            },
+            _obModuleSelect:function(ob){
+                if(!ob){return}
+                this.dispatchAction('QUESTION_GET_LIST',ob);
+            },
+            openPanelRight:function(){
+                this.titleRight = 'เพิ่มคำถาม';
+                this.status = 'add';
+                // this.$$('question-manage').typeQuize = "";
+                this.QUESTION_CLEAR_SELECT();
+                this.$$('panel-right').open();
+            },
+            closePanelRight:function(){
+                this.$$('panel-right').close();
+            }
+        });
+
+    </script>
+</dom-module>

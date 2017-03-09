@@ -109,6 +109,7 @@
             <iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="active">
                 <page-test path="test"></page-test>
 				<page-login path="login"></page-login>
+				<page-question path="question"></page-question>
             </iron-pages>
         </layout-main>
 	</template>
@@ -116,7 +117,8 @@
 
 	<script>
         Polymer({
-            is:'nylon-init'
+            is:'nylon-init',
+			behaviors:[commonSystemAction],
         });
     </script>
 </dom-module>

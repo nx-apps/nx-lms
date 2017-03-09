@@ -1,0 +1,315 @@
+<link rel="import" href="./upload-image.html">
+<link rel="import" href="./show-image.html">
+<link rel="import" href="./question-upload.html">
+
+<dom-module id="question-manage">
+    <template>
+        <!--<style include="page-style flex-style tabs-style polymer-quill-styles-snow">-->
+        <style include="page-style flex-style tabs-style">
+            .question {
+                margin-top: 8px;
+                text-align: right;
+                font-size: 20px;
+            }
+            
+            paper-radio-button {
+                --paper-radio-button-size: 22px;
+            }
+            
+            gl-form-input {
+                --paper-input-container-label: {
+                    font-size: 12px;
+                    font-weight: normal;
+                }
+            }
+            
+            .flex-end-justified {
+                @apply(--layout-horizontal);
+                @apply(--layout-end-justified);
+            }
+        </style>
+        <paper-tabs selected="{{selected}}">
+            <paper-tab>เพิ่มคำถาม</paper-tab>
+            <paper-tab>อัพโหลดคำถาม</paper-tab>
+        </paper-tabs>
+        <iron-pages selected="{{selected}}">
+            <section>
+                <div class="container">
+                    <paper-material class="bgWhite" style="margin-bottom: 10px" elevation="1">
+                        <div class="container fontCSC flex-horizontal-with-ratios">
+                            <div class="flexchild" style="text-align: right">Module: </div>
+                            <div class="flex3child" style="margin: 0px 0px 0px 20px">{{module}}</div>
+                            <div class="flexchild"></div>
+                        </div>
+                        <div class="container fontCSC flex-horizontal-with-ratios">
+                            <div class="flexchild" style="text-align: right">SUB-Module:</div>
+                            <div class="flex3child" style="margin: -20px 0px 0px 20px">
+                                <tag-module-input label="" placeholder="กดปุ่ม enter เพื่อเพิ่ม SUB-Module" front="{{module}}" value="{{data.tags}}"></tag-module-input>
+                            </div>
+                            <div class="flexchild"></div>
+                        </div>
+                        <div class="container fontCSC flex-horizontal-with-ratios">
+                            <div class="flexchild" style="text-align: right">ระดับความยาก:</div>
+                            <div class="flex3child" style="margin: -10px 0px 0px 20px">
+                                <gl-combo-box no-label-float items="[[difficultyIndex]]" item-label-path="label" item-value-path="id" value="{{data.dificalty_index}}"></gl-combo-box>
+                            </div>
+                            <div class="flexchild"></div>
+                        </div>
+                        <div class="container fontCSC flex-horizontal-with-ratios">
+                            <div class="flexchild" style="text-align: right">
+
+                            </div>
+                            <div class="flex3child" style="margin: -10px 0px 0px 20px">
+                                <paper-checkbox checked="{{typeQuize}}"></paper-checkbox>:สร้างคำถามแบบต่อเนื่อง
+                            </div>
+                            <div class="flexchild"></div>
+                        </div>
+                        <template is="dom-if" if="[[checkTypeQuize(typeQuize)]]">
+                            <div class="container fontCSC flex-horizontal-with-ratios">
+                                <div class="flexchild" style="text-align: right">กลุ่มของคำถาม:</div>
+                                <div class="flex3child" style="margin: -10px 0px 0px 20px">
+                                    <paper-input no-label-float value="{{data.ref_id}}"></paper-input>
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+                            <div class="container fontCSC flex-horizontal-with-ratios">
+                                <div class="flexchild" style="text-align: right">ข้อที่:</div>
+                                <div class="flex3child" style="margin: -10px 0px 0px 20px">
+                                    <paper-input type="number" no-label-float value="{{data.ref_index}}"></paper-input>
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+                        </template>
+                        <div class="container fontCSC flex-horizontal-with-ratios">
+                            <div class="flexchild" style="text-align: right">
+                                EST:
+                            </div>
+                            <div class="flex3child" style="margin: -10px 0px 0px 20px">
+                                <paper-input no-label-float value="{{data.est}}"></paper-input>
+                            </div>
+                            <div class="flexchild"></div>
+                        </div>
+                    </paper-material>
+
+
+
+
+                    <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%;text-align: right; font-size: 18px;">คำถาม</th>
+                                    <th>
+                                        <!--gl-form-input style="margin-top: 22px" placeholder="" no-label-float value="{{data.question}}"></gl-form-input-->
+
+                                        <!--div id="editor">
+                                            {{data.question}}
+                                        </div-->
+
+                                        <!--<polymer-quill id="editor" content="{{data.question}}" placeholder="กรุณาป้อนคำถาม..." store-as="html" standardToolbar=true store-interval="5000">
+                                        </polymer-quill>-->
+
+                                        <show-image image-id="[[data.image_id]]"></show-image>
+                                    </th>
+                                    <th>
+                                        <upload-image image-id="{{data.image_id}}"></upload-image>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template is="dom-repeat" items="{{data.choice}}">
+                                    <tr>
+                                        <td style="text-align: right;">
+                                            <paper-radio-button checked="{{item.check}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
+                                        </td>
+                                        <td>
+                                            <gl-form-input placeholder="ตัวเลือกที่ [[cont(index)]]" no-label-float value="{{item.name}}"></gl-form-input>
+                                            <show-image image-id="[[item.image_id]]"></show-image>
+                                        </td>
+                                        <td style="width:20%;text-align: center;">
+                                            <upload-image image-id="{{item.image_id}}"></upload-image>
+                                            <br>
+                                            <paper-icon-button on-tap="delChoice" index="[[index]]" icon="delete"></paper-icon-button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr on-tap="addChoice" style="cursor: pointer">
+                                    <td></td>
+                                    <td colspan="2" style="text-align: left;">
+                                        <iron-icon icon="add"></iron-icon>
+                                        เพิ่มตัวเลือก
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </paper-material>
+
+                </div>
+                <div class="flex-end-justified" style="margin-top: 10px;">
+
+                    <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
+                    <paper-button class="gl-btn-danger" on-tap="confirmDel" raised>ลบข้อมูล</paper-button>
+                </div>
+                </div>
+            </section>
+            <section>
+                <question-upload></question-upload>
+            </section>
+        </iron-pages>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'question-manage',
+            observers: ['settypeQuize(data.ref_id)'],
+            behaviors: [ReduxBehavior],
+            properties: {
+                selected: {
+                    typeo: String,
+                    value: '0'
+                },
+                subModule: {
+                    statePath: 'commonSystem.subModule'
+                },
+                data: {
+                    statePath: function (state) {
+
+                        if (typeof state.question.dataSelect.tags != "undefined") {
+                            var tag = state.question.dataSelect.tags;
+                            tag = tag.map(function (row) {
+                                return { id: row }
+                            });
+                            state.question.dataSelect.tags = tag;
+                        }
+
+                        return state.question.dataSelect
+                    },
+                     observer: 'setQuestion'
+                },
+                difficultyIndex: {
+                    statePath: 'commonSystem.difficultyIndex'
+                }
+            },
+            setQuestion:function(){
+               //console.log(this.$.editor);
+               //this.$.editor.setContent();
+            },
+            ready: function () {
+                /*this.scopeSubtree(this.$.container, true);*/
+                /*    var quill = new Quill( this.$$("#editor"), {
+                        modules: {
+                            toolbar: true
+                        },
+                        theme: 'snow'
+                    });*/
+                /*var quill = new Quill(this.$$("#editor"), {
+                    modules: {
+                        toolbar: [
+                            [{ header: [1, 2, false] }],
+                            ['bold', 'italic', 'underline'],
+                            ['image', 'code-block']
+                        ]
+                    },
+                    
+                    placeholder: 'Compose an epic...',
+                    theme: 'snow'  // or 'bubble'
+                });*/
+                // quill.setText(this.data.question);
+            },
+            checkTypeQuize: function (type) {
+                console.log(type);
+                if (type == true) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            cont: function (index) {
+                return index + 1;
+            },
+            settypeQuize: function (type) {
+                // console.log("*",type);
+                if (typeof type == "undefined" || type == "") {
+                    this.typeQuize = false;
+                }
+                else {
+                    this.typeQuize = true;
+                }
+
+                // if(type != ""){
+                //     this.typeQuize = true;
+                //     return true;
+                // }
+                // else{
+                //     this.typeQuize = false;
+                //     return false;
+                // }
+
+            },
+            addChoice: function () {
+                this.push('data.choice', {
+                    check: false,
+                    name: '',
+                    image_id: ''
+                })
+            },
+            delChoice: function (e) {
+                this.splice('data.choice', e.target.index, 1);
+            },
+            getForm: function () {
+                var newData = {
+                    module: this.module,
+                    tags: this.data.tags.map((item) => {
+                        return item.id;
+                    }),
+                    correct: 0,
+                    incorrect: 0,
+                    dificalty_index: this.data.dificalty_index,
+                    est: parseFloat(this.data.est),
+                    image_id: this.data.image_id,
+                    choice: this.data.choice,
+                    question: this.data.question,
+                    ref_id: this.data.ref_id || "",
+                    ref_index: parseInt(this.data.ref_index) || 0,
+                }
+                console.log(newData);
+                console.log(JSON.stringify(newData));
+                if (typeof this.data.id != 'undefined') {
+                    newData.id = this.data.id;
+                    this.dispatchAction('QUESTION_UPDATE', newData)
+                }
+                else {
+                    this.dispatchAction('QUESTION_INSERT', newData)
+                }
+            },
+            confirmDel: function () {
+                // console.log('1234');
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                    confirmed: this.delData.bind(this),
+                })
+            },
+            delData: function (result) {
+                if (result == true) {
+                    this.dispatchAction('QUESTION_DELETE', this.data.id)
+                    // this.fire('close');
+                }
+            },
+            selectRadio: function (e) {
+
+                if (typeof this.data.choice !== "undefined") {
+                    this.data.choice.map((row, i) => {
+                        if (i === e.currentTarget.index) {
+                            this.set('data.choice.' + i + '.check', true)
+                        } else {
+                            this.set('data.choice.' + i + '.check', false)
+                        }
+                    })
+                }
+
+                //console.log(e.currentTarget.checked)
+            }
+        });
+    </script>
+</dom-module>

@@ -1,0 +1,29 @@
+
+<dom-module id="upload-image">
+    <template>
+        <input id="image" type="file" on-change="imageChange" accept="image/*" hidden>
+        <paper-icon-button on-tap="selectImage" index="[[index]]" icon="perm-media"></paper-icon-button>
+    </template>
+    <script>
+        Polymer({
+            is: 'upload-image',
+            properties:{
+                imageId:{
+                    notify:true,
+                    value:""
+                }
+            },
+            behaviors:[questionAction],
+            selectImage:function(){
+                this.$.image.click();
+            },
+            imageChange:function(e){
+                this.QUESTION_IMAGE(e.currentTarget.files)
+                .then(res=>{
+                    this.imageId = res.data.generated_keys[0];
+                })
+                .catch(err=>{console.log(err)})
+            }
+        });
+    </script>
+</dom-module>
