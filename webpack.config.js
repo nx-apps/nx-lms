@@ -1,4 +1,8 @@
 var path = require('path');
+var webpack = require('webpack');
+
+var PROD = JSON.parse(process.env.PROD_ENV || '0');
+
 module.exports = {
     entry: [
         './src/main.js'
@@ -34,6 +38,11 @@ module.exports = {
             },
         ]
     },
+    plugins: PROD ? [
+        new webpack.optimize.UglifyJsPlugin({
+        compress: { warnings: false }
+        })
+    ]  :[],
     watch: true,
     devtool: "inline-source-map"
 };
