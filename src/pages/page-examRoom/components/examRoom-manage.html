@@ -1,0 +1,297 @@
+
+<link rel="import" href="./student-list.html">
+
+<dom-module id="examRoom-manage">
+    <template>
+        <style include="page-style flex-style">
+            .margin{
+                margin-top: 16px;
+                text-align: center;
+            }
+            paper-checkbox{
+                --paper-checkbox-checked-color: var(--paper-green-500);
+                --paper-checkbox-checked-ink-color: var(--paper-green-500);
+            }
+        </style>
+        <div class="container">
+           
+            <paper-material elevation="1">
+                <div class="container bgWhite">
+                    <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
+                            Module 
+                        </div>
+                        <div class="flex3child fontCSC margin" style="text-align: left;">
+                            [[module]]
+                            <!--<gl-combo-box  no-label-float items="{{newTag}}" value="{{data.tag}}"></gl-combo-box>-->
+                        </div>
+                      
+                        <div class="flexchild"></div>
+                    </div>
+                    <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
+                            ชื่อห้องสอบ 
+                        </div>
+                        <div class="flex3child" style="text-align: left">
+                            <gl-form-input class"width" value="{{data.name_room}}" no-label-float></gl-form-input>
+                        </div>
+                        <div class="flexchild"></div>
+                    </div>
+                    <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
+                            เลือกข้อสอบ
+                        </div>
+                        <div class="flex3child" style="text-align: left">
+                            <gl-combo-box class"width" no-label-float items="[[examination_list]]" item-label-path="name_examination" item-value-path="id" value="{{data.examination_id}}"></gl-combo-box>
+                        </div>
+                        <div class="flexchild"></div>
+                    </div>
+                    <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
+                            ตั้งค่า 
+                        </div>
+                        <div class="flex3child" style="text-align: left;">
+                            <gl-combo-box no-label-float items="{{setting}}" item-label-path="label" item-value-path="id" value="{{data.setting}}"></gl-combo-box>
+                        </div>
+                      
+                        <div class="flexchild"></div>
+                    </div>
+                    <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
+                            กำหนดวันที่สอบ 
+                        </div>
+                        <div class="flexchild" style="text-align: left; margin-top: -22px;">
+                            <vaadin-date-picker placeholder="กำหนดวันที่สอบ" value="{{data.start_date}}"></vaadin-date-picker>
+                        </div>
+                         <div class="flexchild fontCSC margin">
+                            <paper-checkbox checked="{{hidden}}"></paper-checkbox>
+                             ถึงวันที่
+                         </div>
+                        <div class="flexchild" style="text-align: left; margin-top: -22px;">
+                            <div hidden="{{!hidden}}">
+                                <vaadin-date-picker placeholder="กำหนดวันที่สอบ" value="{{data.end_date}}"></vaadin-date-picker>
+                            </div>
+                        </div>
+                        <div class="flexchild"></div>
+                    </div>
+                     <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flexchild fontCSC margin">
+                            กำหนดเวลาสอบ:
+                        </div>
+                        <div class="flex3child">
+                            <paper-time-input-edit hide-label get-time="{{data.start_time}}" value="{{data.start_time}}"></paper-time-input-edit>
+                        </div>
+                        <div class="flexchild"></div>
+                    </div>
+                    <div class="flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flex2child fontCSC margin">
+                           <paper-checkbox checked="{{data.enable}}" class="green">เปิดการใช้งาน</paper-checkbox>
+                        </div>
+                        <div class="flexchild"></div>
+                    </div>
+                    
+                </div>
+            </paper-material>
+            <!--<div class="flex-equal-around-justified">-->
+                <!--<div>
+                    <student-list id="cancel" data="{{studentList}}" icon="clear" active="cancel" status="false"></student-list>
+                </div>-->
+                <!--<div>
+                    <student-list id="join" data="{{studentList}}" icon="add" active="join" status="false"></student-list>
+                </div>-->
+            <!--</div>-->
+        </div>
+        <div class="container flex-end-justified">
+           
+            <div>
+                <paper-button class="gl-btn-success" on-tap="getForm" raised>บันทึก</paper-button>
+            </div>
+             <div>
+                <paper-button class="gl-btn-danger" on-tap="confirmDelete" raised>ลบข้อมูล</paper-button>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'examRoom-manage',
+            observers:['getExamList(user.id)','check(data.id)','getStudentList(data.tag)','checkHide(data.end_date)'],
+            listeners:{
+                'join-student':'joinStudent',
+                'cancel-student':'cancelStudent'
+            },
+            behaviors: [ReduxBehavior,dispatchActionBehavior],
+            properties:{
+                user:{
+                    statePath:'auth.user'
+                },
+                examination_list:{
+                    statePath:'examRoom.examination_list'
+                },
+                studentList:{
+                    statePath:'examRoom.studentList'
+                },
+                data:{
+                    statePath:'examRoom.selectexamRoom'
+                },
+                listTag:{
+                    statePath:'examination.listTag',
+                    observer:'fillterListTag'
+                },
+                setting:{
+                    type: Array,
+                    value: [
+                        {
+                            id:'1',
+                            label: 'ไม่แจ้งผล'
+                        },
+                        {
+                            id:'2',
+                            label: 'แสดงเฉพาะคะแนนสอบ'
+                        },
+                        {
+                            id:'3',
+                            label: 'แสดงเฉพาะคะแนนสอบ/พร้อมเฉลย'
+                        },
+                    ]
+                }
+            },
+            fillterListTag:function(listTag){
+                this.newTag = this.listTag.filter((item)=>{
+                     return item[0] == '*'
+                })
+            },
+            checkHide:function(data){
+                console.log("endDate",data)
+                if(typeof data == "undefined" || data == ""){
+                    this.hidden = false;
+                }
+                else{
+                     this.hidden = true;
+                }
+            },
+            getStudentList:function(tag){
+                if(tag != '' && typeof tag != 'undefined'){
+                    var newTag = tag.slice(1,tag.length);
+                    // console.log(newTag);
+                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST',newTag);
+                }
+                else{
+                    this.dispatchAction('EXAMROOM_CLEAR_STUDENT_LIST');
+                    // this.studentList = [];
+                    //  this.dispatchAction('EXAMROOM_GET_STUDENT_LIST',tag);
+                }       
+            },
+            check:function(id){
+                if(id){
+                    for(var i = 0; i< this.studentList.length; i++){
+                        if(this.studentList[i].id == this.data.learner[i]){
+                            this.studentList[i].check = true;
+                        }
+                        else {
+                            this.studentList[i].check = false;
+                        }
+                    }
+                    this.studentList = [].concat(this.studentList);
+                    // this.fire('data-value',this.studentList);
+                    this.fire('status',false);
+                }
+                else {
+                    this.studentList.map((item)=>{
+                        item.check = false;
+                    })
+                    this.set('data.enable',false);
+                    this.fire('data-value',[]);
+                    this.fire('status',true);
+                }
+            },
+            getExamList:function(id){
+                // this.dispatchAction('EXAMROOM_GET_EXAM_LIST',this.user.id);
+            },
+            confirmDelete:function(){
+                this.fire('toast',{ 
+                 status:'openDialog',
+                 text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                 confirmed:this._deleteData.bind(this), 
+                 })
+            },
+            _deleteData:function(check){
+                if(check == true){
+                    this.dispatchAction('EXAMROOM_DELETE_DATA',this.data.id);
+                    // this.fire('close');
+                }
+            },
+            getForm:function(){
+                // console.log(this.module);
+                this.data.module = this.module;
+                var newData = {
+                    module:this.data.module,
+                    setting:this.data.setting,
+                    enable:this.data.enable,
+                    end_date:this.data.end_date,
+                    examination_id:this.data.examination_id,
+                    module:this.data.module,
+                    name_room:this.data.name_room,
+                    start_date:this.data.start_date,
+                    start_time:this.data.start_time
+                }
+                var end_date = this.data.end_date;
+                if(this.hidden != true){
+                    newData.end_date = undefined;
+                }
+                else if(this.hidden == true){
+                     newData.end_date = end_date;
+                }
+
+                if(typeof newData.end_date == "undefined"){
+                    newData.end_date = "";
+                }
+                if(typeof newData.start_time == "undefined"){
+                    newData.start_time = ""
+                }
+                if(typeof this.data.end_date == "undefined"){
+                    this.data.end_date = "";
+                }
+                if(typeof this.data.start_time == "undefined"){
+                    this.data.start_time = ""
+                }
+
+                if(this.data.start_time != "" && this.data.end_date != ""){
+                    newData.case_time = "time"
+                }
+                else if(this.data.start_time == "" && this.data.end_date != ""){
+                    newData.case_time = "period"
+                }
+                else{
+                    if(this.data.start_time != ""){
+                        newData.case_time = "time"
+                    }
+                    else{
+                        newData.case_time = "allDay"
+                    }
+                }
+                //  console.log(this.data);
+                //  console.log(JSON.stringify(this.data));
+                 console.log(newData);
+                if(typeof this.data.id != 'undefined'){
+                    //  alert('update');
+                    newData.id = this.data.id;
+                    // console.log(newData);
+                    this.dispatchAction('EXAMROOM_UPDATE_DATA',newData);
+                }
+                else{
+                    // alert('insert');
+                    // console.log(newData);
+                    this.dispatchAction('EXAMROOM_INSERT_DATA',newData);
+                }
+               
+            }
+        });
+    </script>
+</dom-module>

@@ -1,0 +1,71 @@
+<dom-module id="examRoom-list">
+    <template>
+        <style include="page-style">
+            tbody>tr>td {
+                cursor: pointer;
+            }
+            
+            tbody>tr:hover {
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+        </style>
+
+        <paper-material elevation="1">
+            <table class="gl-table-default">
+                <thead>
+                    <tr>
+                        <th style="width:10%">#</th>
+                        <th>รายชื่อห้องสอบ</th>
+                        <th>วันที่ทำข้อสอบ</th>
+                        <th>ชุดข้อสอบ</th>
+                        <th>จำนวน (ข้อ)</th>
+                        <th>เวลา (นาที)</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <template is="dom-repeat" items="[[examList]]">
+                        <tr on-tap="selectedData" item="[[item.id]]">
+                            <td>[[count(index)]]</td>
+                            <td>[[item.name_room]]</td>
+                            <td>[[item.start_date]] [[item.start_time]]</td>
+                            <td>
+                                [[item.examination.name_examination]]
+                            </td>
+                            <td>
+                                [[item.examination.amount_all]]
+                            </td>
+                            <td>
+                                [[item.examination.time]]
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </paper-material>
+    </template>
+    <script>
+        Polymer({
+            is: 'examRoom-list',
+            behaviors: [ReduxBehavior],
+            properties: {
+                examList: {
+                    statePath: 'examRoom.examList'
+                }
+            },
+            ready: function () {
+                // this.dispatchAction('EXAMROOM_GET_EXAMROOM');
+            },
+            count: function (index) {
+                return index + 1;
+            },
+            selectedData: function (e) {
+                console.log(e.currentTarget.item);
+                this.dispatchAction('EXAMROOM_SELECT_DATA', e.currentTarget.item);
+
+                // this.dispatchAction('EXAMROOM_GET_EXAMROOM');
+            }
+        });
+    </script>
+</dom-module>

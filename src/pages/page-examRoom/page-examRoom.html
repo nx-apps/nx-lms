@@ -1,0 +1,74 @@
+
+<link rel="import" href="./components/examRoom-list.html">
+<link rel="import" href="./components/examRoom-tabs.html">
+
+<dom-module id="page-examRoom">
+    <template>
+        <style include="page-style flex-style"></style>
+        <div class="xcontainer">
+            <div class="container flex-equal-justified">
+                <div class="header gl-large">จัดการห้องสอบ</div>
+                <div style="padding: 0px 20px 0px 0px">
+                    <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" item-label-path="" item-value-path="" value="{{moduleSelect}}">
+                    </gl-combo-box>
+                </div>   
+            </div>
+            <div class="container">
+                <examRoom-list></examRoom-list>
+            </div>
+        </div>
+        <panel-right title="สร้างห้องสอบ">
+            <examRoom-tabs module="{{moduleSelect}}"></examRoom-tabs>
+        </panel-right>
+        <div hidden="[[hideBtn(moduleSelect)]]">
+            <paper-fab icon="add" on-tap="openPanelRight"></paper-fab>
+        </div>
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'page-examRoom',
+            observers:['getDataList(moduleSelect)'],
+            behaviors:[nylonBehavior,ReduxBehavior,examRoomAction],
+            listeners:{
+                'open':'openPanelRight',
+                'close':'closePanelRight'
+            },
+            properties:{
+                module:{
+                    statePath:'commonSystem.module'
+                }
+            },
+            hideBtn:function(active){
+                if(active != "" &&typeof active != "undefined"){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            },
+            getDataList:function(module){
+                // console.log(module);
+                if(module != ''){
+                    this.dispatchAction('EXAMROOM_GET_EXAM_LIST',module);
+                    this.dispatchAction('EXAMROOM_GET_EXIAMINATION_LIST',module);
+                }
+              
+            },
+            nylonPageActive:function(){
+                // this.dispatchAction('USER_MANAGE_SELECT_LIST');
+                this.dispatchAction('COMMON_MODULE');
+                this.moduleSelect = "";
+                this.dispatchAction('EXAMROOM_CLEAR_LIST');
+            },
+            openPanelRight:function(){
+                this.EXAMROOM_CLEAR_DATA();
+                // this.EXAMINATION_GET_TAG_LIST();
+                this.$$('panel-right').open();
+            },
+            closePanelRight:function(){
+                this.$$('panel-right').close();
+            }
+        });
+    </script>
+</dom-module>

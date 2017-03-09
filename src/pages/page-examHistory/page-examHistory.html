@@ -1,0 +1,63 @@
+
+<link rel="import" href="./components/examHistory-list.html">
+<link rel="import" href="./components/examHistory-list-complete.html">
+
+<dom-module id="page-examHistory">
+    <template>
+        <style include="page-style">
+            paper-tabs{
+                --paper-tabs-selection-bar-color:#95bf31;
+            }
+            paper-tab{
+                --paper-tab-content:{
+                    font-size: 16px;
+                    color:#95bf31;
+                    padding: 0px -20px 0px -20px;
+                    margin: 0px -20px 0px -20px;
+                }
+                --paper-tab-content-unselected:{
+                    color:#7B7D7D;
+                }
+            }
+        </style>
+        <div class="bgWhite">
+            <nylon-param params="{{getParam}}" pattern="tabs"></nylon-param>
+             <div class="xcontainer">
+                <div class="header gl-large">ประวัติการสอบ</div>
+                <paper-tabs selected="{{getParam.tabs}}">
+                    <paper-tab class="fontCSC">รายการห้องสอบ</paper-tab>
+                    <paper-tab class="fontCSC">รายการผลสอบ</paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                    <paper-tab disabled></paper-tab>
+                </paper-tabs>
+             </div>
+             </div>
+            </div>
+            <div class="xcontainer">
+                <iron-pages selected="{{getParam.tabs}}">
+                    <section><examHistory-list></examHistory-list></section>
+                    <section><examHistory-list-complete></examHistory-list-complete></section>
+                </iron-pages> 
+            </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-examHistory',
+            behaviors:[nylonBehavior,examHistoryAction],
+            observers:['obParam(getParam)'],
+            obParam:function(params){
+                if(typeof params.tabs == "undefined"){
+                    this.getParam.tabs = '0';
+                    this.notifyPath('getParam.tabs');
+                }
+            },
+            nylonPageActive:function(){
+                // console.log('nylonPageActive');
+                this.EXAM_HISTORY_EXAM_LIST();
+                this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
+            }
+        });
+    </script>
+</dom-module>

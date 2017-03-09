@@ -1,0 +1,122 @@
+
+<dom-module id="examHistory-list-complete">
+    <template>
+        <style include="page-style">
+            tbody>tr>td{
+                 cursor: pointer;
+            }
+            tbody>tr:hover{
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+        </style>
+        <div class="container">
+            <paper-material elevation="1">
+            <table class="gl-table-default">
+                <thead>
+                    <tr>
+                        <th style="width:10%">#</th>
+                        <th>รายการผลสอบ</th>
+                         <th>เวลาเริ่มทำ</th>
+                         <th>ใช้เวลาทำ</th>
+                         <th>รอบที่</th>
+                        <th>Module</th>
+                        <th>สถานะ</th>
+                        <th style="text-align: right">จำนวนข้อที่ถูก (ข้อ)</th>
+                        <th style="text-align: right">จำนวนข้อทั้งหมด (ข้อ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="[[examList]]">
+                        <tr on-tap="selectData" item="[[item]]">
+                            <td>[[getIndex(index)]]</td>
+                            <td>[[item.name_room]]</td>
+                              <td>[[startTime(item.start_time)]]</td>
+                              <td>[[useTime(item.start_time,item.end_time)]]</td>
+                                <td>[[item.round]]</td>
+                            <template is="dom-repeat" items="[[item.tags]]">
+                                <td><tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module></td>
+                            </template>
+                            <td>
+                                <iron-icon icon="[[setIcon(item.setting)]]"></iron-icon>
+                            </td>
+                            <td style="text-align: right">[[setScore(item.sum,item.setting)]]</td>
+                            <td style="text-align: right">[[item.count_question]]</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+             </paper-material>
+             </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'examHistory-list-complete',
+            behaviors:[ReduxBehavior],
+            getIndex:function(index){
+                return index+1;
+            },
+            properties:{
+                examList:{
+                    statePath:'examHistory.examListComplete'
+                }
+            },
+            digi:function(digi){
+                if(digi.toString().length==1){
+                    return '0'+digi
+                }else{
+                    return digi
+                }
+            },
+            startTime:function(time){
+                if(!time)return "-";
+                var date = new Date(time);
+                
+                return `${date.getFullYear()}-${this.digi(date.getMonth())}-${this.digi(date.getDate())} ${this.digi(date.getHours())}:${this.digi(date.getMinutes())}`
+            },
+            useTime:function(startTime,endTime){
+                if(!startTime||!endTime)return "-";
+                var stateDate = new Date(startTime).getTime();
+                var endDate = new Date(endTime).getTime();
+
+                var distance = endDate-stateDate;
+
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                return `${this.digi(hours)}:${this.digi(minutes)}:${this.digi(seconds)}`
+            },
+            setScore:function(score,setting){
+                console.log(score,setting);
+                if(setting == '1'){
+                    return 'ไม่ได้รับอณุญาติให้แสดงคะแนน'
+                }else{
+                    return score;
+                }
+            },
+            setIcon:function(setting){
+                if(setting == '1' || setting == '2'){
+                    return 'icons:lock'
+                }
+                else{
+                    return 'icons:check'
+                }
+            },
+            selectData:function(e){
+                // console.log(this.examList);
+                // console.log(e.currentTarget.item);
+                if(e.currentTarget.item.setting == '1' || e.currentTarget.item.setting == '2'){
+                     this.fire('toast',{status:'connectError',text:'ไม่ได้รับอณุญาติให้ดูเฉลยข้อสอบ',
+                     callback:function(){
+                     }})
+                }
+                else{
+                    console.log(e.currentTarget.item);
+                    this.fire('nylon-change-page',{path:'/examResult/'+e.currentTarget.item.answer_url})
+                }
+                
+            }
+        });
+    </script>
+</dom-module>

@@ -1,0 +1,77 @@
+
+<link rel="import" href="./components/userManage-list.html">
+<link rel="import" href="./components/userManage-manage.html">
+<link rel="import" href="./../components/panel-right/panel-right.html">
+
+<dom-module id="page-userManage">
+    <template>
+        <style include="page-style flex-style"></style>
+        <div class="xcontainer">
+            <div class="container flex-equal-justified">
+                <div class="header gl-large">จัดการข้อมูลผู้ใช้งาน</div>
+                <div style="padding: 0px 20px 0px 0px">
+                    <gl-combo-box no-lolabel-float placeholder="Module" items="[[module]]" value="{{moduleSelect}}">
+                    </gl-combo-box>
+                </div>
+            </div>
+        </div>
+      
+        <!--<template is="dom-repeat" items="[[selectTest]]">[[item]]</template>-->
+        <paper-fab icon="add" on-tap="openPanelRight"></paper-fab>
+        <div class="xcontainer">
+            <div class="container">
+                <userManage-list></userManage-list>
+            </div>
+        </div>
+        <panel-right title="จัดการข้อมูลผู้ใช้งาน" set-width="70%">
+            <userManage-manage></userManage-manage>
+        </panel-right>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-userManage',
+            observers:['getStudentList(moduleSelect)'],
+            listeners:{
+                'open':'selectData',
+                'close':'closePanel',
+            },
+            behaviors:[nylonBehavior,ReduxBehavior,userManageAction],
+            properties:{
+                module:{
+                    statePath:'commonSystem.module'
+                },
+                test:{
+                    value:[
+                        {id:'PP',color:'#3399ff'},
+                        {id:'DD',color:'#3399ff'},
+                    ]
+                }
+            },
+            nylonPageActive:function(){
+                this.dispatchAction('COMMON_MODULE',true);
+                this.moduleSelect = "";
+                this.dispatchAction('USER_MANAGE_CLEAR_GET_LIST');
+                this.USER_MANAGE_GET_LIST('PM');
+            },
+            closePanel:function(){
+                this.$$('panel-right').close();
+            },
+            getStudentList:function(tag){
+              //  if(tag = ''){
+                    this.USER_MANAGE_GET_LIST(tag);
+                //} 
+            },
+            openPanelRight:function(){
+                this.USER_MANAGE_CLEAR_LIST();
+                this.USER_MANAGE_SELECT_CLEAR_LIST();
+                this.$$('userManage-manage').password = "";
+                this.$$('userManage-manage').confirmPassword = "";
+                this.fire('clear');
+                this.$$('panel-right').open();
+            },
+            selectData:function(){
+                this.$$('panel-right').open();
+            }
+        });
+    </script>
+</dom-module>

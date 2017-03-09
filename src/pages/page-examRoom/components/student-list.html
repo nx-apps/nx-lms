@@ -1,0 +1,213 @@
+<dom-module id="student-list">
+    <template>
+        <style include="page-style">
+            tbody>tr>td {
+                cursor: pointer;
+            }
+
+
+
+            tbody>tr:hover {
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+
+
+
+            .responsive {
+                max-height: 500px;
+                overflow-y: auto;
+            }
+        </style>
+        <div class="container">
+            <paper-material elevation="1">
+                <div class="responsive">
+                    <table class="gl-table-default">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%">#</th>
+                                <th>ชื่อ-สกุล</th>
+                                <th>รอบที่</th>
+                                <th>เวลาเริ่มทำ</th>
+                                <th>ใช้เวลาทำ</th>
+                                <th style="text-align: right;">คะแนน</th>
+                                <th style="text-align: right;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template is="dom-repeat" items="{{data}}" filter="{{computeFilter(active)}}">
+                                <tr>
+
+                                    <template is="dom-if" if="[[status]]">
+                                        <td>
+                                            [[cont(index)]]
+                                            <!--<iron-icon icon="[[icon]]" index="[[index]]" item="[[item]]" on-tap="controller"></iron-icon>-->
+                                        </td>
+                                    </template>
+                                    <template is="dom-if" if="[[!status]]">
+                                        <td>
+                                            [[cont(index)]]
+                                        </td>
+                                    </template>
+                                    <td>
+                                        [[item.name]]
+                                    </td>
+                                    <td>
+                                        [[item.round]]
+                                    </td>
+                                    <td>
+                                        [[startTime(item.start_time)]]
+                                    </td>
+                                    <td>
+                                        [[useTime(item.start_time,item.end_time)]]
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <template is="dom-if" if="[[checkSum(item.sum)]]">
+                                            [[item.sum]]/[[item.qty_question]]
+                                        </template>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <template is="dom-if" if="[[checkSum(item.sum)]]">
+                                            <paper-button raised on-tap="controller" item="[[item]]">ดูคำตอบ</paper-button>
+                                            <paper-button class="gl-btn-danger" on-tap="retest" item="[[item]]" raised>สอบซ่อม</paper-button>
+                                            <paper-button class="gl-btn-danger" on-tap="eject" item="[[item]]" raised>นำออก</paper-button>
+
+                                        </template>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </paper-material>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'student-list',
+            behaviors: [ReduxBehavior],
+            properties: {
+                active: {
+                    type: String
+                },
+                data: {
+                    type: Array,
+                    value: [],
+                    notify: true
+                }
+            },
+            digi:function(digi){
+                if(digi.toString().length==1){
+                    return '0'+digi
+                }else{
+                    return digi
+                }
+            },
+            startTime:function(time){
+                if(!time)return "-";
+                var date = new Date(time);
+                
+                return `${date.getFullYear()}-${this.digi(date.getMonth())}-${this.digi(date.getDate())} ${this.digi(date.getHours())}:${this.digi(date.getMinutes())}`
+            },
+            useTime:function(startTime,endTime){
+                if(!startTime||!endTime)return "-";
+                var stateDate = new Date(startTime).getTime();
+                var endDate = new Date(endTime).getTime();
+
+                var distance = endDate-stateDate;
+
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                return `${this.digi(hours)}:${this.digi(minutes)}:${this.digi(seconds)}`
+            },
+            checkSum: function (data) {
+                return typeof data != "undefined"
+            },
+            eject: function (e) {
+                var examTestId = e.currentTarget.item.id;
+                var examRoomId = e.currentTarget.item.exam_room_id;
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการลบรายการออกใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result) {
+                            //console.log(examTestId);
+                            this.dispatchAction('EXAMROOM_EJECT', examTestId, examRoomId);
+                        }
+                    },
+                })
+
+            },
+
+            retest: function (e) {
+                var examTestId = e.currentTarget.item.id;
+                var examRoomId = e.currentTarget.item.exam_room_id;
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการสอบซ่อมใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result) {
+                            //console.log(examTestId);
+                            this.dispatchAction('EXAMROOM_RETEST', examTestId, examRoomId);
+                        }
+                    },
+                })
+
+            },
+            cont: function (index) {
+                return index + 1;
+            },
+            computeFilter: function (string) {
+                if (!string) {
+                    return null;
+                } else {
+                    return function (row) {
+                        if (string == "join") {
+                            return (row.check == false) || (typeof row.check == "undefined")
+                        } else {
+                            return (row.check == true)
+                        }
+
+                    };
+                }
+            },
+            controller: function (e) {
+                switch (this.active) {
+                    case 'join':
+                        // e.currentTarget.item.check = true;
+                        break;
+                    case 'cancel':
+                        // e.currentTarget.item.check = false;
+                        break;
+                    case 'view':
+                        this.chagePage(e);
+                        break;
+                    default:
+                        break;
+                }
+                this.data = [].concat(this.data);
+            },
+            chagePage: function (e) {
+                // console.log(e.currentTarget.item);
+                this.fire('nylon-change-page', { path: '/examResult/' + e.currentTarget.item.answer_url })
+            },
+            getValue: function () {
+                this.data.map((item) => {
+                    if (typeof item.check == 'undefined') {
+                        item.check = false;
+                    }
+                    return item.check
+                })
+                var data = this.data.filter((item) => {
+                    return item.check == true;
+                })
+                var newData = data.map((item) => {
+                    return item.id;
+                })
+                return newData;
+            }
+        });
+    </script>
+</dom-module>

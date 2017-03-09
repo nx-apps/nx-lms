@@ -1,0 +1,145 @@
+
+<dom-module id="module-list">
+    <template>
+        <style include="page-style flex-style">
+             tbody>tr>td{
+                 cursor: pointer;
+             }
+            tbody>tr:hover{
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+            .head{
+                font-size: 22px;
+            }
+            .disabledBtn{
+                background-color: #ddd;
+                color: white;
+            }
+            table{
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+        </style>
+        <table class="gl-table-default" align="center" style="max-width:600px;">
+            <thead>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Module</th>
+                    <th></th>
+                    <th style="width: 200px"></th>
+                </tr>
+            </thead>
+            <template is="dom-repeat" items="[[dataList]]">
+                <tbody>
+                    
+                    <template is="dom-if" if="[[!item.edit]]">
+                        <tr>
+                            <td>[[count(index)]]</td>
+                            <td><tag-module label="[[item.id]]" color="[[item.color]]"></tag-module></td>
+                            <td></td>
+                            <td style="text-align: right;">
+                                <paper-icon-button icon="create" on-tap="edit" item="[[item]]"></paper-icon-button>
+                                <paper-icon-button icon="delete" on-tap="confirmDel" item="[[item]]"></paper-icon-button>
+                                
+                            </td>
+                        </tr>
+                    </template>
+
+                    <template is="dom-if"  if="[[item.edit]]">
+                        <tr>
+                            <td>[[count(index)]]</td>
+                            <td>
+                                <gl-form-input class="mar-head" auto-validate error-message="กรุณาใส่จำนวน" no-label-float placeholder="Module name." value="{{item.id}}" readonly></gl-form-input>
+                            </td>
+                            <td style="text-align: right;">
+                                <tag-module label="{{item.id}}" color="{{item.color}}"></tag-module>
+                                <paper-swatch-picker color="{{item.color}}"></paper-swatch-picker>
+                            </td>
+                            <td style="width:20%" style="text-align: right;">
+                                <div style="display: flex;">
+                                    <paper-icon-button icon="save" item="[[item]]" on-tap="editData" confirm></paper-icon-button>
+                                    <paper-icon-button icon="close" item="[[item]]" on-tap="edit"></paper-icon-button>
+                                    <!--<paper-button class="gl-btn-success">บันทึก</paper-button>
+                                    <paper-button class="gl-btn-danger" >ยกเลิก</paper-button>-->
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                    
+                </tbody>
+            </template>
+        </table>
+
+        <paper-dialog id="modal" modal style="width: 40%;">
+            <div class="container bgWhite"> 
+                <div class="flex-equal-justified">
+                    <div class="fontCSC head">ยืนยันการลบ Module  <tag-module label="{{module}}" color="{{color}}"></tag-module></div>
+                    <div>
+                        <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
+                    </div>
+                </div>
+                <gl-form-input id="moduleInput" label="Module" placeholder="กรอกชื่อ Module เพื่อยืนยันการลบ Module" on-input="checkValue" value=""></gl-form-input>
+                </div>
+            </div>
+            <div class="buttons">
+                <paper-button class$="{{className}}" disabled="{{checkDisabled}}" on-tap="delModule">ลบ Module</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+    <script>
+        Polymer({
+            is: 'module-list',
+            behaviors:[ReduxBehavior,dispatchActionBehavior],
+            properties:{
+                dataList:{
+                    statePath:'module.dataList'
+                }
+            },
+            count:function(index){
+                return index+1;
+            },
+            edit:function(e){
+                var item = e.currentTarget.item;
+                console.log(item.edit);
+                if(typeof item.edit == "undefined" || item.edit == false){
+                    item.edit = true;
+                    var index = this.dataList.indexOf(item);         
+                    this.notifyPath(`dataList.${index}.edit`,this.dataList[index].edit);
+                }else{
+                    this.dispatchAction('MODULE_LIST');
+                }
+            },
+            checkValue:function(e){
+                if(e.target.value == this.module){
+                    this.checkDisabled = false;
+                    this.className = 'gl-btn-danger';
+                }
+                else{
+                    this.checkDisabled = true;
+                    this.className = 'disabledBtn';
+                }
+            },
+            confirmDel:function(e){
+                this.$$('#moduleInput').value = "";
+                this.checkDisabled = true;
+                this.className = 'disabledBtn';
+                this.module = e.target.item.id;
+                this.color = e.target.item.color;
+                this.$$('paper-dialog').open();
+            },
+            delModule:function(){
+                if(this.$$('#moduleInput').value == this.module){
+                    this.dispatchAction('MODULE_DELETE',this.module);
+                    this.$$('paper-dialog').close();
+                }
+                else{
+                    alert('error');
+                }
+            },
+            editData:function(e){
+                // console.log(e.currentTarget.item)
+                this.dispatchAction('MODULE_UPDATE',e.currentTarget.item);
+            }
+        });
+    </script>
+</dom-module>

@@ -1,0 +1,189 @@
+
+<link rel="import" href="./components/exam-list.html">
+<link rel="import" href="/src/nylon-param.html">
+
+<dom-module id="page-exam">
+    <template>
+        <nylon-param params="{{getParam}}" pattern="id"></nylon-param>
+        
+        <style include="page-style"></style>
+        <div class="xcontainer">
+            <div class="header gl-large">แบบทดสอบ</div>
+            <paper-material elevation="1">
+                 <table class="gl-table-default">
+                    <thead>
+                        <tr class="hideBorder">
+                            <th style="width:20%;text-align: right; font-size: 18px;">ชื่อข้อสอบ</th>
+                            <th>
+                                <gl-form-input placeholder="" no-label-float value="[[dataList.name_examination]]" disabled></gl-form-input>
+                            </th>
+                            <th>
+                               <gl-form-input placeholder="" no-label-float value="[[roundText(dataList.round)]]" disabled></gl-form-input>
+                            </th>
+                            <th style="text-align: right;">[[countDown]]</th>
+                        </tr>
+                        <tr>
+                            <th style="width:20%;text-align: right; font-size: 18px;">คำอธิบาย</th>
+                            <th><gl-form-textarea placeholder="" no-label-float value="[[dataList.description]]" disabled></gl-form-textarea></th>
+                            <th colspan="2" style="text-align: right;  font-size: 18px;">
+                                <paper-button on-tap="confirmToast" class="gl-btn-success" selected="[[selected]]">ส่งข้อสอบ</paper-button>
+                            </th>
+                        </tr>
+                    </thead>
+                 </table>
+            </paper-material>
+             <iron-pages selected="{{selected}}">
+            <template is="dom-repeat" items="[[dataList.question]]">
+                <section>              
+                        <exam-list selected="[[selected]]" count="[[dataList.question.length]]" data="[[item]]" index="[[cont(index)]]"></exam-list>
+                </section>  
+            </template>
+             </iron-pages>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-exam',
+            behaviors:[nylonBehavior,ReduxBehavior,examAction],
+            nylonPageActive:function(){
+                this.nylonVisible(false);
+            },
+            observers:['getTest(getParam.id)'],
+            listeners:{
+                'next':'nextIron',
+                'previous':'previousIron',
+                'send-exam':'confirmToast'
+            },
+            nylonPageActive:function(){
+                console.log('sss')
+                this.nylonVisible(false);
+                this.$$('iron-pages').selected = 0;
+            },
+            properties:{
+                dataList:{
+                    statePath:'exam.dataSelect',
+                    observer:'getData'
+                },
+                selected:{
+                    type:String,
+                    value:'0'
+                }
+                // user:{
+                //     statePath:'auth.user'
+                // }
+            },
+            roundText:function(txt){
+                if(!txt)return;
+                return `รอบที่ ${txt}`
+            },
+            nextIron:function(e){
+                this.getChoice(e.detail)
+                this.$$('iron-pages').selectNext();
+            },
+            previousIron:function(e){
+                 this.getChoice(e.detail)
+                 this.$$('iron-pages').selectPrevious();
+            },
+            getChoice:function(item){
+                if(item.choice.length != 0){
+                    console.log(item);
+                    this.EXAM_PUT_CHOICE(item);
+                }
+            },
+            getTest:function(id){
+                if(this.getParam.page=="exam"){
+                    this.stat = true;
+                    console.log(id);
+                    this.exam_room_id = id;
+                    this.EXAM_GET_DATA(id);
+                    // this.EXAM_HISTORY_EXAM_LIST_SELECT(id);
+                }
+            },
+            getData:function(data){
+                //console.log('*',data)
+                if(data.countdown_time){
+                    this.dispatchAction('EXAM_COUNTDOWN',data.countdown_time);
+                }
+                
+                
+            },
+            cont:function(index){
+                return index+1;
+            },
+            confirmToast:function(e){
+                var item = this.dataList.question[e.currentTarget.selected];
+                var newItem = item.choice.filter((item)=>{
+                    return item.answer == true
+                })
+                this.exam_test = this.dataList.question[0].exam_test_id;
+                var data = {
+                    id: item.id,
+                    choice: newItem
+                }
+
+                if(item.choice.length != 0){
+                    //console.log(item);
+                    this.EXAM_PUT_CHOICE(item)
+                    .then((result)=>{
+                        //console.log(result);
+                        confirm();
+                    })
+                    .catch((error)=>{
+                        // confirm();
+                    })
+                }else{
+                    confirm();
+                }
+
+                var confirm = ()=>{
+                    this.fire('toast',{ 
+                        status:'openDialog',
+                        text:'ต้องการส่งแบบทดสอบใช่หรือไม่ ?',
+                        confirmed:(result)=>{
+                            if(result)
+                            this.EXAM_POST_ANSWER(this.exam_test)
+                        },
+                        data:e.detail
+                    })
+                }
+                
+                
+
+
+            },
+            sendAnswer:function(check,data){
+                // console.log(this.dataList);
+                if(check == true){
+                    console.log(data);
+                    // var data = {
+                    //     examination_id: this.dataList.examination_id, 
+                    //     exam_room_id: this.exam_room_id,
+                    //     id: this.dataList.id
+                    //     // std_id: this.user.id,
+                    // }
+                    // data.question = this.dataList.question.map((item)=>{
+                    //     var {question,id,choice,image_id} = item;
+                    //     var newItem = {question,id,choice,image_id};
+                    //     newItem.choice = item.choice.map((item)=>{
+                    //         var {check,name,answer,image_id} = item;
+                    //         var newItem = {check,name,answer,image_id};
+                    //         if(typeof newItem.answer == 'undefined'){
+                    //             newItem.answer = false;
+                    //         }
+                    //         // newItem.answer = newItem.answer;
+                    //         return newItem;
+                    //     })
+                    //     return newItem;
+                    // })
+                    // console.log(JSON.stringify(data));
+                    // console.log(data);
+                    // this.EXAM_INSERT_DATA(data);
+                    // this.EXAM_HISTORY_EXAM_LIST();
+                    // this.EXAM_HISTORY_EXAM_LIST_COMPLETE();
+                    
+                }
+            }
+
+        });
+    </script>
+</dom-module>

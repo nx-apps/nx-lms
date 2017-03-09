@@ -1,0 +1,69 @@
+
+
+<link rel="import" href="./examRoom-manage.html">
+<link rel="import" href="./student-list.html">
+
+<dom-module id="examRoom-tabs">
+    <template>
+        <style include="page-style tabs-style">
+            paper-tabs{
+                --paper-tabs:{
+                    background-color:white;
+                    border-bottom:1px solid #ddd;
+                }
+            }
+        </style>
+        <!--#95bf31;-->
+        <paper-material elevation="1">
+            <paper-tabs selected="{{selected}}">
+                <paper-tab>สร้างห้องสอบ</paper-tab>
+                <paper-tab disabled="[[status]]">ผลการสอบ</paper-tab>
+            </paper-tabs>
+        </paper-material>
+            <iron-pages selected="{{selected}}">
+                <section><examRoom-manage module="[[module]]"></examRoom-manage></section>
+                <section>
+                   <student-list data="{{studenList}}" active="view" status="[[status]]"></student-list>
+                </section>
+            </iron-pages>
+    
+    </template>
+    <script>
+        Polymer({
+            is: 'examRoom-tabs',
+            behaviors: [ReduxBehavior,dispatchActionBehavior],
+            listeners:{
+                'status':'setStatus'
+            },    
+            properties:{
+                selected:{
+                    type:String,
+                    value: '0'
+                },
+                studenList:{
+                    statePath:'examRoom.studentListCompleteExam',
+                    observer:'getStudentList'
+                },
+                selectData:{
+                    statePath:'examRoom.selectexamRoom',
+                    observer:'selectList'
+                }
+            },
+            selectList:function(){
+                if(typeof this.selectData.id != 'undefined'){
+                    console.log(this.selectData.id);
+                    this.dispatchAction('EXAMROOM_GET_STUDENT_LIST_COMPLETE_EXAM',this.selectData.id);
+                }
+            },
+            getStudentList:function(){
+                // console.log(this.studenList);
+                this.studenList.map((item)=>{
+                    item.check = true;
+                })
+            },
+            setStatus:function(e){
+                this.status = e.detail;
+            }
+        });
+    </script>
+</dom-module>

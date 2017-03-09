@@ -1,0 +1,72 @@
+<link rel="import" href="./components/module-list.html">
+
+<dom-module id="page-module">
+    
+    <template>
+        <style>
+            .addPanal{
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width:'100%';
+                max-width: 600px;
+                float: right;
+                z-index: 1;
+            }
+            .head{
+                font-size: 22px;
+            }
+        </style>
+        <style include="page-style flex-style"></style>
+        <div class="xcontainer">
+            <div class="container header gl-large">จัดการ Module</div>
+                <div class="container">
+                    <module-list></module-list>
+                </div>
+        </div>
+
+        
+        <paper-fab icon="add" on-tap="openDailog"></paper-fab>
+
+       <paper-dialog id="modal" modal style="width: 40%;">
+            <div class="container bgWhite"> 
+                <div class="flex-equal-justified">
+                    <div class="fontCSC head">เพิ่ม Module</div>
+                    <div>
+                        <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
+                    </div>
+                </div>
+                <gl-form-input label="Module" placeholder="กรอกชื่อ Module" value="{{module}}"></gl-form-input>
+                <tag-module label="{{module}}" color="{{selectedColor}}"></tag-module>
+                <paper-swatch-picker color="{{selectedColor}}"></paper-swatch-picker>
+                </div>
+            </div>
+            <div class="buttons">
+                <paper-button class="gl-btn-success" on-tap="saveModule">บันทึก</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-module',
+            behaviors:[nylonBehavior,moduleAction],
+            nylonPageActive:function(){
+                this.MODULE_LIST();
+            },
+            openDailog:function(){
+                this.module = "";
+                this.selectedColor = '#ddd';
+                this.$$('paper-dialog').open();
+            },
+            saveModule:function(){
+                this.$$('paper-dialog').close();
+                var data = {
+                    id: this.module,
+                    color: this.selectedColor
+                }
+                this.MODULE_INSERT(data);
+            }
+
+        });
+    </script>
+</dom-module>

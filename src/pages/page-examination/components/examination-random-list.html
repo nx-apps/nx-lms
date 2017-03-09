@@ -1,0 +1,71 @@
+<dom-module id="examination-random-list">
+    <template>
+        <style include="page-style">
+            tbody>tr>td {
+                cursor: pointer;
+            }
+            
+            tbody>tr:hover {
+                font-weight: bold;
+                border-bottom: 2px solid dodgerblue;
+            }
+        </style>
+        <div class="container">
+            <paper-material elevation="1">
+                <div class="content">
+                    <table class="gl-table-default" style="table-layout: fixed;">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">ข้อที่</th>
+                                <th>คำถาม</th>
+                                <th style="width:30%;text-align: right;">
+                                    <paper-button on-tap="random" raised>สุ่มข้อสอบ</paper-button>
+                                     <paper-button on-tap="printOnly" raised>Print</paper-button>
+                                      <paper-button on-tap="printAns" raised>Print (เฉลย)</paper-button>
+                                </th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template is="dom-repeat" items="[[dataList]]">
+                                <tr on-tap="selectList" item="[[item]]" examination-id="[[item.id]]">
+                                    <td>
+                                        <div>[[count(index)]]</div>
+                                    </td>
+                                    <td >
+                                      
+                                         <polymer-quill-html-render content="[[item.question]]" store-as="html"></polymer-quill-html-render>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </paper-material>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'examination-random-list',
+            behaviors: [ReduxBehavior],
+            properties: {
+                dataList: {
+                    statePath: 'examination.examinationRandomList'
+                },
+            },
+            random: function () {
+                this.fire('random');
+            },
+            printOnly: function () {
+                this.fire('printOnly');
+            },
+            printAns: function () {
+                this.fire('printAns');
+            },
+            count: function (index) {
+                return index + 1;
+            }
+        });
+    </script>
+</dom-module>

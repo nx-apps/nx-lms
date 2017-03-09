@@ -1,0 +1,155 @@
+
+<link rel="import" href="./../../page-question/components/show-image.html">
+
+<dom-module id="exam-list">
+    <template>
+        <style include="page-style flex-style">
+            paper-radio-button{
+                --paper-radio-button-size:22px;
+            }
+            paper-tooltip{
+                --paper-tooltip:{
+                    font-size: 18px;
+                }
+            }
+        </style>  
+        <paper-material elevation="1">
+            <table class="gl-table-default">
+                
+                <thead>
+                    <tr>
+                        <th style="width: 10%">ข้อที่ [[index]]</th>
+                        <th>
+                         
+                            <polymer-quill-html-render content="[[data.question]]" store-as="html"></polymer-quill-html-render>
+                            <br>
+                             <show-image image-id="[[data.image_id]]"></show-image>
+                        </th>
+                        <th style="width: 10%">
+                            [[index]]/[[count]]
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>   
+                    <template is="dom-repeat" items="{{data.choice}}">
+                        <tr>
+                            <td>
+                                <paper-radio-button checked="{{item.answer}}" index="[[index]]" on-tap="selectRadio"></paper-radio-button>
+                            </td>
+                            <td>
+                                [[item.name]]
+                                <br> 
+                                <show-image image-id="[[item.image_id]]"></show-image>
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table> 
+             </paper-material>
+            
+            <template is="dom-if" if="[[checklength(count)]]">
+            
+            <div class="flex-equal-justified" style="margin-top: 10px">
+                <div>
+                    <paper-button disabled="[[Hideback]]" class$="[[classback]]" on-tap="previous">ย้อนกลับ</paper-button>
+                </div>
+                <div>
+                    <paper-button disabled="[[Hidenext]]" class$="[[classnext]]" on-tap="next">ต่อไป</paper-button>
+                </div>
+            </div>  
+            </template>
+           
+           <!--<paper-fab class="position" id="send_Btn" on-tap="sendExam" icon="send"></paper-fab>-->
+           
+           <!--<paper-tooltip
+            class="fontCSC"
+             for="send_Btn"
+             position="top"
+             offset="14">
+             ส่งข้อสอบ
+           </paper-tooltip>-->
+           
+           
+       
+    </template>
+    <script>
+        Polymer({
+            is: 'exam-list',
+            observers:['checkIndex(index,count)'],
+            ready:function(){
+                // this.data.choice.map((item,i)=>{
+                //     this.set('data.choice.'+i+'.checked',false);
+                // }); 
+            },
+            checklength:function(length){
+                if(length == '1'){
+                    return false;
+                }else {
+                    return true;
+                }
+            },
+            checkIndex:function(index,count){
+                console.log('check',index,count);
+                this.classback = "gl-btn-primary";
+                this.classnext = "gl-btn-primary";
+                if(index == 1){
+                    this.Hideback = true;
+                    this.classback = "";
+                }
+                else if(index == count){
+                    this.Hidenext = true;
+                    this.classnext = "";
+                }
+                else{
+                    this.Hideback = false;
+                    this.Hidenext = false;
+                    this.classback = "gl-btn-primary";
+                    this.classnext = "gl-btn-primary";
+                }
+            },
+            next:function(e){
+                var data = {
+                    choice:this.data.choice.filter((item)=>{
+                        return item.answer == true;
+                    }),
+                    id:this.data.id
+                }
+                // console.log(data);
+                this.fire('next',data);
+            },
+            previous:function(){
+                 var data = {
+                    choice:this.data.choice.filter((item)=>{
+                        return item.answer == true;
+                    }),
+                    id:this.data.id
+                }
+                this.fire('previous',data);  
+            },
+            sendExam:function(){
+                var data = {
+                    choice:this.data.choice.filter((item)=>{
+                        return item.answer == true;
+                    }),
+                    id:this.data.id
+                }
+                // console.log(data);
+                this.fire('send-exam',data)
+            },
+            selectRadio:function(e){
+                if(typeof this.data.choice !=="undefined"){
+                    this.data.choice.map((row,i)=>{
+                        if(i===e.currentTarget.index){
+                            this.set('data.choice.'+i+'.answer',true)
+                        }else{
+                            this.set('data.choice.'+i+'.answer',false)
+                        }
+                    })
+                }
+            }
+        });
+    </script>
+</dom-module>

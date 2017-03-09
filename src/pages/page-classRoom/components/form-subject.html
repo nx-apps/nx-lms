@@ -1,0 +1,156 @@
+
+<dom-module id="form-subject">
+    <template>
+        <style include="page-style">
+        
+            .flex-horizontal-with-ratios {
+                @apply(--layout-horizontal);
+            }
+            .flexchild {
+                @apply(--layout-flex);
+            }
+            .flex2child {
+                @apply(--layout-flex-2);
+            }
+            .flex3child {
+                @apply(--layout-flex-3);
+            }
+            .flex-equal-around-justified {
+                @apply(--layout-horizontal);
+                @apply(--layout-around-justified);
+            }
+            .flex-equal-around-justified>div{
+                margin:0px 5px 0px 5px;
+            }
+        </style>
+        <div class="container">
+             <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead>
+                                <tr class="hideBorder">
+                                    <th style="width: 10%;text-align: center;">
+                                        ชื่อชั้นเรียน
+                                    </th>
+                                    <th>
+                                        <gl-form-input no-label-float value=""></gl-form-input>
+                                    </th>
+                                </tr>
+                                <tr class="hideBorder">
+                                    <th style="width: 10%;text-align: center;">
+                                        คำอธิบาย
+                                    </th>
+                                    <th>
+                                        <gl-form-textarea no-label-float value=""></gl-form-textarea>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </paper-material>
+            <div class="container flex-equal-around-justified">
+                <div>
+                     <paper-material elevation="1">
+                        <div class="header gl-default bgWhite container">รายชื่อผู้เข้าเรียน</div>
+                        <table class="gl-table-default">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;text-align: center;">#</th>
+                                    <th>ชื่อ-นามสกุล</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <template is="dom-repeat" items="[[cancelData]]">
+                                    <tr>
+                                        <td style="width: 10%;text-align: center;">
+                                            <paper-icon-button on-tap="cancelClassRoom" index="[[index]]" icon="remove"></paper-icon-button> 
+                                        </td>
+                                        <td>
+                                             [[item.std_name]]
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </paper-material>
+                </div>
+                <div>
+                    <paper-material elevation="1">
+                        <div class="header gl-default bgWhite container">รายชื่อผู้เรียนทั้งหมด</div>
+                        <table class="gl-table-default">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;text-align: center;">#</th>
+                                    <th>ชื่อ-นามสกุล</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template is="dom-repeat" items="[[joinData]]">
+                                    <tr>
+                                        <td style="width: 10%;text-align: center;">
+                                            <paper-icon-button on-tap="joinClassRoom" index="[[index]]" icon="add"></paper-icon-button> 
+                                        </td>
+                                        <td>
+                                            [[item.std_name]]
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </paper-material>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'form-subject',
+            behaviors:[ReduxBehavior,classRoomAction],
+            // observers:['checkStatus(dataList.*)'],
+            properties:{
+                dataList:{
+                    statePath:'classRoom.dataList',
+                    observer:'setData'
+                }
+            },
+            ready:function(){
+                this.CLASSROOM_GET_LIST();
+            },
+            setData:function(){
+                this.dataList.map((item,index)=>{
+                    this.set('dataList.'+index+'.status',false)
+                })
+                this.joinData = this.dataList.filter((item)=>{
+                    return item.status == false;
+                })
+                this.cancelData = this.dataList.filter((item)=>{
+                    return item.status == true;
+                })
+                // console.log(this.joinData)
+            },
+            joinClassRoom:function(e){
+                var i = e.target.index;
+                this.set('joinData.'+i+'.status',true);
+                this.set('cancelData.'+i+'.status',true);
+
+                this.joinData = this.dataList.filter((item)=>{
+                    return item.status == false;
+                })
+                this.cancelData = this.dataList.filter((item)=>{
+                    return item.status == true;
+                })
+            },
+            cancelClassRoom:function(e){
+                var i = e.target.index;
+                this.set('joinData.'+i+'.status',false);
+                this.set('cancelData.'+i+'.status',false);
+
+                this.joinData = this.dataList.filter((item)=>{
+                    return item.status == false;
+                })
+                this.cancelData = this.dataList.filter((item)=>{
+                    return item.status == true;
+                })
+            }
+        });
+    </script>
+</dom-module>
