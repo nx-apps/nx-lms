@@ -52,16 +52,18 @@ export function examinationAction(store) {
             this.fire('toast', { status: 'load' });
             axios.get('./examination/examination_only?id=' + id)
                 .then((response) => {
+                    console.log('okloads');
                     response.data.objective.map((item) => {
                         item.sub_module = item.sub_module.map((item2) => {
                             return { id: item2 }
                         })
                         return item
                     })
+                    this.fire('select-data');
                     this.fire('toast', {
                         status: 'success',
                         callback: () => {
-                            this.fire('select-data');
+                            
                             store.dispatch({ type: 'EXAMINATION_GET_DATA_SELECT', payload: response.data })
                         }
                     });

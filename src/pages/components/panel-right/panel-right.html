@@ -44,7 +44,7 @@
             }
         </style>
         <div id="bgPanel" hidden$="[[!opened]]" on-tap="close"></div>
-        <app-drawer id="xx" align="right" persistent opened="{{opened}}" on-tap="closeBgAppDrawer">
+        <app-drawer id="appDrawer" align="right" persistent opened="{{opened}}" on-tap="closeBgAppDrawer">
             <div>
             <paper-material elevation="1">
             <app-toolbar>
@@ -60,7 +60,6 @@
             </paper-material>
             </div>
             <div style="height:90%; overflow: auto; background-color: #efefef;">
-                dd
                 <content></content>
             </div>
         </app-drawer>
@@ -83,9 +82,8 @@
                 }
             },
             attached:function(){
-                this.$.xx.customStyle['--panel-right-width'] = this.setWidth;
-                this.$.xx.updateStyles();
-                this.$.xx.resetLayout();
+                this.customStyle['--panel-right-width'] = this.setWidth;
+                this.updateStyles();
 
             },
             toggle:function(){
