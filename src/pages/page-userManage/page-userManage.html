@@ -1,7 +1,6 @@
 
 <link rel="import" href="./components/userManage-list.html">
 <link rel="import" href="./components/userManage-manage.html">
-<link rel="import" href="./../components/panel-right/panel-right.html">
 
 <dom-module id="page-userManage">
     <template>
@@ -57,9 +56,7 @@
                 this.$$('panel-right').close();
             },
             getStudentList:function(tag){
-              //  if(tag = ''){
-                    this.USER_MANAGE_GET_LIST(tag);
-                //} 
+                //this.USER_MANAGE_GET_LIST(tag);
             },
             openPanelRight:function(){
                 this.USER_MANAGE_CLEAR_LIST();
