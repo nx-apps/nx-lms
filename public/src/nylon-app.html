@@ -62,8 +62,8 @@
                 this.page = page;
             },
             _pageChanged: function(page, oldPage) {
-                if (page != null) {
-
+                if (page != null && page != "") {
+                    //console.log(page);
                     const loadPage = (page) => {
                         this.importHref(
                             this.resolveUrl('/src/pages/page-' + page + '/page-' + page + '.html'),
@@ -143,6 +143,8 @@
                     //     }
 
                     // },100)
+                }else{
+                    this._routePageChanged('examHistory');
                 }
             },
             _changePage:function(e){
