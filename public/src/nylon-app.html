@@ -144,7 +144,12 @@
 
                     // },100)
                 }else{
-                    this._routePageChanged('examHistory');
+                    if(_getCookie('token')){
+                        this._routePageChanged('examHistory');
+                    }else{
+                        this._routePageChanged('login');
+                    }
+                    
                 }
             },
             _changePage:function(e){
