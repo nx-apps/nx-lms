@@ -58,7 +58,7 @@
             onEnter: function() {
                 var val = this.$.input.value.trim();
                 var dep = false;
-                this.value.map((row)=>{
+                this.value.map(function(row){
                     if(row.id==this.front+val){
                         dep = true;
                     }

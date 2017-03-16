@@ -164,12 +164,12 @@
 				this.loader = true;
 				this.loader = false;
 
-				// this.importHref(this.resolveUrl('/src/import.html'), function(e){
-				// 	this.rendered = true;
-				// 	this.loader = false;
-				// }, function(e){
-				// 	this.loader = false;
-				// });
+				this.importHref(this.resolveUrl('/src/import.html'), function(e){
+					this.rendered = true;
+					this.loader = false;
+				}, function(e){
+					this.loader = false;
+				});
 			}
         });
     </script>
