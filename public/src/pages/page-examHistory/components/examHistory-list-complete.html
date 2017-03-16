@@ -71,8 +71,7 @@
             startTime:function(time){
                 if(!time)return "-";
                 var date = new Date(time);
-                
-                return `${date.getFullYear()}-${this.digi(date.getMonth())}-${this.digi(date.getDate())} ${this.digi(date.getHours())}:${this.digi(date.getMinutes())}`
+                return date.getFullYear()+'-'+this.digi(date.getMonth())+'-'+this.digi(date.getDate())+' '+this.digi(date.getHours())+'-'+this.digi(date.getMinutes());
             },
             useTime:function(startTime,endTime){
                 if(!startTime||!endTime)return "-";
@@ -85,7 +84,8 @@
                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                return `${this.digi(hours)}:${this.digi(minutes)}:${this.digi(seconds)}`
+                return this.digi(hours)+':'+this.digi(minutes)+':'+this.digi(seconds);
+                //return `${this.digi(hours)}:${this.digi(minutes)}:${this.digi(seconds)}`
             },
             setScore:function(score,setting){
                 console.log(score,setting);

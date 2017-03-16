@@ -11,6 +11,10 @@
             }
         </style>
         <div class="container">
+            [[test]]
+            <template is="dom-repeat" items="[[examList]]">
+                rowxxxxxxxxxxxx
+            </template>
             <paper-material elevation="1">
                 <table class="gl-table-default">
                     <thead>
@@ -38,8 +42,6 @@
                                         <tag-module size="14px" label="[[item.id]]" color="[[item.color]]"></tag-module>
                                     </td>
                                 </template>
-                                <!--<td>[[item.start_time]]</td>-->
-                                <!--<td>[[item.qty]]</td>-->
                                 <td>[[item.start_date]] </td>
                                
                                 <td>
@@ -60,6 +62,29 @@
                     </tbody>
                 </table>
             </paper-material>
+
+            <div class="Table">
+                <div class="Heading">
+                    <div class="Cell" style="width:10%">#</div>
+                    <div class="Cell" style="width:10%">รายการห้องสอบ</div>
+                    <div class="Cell" style="width:10%">Module</div>
+                    <div class="Cell" style="width:10%">วันที่ทำข้อสอบ</div>
+                    <div class="Cell" style="width:10%">ชุดข้อสอบ</div>
+                    <div class="Cell" style="width:10%">จำนวน (ข้อ)</div>
+                    <div class="Cell" style="width:10%">เวลา (นาที)</div>
+                </div>
+                <div class="Row">
+                    <div class="Cell" style="width:10%">
+                        Row 1 Column 1
+                    </div>
+                    <div class="Cell">
+                        Row 1 Column 2
+                    </div>
+                    <div class="Cell">
+                        Row 1 Column 3
+                    </div>
+                </div>
+            </div>
         </div>
     </template>
     <script>
@@ -72,6 +97,9 @@
             properties: {
                 examList: {
                     statePath: 'examHistory.examList'
+                },
+                test:{
+                    value:['a','b']
                 }
             },
             selectData: function (e) {
