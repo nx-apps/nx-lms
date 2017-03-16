@@ -31,7 +31,7 @@
                 text-align: center;
             }
         </style>
-
+        
         <iron-pages selected="{{selected}}">
             <section>
                 <div class="xcontainer container flex-center-justified">
@@ -68,6 +68,7 @@
             </section>
             </div>
         </iron-pages>
+        page-login za
     </template>
     <script>
         Polymer({
@@ -106,8 +107,7 @@
                 this.selected = '1';
             },
             nylonPageActive: function () {
-                //this.nylonVisible(false);
-                //this.nylonVisible(true);
+                this.nylonVisible(true);
             },
             forget: function () {
                 if (this.formLogin.user) {

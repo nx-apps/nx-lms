@@ -1,5 +1,6 @@
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <!-- template -->
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
@@ -76,7 +77,7 @@
 				display: none;
 			}
 
-			iron-pages>*{
+			iron-pages>*:not([nylon-show]){
 				display: none;
 			}
 
@@ -127,8 +128,8 @@
 			<div class="loader"></div>
 		</div>
 		<layout-main path="[[selected]]">
+			[[selected]]
 			<iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="visible">
-
 				<page-examinationRoom path="examinationRoom"></page-examinationRoom>
 				<page-question path="question"></page-question>
 				<page-examination path="examination"></page-examination>
@@ -151,10 +152,7 @@
                 <page-404 path="404"></page-404> <!-- ไม่พบไฟล์ -->
 
             </iron-pages>
-
-			<!--<nylon-auth></nylon-auth>-->
 		</layout-main>
-
 	</template>
 
 
@@ -170,7 +168,6 @@
 				// 	this.rendered = true;
 				// 	this.loader = false;
 				// }, function(e){
-				// 	console.log('error')
 				// 	this.loader = false;
 				// });
 			}

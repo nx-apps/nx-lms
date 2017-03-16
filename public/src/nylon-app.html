@@ -63,22 +63,22 @@
             },
             _pageChanged: function(page, oldPage) {
                 if (page != null && page != "") {
-                    function loadPage(page){
-                        // this.importHref(
-                        //     this.resolveUrl('/src/pages/page-' + page + '/page-' + page + '.html'),
-                        //     function(){
-                        //         if(this.elementLayoutMainDrawer){
-                        //             this.elementLayoutMainDrawer._loaded();
-                        //         }
-                        //     },
-                        //     function(){
-                        //         //console.log('ok');
-                        //         this._routePageChanged('404');
-                        //     }
-                        //     , true
-                        // );
+                    var loadPage = function(page){
+                        this.importHref(
+                            this.resolveUrl('/src/pages/page-' + page + '/page-' + page + '.html'),
+                            function(){
+                                if(this.elementLayoutMainDrawer){
+                                    this.elementLayoutMainDrawer._loaded();
+                                }
+                            },
+                            function(){
+                                //console.log('ok');
+                                this._routePageChanged('404');
+                            }
+                            , true
+                        );
 
-                    }
+                    }.bind(this);
 
                     loadPage(page);
 
