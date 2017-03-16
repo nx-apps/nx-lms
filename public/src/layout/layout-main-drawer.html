@@ -14,12 +14,6 @@
                 color: white;
                 background-color: #95bf31;
                 font-size: 22px;
-                /*user-drag: none; 
-            user-select: none;
-            -moz-user-select: none;
-            -webkit-user-drag: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;*/
             }
 
             iron-image,
@@ -55,7 +49,6 @@
 
                     <iron-image src="/images/icon/white/app-icon-32.png">
                     </iron-image>
-                    <!--<iron-icon icon="home" item-icon></iron-icon>-->
                     BETAGRO
                 </app-toolbar>
             </paper-material>
@@ -71,9 +64,7 @@
                     </paper-icon-item>
                 </template>
                 <paper-icon-item on-tap="dowloadFile">
-
                     <iron-icon icon="chevron-right" item-icon></iron-icon>
-                    <!--<paper-icon-button icon="icons:get-app" ></paper-icon-button>-->
                     ดาวน์โหลดคู่มือการใช้งาน
                 </paper-icon-item>
             </div>
@@ -168,7 +159,7 @@
                 }
 
                 this.async(
-                    () => {
+                    function(){
                         this.fire('close-drawer');
                         this._loaded();
                     }
@@ -176,10 +167,10 @@
 
             },
             _loaded: function () {
-                this.async(() => {
-                    this.listMenu.map((item, i) => {
+                this.async(function(){
+                    this.listMenu.map(function(item, i){
                         this.set('listMenu.' + i + '.loading', false);
-                    });
+                    }.bind(this));
                     this.fire('close-drawer');
                 }, 200)
 

@@ -1,12 +1,12 @@
 module.exports = {
     entry: [
-        './src/main.js'
+        'babel-polyfill','./src/main.js'
     ],
     output: {
         filename: './public/bundle.js'
     },
     module:{
-        /*loaders:[
+        loaders:[
             {
                 test: /\.js?$/,
                 exclude: /node_modules/,
@@ -14,7 +14,7 @@ module.exports = {
                 'babel-loader'
                 ]
             }
-        ]*/
+        ]
     },
     watch: true,
     devtool:"inline-source-map"

@@ -13,7 +13,6 @@
 <link rel="import" href="./pages/components/panel-right/panel-right.html">
 
 <link rel="import" href="./layout/layout-main.html">
-<link rel="import" href="./nylon-auth.html">
 
 
 
@@ -165,13 +164,15 @@
 			behaviors:[commonSystemAction],
 			ready:function(){
 				this.loader = true;
-				this.importHref(this.resolveUrl('/src/import.html'), (e)=>{
-					this.rendered = true;
-					this.loader = false;
-				}, (e)=> {
-					console.log('error')
-					this.loader = false;
-				});
+				this.loader = false;
+
+				// this.importHref(this.resolveUrl('/src/import.html'), function(e){
+				// 	this.rendered = true;
+				// 	this.loader = false;
+				// }, function(e){
+				// 	console.log('error')
+				// 	this.loader = false;
+				// });
 			}
         });
     </script>

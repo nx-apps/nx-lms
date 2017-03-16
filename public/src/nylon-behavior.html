@@ -19,11 +19,11 @@
                 if(typeof this.nylonPageUnActive != "undefined"){
                     this.nylonPageUnActive();
                 }
-                //this.nylonVisible(false);
             }
 
         },
-        nylonVisible:function(b=true){
+        nylonVisible:function(b){
+            if(!b)b=true;
             this.nylonShow = b;
         }
 
@@ -31,7 +31,7 @@
 
     nylonLocalize = {
         attached:function(){
-            nylonLocalize.subscribe((x)=>{ 
+            nylonLocalize.subscribe(function(x){ 
                 this.language = x;
             });
         },
