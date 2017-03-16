@@ -56,11 +56,11 @@
                     //console.log(this.myItems);
                     if(this.myItems){
 
-                        this.myItems = this.items.filter((row)=>{
+                        this.myItems = this.items.filter(function(row){
                             var b = true;
 
                             if(n.base){
-                                n.base.map((row2)=>{
+                                n.base.map(function(row2){
                                     if(row.id == row2.id)
                                     b = false;
                                 })
