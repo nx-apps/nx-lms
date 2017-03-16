@@ -128,7 +128,6 @@
 			<div class="loader"></div>
 		</div>
 		<layout-main path="[[selected]]">
-			[[selected]]
 			<iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="visible">
 				<page-examinationRoom path="examinationRoom"></page-examinationRoom>
 				<page-question path="question"></page-question>
@@ -150,7 +149,6 @@
                 <page-401 path="401"></page-401> <!-- ยังไม่ login -->
                 <page-403 path="403"></page-403> <!-- ไม่มีสิทธิ -->
                 <page-404 path="404"></page-404> <!-- ไม่พบไฟล์ -->
-
             </iron-pages>
 		</layout-main>
 	</template>
@@ -162,8 +160,6 @@
 			behaviors:[commonSystemAction],
 			ready:function(){
 				this.loader = true;
-				this.loader = false;
-
 				this.importHref(this.resolveUrl('/src/import.html'), function(e){
 					this.rendered = true;
 					this.loader = false;
