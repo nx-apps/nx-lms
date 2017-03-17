@@ -31,7 +31,9 @@
                                 <th>เวลาเริ่มทำ</th>
                                 <th>ใช้เวลาทำ</th>
                                 <th style="text-align: right;">คะแนน</th>
-                                <th style="text-align: right;"></th>
+                                <th style="text-align: right;">
+                                    <paper-button class="gl-btn-success" raised on-tap="export" item="">รายงาน</paper-button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,6 +97,9 @@
                     value: [],
                     notify: true
                 }
+            },
+            export:function(){
+                window.open("/api/report/report?exam_room_id="+this.selectData.id);
             },
             digi:function(digi){
                 if(digi.toString().length==1){
