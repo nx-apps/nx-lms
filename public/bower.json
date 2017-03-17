@@ -53,6 +53,7 @@
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^1.0.6",
     "paper-time-input": "ryanburns23/paper-time-input#^1.0.1",
     "es6-shim": "^0.35.3",
-    "polymer-quill": "^1.2.0"
+    "polymer-quill": "^1.2.0",
+    "juicy-table-repeat": "Juicy/juicy-table-repeat#^0.0.3"
   }
 }

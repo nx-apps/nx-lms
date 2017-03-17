@@ -11,10 +11,6 @@
             }
         </style>
         <div class="container">
-            [[test]]
-            <template is="dom-repeat" items="[[examList]]">
-                rowxxxxxxxxxxxx
-            </template>
             <paper-material elevation="1">
                 <table class="gl-table-default">
                     <thead>
@@ -23,7 +19,7 @@
                             <th>รายการห้องสอบ</th>
                             <th>Module</th>
                             <th>วันที่ทำข้อสอบ</th>
-                            
+
                             <th>ชุดข้อสอบ</th>
                             <th>จำนวน (ข้อ)</th>
                             <th>เวลา (นาที)</th>
@@ -43,7 +39,7 @@
                                     </td>
                                 </template>
                                 <td>[[item.start_date]] </td>
-                               
+
                                 <td>
                                     [[item.examination.name_examination]]
                                 </td>
@@ -63,28 +59,27 @@
                 </table>
             </paper-material>
 
-            <div class="Table">
-                <div class="Heading">
-                    <div class="Cell" style="width:10%">#</div>
-                    <div class="Cell" style="width:10%">รายการห้องสอบ</div>
-                    <div class="Cell" style="width:10%">Module</div>
-                    <div class="Cell" style="width:10%">วันที่ทำข้อสอบ</div>
-                    <div class="Cell" style="width:10%">ชุดข้อสอบ</div>
-                    <div class="Cell" style="width:10%">จำนวน (ข้อ)</div>
-                    <div class="Cell" style="width:10%">เวลา (นาที)</div>
-                </div>
-                <div class="Row">
-                    <div class="Cell" style="width:10%">
-                        Row 1 Column 1
-                    </div>
-                    <div class="Cell">
-                        Row 1 Column 2
-                    </div>
-                    <div class="Cell">
-                        Row 1 Column 3
-                    </div>
-                </div>
-            </div>
+            <juicy-table-repeat rows="{{model.products}}">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <template is="dom-template" class="row-template">
+                    <table>
+                        <tr>
+                            <td>{{item.name}}</td>
+                            <td>
+                                <span>{{item.price}}</span>$
+                            </td>
+                        </tr>
+                    </table>
+                </template>
+            </juicy-table-repeat>
         </div>
     </template>
     <script>
@@ -98,8 +93,8 @@
                 examList: {
                     statePath: 'examHistory.examList'
                 },
-                test:{
-                    value:['a','b']
+                test: {
+                    value: ['a', 'b']
                 }
             },
             selectData: function (e) {
