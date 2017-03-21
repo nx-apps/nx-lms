@@ -2,9 +2,7 @@ class index {
     report_onlyone(req, res) {
         var r = req.r;
         var params = req.query;
-
-        //r.db('lms').table("exam_room").filter({ module: 'CO' }).pluck('id', 'module', 'name_room', 'examination_id')
-  
+  /*
         r.db('lms').table("exam_test").filter({ exam_room_id:params.exam_room_id }).hasFields('sum')
             .merge(function (data) {
                 return r.db('lms').table('user').get(data('user_id'))
@@ -14,6 +12,21 @@ class index {
             })
             .pluck('emp_id', 'name', 'name_room', 'sum', 'module', 'round','qty_question')
             .orderBy('name', 'name_room', 'round', 'sum').distinct()
+*/
+            r.db('lms').table('exam_room').get(params.exam_room_id) 
+                .do(function (x) {
+                    return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' })
+                        .merge(function (row) {
+                            return { exam_room_id: x('id') ,user_id:row('id'), module:x('module'), name_room:x('name_room') }
+                        })
+                }).distinct()      
+            .innerJoin( r.db('lms').table('exam_test').filter({
+                exam_room_id:params.exam_room_id,
+                _remark: 'last'
+            }).hasFields('sum'), function(right,left){
+                return right('user_id').eq(left('user_id'))
+            }).zip()
+            .pluck('emp_id','name','name_room','sum','module','round','qty_question')
             .run()
             .then(function (result) {
                 //res.json(result);
