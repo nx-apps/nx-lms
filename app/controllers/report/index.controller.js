@@ -5,7 +5,7 @@ class index {
 
         //r.db('lms').table("exam_room").filter({ module: 'CO' }).pluck('id', 'module', 'name_room', 'examination_id')
   
-        r.db('lms').table("exam_test").filter({ exam_room_id:params.exam_room_id })
+        r.db('lms').table("exam_test").filter({ exam_room_id:params.exam_room_id }).hasFields('sum')
             .merge(function (data) {
                 return r.db('lms').table('user').get(data('user_id'))
                     .merge(function () {
