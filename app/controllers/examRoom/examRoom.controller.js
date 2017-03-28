@@ -212,9 +212,9 @@ class examRoom {
                 .filter({ user_id: re('id'),_remark: 'last' })
                 .coerceTo('array')
                 .do(function (result) {
-                    return r.branch(result.count().eq(0), {}, result(0).pluck('sum','start_time','end_time','round', 'qty_question', 'id'))
+                    return r.branch(result.count().eq(0), {}, result(0).pluck('sum','start_time','end_time','round', 'qty_question', 'id','name'))
                 })
-            }).orderBy(r.desc('sum'))
+            }).orderBy(r.desc('sum'),'round','name')
 
 /*
         r.db('lms').table('exam_room').get(params.id)

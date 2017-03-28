@@ -11,7 +11,7 @@ class index {
               return r.db('lms').table('exam_room').get(data('exam_room_id'))
             })
            .pluck('emp_id', 'name', 'name_room', 'sum', 'module', 'round','qty_question').distinct()
-           .orderBy(r.desc('sum'),'name_room', 'round')
+           .orderBy(r.desc('sum'),'round','name')
 
 /*
             r.db('lms').table('exam_room').get(params.exam_room_id) 
