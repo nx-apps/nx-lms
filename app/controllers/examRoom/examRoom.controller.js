@@ -201,6 +201,22 @@ class examRoom {
     select_student(req, res) {
         var r = req.r;
         var params = req.query;
+
+        r.db('lms').table('exam_room').get(params.id)
+            .merge(function(x){
+            return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' }).coerceTo('array')
+            }).distinct()
+            
+            .merge(function (re) {
+            return r.db('lms').table('exam_test').getAll(params.id, {index:'exam_room_id'})
+                .filter({ user_id: re('id'),_remark: 'last' })
+                .coerceTo('array')
+                .do(function (result) {
+                    return r.branch(result.count().eq(0), {}, result(0).pluck('sum','start_time','end_time','round', 'qty_question', 'id'))
+                })
+            }).orderBy(r.desc('sum'))
+
+/*
         r.db('lms').table('exam_room').get(params.id)
             .do(function (x) {
                 return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' })
@@ -217,31 +233,7 @@ class examRoom {
                         return r.branch(result.count().eq(0), {}, result(0).pluck('sum','start_time','end_time','round', 'qty_question', 'id'))
                     })
             }).orderBy(r.desc('sum'))
-            /*
-                        r.db('lms').table('exam_room').get(params.id)
-                        .do(function (x) {
-                            return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' })
-                        })
-            
-                        .outerJoin(r.db('lms').table('exam_test'),
-                        function(action, user){
-                            return action('id').eq(user('user_id'))
-                        })
-                        .zip().orderBy(r.desc('sum')).distinct()
-            */
-            /*
-                        r.db('lms').table('exam_room').get(params.id)
-                        .do(function(x){
-                            return r.db('lms').table('user').getAll(x('module'),'*',{index:'tags'})
-                        })
-                        .innerJoin(r.db('lms').table('exam_test'), function(right,left){
-                            return right('id').eq(left('user_id'))
-                        }).map(function(x){
-                            return x('left').merge(function(){
-                            return {name:x('right')('sum')}
-                            })
-                        }).distinct()
-             */
+  */
             .then(function (result) {
                 for (var i = 0; i < result.length; i++) {
                     var answer_url = jwt.sign({ id: result[i].id, user_id: req.user.id }, SECRET_KEY, {
