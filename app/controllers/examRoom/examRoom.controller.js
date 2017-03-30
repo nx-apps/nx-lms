@@ -205,6 +205,9 @@ class examRoom {
         r.db('lms').table('exam_room').get(params.id)
             .merge(function(x){
             return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' }).coerceTo('array')
+                .merge(function (row) {
+                    return { exam_room_id: x('id') }
+                })
             }).distinct()
             
             .merge(function (re) {
@@ -216,24 +219,24 @@ class examRoom {
                 })
             }).orderBy(r.desc('sum'),'round','name')
 
-/*
-        r.db('lms').table('exam_room').get(params.id)
-            .do(function (x) {
-                return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' })
-                    .merge(function (row) {
-                        return { exam_room_id: x('id') }
-                    })
-            }).distinct()
 
-            .merge(function (re) {
-                return r.db('lms').table('exam_test')
-                    .filter({ user_id: re('id'), exam_room_id: re('exam_room_id'), _remark: 'last' })
-                    .coerceTo('array')
-                    .do(function (result) {
-                        return r.branch(result.count().eq(0), {}, result(0).pluck('sum','start_time','end_time','round', 'qty_question', 'id'))
-                    })
-            }).orderBy(r.desc('sum'))
-  */
+        // r.db('lms').table('exam_room').get(params.id)
+        //     .do(function (x) {
+        //         return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' })
+        //             .merge(function (row) {
+        //                 return { exam_room_id: x('id') }
+        //             })
+        //     }).distinct()
+
+        //     .merge(function (re) {
+        //         return r.db('lms').table('exam_test')
+        //             .filter({ user_id: re('id'), exam_room_id: re('exam_room_id'), _remark: 'last' })
+        //             .coerceTo('array')
+        //             .do(function (result) {
+        //                 return r.branch(result.count().eq(0), {}, result(0).pluck('sum','start_time','end_time','round', 'qty_question', 'id'))
+        //             })
+        //     }).orderBy(r.desc('sum'))
+
             .then(function (result) {
                 for (var i = 0; i < result.length; i++) {
                     var answer_url = jwt.sign({ id: result[i].id, user_id: req.user.id }, SECRET_KEY, {

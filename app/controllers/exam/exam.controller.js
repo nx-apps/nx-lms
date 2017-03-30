@@ -375,20 +375,33 @@ class examHistory {
                 r.expr(dateNow).gt(row('period_start_date')).and(r.expr(true).eq(row('enable')))
             )
         })
+            // .merge(function (row) {
+            //     return {
+            //         tags: [r.db('lms').table('tag').get(row('module'))],
+            //         status: r.db('lms').table('exam_test').coerceTo('array')
+            //             .filter(function (row2) {
+            //                 return row2('user_id').eq(user.id).and(
+            //                        row2('exam_room_id').eq(row('id'))
+            //                        .and(row2('_remark').eq(r.expr('last')))
+            //                 )
+            //             }).do(function (result) {
+            //                 return r.branch(result.count().eq(0), 'wait', result(0)('status'))
+            //         })
+            //     }
+            // })
             .merge(function (row) {
                 return {
                     tags: [r.db('lms').table('tag').get(row('module'))],
-                    status: r.db('lms').table('exam_test').coerceTo('array')
+                    status: r.db('lms').table('exam_test').getAll(user.id,{index:'user_id'}).coerceTo('array')
                         .filter(function (row2) {
-                            return row2('user_id').eq(user.id).and(
-                                row2('exam_room_id').eq(row('id'))
-                                    .and(row2('_remark').eq(r.expr('last')))
-                            )
+                            return row2('exam_room_id').eq(row('id'))
+                                   .and(row2('_remark').eq(r.expr('last')))
                         }).do(function (result) {
                             return r.branch(result.count().eq(0), 'wait', result(0)('status'))
-                        })
+                    })
                 }
             })
+            
             .merge(function (row) {
                 return {
                     examination: r.db('lms').table('examination')
@@ -619,8 +632,9 @@ class examHistory {
             .merge(function (row) {
                 return {
                     name_room: r.db('lms').table('exam_room').get(row('exam_room_id'))('name_room'),
-                    count_question: r.db('lms').table('exam_test_detail').coerceTo('array')
-                        .filter({ exam_test_id: row('id') }).count()
+                    count_question: row('qty_question')
+                    //count_question: r.db('lms').table('exam_test_detail').coerceTo('array')
+                    //.filter({ exam_test_id: row('id') }).count()
                 }
             })
             .merge(function (row) {
