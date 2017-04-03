@@ -900,6 +900,34 @@ class examHistory {
             })
     }
 
+        send_email_retest(req, res) {
+        var r = req.r;
+        var params = req.query;
+
+            r.db('lms').table('exam_test').filter(function(data){
+            return data('_remark').ne('deleted')
+                .and( data('sum').lt(data('qty_question').mul(80).div(100)))
+            })
+            .innerJoin(r.db('lms').table('exam_room'),function(left,right){
+                return left('exam_room_id').eq(right('id'))
+            }).zip()
+            .innerJoin(r.db('lms').table('user'),function(left,right){
+                return left('user_id').eq(right('id'))
+            }).zip()
+            .filter(function(data){
+                return data.ne(null)
+            })
+            .pluck('sum','name_room','email','name','module')
+
+            .run()
+            .then(function (result) {
+                res.json(result);
+            })
+            .catch(function (err) {
+                res.status(500).json(err);
+            })
+    }
+
 }
 
 module.exports = new examHistory();

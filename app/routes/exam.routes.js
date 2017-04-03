@@ -12,4 +12,6 @@ module.exports = function(app){
     app.get('/exam',authenticate(),examCtrl.getExam);
     app.put('/exam',authenticate(),examCtrl.updateAnswer);
     app.post('/complete',authenticate(),examCtrl.complete);
+
+    app.get('/sendEmailRetest',authenticate(),examCtrl.send_email_retest);
 }
