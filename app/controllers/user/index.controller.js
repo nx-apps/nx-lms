@@ -226,7 +226,7 @@ class index {
                             res.status(500).json(result);
                         } else {
                             // res.json(result);
-                            res.redirect("/login");
+                            res.redirect("/erp/login");
                         }
                     })
                     .catch(function (err) {
@@ -330,7 +330,7 @@ class index {
         var params = req.query;
         var pwd = params.pwd;
         res.cookie('token',pwd, {  maxAge: 1000 * 60 * 60 *24, httpOnly: true });
-        res.redirect("/profile");
+        res.redirect("/erp/profile");
     }
 
 }
