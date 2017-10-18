@@ -1,6 +1,7 @@
 sha1 = require('js-sha1');
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = "จริงๆแล้วก็ไม่รู้ว่าจะใส่อะไรดีที่เป็นความลับอะนะ";
+const emailModule = require('../../common/email')
 
 class index {
 
@@ -159,45 +160,40 @@ class index {
                 if (out > 0) {
                     res.status(500).json({ error: 'Email นี้มีอยู่ในระบบแล้ว กรุณากรอก Email ใหม่' });
                 } else {
-                    //var uid = result.generated_keys[0];
                     var uid = jwt.sign(params, SECRET_KEY, {
                         expiresIn: '30m'
                     });
-                    var mailer = require("nodemailer");
-                    var smtpTransport = mailer.createTransport({
-                        service: "Gmail",
-                        auth: {
-                            user: "quiz.btg@gmail.com",
-                            pass: "next@2017"
-                        }
-                    });
+      
                     var html = "<p>ชื่อผู้ใช้งาน : " + params.name + "</p>";
                     html += "<p>รหัสพนักงาน : " + params.emp_id + "</p>";
                     html += "<p>email/user : " + params.email + "</p>";
                     html += "<a href="+req.headers['origin']+"/erp/api/user/verify?uid=" + uid + "'>กรุณายืนยันการลงทะเบีัยนระบบคลังข้อสอบ (Betagro)</a>";
 
+                    // var mail = {
+                    //     from: "quiz service <quiz.btg@gmail.com>",
+                    //     to: params.email,
+                    //     subject: "กรุณายืนยันการลงทะเบียนระบบคลังข้อสอบ (Betagro)",
+                    //     html: html
+                    // }
 
-                    var mail = {
-                        from: "quiz service <quiz.btg@gmail.com>",
-                        to: params.email,
-                        subject: "กรุณายืนยันการลงทะเบียนระบบคลังข้อสอบ (Betagro)",
-                        //text: "Password : "+ user.emp_id,
-                        html: html
-                    }
+                    // smtpTransport.sendMail(mail, function (error, response) {
+                    //     if (error) {
+                    //         console.log(error);
+                    //         res.status(500).json({ error: error });
+                    //     } else {
+                    //         res.status(200).json({ ok: "กรุณาตรวจสอบ Inbox อีเมล์ของคุณเพื่อยืนยันการลงทะเบียน" });
+                    //     }
+                    //     smtpTransport.close();
+                    // });
 
-                    smtpTransport.sendMail(mail, function (error, response) {
-                        if (error) {
-                            console.log(error);
-                            res.status(500).json({ error: error });
-                        } else {
-                            //console.log("Message sent: " + response.message);
-                            res.status(200).json({ ok: "กรุณาตรวจสอบ Inbox อีเมล์ของคุณเพื่อยืนยันการลงทะเบียน" });
-                        }
-
-                        smtpTransport.close();
+                    emailModule.sendMail(params.email,"กรุณายืนยันการลงทะเบียนระบบคลังข้อสอบ (Betagro)",html)
+                    .then(result2 => {
+                        res.status(500).json({ error: error });
+                    })
+                    .catch(err => {
+                        res.status(200).json({ ok: "กรุณาตรวจสอบ Inbox อีเมล์ของคุณเพื่อยืนยันการลงทะเบียน" });
                     });
-
-                    //res.json(result);
+                    
                 }
             })
             .catch(function (err) {
@@ -254,6 +250,7 @@ class index {
         var r = req.r;
         var params = req.query;
         var email = params.email;
+        
         r.db('lms_erp').table('user').filter({ email: email.toLowerCase() })
             .run()
             .then(function (users) {
@@ -266,14 +263,14 @@ class index {
                     r.db('lms_erp').table('user').get(user.id).update(user)
                         .run()
                         .then(function (out) {
-                            var mailer = require("nodemailer");
-                            var smtpTransport = mailer.createTransport({
-                                service: "Gmail",
-                                auth: {
-                                    user: "quiz.btg@gmail.com",
-                                    pass: "next@2017"
-                                }
-                            });
+                            // var mailer = require("nodemailer");
+                            // var smtpTransport = mailer.createTransport({
+                            //     service: "Gmail",
+                            //     auth: {
+                            //         user: "quiz.btg@gmail.com",
+                            //         pass: "next@2017"
+                            //     }
+                            // });
                             var pwd = jwt.sign({id:user.id}, SECRET_KEY, {
                                 expiresIn: '30m'
                             });
@@ -286,25 +283,33 @@ class index {
                             html += "<a href='"+req.headers['origin']+"/erp/api/user/reset?pwd=" + pwd + "'>ตั้งค่ารหัสผ่านใหม่</a>";
 
 
-                            var mail = {
-                                from: "quiz service <quiz.btg@gmail.com>",
-                                to: email,
-                                subject: "ตั้งค่ารหัสผ่านใหม่",
-                                // text: "Password : " + user.emp_id,
-                                html: html
-                                //html: "<b>Node.js New world for me</b>"
-                            }
+                            // var mail = {
+                            //     from: "quiz service <quiz.btg@gmail.com>",
+                            //     to: email,
+                            //     subject: "ตั้งค่ารหัสผ่านใหม่",
+                            //     // text: "Password : " + user.emp_id,
+                            //     html: html
+                            //     //html: "<b>Node.js New world for me</b>"
+                            // }
 
-                            smtpTransport.sendMail(mail, function (error, response) {
-                                if (error) {
-                                    console.log(error);
-                                    res.status(500).json({ error: error });
-                                } else {
-                                    //console.log("Message sent: " + response.message);
-                                    res.status(200).json({ ok: "ระบบได้ส่งรหัสผ่านใหม่ไปให้คุณแล้วทางอีเมล์ของคุณ" });
-                                }
+                            // smtpTransport.sendMail(mail, function (error, response) {
+                            //     if (error) {
+                            //         console.log(error);
+                            //         res.status(500).json({ error: error });
+                            //     } else {
+                            //         //console.log("Message sent: " + response.message);
+                            //         res.status(200).json({ ok: "ระบบได้ส่งรหัสผ่านใหม่ไปให้คุณแล้วทางอีเมล์ของคุณ" });
+                            //     }
 
-                                smtpTransport.close();
+                            //     smtpTransport.close();
+                            // });
+
+                            emailModule.sendMail(email,"[ระบบคลังข้อสอบ (Betagro)] ตั้งค่ารหัสผ่านใหม่ ",html)
+                            .then(result2 => {
+                                res.status(500).json({ error: error });
+                            })
+                            .catch(err => {
+                                res.status(200).json({ ok: "ระบบได้ส่งรหัสผ่านใหม่ไปให้คุณแล้วทางอีเมล์ของคุณ" });
                             });
 
                         })
