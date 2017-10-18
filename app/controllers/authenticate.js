@@ -17,7 +17,7 @@ module.exports = function (options) {
     options = options || ["*"];
     return function authenticate(req, res, next) {
         var cookies = req.headers;//.token;// parseCookies(req);
-        //  console.log(cookies);
+          console.log(cookies);
         if (cookies.token) {
             jwt.verify(cookies.token, SECRET_KEY, function (err, decode) {
 
