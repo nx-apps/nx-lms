@@ -17,9 +17,10 @@ module.exports = function (options) {
     options = options || ["*"];
     return function authenticate(req, res, next) {
         var cookies = req.headers;//.token;// parseCookies(req);
-          console.log(cookies);
-        if (cookies.token) {
-            jwt.verify(cookies.token, SECRET_KEY, function (err, decode) {
+          console.log(cookies["token"]);
+          var token=cookies["token"];
+        if (token) {
+            jwt.verify(token, SECRET_KEY, function (err, decode) {
 
                 if (err) {
                     //reject({ error: 'wrong token' });
