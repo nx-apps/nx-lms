@@ -24,7 +24,9 @@
                             <template is="dom-repeat" items="[[dataList]]">
                                 <tr>
                                     <td>[[count(index)]]</td>
-                                    <td>[[item.question]]</td>
+                                    <td>
+                                        <polymer-quill-html-render content="[[item.question]]" store-as="html"></polymer-quill-html-render>
+                                    </td>
                                     <td>[[item.d_index]]</td>
                                 </tr>
                             </template>
