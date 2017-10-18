@@ -19,6 +19,7 @@ module.exports = function (options) {
         var cookies = req.headers;//.token;// parseCookies(req);
           console.log(cookies["token"]);
           var token=cookies["token"];
+          var r=req.r;
         if (token) {
             jwt.verify(token, SECRET_KEY, function (err, decode) {
 
