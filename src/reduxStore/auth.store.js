@@ -54,12 +54,12 @@ export function authAction(store) {
                     if (userInfo.status == true) {
                         if (userInfo.role == "teacher") {
                             //this.fire('nylon-change-page',{path:'/examRoom'})
-                            window.location = "/examRoom";
+                            window.location = "/elms/examRoom";
                         } else {
                             // this.fire('nylon-change-page',{path:'/examHistory'})
 
                             // this.selected = '1';
-                            window.location = "/examHistory";
+                            window.location = "/elms/examHistory";
                         }
                     }
                     else {

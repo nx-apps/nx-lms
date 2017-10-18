@@ -131,7 +131,7 @@ export function userManageAction(store) {
                        this.fire('toast',{status:'connectError',text:response.data.ok,
                          callback:()=>{
                             // console.log(response.data);
-                            window.location="/login";
+                            window.location="/elms/login";
   
                          }
                       });
