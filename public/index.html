@@ -2,21 +2,21 @@
 <html lang="en">
 
 <head>
-  <base href="/elms">
+  <base href="/erp">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
   <title>ERP-QUIZ</title>
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <link rel="shortcut icon" sizes="32x32" href="/elms/images/icon/green/app-icon-32.png">
-  <link rel="manifest" href="/elms/manifest.json">
+  <link rel="shortcut icon" sizes="32x32" href="/erp/images/icon/green/app-icon-32.png">
+  <link rel="manifest" href="/erp/manifest.json">
   <!--link rel="import" href="/api/push/import"-->
   <script>
     Polymer = { lazyRegister: true, dom: 'shadow' }
     //console.log = function(){}
     function _setCookie(cname, cvalue, exdays) {
-      cname="elms_"+cname;
+      cname="erp_"+cname;
       var d = new Date();
       d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
       var expires = "expires=" + d.toUTCString();
@@ -24,7 +24,7 @@
     }
 
     function _getCookie(cname) {
-        cname="elms_"+cname;
+        cname="erp_"+cname;
       var name = cname + "=";
       var decodedCookie = decodeURIComponent(document.cookie);
       var ca = decodedCookie.split(';');
@@ -41,19 +41,19 @@
     }
 
     function _deleteCookie(name) {
-        name="elms_"+name;
+        name="erp_"+name;
       document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
   </script>
 
-  <script src="/elms/bundle.js"></script>
-  <link rel="import" href="/elms/bower_components/polymer/polymer.html">
-  <link rel="import" href="/elms/src/nylon-app.html" async>
+  <script src="/erp/bundle.js"></script>
+  <link rel="import" href="/erp/bower_components/polymer/polymer.html">
+  <link rel="import" href="/erp/src/nylon-app.html" async>
 
   <style>
     @font-face {
       font-family: 'CSChatThaiUI';
-      src: url('/elms/bower_components/gl-font/fonts/csChatThai/CSChatThaiUI.ttf');
+      src: url('/erp/bower_components/gl-font/fonts/csChatThai/CSChatThaiUI.ttf');
     }
     
     body {
@@ -137,7 +137,7 @@
   <nylon-app unresolved>
     <div id="toolbar">
       <div class="icon">
-        <img src="/elms/images/icon/white/app-icon-32.png" alt="">
+        <img src="/erp/images/icon/white/app-icon-32.png" alt="">
       </div>
       <div class="title">
         ERP-QUIZ
@@ -160,7 +160,7 @@
       } else {
         // polyfill the platform!
         var e = document.createElement('script');
-        e.src = '/elms/bower_components/webcomponentsjs/webcomponents-lite.min.js';
+        e.src = '/erp/bower_components/webcomponentsjs/webcomponents-lite.min.js';
         document.body.appendChild(e);
       }
     })();
