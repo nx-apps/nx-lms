@@ -40,7 +40,7 @@ export function authAction(store) {
         AUTH_LOGIN: function (formLogin) {
             axios.post('./auth/login', { username: formLogin.user, password: formLogin.pass })
                 .then((response) => {
-
+                    
                     _setCookie("token", response.data.token, 1);
                     // localStorage.setItem("token",response.data.token);
                     store.dispatch({ type: 'AUTH_SET_USER', payload: response.data })

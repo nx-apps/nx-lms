@@ -16,10 +16,10 @@ function parseCookies(req) {
 module.exports = function (options) {
     options = options || ["*"];
     return function authenticate(req, res, next) {
-        var cookies = parseCookies(req);
+        var cookies = req.headers;//.token;// parseCookies(req);
         //  console.log(cookies);
-        if (cookies.elms_token) {
-            jwt.verify(cookies.elms_token, SECRET_KEY, function (err, decode) {
+        if (cookies.token) {
+            jwt.verify(cookies.token, SECRET_KEY, function (err, decode) {
 
                 if (err) {
                     //reject({ error: 'wrong token' });

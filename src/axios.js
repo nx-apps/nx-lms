@@ -3,5 +3,5 @@ import {baseURL} from './config'
 
 export default create({
     baseURL:baseURL+'/api',
-   // headers: {'token': localStorage.getItem('token')}
+    headers: {'token': _getCookie('token')}
 });
