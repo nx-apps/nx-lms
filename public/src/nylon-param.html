@@ -28,11 +28,11 @@
           var getVar = pattern.split("/");
         }
         var getPrarams = {
-          page:params[1]
+          page:params[2]
         };
         if(getVar){
           getVar.map(function(obj,index){
-                getPrarams[obj] = params[index+2];
+                getPrarams[obj] = params[index+3];
           });
         }
         this.params = getPrarams;
