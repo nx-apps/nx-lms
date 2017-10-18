@@ -16,6 +16,7 @@
     Polymer = { lazyRegister: true, dom: 'shadow' }
     //console.log = function(){}
     function _setCookie(cname, cvalue, exdays) {
+      cname="elms_"+cname;
       var d = new Date();
       d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
       var expires = "expires=" + d.toUTCString();
@@ -23,6 +24,7 @@
     }
 
     function _getCookie(cname) {
+        cname="elms_"+cname;
       var name = cname + "=";
       var decodedCookie = decodeURIComponent(document.cookie);
       var ca = decodedCookie.split(';');
@@ -39,6 +41,7 @@
     }
 
     function _deleteCookie(name) {
+        cname="elms_"+cname;
       document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
   </script>

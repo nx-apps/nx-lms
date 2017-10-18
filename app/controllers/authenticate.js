@@ -18,8 +18,8 @@ module.exports = function (options) {
     return function authenticate(req, res, next) {
         var cookies = parseCookies(req);
         //  console.log(cookies);
-        if (cookies.token) {
-            jwt.verify(cookies.token, SECRET_KEY, function (err, decode) {
+        if (cookies.elms_token) {
+            jwt.verify(cookies.elms_token, SECRET_KEY, function (err, decode) {
 
                 if (err) {
                     //reject({ error: 'wrong token' });
