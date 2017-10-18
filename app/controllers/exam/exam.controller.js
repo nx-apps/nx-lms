@@ -904,14 +904,14 @@ class examHistory {
         var r = req.r;
         var params = req.query;
 
-            r.db('lms').table('exam_test').filter(function(data){
+            r.db('lms_erp').table('exam_test').filter(function(data){
             return data('_remark').ne('deleted')
                 .and( data('sum').lt(data('qty_question').mul(80).div(100)))
             })
-            .innerJoin(r.db('lms').table('exam_room'),function(left,right){
+            .innerJoin(r.db('lms_erp').table('exam_room'),function(left,right){
                 return left('exam_room_id').eq(right('id'))
             }).zip()
-            .innerJoin(r.db('lms').table('user'),function(left,right){
+            .innerJoin(r.db('lms_erp').table('user'),function(left,right){
                 return left('user_id').eq(right('id'))
             }).zip()
             .filter(function(data){
