@@ -15,7 +15,7 @@ class index{
             }
         })
         .do(function(result){
-            return r.db('lms').table('exam_answer').insert(result)
+            return r.db('lms_erp').table('exam_answer').insert(result)
         })
 */
 /*
@@ -23,7 +23,7 @@ class index{
             return { 
                 x:xxx('question').merge(function(m){
                     return {
-                        choiceQuiz : r.db('lms').table('question').get(m('id')).getField('choice')
+                        choiceQuiz : r.db('lms_erp').table('question').get(m('id')).getField('choice')
                     }
                 })
                 .merge(function(m){
@@ -56,17 +56,17 @@ class index{
                 return { score:a('x').sum('ascore'),count_question:a('question').count()  }
             }) .without('x')
             .do(function(result){
-                return r.db('lms').table('exam_answer').insert(result)
+                return r.db('lms_erp').table('exam_answer').insert(result)
             })
             .do(function(aa){
-                return r.db('lms').table('exam_answer').filter({id:aa('generated_keys')(0)})
+                return r.db('lms_erp').table('exam_answer').filter({id:aa('generated_keys')(0)})
             })
         
             .merge(function(xxx){
                 return xxx('question')
                     .merge(function(m){
                 return {
-                    choiceQuiz : r.db('lms').table('question').get(m('id')).getField('choice')
+                    choiceQuiz : r.db('lms_erp').table('question').get(m('id')).getField('choice')
                 }
             })
             .merge(function(m){
@@ -94,9 +94,9 @@ class index{
             })
         
             .forEach(function(ff){
-                return r.db('lms').table('question').get(ff('id'))
+                return r.db('lms_erp').table('question').get(ff('id'))
                 .do(function(dooo){
-                    return r.db('lms').table('question').get(ff('id')).update({
+                    return r.db('lms_erp').table('question').get(ff('id')).update({
                         correct:dooo('correct').add(ff('ascore')),
                         incorrect:dooo('incorrect').add(ff('aXscore'))
                     })
@@ -112,7 +112,7 @@ class index{
                 return{ a: r.branch( x('choice').filter({answer:true}).isEmpty().eq(true), {name:''}, x('choice').filter({answer:true})(0))}
             }) 
                 .merge(function(x){
-                return {q:r.db('lms').table('question').get(x('id')).getField('choice').filter({check:true})(0) }
+                return {q:r.db('lms_erp').table('question').get(x('id')).getField('choice').filter({check:true})(0) }
             })
             
             .merge(function(x){
@@ -134,8 +134,8 @@ class index{
             return {score:x('question')('Cscore').sum()}
             })
         })
-        .do(function(result){return r.db('lms').table('exam_answer').insert(result)})
-        .do(function(aa){return r.db('lms').table('exam_answer').filter({id:aa('generated_keys')(0)})})
+        .do(function(result){return r.db('lms_erp').table('exam_answer').insert(result)})
+        .do(function(aa){return r.db('lms_erp').table('exam_answer').filter({id:aa('generated_keys')(0)})})
         
         .merge(function(x){
             return x('question')
@@ -150,9 +150,9 @@ class index{
         })(0)
 
         .forEach(function(x){
-            return r.db('lms').table('question').get(x('id'))
+            return r.db('lms_erp').table('question').get(x('id'))
             .do(function(doo){
-                return r.db('lms').table('question').get(x('id'))
+                return r.db('lms_erp').table('question').get(x('id'))
                 .update({
                     correct:doo('correct').add(x('Cscore')),
                     incorrect:doo('incorrect').add(x('ICscore')),
@@ -175,11 +175,11 @@ class index{
     show_answer(req,res){
         var r = req.r;
         var params = req.query;
-         r.db('lms').table('exam_answer').filter({
+         r.db('lms_erp').table('exam_answer').filter({
         user_id:params.user_id,
         exam_room_id:params.exam_room_id
         })
-        .innerJoin(r.db('lms').table('user'),function(x,xx){
+        .innerJoin(r.db('lms_erp').table('user'),function(x,xx){
             return x('user_id').eq(xx('id'))
         }).map(function(n){
             return n('left').merge(function(){
@@ -187,7 +187,7 @@ class index{
             })
         })
         
-        .innerJoin(r.db('lms').table('examination'),function(x,xx){
+        .innerJoin(r.db('lms_erp').table('examination'),function(x,xx){
             return x('examination_id').eq(xx('id'))
         }).map(function(n){
             return n('left').merge(function(){

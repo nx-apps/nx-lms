@@ -24,7 +24,7 @@ class common {
         }
         r.branch(
             r.expr(user.role).eq('admin').or(r.expr(user.key_tags).contains('*')),
-            r.db('lms').table('tag').orderBy('id').pluck('id')('id').do(function (result) {
+            r.db('lms_erp').table('tag').orderBy('id').pluck('id')('id').do(function (result) {
                 return r.branch(r.expr(params.getall).eq(true),
                     result
                     ,
@@ -35,7 +35,7 @@ class common {
             })
 
             ,
-            r.db('lms').table('tag').orderBy('id').pluck('id')('id')
+            r.db('lms_erp').table('tag').orderBy('id').pluck('id')('id')
                 .filter(function (row) {
                     return r.expr(user.key_tags).contains(row)
                 })
@@ -77,7 +77,7 @@ class common {
         }
         r.branch(
             r.expr(user.role).eq('admin').or(r.expr(user.key_tags).contains('*')),
-            r.db('lms').table('tag').orderBy('id').pluck('id')('id').do(function (result) {
+            r.db('lms_erp').table('tag').orderBy('id').pluck('id')('id').do(function (result) {
                 return r.branch(r.expr(params.getall).eq(true),
                     result
                     ,
@@ -88,7 +88,7 @@ class common {
             })
 
             ,
-            r.db('lms').table('tag').orderBy('id').pluck('id')('id')
+            r.db('lms_erp').table('tag').orderBy('id').pluck('id')('id')
                 .filter(function (row) {
                     return r.expr(user.key_tags).contains(row)
                 })

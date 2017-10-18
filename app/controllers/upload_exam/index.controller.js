@@ -69,10 +69,10 @@ class index{
          r.expr(all).merge(function(x){
              return { time_insert:r.now(),user_id:id }
          }).do(function(xx){
-             return r.db('lms').table('ex').insert(xx)
+             return r.db('lms_erp').table('ex').insert(xx)
          })
 
-        //r.db('lms').table('ex').insert(all)
+        //r.db('lms_erp').table('ex').insert(all)
         .run()  
         .then(function(result){
             res.json(result);

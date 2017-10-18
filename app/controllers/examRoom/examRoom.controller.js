@@ -8,10 +8,10 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').getAll(params.module, { index: 'module' })
+        r.db('lms_erp').table('exam_room').getAll(params.module, { index: 'module' })
             .merge(function (row) {
                 return {
-                    examination: r.db('lms').table('examination')
+                    examination: r.db('lms_erp').table('examination')
                         .get(row('examination_id'))
                         .pluck('name_examination', 'amount_all', 'time')
                 }
@@ -31,7 +31,7 @@ class examRoom {
         var params = req.body;
 
         var start_date, end_date, start_time = "";
-        r.db('lms').table('examination').get(params.examination_id)
+        r.db('lms_erp').table('examination').get(params.examination_id)
             .then((result) => {
                 switch (params.case_time) {
                     case 'allDay':
@@ -72,7 +72,7 @@ class examRoom {
                 params.create_time = dateNow.toISOString();
                 params.update_time = dateNow.toISOString();
 
-                r.db('lms').table('exam_room').insert(params)
+                r.db('lms_erp').table('exam_room').insert(params)
                     .then((result) => {
                         return res.json(result);
                     }).catch((err) => {
@@ -89,7 +89,7 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').get(params.id)
+        r.db('lms_erp').table('exam_room').get(params.id)
             .run()
             .then(function (result) {
                 res.json(result);
@@ -104,7 +104,7 @@ class examRoom {
         var params = req.body;
 
         var start_date, end_date, start_time = "";
-        r.db('lms').table('examination').get(params.examination_id)
+        r.db('lms_erp').table('examination').get(params.examination_id)
             .then((result) => {
                 switch (params.case_time) {
                     case 'allDay':
@@ -146,7 +146,7 @@ class examRoom {
                 params.update_time = dateNow.toISOString();
                 var exam_room_id = params.id;
                 delete params.id;
-                r.db('lms').table('exam_room').get(exam_room_id).update(params)
+                r.db('lms_erp').table('exam_room').get(exam_room_id).update(params)
                     .then((result) => {
                         return res.json(result);
                     }).catch((err) => {
@@ -162,14 +162,14 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_test').filter({ exam_room_id: params.id })
+        r.db('lms_erp').table('exam_test').filter({ exam_room_id: params.id })
             .count()
             .run()
             .then(function (out) {
                 if (out > 0) {
                     res.status(500).json({ error: "ห้องสอบนี้มีการใช้งาน" });
                 } else {
-                    r.db('lms').table('exam_room').get(params.id).delete()
+                    r.db('lms_erp').table('exam_room').get(params.id).delete()
                         .run()
                         .then(function (result) {
                             res.json(result);
@@ -187,7 +187,7 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('examination').getAll(params.module, { index: "module" }).pluck('id', 'name_examination')
+        r.db('lms_erp').table('examination').getAll(params.module, { index: "module" }).pluck('id', 'name_examination')
             .run()
             .then(function (result) {
                 res.json(result);
@@ -202,16 +202,16 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').get(params.id)
+        r.db('lms_erp').table('exam_room').get(params.id)
             .merge(function(x){
-            return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' }).coerceTo('array')
+            return r.db('lms_erp').table('user').getAll(x('module'), '*', { index: 'tags' }).coerceTo('array')
                 .merge(function (row) {
                     return { exam_room_id: x('id') }
                 })
             }).distinct()
             
             .merge(function (re) {
-            return r.db('lms').table('exam_test').getAll(params.id, {index:'exam_room_id'})
+            return r.db('lms_erp').table('exam_test').getAll(params.id, {index:'exam_room_id'})
                 .filter({ user_id: re('id'),_remark: 'last' })
                 .coerceTo('array')
                 .do(function (result) {
@@ -220,16 +220,16 @@ class examRoom {
             }).orderBy(r.desc('sum'),'round','name')
 
 
-        // r.db('lms').table('exam_room').get(params.id)
+        // r.db('lms_erp').table('exam_room').get(params.id)
         //     .do(function (x) {
-        //         return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' })
+        //         return r.db('lms_erp').table('user').getAll(x('module'), '*', { index: 'tags' })
         //             .merge(function (row) {
         //                 return { exam_room_id: x('id') }
         //             })
         //     }).distinct()
 
         //     .merge(function (re) {
-        //         return r.db('lms').table('exam_test')
+        //         return r.db('lms_erp').table('exam_test')
         //             .filter({ user_id: re('id'), exam_room_id: re('exam_room_id'), _remark: 'last' })
         //             .coerceTo('array')
         //             .do(function (result) {
@@ -255,7 +255,7 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_test').get(params.id).update({ _remark: "deleted" })
+        r.db('lms_erp').table('exam_test').get(params.id).update({ _remark: "deleted" })
             .run()
             .then(function (out) {
                 //callback({});
@@ -265,9 +265,9 @@ class examRoom {
                 res.status(500).json(err);
             });
 
-        /* r.db('lms').table('exam_test_detail').filter({ exam_test_id: params.id }).delete()
+        /* r.db('lms_erp').table('exam_test_detail').filter({ exam_test_id: params.id }).delete()
              .do(function (result) {
-                 return r.db('lms').table('exam_test').get(params.id).delete();
+                 return r.db('lms_erp').table('exam_test').get(params.id).delete();
              })
              .then(function (result) {
                  res.json(result);
@@ -282,7 +282,7 @@ class examRoom {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_test').get(params.id).update({ _remark: "retest" })
+        r.db('lms_erp').table('exam_test').get(params.id).update({ _remark: "retest" })
             .run()
             .then(function (out) {
                 //callback({});
@@ -292,9 +292,9 @@ class examRoom {
                 res.status(500).json(err);
             });
 
-        /*r.db('lms').table('exam_test_detail').filter({ exam_test_id: params.id }).delete()
+        /*r.db('lms_erp').table('exam_test_detail').filter({ exam_test_id: params.id }).delete()
              .do(function (result) {
-                 return r.db('lms').table('exam_test').get(params.id).delete();
+                 return r.db('lms_erp').table('exam_test').get(params.id).delete();
              })
              .then(function (result) {
                  res.json(result);

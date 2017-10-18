@@ -3,25 +3,25 @@ class index {
         var r = req.r;
         var params = req.query;
 
-           r.db('lms').table("exam_test").filter({ exam_room_id:params.exam_room_id, _remark: 'last'}).hasFields('sum')
+           r.db('lms_erp').table("exam_test").filter({ exam_room_id:params.exam_room_id, _remark: 'last'}).hasFields('sum')
             .merge(function (data) {
-              return r.db('lms').table('user').get(data('user_id'))
+              return r.db('lms_erp').table('user').get(data('user_id'))
             }).filter(function(f){return f.ne(null)})
             .merge(function (data) {
-              return r.db('lms').table('exam_room').get(data('exam_room_id'))
+              return r.db('lms_erp').table('exam_room').get(data('exam_room_id'))
             })
            .pluck('emp_id', 'name', 'name_room', 'sum', 'module', 'round','qty_question').distinct()
            .orderBy(r.desc('sum'),'round','name')
 
 /*
-            r.db('lms').table('exam_room').get(params.exam_room_id) 
+            r.db('lms_erp').table('exam_room').get(params.exam_room_id) 
                 .do(function (x) {
-                    return r.db('lms').table('user').getAll(x('module'), '*', { index: 'tags' })
+                    return r.db('lms_erp').table('user').getAll(x('module'), '*', { index: 'tags' })
                         .merge(function (row) {
                             return { exam_room_id: x('id') ,user_id:row('id'), module:x('module'), name_room:x('name_room') }
                         })
                 }).distinct()      
-            .innerJoin( r.db('lms').table('exam_test').filter({
+            .innerJoin( r.db('lms_erp').table('exam_test').filter({
                 exam_room_id:params.exam_room_id,
                 _remark: 'last'
             }).hasFields('sum'), function(right,left){

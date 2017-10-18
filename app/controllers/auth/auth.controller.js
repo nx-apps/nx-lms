@@ -26,7 +26,7 @@ class auth {
         var params = req.body;
         params.password = sha1(params.password);
 
-        r.db('lms').table('user').filter({ email: params.username.toLowerCase(), password: params.password })
+        r.db('lms_erp').table('user').filter({ email: params.username.toLowerCase(), password: params.password })
             .merge(function (row) {
                 return {
                     role: r.branch(row('admin').eq(true), 'admin',
@@ -44,7 +44,7 @@ class auth {
             })
             .catch((err) => {
 
-                r.db('lms').table('user').filter({ email: params.username.toLowerCase() })
+                r.db('lms_erp').table('user').filter({ email: params.username.toLowerCase() })
                     .count()
                     .run()
                     .then(function (out) {

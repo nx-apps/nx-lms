@@ -15,11 +15,11 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('question').getAll(params.module, { index: 'module' }).orderBy('time_insert')
+        r.db('lms_erp').table('question').getAll(params.module, { index: 'module' }).orderBy('time_insert')
         .pluck('id', 'question', 'module', 'tags')
             .merge(function (x) {
                 return {
-                    module: [x('module')].map(function (fc) { return r.db('lms').table('tag').get(fc) })
+                    module: [x('module')].map(function (fc) { return r.db('lms_erp').table('tag').get(fc) })
                 }
             })
             .orderBy('tags', 'ref_id', 'ref_index', 'id')
@@ -36,7 +36,7 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('question').get(params.id)
+        r.db('lms_erp').table('question').get(params.id)
             .run()
             .then(function (result) {
                 res.json(result);
@@ -51,7 +51,7 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('question').filter({ module: params.module }).concatMap(function (tags) {
+        r.db('lms_erp').table('question').filter({ module: params.module }).concatMap(function (tags) {
             return tags('tags')
         }).distinct()
             .run()
@@ -71,10 +71,10 @@ class index {
             r.expr(params).merge(function () {
                 return { correct: 0, incorrect: 0, time_insert: r.now() }
             }).do(function (result) {
-                return r.db('lms').table('question').filter({ module: result('module'), ref_id: result('ref_id'), ref_index: result('ref_index') }).count()
+                return r.db('lms_erp').table('question').filter({ module: result('module'), ref_id: result('ref_id'), ref_index: result('ref_index') }).count()
                     .do(function (x) {
                         return r.branch(x.eq(0),
-                            r.db('lms').table('question').insert(result),
+                            r.db('lms_erp').table('question').insert(result),
                             { error: 'ERROR! CAN NOT INSERT' }
                         )
                     })
@@ -95,7 +95,7 @@ class index {
             r.expr(params).merge(function () {
                 return { correct: 0, incorrect: 0, time_insert: r.now() }
             }).do(function (result) {
-                return r.db('lms').table('question').insert(result)
+                return r.db('lms_erp').table('question').insert(result)
             })
                 .run()
                 .then(function (result) {
@@ -112,7 +112,7 @@ class index {
         var r = req.r;
         var params = req.body;
 
-        r.db('lms').table('question').get(params.id).update(params)
+        r.db('lms_erp').table('question').get(params.id).update(params)
             .run()
             .then(function (result) {
                 res.json(result);
@@ -125,14 +125,14 @@ class index {
     delete_question(req, res) {
         var r = req.r;
         var params = req.query;
-        r.db('lms').table('exam_test_detail').filter({ question_id: params.id })
+        r.db('lms_erp').table('exam_test_detail').filter({ question_id: params.id })
             .count()
             .run()
             .then(function (out) {
                 if (out > 0) {
                     res.status(500).json({error:"ข้อสอบนี้มีการใช้งาน"});
                 } else {
-                    r.db('lms').table('question').get(params.id).delete()
+                    r.db('lms_erp').table('question').get(params.id).delete()
                         .run()
                         .then(function (result) {
                             res.json(result);
@@ -152,10 +152,10 @@ class index {
         // res.json(result);
 
         for (var i = 0; i < result.length; i++) {
-            // r.db('lms').table('question').insert(result[i].questions).run().then(function (e) { });
+            // r.db('lms_erp').table('question').insert(result[i].questions).run().then(function (e) { });
             questions = questions.concat(result[i].questions);
         }
-        r.db('lms').table('question').insert(questions).run().then(function (e) {
+        r.db('lms_erp').table('question').insert(questions).run().then(function (e) {
             res.json(e);
         });
     }
@@ -181,11 +181,11 @@ class index {
                 } else {
                     // var questions = [];
                     //for (var i = 0; i < result.length; i++) {
-                    // r.db('lms').table('question').insert(result[i].questions).run().then(function (e) { });
+                    // r.db('lms_erp').table('question').insert(result[i].questions).run().then(function (e) { });
                     // questions = questions.concat(result[i].questions);
                     //}
                     //console.log(questions);
-                    // r.db('lms').table('question').insert(questions).run().then(function (e) {
+                    // r.db('lms_erp').table('question').insert(questions).run().then(function (e) {
                     res.json(result);
                     // });
 
@@ -203,7 +203,7 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('question').getAll(params.module, { index: 'module' }).pluck('correct', 'incorrect', 'question').merge(function (result) {
+        r.db('lms_erp').table('question').getAll(params.module, { index: 'module' }).pluck('correct', 'incorrect', 'question').merge(function (result) {
             return {
                 d_tag: r.branch(result('correct').add(result('incorrect')).eq(0), 0,
                     result('correct').div(result('correct').add(result('incorrect'))).mul(100))

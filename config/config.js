@@ -2,16 +2,16 @@ var config = {
   
   development: {
     server: {
-      port: 3000,
+      port: 4000,
       cluster:1
     },
     
     database: {
       max: 10,
       servers: [
-        {host: 'rdb.codeunbug.com', port: 28015,user:'admin',password:'next@2017'}
+        {host: '127.0.0.1', port: 28015,user:'admin',password:'G00dD@y'}
       ],
-      db:'oauth'  
+      db:'oauth'
     },
 
     oauth:{

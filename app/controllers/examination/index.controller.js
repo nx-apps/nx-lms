@@ -3,7 +3,7 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('examination').getAll(params.module, { index: 'module' }).orderBy('name_examination')
+        r.db('lms_erp').table('examination').getAll(params.module, { index: 'module' }).orderBy('name_examination')
             .run()
             .then(function (result) {
                 res.json(result);
@@ -17,11 +17,11 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('examination').get(params.id)
+        r.db('lms_erp').table('examination').get(params.id)
             /*.merge(function(x){
                 return {
                     question:x('question').merge(function(q){
-                        return r.db('lms').table('question').get(q('question_id'))
+                        return r.db('lms_erp').table('question').get(q('question_id'))
                     })
                 }
             })*/
@@ -41,7 +41,7 @@ class index {
         r.expr(params).merge(function () {
             return { time_insert: r.now() }
         }).do(function (result) {
-            return r.db('lms').table('examination').insert(result)
+            return r.db('lms_erp').table('examination').insert(result)
         })
             .run()
             .then(function (result) {
@@ -56,7 +56,7 @@ class index {
         var r = req.r;
         var params = req.body;
 
-        r.db('lms').table('examination').get(params.id).update(params)
+        r.db('lms_erp').table('examination').get(params.id).update(params)
             .run()
             .then(function (result) {
                 res.json(result);
@@ -70,14 +70,14 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_room').filter({ examination_id: params.id })
+        r.db('lms_erp').table('exam_room').filter({ examination_id: params.id })
             .count()
             .run()
             .then(function (out) {
                 if (out > 0) {
                     res.status(500).json({ error: "ชุดข้อสอบนี้มีการใช้งาน" });
                 } else {
-                    r.db('lms').table('examination').get(params.id).delete()
+                    r.db('lms_erp').table('examination').get(params.id).delete()
                         .run()
                         .then(function (result) {
                             res.json(result);
@@ -97,14 +97,14 @@ class index {
         /* 
          r.expr(params)
          .concatMap(function(row){
-             return r.db('lms').table('question').getAll(r.args(row('sub_module')), {index: "tags"})
+             return r.db('lms_erp').table('question').getAll(r.args(row('sub_module')), {index: "tags"})
              .filter({dificalty_index:row('dificalty_index')}).sample(row('amount'))
          })
          */
 
         r.expr(params).merge(function (m) {
             return {
-                a: r.db('lms').table('question')
+                a: r.db('lms_erp').table('question')
                     .getAll(r.args(m('sub_module')), { index: 'tags' })
                     .filter({ dificalty_index: m('dificalty_index') })
                     //.pluck('id', 'ref_id', 'ref_index', 'question')
@@ -140,7 +140,7 @@ class index {
                     d: r.branch(
                         m('c').count().gt(0)
                         , m('c').merge(function (ref_map) {
-                            return r.db('lms').table('question').filter({
+                            return r.db('lms_erp').table('question').filter({
                                 ref_id: ref_map('ref_id'),
                                 ref_index: 1
                             }).pluck('id', 'ref_id', 'ref_index', 'question')(0)
@@ -159,7 +159,7 @@ class index {
                     d: r.branch(
                         m('d').count().gt(0)
                         , m('d').merge(function (ref_map) {
-                            return r.db('lms').table('question').get(ref_map('id'))
+                            return r.db('lms_erp').table('question').get(ref_map('id'))
                             //.pluck('id', 'ref_id', 'ref_index', 'question')
                         })
                         , []

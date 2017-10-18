@@ -17,7 +17,7 @@ class image {
 
             fs.readFile(prefile.path, function (err, data) {
                 //console.log(r);
-                r.db('lms').table('file').insert({
+                r.db('lms_erp').table('file').insert({
                     name: prefile.originalFilename,
                     type: prefile.headers['content-type'],
                     contents: data,
@@ -42,7 +42,7 @@ class image {
         var params = req.params;
         // console.log(params)
 
-        r.db('lms').table('file').get(params.id)
+        r.db('lms_erp').table('file').get(params.id)
             .run().then(function (result) {
                 //console.log(result);
                 res.writeHead(200, {

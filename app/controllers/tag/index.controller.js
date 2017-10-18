@@ -3,7 +3,7 @@ class index {
     select_tag(req, res) {
         var r = req.r;
         var params = req.query;
-        r.db('lms').table('tag')
+        r.db('lms_erp').table('tag')
             .run()
             .then(function (result) {
                 res.json(result);
@@ -17,7 +17,7 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('tag').get(params.id)
+        r.db('lms_erp').table('tag').get(params.id)
             .run()
             .then(function (result) {
                 res.json(result);
@@ -32,7 +32,7 @@ class index {
         var r = req.r;
         var params = req.body;
 
-        r.db('lms').table('tag').insert(params)
+        r.db('lms_erp').table('tag').insert(params)
             .run()
             .then(function (result) {
                 res.json(result);
@@ -47,10 +47,10 @@ class index {
         var params = req.body;
 
         r.do(
-            r.db('lms').table('question').filter({ module: params.id }).count(),
-            r.db('lms').table('examination').filter({ module: params.id }).count(),
-            r.db('lms').table('exam_room').filter({ module: params.id }).count(),
-            r.db('lms').table('user').getAll(params.id, { index: 'tags' }).count(),
+            r.db('lms_erp').table('question').filter({ module: params.id }).count(),
+            r.db('lms_erp').table('examination').filter({ module: params.id }).count(),
+            r.db('lms_erp').table('exam_room').filter({ module: params.id }).count(),
+            r.db('lms_erp').table('user').getAll(params.id, { index: 'tags' }).count(),
             function (a, b, c, d) {
                 return a.add(b).add(c).add(d);
             }
@@ -59,7 +59,7 @@ class index {
                 if (out > 0) {
                     res.status(500).json({ error: "Module มีใช้งานอยู่" });
                 } else {
-                    r.db('lms').table('tag').get(params.id).update(params)
+                    r.db('lms_erp').table('tag').get(params.id).update(params)
                         .run()
                         .then(function (result) {
                             res.json(result);
@@ -78,10 +78,10 @@ class index {
         var params = req.query;
 
          r.do(
-            r.db('lms').table('question').filter({ module: params.id }).count(),
-            r.db('lms').table('examination').filter({ module: params.id }).count(),
-            r.db('lms').table('exam_room').filter({ module: params.id }).count(),
-            r.db('lms').table('user').getAll(params.id, { index: 'tags' }).count(),
+            r.db('lms_erp').table('question').filter({ module: params.id }).count(),
+            r.db('lms_erp').table('examination').filter({ module: params.id }).count(),
+            r.db('lms_erp').table('exam_room').filter({ module: params.id }).count(),
+            r.db('lms_erp').table('user').getAll(params.id, { index: 'tags' }).count(),
             function (a, b, c, d) {
                 return a.add(b).add(c).add(d);
             }
@@ -90,7 +90,7 @@ class index {
                 if (out > 0) {
                     res.status(500).json({ error: "Module มีใช้งานอยู่" });
                 } else {
-                    r.db('lms').table('tag').get(params.id).delete()
+                    r.db('lms_erp').table('tag').get(params.id).delete()
                         .run()
                         .then(function (result) {
                             res.json(result);

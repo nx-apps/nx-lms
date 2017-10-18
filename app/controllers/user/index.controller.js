@@ -18,14 +18,14 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        var filter = r.db('lms').table("user");
+        var filter = r.db('lms_erp').table("user");
         if (params.tags) {
             filter = filter.getAll(r.args([params.tags, '*']), { index: 'tags' });
         }
         filter.without('password').merge(function (c) {
             return {
-                end_tags: c('end_tags').map(function (fc) { return r.db('lms').table('tag').get(fc) }),
-                key_tags: c('key_tags').map(function (fc) { return r.db('lms').table('tag').get(fc) })
+                end_tags: c('end_tags').map(function (fc) { return r.db('lms_erp').table('tag').get(fc) }),
+                key_tags: c('key_tags').map(function (fc) { return r.db('lms_erp').table('tag').get(fc) })
             }
         }).distinct()
             .run()
@@ -41,7 +41,7 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('user').get(params.id).without('password')
+        r.db('lms_erp').table('user').get(params.id).without('password')
             .run()
             .then(function (result) {
                 res.json(result);
@@ -55,13 +55,13 @@ class index {
         var r = req.r;
         var params = req.body;
 
-        r.db('lms').table('user').filter({ email: params.email.toLowerCase() }).coerceTo('array')
+        r.db('lms_erp').table('user').filter({ email: params.email.toLowerCase() }).coerceTo('array')
             .do(function (result) {
                 return r.branch(result.count().eq(0),
                     r.expr(params).merge(function () {
                         return { password: sha1(params.password) }
                     }).do(function (all) {
-                        return r.db('lms').table('user').insert(all)
+                        return r.db('lms_erp').table('user').insert(all)
                     })
                     , { error: 'Duplicate Email' })
             })
@@ -86,7 +86,7 @@ class index {
             params.password = sha1(params.password)
 
         r.expr(params).do(function (resultParams) {
-            return r.db('lms').table('user').filter(function (row) {
+            return r.db('lms_erp').table('user').filter(function (row) {
                 return r.branch(row('id').eq(resultParams('id')), false,
                     r.branch(row('email').eq(resultParams('email')), true, false)
                 )
@@ -94,7 +94,7 @@ class index {
         }).coerceTo('array').count()
             .do(function (dup) {
                 return r.branch(dup.eq(0),
-                    r.db('lms').table('user').get(r.expr(params.id)).update(r.expr(params))
+                    r.db('lms_erp').table('user').get(r.expr(params.id)).update(r.expr(params))
                     , { error: 'Duplicate Email' })
             })
             .run()
@@ -113,14 +113,14 @@ class index {
         var r = req.r;
         var params = req.query;
 
-        r.db('lms').table('exam_test').filter({ user_id: params.id })
+        r.db('lms_erp').table('exam_test').filter({ user_id: params.id })
             .count()
             .run()
             .then(function (out) {
                 if (out > 0) {
                     res.status(500).json({ error: "ผู้ใช้งานนี้มีการใช้งาน" });
                 } else {
-                    r.db('lms').table('user').get(params.id).delete()
+                    r.db('lms_erp').table('user').get(params.id).delete()
                         .run()
                         .then(function (result) {
                             res.json(result);
@@ -141,7 +141,7 @@ class index {
         params.email = params.email.toLowerCase();
         params.key_tags=[];
 
-        r.db('lms').table('user').filter({ email: params.email.toLowerCase() })
+        r.db('lms_erp').table('user').filter({ email: params.email.toLowerCase() })
             .count()
             /*.coerceTo('array')
             .do(function (result) {
@@ -149,7 +149,7 @@ class index {
                     r.expr(params).merge(function () {
                         return { password: sha1(params.password) }
                     }).do(function (all) {
-                        return r.db('lms').table('user').insert(all)
+                        return r.db('lms_erp').table('user').insert(all)
                     })
                     , { error: 'Email นี้มีอยู่ในระบบแล้ว กรุณากรอก Email ใหม่' })
             })*/
@@ -213,13 +213,13 @@ class index {
             if (err) {
                 res.status(500).json(err);
             } else {
-                r.db('lms').table('user').filter({ email: user.email.toLowerCase() }).coerceTo('array')
+                r.db('lms_erp').table('user').filter({ email: user.email.toLowerCase() }).coerceTo('array')
                     .do(function (result) {
                         return r.branch(result.count().eq(0),
                             r.expr(user).merge(function () {
                                 return { password: sha1(user.password) }
                             }).do(function (all) {
-                                return r.db('lms').table('user').insert(all)
+                                return r.db('lms_erp').table('user').insert(all)
                             })
                             , { error: 'Duplicate Email' })
                     })
@@ -239,7 +239,7 @@ class index {
             }
 
         });
-        /* r.db('lms').table('user').get(uid).update({ status: true })
+        /* r.db('lms_erp').table('user').get(uid).update({ status: true })
              .run()
              .then(function (out) {
                  res.redirect("/login");
@@ -254,7 +254,7 @@ class index {
         var r = req.r;
         var params = req.query;
         var email = params.email;
-        r.db('lms').table('user').filter({ email: email.toLowerCase() })
+        r.db('lms_erp').table('user').filter({ email: email.toLowerCase() })
             .run()
             .then(function (users) {
                 if (users.length > 0) {
@@ -263,7 +263,7 @@ class index {
                     user.status = false;
                     //user.password = sha1(user.emp_id);
 
-                    r.db('lms').table('user').get(user.id).update(user)
+                    r.db('lms_erp').table('user').get(user.id).update(user)
                         .run()
                         .then(function (out) {
                             var mailer = require("nodemailer");

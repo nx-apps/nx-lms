@@ -38,7 +38,7 @@ module.exports = function (options) {
                     // if()
 
 
-                    r.db('lms').table('user').filter({ id: decode.id })
+                    r.db('lms_erp').table('user').filter({ id: decode.id })
                         .merge(function (row) {
                             return {
                                 role: r.branch(row('admin').eq(true), 'admin',
