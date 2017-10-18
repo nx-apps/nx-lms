@@ -3,14 +3,14 @@
 
 <head>
   <base href="/elms">
-  
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
   <title>BETAGRO</title>
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <link rel="shortcut icon" sizes="32x32" href="/images/icon/green/app-icon-32.png">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="shortcut icon" sizes="32x32" href="/elms/images/icon/green/app-icon-32.png">
+  <link rel="manifest" href="/elms/manifest.json">
   <!--link rel="import" href="/api/push/import"-->
   <script>
     Polymer = { lazyRegister: true, dom: 'shadow' }
@@ -43,14 +43,14 @@
     }
   </script>
 
-  <script src="/bundle.js"></script>
-  <link rel="import" href="/bower_components/polymer/polymer.html">
-  <link rel="import" href="/src/nylon-app.html" async>
+  <script src="/elms/bundle.js"></script>
+  <link rel="import" href="/elms/bower_components/polymer/polymer.html">
+  <link rel="import" href="/elms/src/nylon-app.html" async>
 
   <style>
     @font-face {
       font-family: 'CSChatThaiUI';
-      src: url('/bower_components/gl-font/fonts/csChatThai/CSChatThaiUI.ttf');
+      src: url('/elms/bower_components/gl-font/fonts/csChatThai/CSChatThaiUI.ttf');
     }
     
     body {
@@ -134,7 +134,7 @@
   <nylon-app unresolved>
     <div id="toolbar">
       <div class="icon">
-        <img src="/images/icon/white/app-icon-32.png" alt="">
+        <img src="/elms/images/icon/white/app-icon-32.png" alt="">
       </div>
       <div class="title">
         BETAGRO
@@ -157,7 +157,7 @@
       } else {
         // polyfill the platform!
         var e = document.createElement('script');
-        e.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
+        e.src = '/elms/bower_components/webcomponentsjs/webcomponents-lite.min.js';
         document.body.appendChild(e);
       }
     })();
