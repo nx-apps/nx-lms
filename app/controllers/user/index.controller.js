@@ -174,7 +174,7 @@ class index {
                     var html = "<p>ชื่อผู้ใช้งาน : " + params.name + "</p>";
                     html += "<p>รหัสพนักงาน : " + params.emp_id + "</p>";
                     html += "<p>email/user : " + params.email + "</p>";
-                    html += "<a href='https://quiz.nexts-corp.com/api/user/verify?uid=" + uid + "'>กรุณายืนยันการลงทะเบีัยนระบบคลังข้อสอบ (Betagro)</a>";
+                    html += "<a href="+req.headers['origin']+"/erp/api/user/verify?uid=" + uid + "'>กรุณายืนยันการลงทะเบีัยนระบบคลังข้อสอบ (Betagro)</a>";
 
 
                     var mail = {
@@ -282,7 +282,8 @@ class index {
                             html += "<p>รหัสพนักงาน : " + user.emp_id + "</p>";
                             html += "<p>email/user : " + user.email + "</p>";
                             //  html += "<p>Password : " + user.emp_id + "</p>";
-                            html += "<a href='https://quiz.nexts-corp.com/api/user/reset?pwd=" + pwd + "'>ตั้งค่ารหัสผ่านใหม่</a>";
+
+                            html += "<a href='"+req.headers['origin']+"/erp/api/user/reset?pwd=" + pwd + "'>ตั้งค่ารหัสผ่านใหม่</a>";
 
 
                             var mail = {
